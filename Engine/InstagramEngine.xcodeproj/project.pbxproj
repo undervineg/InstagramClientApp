@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0858764F21DA70A700C32422 /* RegisterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858764E21DA70A700C32422 /* RegisterUseCase.swift */; };
+		0858765321DA73E800C32422 /* RegisterUseCaseOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858765221DA73E800C32422 /* RegisterUseCaseOutput.swift */; };
+		0858765521DA73FA00C32422 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858765421DA73FA00C32422 /* User.swift */; };
+		0858765A21DA74D000C32422 /* RegistrationUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858765921DA74D000C32422 /* RegistrationUseCaseTests.swift */; };
 		0884514E21DA6676008B8121 /* InstagramEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0884514421DA6676008B8121 /* InstagramEngine.framework */; };
-		0884515321DA6676008B8121 /* InstagramEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0884515221DA6676008B8121 /* InstagramEngineTests.swift */; };
 		0884515521DA6676008B8121 /* InstagramEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 0884514721DA6676008B8121 /* InstagramEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -23,11 +26,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0858764E21DA70A700C32422 /* RegisterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUseCase.swift; sourceTree = "<group>"; };
+		0858765221DA73E800C32422 /* RegisterUseCaseOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUseCaseOutput.swift; sourceTree = "<group>"; };
+		0858765421DA73FA00C32422 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0858765921DA74D000C32422 /* RegistrationUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationUseCaseTests.swift; sourceTree = "<group>"; };
 		0884514421DA6676008B8121 /* InstagramEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = InstagramEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0884514721DA6676008B8121 /* InstagramEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstagramEngine.h; sourceTree = "<group>"; };
 		0884514821DA6676008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0884514D21DA6676008B8121 /* InstagramEngineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstagramEngineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0884515221DA6676008B8121 /* InstagramEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramEngineTests.swift; sourceTree = "<group>"; };
 		0884515421DA6676008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -50,6 +56,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0858765821DA741E00C32422 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0858765421DA73FA00C32422 /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		0884513A21DA6676008B8121 = {
 			isa = PBXGroup;
 			children = (
@@ -72,6 +86,9 @@
 			isa = PBXGroup;
 			children = (
 				0884514721DA6676008B8121 /* InstagramEngine.h */,
+				0858765821DA741E00C32422 /* Model */,
+				0858764E21DA70A700C32422 /* RegisterUseCase.swift */,
+				0858765221DA73E800C32422 /* RegisterUseCaseOutput.swift */,
 				0884514821DA6676008B8121 /* Info.plist */,
 			);
 			path = InstagramEngine;
@@ -80,8 +97,8 @@
 		0884515121DA6676008B8121 /* InstagramEngineTests */ = {
 			isa = PBXGroup;
 			children = (
-				0884515221DA6676008B8121 /* InstagramEngineTests.swift */,
 				0884515421DA6676008B8121 /* Info.plist */,
+				0858765921DA74D000C32422 /* RegistrationUseCaseTests.swift */,
 			);
 			path = InstagramEngineTests;
 			sourceTree = "<group>";
@@ -148,9 +165,11 @@
 				TargetAttributes = {
 					0884514321DA6676008B8121 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 					0884514C21DA6676008B8121 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 				};
 			};
@@ -194,6 +213,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0858765521DA73FA00C32422 /* User.swift in Sources */,
+				0858765321DA73E800C32422 /* RegisterUseCaseOutput.swift in Sources */,
+				0858764F21DA70A700C32422 /* RegisterUseCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0884515321DA6676008B8121 /* InstagramEngineTests.swift in Sources */,
+				0858765A21DA74D000C32422 /* RegistrationUseCaseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +363,7 @@
 		0884515921DA6676008B8121 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -358,6 +381,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.undervine.InstagramEngine;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -366,6 +390,7 @@
 		0884515A21DA6676008B8121 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -391,6 +416,8 @@
 		0884515C21DA6676008B8121 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VY6BWEP79H;
 				INFOPLIST_FILE = InstagramEngineTests/Info.plist;
@@ -401,6 +428,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.undervine.InstagramEngineTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -409,6 +437,8 @@
 		0884515D21DA6676008B8121 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VY6BWEP79H;
 				INFOPLIST_FILE = InstagramEngineTests/Info.plist;
