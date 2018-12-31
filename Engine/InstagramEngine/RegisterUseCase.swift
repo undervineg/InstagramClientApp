@@ -16,3 +16,11 @@ enum RegisterClientResult {
 protocol RegisterClient {
     func register(user: User, completion: @escaping (RegisterClientResult) -> Void)
 }
+
+class RegisterUseCase {
+    private let client: RegisterClient
+    
+    init(client: RegisterClient) {
+        self.client = client
+    }
+}
