@@ -17,7 +17,9 @@ class RegisterUserUseCase {
     }
     
     func register(email: String, username: String, password: String) {
-        
+        gateway.register(email: email, username: username, password: password) { (result) in
+            
+        }
     }
 }
 
@@ -26,13 +28,23 @@ class RegisterUserUseCase {
  * Dependencies: RegisterUserGateway, RegisterUserUseCaseOutput
  */
 class RegisterUserUseCaseTests: XCTestCase {
-
+    
     func test_init_doesNotRequestRegister() {
         let gateway = AuthGatewaySpy()
         
         let _ = RegisterUserUseCase.init(gateway: gateway)
         
-        XCTAssert(gateway.requestedUsers.isEmpty)
+        XCTAssert(gateway.requestedUserInfos.isEmpty)
+    }
+    
+    func test_register_requestsRegisterTheRightUser() {
+        let gateway = AuthGatewaySpy()
+        let sut = RegisterUserUseCase(gateway: gateway)
+        let userInfo = UserInfo(email: "testEmail", username: "testName", password: "testPassword")
+        
+        sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password)
+        
+        XCTAssertEqual(gateway.requestedUserInfos, [userInfo])
     }
     
     
@@ -42,7 +54,7 @@ class RegisterUserUseCaseTests: XCTestCase {
         var requestedUserInfos = [UserInfo]()
         
         func register(email: String, username: String, password: String, completion: @escaping (Result) -> Void) {
-            
+            requestedUserInfos.append(UserInfo(email: email, username: username, password: password))
         }
     }
     
