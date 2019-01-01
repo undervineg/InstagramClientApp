@@ -22,7 +22,7 @@ protocol RegisterUserUseCaseOutput {
     func registerFailed(_ error: RegisterUserUseCase.Error)
 }
 
-class RegisterUserUseCase {
+final public class RegisterUserUseCase {
     private let gateway: AuthGateway
     private let output: RegisterUserUseCaseOutput
     
@@ -31,7 +31,7 @@ class RegisterUserUseCase {
         self.output = output
     }
     
-    enum Error: Swift.Error {
+    public enum Error: Swift.Error {
         case invalidName
         case invalidPassword
         case userDisabled
@@ -45,7 +45,7 @@ class RegisterUserUseCase {
         case unknown
     }
     
-    func register(email: String, username: String, password: String, completion: @escaping (Error) -> Void) {
+    public func register(email: String, username: String, password: String, completion: @escaping (Error) -> Void) {
         gateway.register(email: email, username: username, password: password) { (result) in
             switch result {
             case .success: break
