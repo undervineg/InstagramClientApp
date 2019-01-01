@@ -8,12 +8,39 @@
 
 import Foundation
 
-enum Result {
-    case success
-    case failure
+enum Result<T, E> {
+    case success(T)
+    case failure(E)
 }
 
 protocol AuthGateway {
-    func register(email: String, username: String, password: String, completion: @escaping (Result) -> Void)
+    func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, Error>) -> Void)
 }
 
+class RegisterUserUseCase {
+    private let gateway: AuthGateway
+    
+    init(gateway: AuthGateway) {
+        self.gateway = gateway
+    }
+    
+    enum Error: Swift.Error {
+        case invalidName
+        case invalidPassword
+        case userDisabled
+        case emailAlreadyInUse
+        case invalidEmail
+        case wrongPassword
+        case userNotFound
+        case accountExistsWithDifferentCredential
+        case networkError
+        case credentialAlreadyInUse
+        case unknown
+    }
+    
+    func register(email: String, username: String, password: String, completion: (Error) -> Void) {
+        gateway.register(email: email, username: username, password: password) { (result) in
+            
+        }
+    }
+}

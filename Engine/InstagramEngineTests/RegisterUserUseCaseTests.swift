@@ -9,20 +9,6 @@
 import XCTest
 @testable import InstagramEngine
 
-class RegisterUserUseCase {
-    private let gateway: AuthGateway
-    
-    init(gateway: AuthGateway) {
-        self.gateway = gateway
-    }
-    
-    func register(email: String, username: String, password: String) {
-        gateway.register(email: email, username: username, password: password) { (result) in
-            
-        }
-    }
-}
-
 /*
  * SUT: RegisterUserUseCase
  * Dependencies: RegisterUserGateway, RegisterUserUseCaseOutput
@@ -42,7 +28,7 @@ class RegisterUserUseCaseTests: XCTestCase {
         let sut = RegisterUserUseCase(gateway: gateway)
         let userInfo = UserInfo(email: "testEmail", username: "testName", password: "testPassword")
         
-        sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password)
+        sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password) { _ in }
         
         XCTAssertEqual(gateway.requestedUserInfos, [userInfo])
     }
@@ -52,8 +38,18 @@ class RegisterUserUseCaseTests: XCTestCase {
         let sut = RegisterUserUseCase(gateway: gateway)
         let userInfo = UserInfo(email: "testEmail", username: "testName", password: "testPassword")
         
-        sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password)
-        sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password)
+        sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password) { _ in }
+        sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password) { _ in }
+        
+        XCTAssertEqual(gateway.requestedUserInfos, [userInfo, userInfo])
+    }
+    
+    func test_register_deliversErrorWhenGatewayError() {
+        let gateway = AuthGatewaySpy()
+        let sut = RegisterUserUseCase(gateway: gateway)
+        let userInfo = UserInfo(email: "testEmail", username: "testName", password: "testPassword")
+        
+        sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password) { _ in }
         
         XCTAssertEqual(gateway.requestedUserInfos, [userInfo, userInfo])
     }
@@ -64,7 +60,7 @@ class RegisterUserUseCaseTests: XCTestCase {
     private class AuthGatewaySpy: AuthGateway {
         var requestedUserInfos = [UserInfo]()
         
-        func register(email: String, username: String, password: String, completion: @escaping (Result) -> Void) {
+        func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, Error>) -> Void) {
             requestedUserInfos.append(UserInfo(email: email, username: username, password: password))
         }
     }
