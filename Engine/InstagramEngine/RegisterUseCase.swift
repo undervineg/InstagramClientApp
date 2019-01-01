@@ -38,9 +38,12 @@ class RegisterUserUseCase {
         case unknown
     }
     
-    func register(email: String, username: String, password: String, completion: (Error) -> Void) {
+    func register(email: String, username: String, password: String, completion: @escaping (Error) -> Void) {
         gateway.register(email: email, username: username, password: password) { (result) in
-            
+            switch result {
+            case .success: break
+            case .failure: completion(.invalidName)
+            }
         }
     }
 }
