@@ -1,5 +1,5 @@
 //
-//  User.swift
+//  UserEntity.swift
 //  InstagramEngine
 //
 //  Created by 심승민 on 01/01/2019.
@@ -8,7 +8,8 @@
 
 import Foundation
 
-struct User {
+public struct UserEntity {
+    let id: String
     let email: String
     let username: String
     let password: String

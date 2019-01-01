@@ -8,19 +8,12 @@
 
 import Foundation
 
-enum RegisterClientResult {
-    case success(User)
-    case failure(Error)
+enum Result {
+    case success
+    case failure
 }
 
-protocol RegisterClient {
-    func register(user: User, completion: @escaping (RegisterClientResult) -> Void)
+protocol AuthGateway {
+    func register(email: String, username: String, password: String, completion: @escaping (Result) -> Void)
 }
 
-class RegisterUseCase {
-    private let client: RegisterClient
-    
-    init(client: RegisterClient) {
-        self.client = client
-    }
-}

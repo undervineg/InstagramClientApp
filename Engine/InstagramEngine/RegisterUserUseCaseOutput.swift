@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol RegisterUseCaseOutput {
-    func registerSucceeded(user: User)
-    func registerFailed(error: Error)
+protocol RegisterUserUseCaseOutput {
+    func registerSucceeded(_ user: UserEntity)
+    func registerFailed(_ error: Error)
 }
