@@ -46,6 +46,17 @@ class RegisterUserUseCaseTests: XCTestCase {
         
         XCTAssertEqual(gateway.requestedUserInfos, [userInfo])
     }
+
+    func test_registerTwice_requestsRegisterTheRightUserTwice() {
+        let gateway = AuthGatewaySpy()
+        let sut = RegisterUserUseCase(gateway: gateway)
+        let userInfo = UserInfo(email: "testEmail", username: "testName", password: "testPassword")
+        
+        sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password)
+        sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password)
+        
+        XCTAssertEqual(gateway.requestedUserInfos, [userInfo, userInfo])
+    }
     
     
     // MARK: - Helpers
