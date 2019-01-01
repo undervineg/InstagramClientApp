@@ -17,11 +17,18 @@ protocol AuthGateway {
     func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, Error>) -> Void)
 }
 
+protocol RegisterUserUseCaseOutput {
+    func registerSucceeded(_ user: UserEntity)
+    func registerFailed(_ error: RegisterUserUseCase.Error)
+}
+
 class RegisterUserUseCase {
     private let gateway: AuthGateway
+    private let output: RegisterUserUseCaseOutput
     
-    init(gateway: AuthGateway) {
+    init(gateway: AuthGateway, output: RegisterUserUseCaseOutput) {
         self.gateway = gateway
+        self.output = output
     }
     
     enum Error: Swift.Error {

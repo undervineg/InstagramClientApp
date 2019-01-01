@@ -17,15 +17,17 @@ class RegisterUserUseCaseTests: XCTestCase {
     
     func test_init_doesNotRequestRegister() {
         let gateway = AuthGatewaySpy()
+        let output = RegisterUserUseCaseOutputDummy()
         
-        let _ = RegisterUserUseCase.init(gateway: gateway)
+        let _ = RegisterUserUseCase.init(gateway: gateway, output: output)
         
         XCTAssert(gateway.requestedUserInfos.isEmpty)
     }
     
     func test_register_requestsRegisterTheRightUser() {
         let gateway = AuthGatewaySpy()
-        let sut = RegisterUserUseCase(gateway: gateway)
+        let output = RegisterUserUseCaseOutputDummy()
+        let sut = RegisterUserUseCase(gateway: gateway, output: output)
         let userInfo = UserInfo(email: "testEmail", username: "testName", password: "testPassword")
         
         sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password) { _ in }
@@ -35,7 +37,8 @@ class RegisterUserUseCaseTests: XCTestCase {
 
     func test_registerTwice_requestsRegisterTheRightUserTwice() {
         let gateway = AuthGatewaySpy()
-        let sut = RegisterUserUseCase(gateway: gateway)
+        let output = RegisterUserUseCaseOutputDummy()
+        let sut = RegisterUserUseCase(gateway: gateway, output: output)
         let userInfo = UserInfo(email: "testEmail", username: "testName", password: "testPassword")
         
         sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password) { _ in }
@@ -46,7 +49,8 @@ class RegisterUserUseCaseTests: XCTestCase {
     
     func test_register_deliversErrorWhenGatewayError() {
         let gateway = AuthGatewaySpy()
-        let sut = RegisterUserUseCase(gateway: gateway)
+        let output = RegisterUserUseCaseOutputDummy()
+        let sut = RegisterUserUseCase(gateway: gateway, output: output)
         let userInfo = UserInfo(email: "testEmail", username: "testName", password: "testPassword")
         
         var capturedErrors = [RegisterUserUseCase.Error]()
@@ -83,6 +87,16 @@ class RegisterUserUseCaseTests: XCTestCase {
         let email: String
         let username: String
         let password: String
+    }
+    
+    private class RegisterUserUseCaseOutputDummy: RegisterUserUseCaseOutput {
+        func registerSucceeded(_ user: UserEntity) {
+            
+        }
+        
+        func registerFailed(_ error: RegisterUserUseCase.Error) {
+            
+        }
     }
 
 }
