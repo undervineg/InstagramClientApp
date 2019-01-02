@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../Engine/InstagramEngine.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:InstagramClientApp.xcodeproj">
    </FileRef>
    <FileRef

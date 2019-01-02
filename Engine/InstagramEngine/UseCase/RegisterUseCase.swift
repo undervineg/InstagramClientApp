@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Result<T, E> {
+public enum Result<T, E> {
     case success(T)
     case failure(E)
 }
@@ -45,11 +45,13 @@ final public class RegisterUserUseCase {
         case unknown
     }
     
-    public func register(email: String, username: String, password: String, completion: @escaping (Error) -> Void) {
+    public func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, Error>) -> Void) {
         gateway.register(email: email, username: username, password: password) { (result) in
             switch result {
-            case .success: break
-            case .failure: completion(.invalidName)
+            case .success(let user): completion(.success(user))
+            case .failure(let error):
+                // send failure according to the received error
+                completion(.failure(.invalidName))
             }
         }
     }
