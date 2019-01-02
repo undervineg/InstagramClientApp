@@ -15,6 +15,7 @@
 		086E6C7621DC68750094B808 /* FirebaseGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C7521DC68750094B808 /* FirebaseGateway.swift */; };
 		086E6C7821DC68B20094B808 /* InstagramEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086E6C7721DC68B20094B808 /* InstagramEngine.framework */; };
 		086E6C7921DC68B20094B808 /* InstagramEngine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 086E6C7721DC68B20094B808 /* InstagramEngine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		086E6C7C21DC6AC90094B808 /* FirebaseGatewayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C7B21DC6AC90094B808 /* FirebaseGatewayTests.swift */; };
 		0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0884511A21DA665A008B8121 /* AppDelegate.swift */; };
 		0884512221DA665C008B8121 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0884512121DA665C008B8121 /* Assets.xcassets */; };
 		0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0884512321DA665C008B8121 /* LaunchScreen.storyboard */; };
@@ -52,6 +53,7 @@
 		0858767621DC5CC700C32422 /* RegisterUserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterUserViewController.xib; sourceTree = "<group>"; };
 		086E6C7521DC68750094B808 /* FirebaseGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseGateway.swift; sourceTree = "<group>"; };
 		086E6C7721DC68B20094B808 /* InstagramEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = InstagramEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		086E6C7B21DC6AC90094B808 /* FirebaseGatewayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseGatewayTests.swift; sourceTree = "<group>"; };
 		0884511721DA665A008B8121 /* InstagramClientApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramClientApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0884511A21DA665A008B8121 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0884512121DA665C008B8121 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			children = (
 				0884513121DA665C008B8121 /* Info.plist */,
 				0858766C21DB8C7600C32422 /* RegisterUserViewControllerTests.swift */,
+				086E6C7B21DC6AC90094B808 /* FirebaseGatewayTests.swift */,
 			);
 			path = InstagramClientAppTests;
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 				0884512721DA665C008B8121 /* Sources */,
 				0884512821DA665C008B8121 /* Frameworks */,
 				0884512921DA665C008B8121 /* Resources */,
+				47B45EE2EED058C1F940CF96 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -306,6 +310,34 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		47B45EE2EED058C1F940CF96 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-InstagramClientAppTests/Pods-InstagramClientAppTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-InstagramClientAppTests/Pods-InstagramClientAppTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		529AC981167ADA4E4072C4A7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -346,6 +378,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0858766D21DB8C7600C32422 /* RegisterUserViewControllerTests.swift in Sources */,
+				086E6C7C21DC6AC90094B808 /* FirebaseGatewayTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
