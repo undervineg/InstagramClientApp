@@ -8,6 +8,7 @@
 
 import XCTest
 import Firebase
+import InstagramEngine
 @testable import InstagramClientApp
 
 class RegisterUserViewControllerTests: XCTestCase {
@@ -38,17 +39,29 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.signUpButton.titleLabel?.text, "Sign Up")
     }
 
-    func test_clickSignUpButton() {
+    func test_clickSignUpButton_doNotSendMessageWhenEmptyTextExist() {
         let sut = RegisterUserViewController()
+        let useCaseStub = RegisterUseCaseStub()
+        sut.register = useCaseStub.register
         _ = sut.view
         
-        var callbackWasFired = false
-        sut.register = { email, name, password in
-            callbackWasFired = true
-        }
+        sut.emailTextField.text = ""
+        sut.usernameTextField.text = ""
+        sut.passwordTextField.text = ""
         
         sut.signUpButton.sendActions(for: .touchUpInside)
         
-        XCTAssert(callbackWasFired == true)
+        XCTAssert(useCaseStub.callbackWasFired == false)
+    }
+    
+    
+    // MARK: - Helpers
+    
+    private class RegisterUseCaseStub {
+        var callbackWasFired = false
+        
+        func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
+            callbackWasFired = true
+        }
     }
 }

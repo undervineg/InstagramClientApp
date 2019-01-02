@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import InstagramEngine
 
 class RegisterUserViewController: UIViewController {
     
@@ -15,7 +16,7 @@ class RegisterUserViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
     
-    var register: ((String, String, String) -> Void)?
+    var register: ((String, String, String, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +25,14 @@ class RegisterUserViewController: UIViewController {
     }
     
     @objc private func signUp(_ sender: UIButton) {
-        guard let email = emailTextField.text,
-            let username = usernameTextField.text,
-            let password = passwordTextField.text else {
+        guard let email = emailTextField.text, email.count > 0,
+            let username = usernameTextField.text, username.count > 0,
+            let password = passwordTextField.text, password.count > 0 else {
             return
         }
-        register?(email, username, password)
+        register?(email, username, password) {
+            print($0)
+        }
     }
 
 }

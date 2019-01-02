@@ -16,6 +16,11 @@ import Firebase
  */
 class FirebaseGatewayTests: XCTestCase {
     
+    override func tearDown() {
+        MockFirebase.messages = []
+        super.tearDown()
+    }
+    
     func test_register_deliversTheRightCurrentUser() {
         let (sut, firebase) = makeSUT()
         
@@ -90,12 +95,12 @@ class FirebaseGatewayTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT() -> (sut: FirebaseGateway, firebase: MockFirebase) {
+    private func makeSUT() -> (sut: FirebaseGateway, firebase: MockFirebase.Type) {
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
         
-        let firebase = MockFirebase()
+        let firebase = MockFirebase.self
         let sut = FirebaseGateway(firebase: firebase)
         
         return (sut, firebase)
@@ -103,21 +108,21 @@ class FirebaseGatewayTests: XCTestCase {
     
     // Auth를 상속받아서 메소드를 오버라이드 할 수도 있지만, extension에서 정의한 메소드는 오버라이드하지 못 한다. 따라서 프로토콜로 대체
     private class MockFirebase: FirebaseWrapper {
-        private var messages = [(email: String, pw: String, completed: (Result<(id: String, email: String?, name: String?), Error>) -> Void)]()
+        static var messages = [(email: String, pw: String, completed: (Result<(id: String, email: String?, name: String?), Error>) -> Void)]()
         
-        private var capturedEmail: [String] {
+        static var capturedEmail: [String] {
             return messages.map { $0.email }
         }
         
-        func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?, name: String?), Error>) -> Void) {
+        static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?, name: String?), Error>) -> Void) {
             messages.append((email, password, completion))
         }
         
-        func completeWithSuccess(id: String, name: String, at index: Int = 0) {
+        static func completeWithSuccess(id: String, name: String, at index: Int = 0) {
             messages[index].completed(.success((id: id, email: capturedEmail[index], name: name)))
         }
         
-        func completeWithFailure(errorCode: Int, at index: Int = 0) {
+        static func completeWithFailure(errorCode: Int, at index: Int = 0) {
             let error = NSError(domain: "test", code: errorCode)
             messages[index].completed(.failure(error))
         }
