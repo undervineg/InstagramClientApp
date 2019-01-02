@@ -38,4 +38,17 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.signUpButton.titleLabel?.text, "Sign Up")
     }
 
+    func test_clickSignUpButton() {
+        let sut = RegisterUserViewController()
+        _ = sut.view
+        
+        var callbackWasFired = false
+        sut.register = { email, name, password in
+            callbackWasFired = true
+        }
+        
+        sut.signUpButton.sendActions(for: .touchUpInside)
+        
+        XCTAssert(callbackWasFired == true)
+    }
 }

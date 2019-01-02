@@ -15,10 +15,21 @@ class RegisterUserViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
     
+    var register: ((String, String, String) -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        signUpButton.addTarget(self, action: #selector(signUp(_:)), for: .touchUpInside)
+    }
+    
+    @objc private func signUp(_ sender: UIButton) {
+        guard let email = emailTextField.text,
+            let username = usernameTextField.text,
+            let password = passwordTextField.text else {
+            return
+        }
+        register?(email, username, password)
     }
 
 }
