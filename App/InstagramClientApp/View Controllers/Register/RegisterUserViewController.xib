@@ -55,7 +55,7 @@
                         </textField>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNw-WI-nkt">
                             <rect key="frame" x="0.0" y="157.5" width="295" height="42.5"/>
-                            <color key="backgroundColor" red="0.58431372549019611" green="0.80000000000000004" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.48274293664383561" green="0.45095248287671241" blue="0.90606271404109584" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="Sign Up">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

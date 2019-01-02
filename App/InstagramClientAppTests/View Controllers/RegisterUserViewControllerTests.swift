@@ -69,7 +69,7 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssert(useCaseStub.callbackWasFired == true)
     }
     
-    func test_clickSignUpButton_backgroundColorThicken() {
+    func test_clickSignUpButton_backgroundColorThicken_whenAllTextFieldsAreFilled() {
         let sut = RegisterUserViewController()
         _ = sut.view
         
@@ -80,7 +80,21 @@ class RegisterUserViewControllerTests: XCTestCase {
         sut.passwordTextField.text = "1234"
         sut.passwordTextField.sendActions(for: .editingChanged)
         
-        XCTAssertEqual(sut.signUpButton.backgroundColor, UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1))
+        XCTAssertEqual(sut.signUpButton.backgroundColor, UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 1))
+    }
+    
+    func test_clickSignUpButton_backgroundColorWeaken_ifOneTextFieldIsEmpty() {
+        let sut = RegisterUserViewController()
+        _ = sut.view
+        
+        sut.emailTextField.text = ""
+        sut.emailTextField.sendActions(for: .editingChanged)
+        sut.usernameTextField.text = "tester"
+        sut.usernameTextField.sendActions(for: .editingChanged)
+        sut.passwordTextField.text = "1234"
+        sut.passwordTextField.sendActions(for: .editingChanged)
+        
+        XCTAssertEqual(sut.signUpButton.backgroundColor, UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5))
     }
     
     

@@ -33,9 +33,9 @@ class RegisterUserViewController: UIViewController {
         let isPasswordValid = passwordTextField.text?.count ?? 0 > 0
         
         if isEmailValid && isUsernameValid && isPasswordValid {
-            signUpButton.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+            signUpButton.backgroundColor = UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 1)
         } else {
-            signUpButton.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 0.03)
+            signUpButton.backgroundColor = UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5)
         }
     }
     
