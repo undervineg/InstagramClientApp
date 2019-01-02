@@ -16,7 +16,7 @@ import Firebase
  */
 class FirebaseGatewayTests: XCTestCase {
     
-    func test_register_deliversTheRightEmail() {
+    func test_register_deliversTheRightCurrentUser() {
         let (sut, firebase) = makeSUT()
         
         var capturedUser = [UserEntity]()
@@ -28,8 +28,34 @@ class FirebaseGatewayTests: XCTestCase {
         
         firebase.completeWithSuccess(id: "0", name: "dummy")
         
+        let user = UserEntity(id: "0", email: "dummy@email.com", username: "dummy")
         XCTAssertEqual(capturedUser.count, 1)
-        XCTAssertEqual(capturedUser, [UserEntity.init(id: "0", email: "dummy@email.com", username: "dummy")])
+        XCTAssertEqual(capturedUser, [user])
+    }
+    
+    func test_registerTwice_deliversTheRightCurrentUserTwice() {
+        let (sut, firebase) = makeSUT()
+
+        var capturedUser = [UserEntity]()
+        sut.register(email: "dummy@email.com", username: "dummy", password: "1234") {
+            if case let Result.success(user) = $0 {
+                capturedUser.append(user)
+            }
+        }
+        sut.register(email: "dummy2@email.com", username: "dummy2", password: "1234") {
+            if case let Result.success(user) = $0 {
+                capturedUser.append(user)
+            }
+        }
+        
+        firebase.completeWithSuccess(id: "0", name: "dummy", at: 0)
+        firebase.completeWithSuccess(id: "1", name: "dummy2", at: 1)
+        
+        
+        let user1 = UserEntity(id: "0", email: "dummy@email.com", username: "dummy")
+        let user2 = UserEntity(id: "1", email: "dummy2@email.com", username: "dummy2")
+        XCTAssertEqual(capturedUser.count, 2)
+        XCTAssertEqual(capturedUser, [user1, user2])
     }
     
     
@@ -61,6 +87,5 @@ class FirebaseGatewayTests: XCTestCase {
         func completeWithSuccess(id: String, name: String, at index: Int = 0) {
             messages[index].completed(.success((id: id, email: capturedEmail[index], name: name)))
         }
-        
     }
 }
