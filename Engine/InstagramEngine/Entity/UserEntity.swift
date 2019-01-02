@@ -8,9 +8,14 @@
 
 import Foundation
 
-public struct UserEntity {
-    let id: String
-    let email: String
-    let username: String
-    let password: String
+public struct UserEntity: Equatable {
+    public let id: String
+    public let email: String
+    public let username: String
+    
+    public init(id: String, email: String, username: String) {
+        self.id = id
+        self.email = email
+        self.username = username
+    }
 }
