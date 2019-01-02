@@ -58,6 +58,35 @@ class FirebaseGatewayTests: XCTestCase {
         XCTAssertEqual(capturedUser, [user1, user2])
     }
     
+    func test_register_deliversMappingError() {
+        let (sut, firebase) = makeSUT()
+        
+        var capturedError = [RegisterUserUseCase.Error]()
+        sut.register(email: "dummy@email.com", username: "dummy", password: "1234") {
+            if case let Result.failure(error) = $0 {
+                capturedError.append(error)
+            }
+        }
+        
+        firebase.completeWithFailure(errorCode: AuthErrorCode.invalidEmail.rawValue)
+        firebase.completeWithFailure(errorCode: AuthErrorCode.emailAlreadyInUse.rawValue)
+        firebase.completeWithFailure(errorCode: AuthErrorCode.userDisabled.rawValue)
+        firebase.completeWithFailure(errorCode: AuthErrorCode.wrongPassword.rawValue)
+        firebase.completeWithFailure(errorCode: AuthErrorCode.userNotFound.rawValue)
+        firebase.completeWithFailure(errorCode: AuthErrorCode.accountExistsWithDifferentCredential.rawValue)
+        firebase.completeWithFailure(errorCode: AuthErrorCode.networkError.rawValue)
+        firebase.completeWithFailure(errorCode: AuthErrorCode.credentialAlreadyInUse.rawValue)
+        
+        XCTAssertEqual(capturedError, [.invalidEmail,
+                                       .emailAlreadyInUse,
+                                       .userDisabled,
+                                       .wrongPassword,
+                                       .userNotFound,
+                                       .accountExistsWithDifferentCredential,
+                                       .networkError,
+                                       .credentialAlreadyInUse])
+    }
+    
     
     // MARK: - Helpers
     
@@ -86,6 +115,11 @@ class FirebaseGatewayTests: XCTestCase {
         
         func completeWithSuccess(id: String, name: String, at index: Int = 0) {
             messages[index].completed(.success((id: id, email: capturedEmail[index], name: name)))
+        }
+        
+        func completeWithFailure(errorCode: Int, at index: Int = 0) {
+            let error = NSError(domain: "test", code: errorCode)
+            messages[index].completed(.failure(error))
         }
     }
 }

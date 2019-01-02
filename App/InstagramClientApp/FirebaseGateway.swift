@@ -39,7 +39,9 @@ final class FirebaseGateway: AuthGateway {
         
         firebase.registerUser(email: email, password: password) { (result) in
             switch result {
-            case .failure(let error): return
+            case .failure(let error):
+                let useCaseError = self.mapErrorCode(with: error._code)
+                completion(.failure(useCaseError))
             case .success(let user):
                 let userEntity = UserEntity(id: user.id, email: user.email ?? "", username: user.name ?? "")
                 completion(.success(userEntity))
@@ -48,22 +50,21 @@ final class FirebaseGateway: AuthGateway {
         
     }
     
-//    private func mapErrorCode(with errorCode: Int) -> RegisterUserUseCase.Error? {
-//        if let authError = AuthErrorCode(rawValue: errorCode) {
-//            switch authError {
-//            case .invalidEmail: return .invalidEmail
-//            case .invalidCredential: return .invalidPassword
-//            case .emailAlreadyInUse: return .emailAlreadyInUse
-//            case .userDisabled: return .userDisabled
-//            case .wrongPassword: return .wrongPassword
-//            case .userNotFound: return .userNotFound
-//            case .accountExistsWithDifferentCredential: return .accountExistsWithDifferentCredential
-//            case .networkError: return .networkError
-//            case .credentialAlreadyInUse: return .credentialAlreadyInUse
-//            default: return .unknown
-//            }
-//        }
-//        return nil
-//    }
+    private func mapErrorCode(with errorCode: Int) -> RegisterUserUseCase.Error {
+        if let authError = AuthErrorCode(rawValue: errorCode) {
+            switch authError {
+            case .invalidEmail: return .invalidEmail
+            case .emailAlreadyInUse: return .emailAlreadyInUse
+            case .userDisabled: return .userDisabled
+            case .wrongPassword: return .wrongPassword
+            case .userNotFound: return .userNotFound
+            case .accountExistsWithDifferentCredential: return .accountExistsWithDifferentCredential
+            case .networkError: return .networkError
+            case .credentialAlreadyInUse: return .credentialAlreadyInUse
+            default: return .unknown
+            }
+        }
+        return .unknown
+    }
     
 }
