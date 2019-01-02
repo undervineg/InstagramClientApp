@@ -21,6 +21,8 @@ class RegisterUserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        signUpButton.isEnabled = false
+        
         signUpButton.addTarget(self, action: #selector(signUp(_:)), for: .touchUpInside)
         emailTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         usernameTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
@@ -34,8 +36,10 @@ class RegisterUserViewController: UIViewController {
         
         if isEmailValid && isUsernameValid && isPasswordValid {
             signUpButton.backgroundColor = UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 1)
+            signUpButton.isEnabled = true
         } else {
             signUpButton.backgroundColor = UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5)
+            signUpButton.isEnabled = false
         }
     }
     

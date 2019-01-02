@@ -38,6 +38,14 @@ class RegisterUserViewControllerTests: XCTestCase {
         
         XCTAssertEqual(sut.signUpButton.titleLabel?.text, "Sign Up")
     }
+    
+    func test_viewDidLoad_disablesSignUpButton() {
+        let sut = RegisterUserViewController()
+        
+        _ = sut.view
+        
+        XCTAssertEqual(sut.signUpButton.isEnabled, false)
+    }
 
     func test_clickSignUpButton_doNotSendMessageWhenEmptyTextExist() {
         let sut = RegisterUserViewController()
@@ -81,6 +89,7 @@ class RegisterUserViewControllerTests: XCTestCase {
         sut.passwordTextField.sendActions(for: .editingChanged)
         
         XCTAssertEqual(sut.signUpButton.backgroundColor, UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 1))
+        XCTAssertEqual(sut.signUpButton.isEnabled, true)
     }
     
     func test_clickSignUpButton_backgroundColorWeaken_ifOneTextFieldIsEmpty() {
@@ -95,6 +104,7 @@ class RegisterUserViewControllerTests: XCTestCase {
         sut.passwordTextField.sendActions(for: .editingChanged)
         
         XCTAssertEqual(sut.signUpButton.backgroundColor, UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5))
+        XCTAssertEqual(sut.signUpButton.isEnabled, false)
     }
     
     
