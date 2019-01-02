@@ -22,6 +22,21 @@ class RegisterUserViewController: UIViewController {
         super.viewDidLoad()
 
         signUpButton.addTarget(self, action: #selector(signUp(_:)), for: .touchUpInside)
+        emailTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        usernameTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+    }
+    
+    @objc private func handleTextInputChange(_ sender: UITextField) {
+        let isEmailValid = emailTextField.text?.count ?? 0 > 0
+        let isUsernameValid = usernameTextField.text?.count ?? 0 > 0
+        let isPasswordValid = passwordTextField.text?.count ?? 0 > 0
+        
+        if isEmailValid && isUsernameValid && isPasswordValid {
+            signUpButton.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+        } else {
+            signUpButton.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 0.03)
+        }
     }
     
     @objc private func signUp(_ sender: UIButton) {
