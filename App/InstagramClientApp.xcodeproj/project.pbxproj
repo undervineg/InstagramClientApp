@@ -92,6 +92,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		086E6C7F21DD27840094B808 /* Gateway */ = {
+			isa = PBXGroup;
+			children = (
+				086E6C7521DC68750094B808 /* FirebaseGateway.swift */,
+				086E6C7D21DD27380094B808 /* FirebaseWrapper.swift */,
+			);
+			path = Gateway;
+			sourceTree = "<group>";
+		};
+		086E6C8021DD27930094B808 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				086E6C8121DD279C0094B808 /* Register */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		086E6C8121DD279C0094B808 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				0858767521DC5CC700C32422 /* RegisterUserViewController.swift */,
+				0858767621DC5CC700C32422 /* RegisterUserViewController.xib */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		086E6C8221DD27A90094B808 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0858766C21DB8C7600C32422 /* RegisterUserViewControllerTests.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		086E6C8321DD27B00094B808 /* Gateway */ = {
+			isa = PBXGroup;
+			children = (
+				086E6C7B21DC6AC90094B808 /* FirebaseGatewayTests.swift */,
+			);
+			path = Gateway;
+			sourceTree = "<group>";
+		};
 		0884510E21DA665A008B8121 = {
 			isa = PBXGroup;
 			children = (
@@ -117,10 +159,8 @@
 			isa = PBXGroup;
 			children = (
 				0884511A21DA665A008B8121 /* AppDelegate.swift */,
-				086E6C7521DC68750094B808 /* FirebaseGateway.swift */,
-				086E6C7D21DD27380094B808 /* FirebaseWrapper.swift */,
-				0858767521DC5CC700C32422 /* RegisterUserViewController.swift */,
-				0858767621DC5CC700C32422 /* RegisterUserViewController.xib */,
+				086E6C7F21DD27840094B808 /* Gateway */,
+				086E6C8021DD27930094B808 /* View Controllers */,
 				0884512121DA665C008B8121 /* Assets.xcassets */,
 				0884512321DA665C008B8121 /* LaunchScreen.storyboard */,
 				0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */,
@@ -133,8 +173,8 @@
 			isa = PBXGroup;
 			children = (
 				0884513121DA665C008B8121 /* Info.plist */,
-				0858766C21DB8C7600C32422 /* RegisterUserViewControllerTests.swift */,
-				086E6C7B21DC6AC90094B808 /* FirebaseGatewayTests.swift */,
+				086E6C8221DD27A90094B808 /* View Controllers */,
+				086E6C8321DD27B00094B808 /* Gateway */,
 			);
 			path = InstagramClientAppTests;
 			sourceTree = "<group>";
