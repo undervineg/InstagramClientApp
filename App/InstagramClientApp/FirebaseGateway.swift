@@ -9,24 +9,6 @@
 import FirebaseAuth
 import InstagramEngine
 
-protocol FirebaseWrapper {
-    func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?, name: String?), Error>) -> Void)
-}
-
-extension Auth: FirebaseWrapper {
-    func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?, name: String?), Error>) -> Void) {
-        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
-            if let error = error {
-                completion(.failure(error))
-            }
-            if let result = result {
-                let user = result.user
-                completion(.success((user.uid, user.email, user.displayName)))
-            }
-        }
-    }
-}
-
 final class FirebaseGateway: AuthGateway {
     
     private let firebase: FirebaseWrapper
