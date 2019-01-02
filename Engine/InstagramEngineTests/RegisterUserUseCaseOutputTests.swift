@@ -7,9 +7,16 @@
 //
 
 import XCTest
+@testable import InstagramEngine
 
 class RegisterUserUseCaseOutputTests: XCTestCase {
 
+    func test() {
+        let sut = RegisterUserPresenter()
+        
+        sut.registerSucceeded(UserEntity(id: "", email: "", username: "", password: ""))
+        
+        
+    }
     
-
 }
