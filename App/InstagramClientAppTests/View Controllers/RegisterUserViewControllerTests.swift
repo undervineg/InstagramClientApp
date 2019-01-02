@@ -54,6 +54,21 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssert(useCaseStub.callbackWasFired == false)
     }
     
+    func test_clickSignUpButton_sendMessageWhenTextExist() {
+        let sut = RegisterUserViewController()
+        let useCaseStub = RegisterUseCaseStub()
+        sut.register = useCaseStub.register
+        _ = sut.view
+        
+        sut.emailTextField.text = "test@email.com"
+        sut.usernameTextField.text = "tester"
+        sut.passwordTextField.text = "1234"
+        
+        sut.signUpButton.sendActions(for: .touchUpInside)
+        
+        XCTAssert(useCaseStub.callbackWasFired == true)
+    }
+    
     
     // MARK: - Helpers
     
