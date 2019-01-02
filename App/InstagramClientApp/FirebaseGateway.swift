@@ -48,4 +48,22 @@ final class FirebaseGateway: AuthGateway {
         
     }
     
+//    private func mapErrorCode(with errorCode: Int) -> RegisterUserUseCase.Error? {
+//        if let authError = AuthErrorCode(rawValue: errorCode) {
+//            switch authError {
+//            case .invalidEmail: return .invalidEmail
+//            case .invalidCredential: return .invalidPassword
+//            case .emailAlreadyInUse: return .emailAlreadyInUse
+//            case .userDisabled: return .userDisabled
+//            case .wrongPassword: return .wrongPassword
+//            case .userNotFound: return .userNotFound
+//            case .accountExistsWithDifferentCredential: return .accountExistsWithDifferentCredential
+//            case .networkError: return .networkError
+//            case .credentialAlreadyInUse: return .credentialAlreadyInUse
+//            default: return .unknown
+//            }
+//        }
+//        return nil
+//    }
+    
 }
