@@ -46,6 +46,14 @@ class RegisterUserViewControllerTests: XCTestCase {
         
         XCTAssertEqual(sut.signUpButton.isEnabled, false)
     }
+    
+    func test_viewDidLoad_weakenSignUpButtonBackgroundColor() {
+        let sut = RegisterUserViewController()
+        
+        _ = sut.view
+        
+        XCTAssertEqual(sut.signUpButton.backgroundColor, UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5))
+    }
 
     func test_clickSignUpButton_doNotSendMessageWhenEmptyTextExist() {
         let sut = RegisterUserViewController()

@@ -13,11 +13,11 @@ public enum Result<T, E> {
     case failure(E)
 }
 
-protocol AuthGateway {
-    func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, Error>) -> Void)
+public protocol AuthGateway {
+    func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void)
 }
 
-protocol RegisterUserUseCaseOutput {
+public protocol RegisterUserUseCaseOutput {
     func registerSucceeded(_ user: UserEntity)
     func registerFailed(_ error: RegisterUserUseCase.Error)
 }
@@ -26,7 +26,7 @@ final public class RegisterUserUseCase {
     private let gateway: AuthGateway
     private let output: RegisterUserUseCaseOutput
     
-    init(gateway: AuthGateway, output: RegisterUserUseCaseOutput) {
+    public init(gateway: AuthGateway, output: RegisterUserUseCaseOutput) {
         self.gateway = gateway
         self.output = output
     }
@@ -49,9 +49,7 @@ final public class RegisterUserUseCase {
         gateway.register(email: email, username: username, password: password) { (result) in
             switch result {
             case .success(let user): completion(.success(user))
-            case .failure(let error):
-                // send failure according to the received error
-                completion(.failure(.invalidName))
+            case .failure(let error): completion(.failure(error))
             }
         }
     }

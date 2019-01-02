@@ -55,11 +55,12 @@ class RegisterUserUseCaseTests: XCTestCase {
         
         var capturedErrors = [RegisterUserUseCase.Error]()
         sut.register(email: userInfo.email, username: userInfo.username, password: userInfo.password) {
-            capturedErrors.append($0)
+            if case let Result.failure(error) = $0 {
+                capturedErrors.append(error)
+            }
         }
-        
-        let gatewayError = NSError(domain: "", code: 0)
-        gateway.completes(with: gatewayError)
+
+        gateway.completes(with: RegisterUserUseCase.Error.invalidName)
         
         XCTAssertEqual(capturedErrors, [.invalidName])
     }
@@ -68,17 +69,17 @@ class RegisterUserUseCaseTests: XCTestCase {
     // MARK: - Helpers
     
     private class AuthGatewaySpy: AuthGateway {
-        private var messages = [(userInfo: UserInfo, completion: (Result<UserEntity, Error>) -> Void)]()
+        private var messages = [(userInfo: UserInfo, completion: (Result<UserEntity, RegisterUserUseCase.Error>) -> Void)]()
         
         var requestedUserInfos: [UserInfo] {
             return messages.map { $0.userInfo }
         }
         
-        func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, Error>) -> Void) {
+        func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
             messages.append((UserInfo(email: email, username: username, password: password), completion))
         }
         
-        func completes(with error: Error, at index: Int = 0) {
+        func completes(with error: RegisterUserUseCase.Error, at index: Int = 0) {
             messages[index].completion(Result.failure(error))
         }
     }

@@ -22,6 +22,7 @@ class RegisterUserViewController: UIViewController {
         super.viewDidLoad()
 
         signUpButton.isEnabled = false
+        signUpButton.backgroundColor = UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5)
         
         signUpButton.addTarget(self, action: #selector(signUp(_:)), for: .touchUpInside)
         emailTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
