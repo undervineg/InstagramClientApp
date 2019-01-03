@@ -42,6 +42,7 @@ final public class RegisterUserUseCase {
         case accountExistsWithDifferentCredential
         case networkError
         case credentialAlreadyInUse
+        case databaseUpdateError
         case unknown
     }
     
