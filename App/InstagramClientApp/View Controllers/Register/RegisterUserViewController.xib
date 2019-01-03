@@ -24,12 +24,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yHg-R9-K1J">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yHg-R9-K1J">
                     <rect key="frame" x="117.5" y="60" width="140" height="140"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="140" id="CQw-j8-3kC"/>
                         <constraint firstAttribute="height" constant="140" id="MK3-3A-U1U"/>
                     </constraints>
+                    <color key="tintColor" red="0.48274293660000001" green="0.45095248290000001" blue="0.90606271400000005" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" image="plus_photo"/>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0SE-Ue-sz8">
