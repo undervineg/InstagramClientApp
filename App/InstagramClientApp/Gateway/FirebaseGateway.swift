@@ -11,9 +11,9 @@ import InstagramEngine
 
 final class FirebaseGateway: AuthGateway {
     
-    private let firebase: FirebaseWrapper.Type
+    private let firebase: FirebaseAuthWrapper.Type
     
-    init(firebase: FirebaseWrapper.Type) {
+    init(firebase: FirebaseAuthWrapper.Type) {
         self.firebase = firebase
     }
     

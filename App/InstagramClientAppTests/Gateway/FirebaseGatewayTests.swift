@@ -18,6 +18,7 @@ class FirebaseGatewayTests: XCTestCase {
     
     override func tearDown() {
         MockFirebase.messages = []
+        MockFirebase.updatedUserInfo = []
         super.tearDown()
     }
     
@@ -107,12 +108,15 @@ class FirebaseGatewayTests: XCTestCase {
     }
     
     // Auth를 상속받아서 메소드를 오버라이드 할 수도 있지만, extension에서 정의한 메소드는 오버라이드하지 못 한다. 따라서 프로토콜로 대체
-    private class MockFirebase: FirebaseWrapper {
+    private class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper {
+        
         static var messages = [(email: String, pw: String, completed: (Result<(id: String, email: String?, name: String?), Error>) -> Void)]()
         
         static var capturedEmail: [String] {
             return messages.map { $0.email }
         }
+        
+        static var updatedUserInfo = Array<[String: [String: String]]>()
         
         static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?, name: String?), Error>) -> Void) {
             messages.append((email, password, completion))
@@ -125,6 +129,10 @@ class FirebaseGatewayTests: XCTestCase {
         static func completeWithFailure(errorCode: Int, at index: Int = 0) {
             let error = NSError(domain: "test", code: errorCode)
             messages[index].completed(.failure(error))
+        }
+        
+        static func update(userInfo: [String : Any], completion: @escaping (Error) -> Void) {
+            updatedUserInfo.append(userInfo as! [String : [String : String]])
         }
     }
 }
