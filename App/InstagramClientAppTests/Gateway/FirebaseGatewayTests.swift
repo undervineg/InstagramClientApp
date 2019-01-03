@@ -32,7 +32,7 @@ class FirebaseGatewayTests: XCTestCase {
             }
         }
         
-        firebase.completeWithSuccess(id: "0", name: "dummy")
+        firebase.completeWithSuccess(id: "0")
         
         let user = UserEntity(id: "0", email: "dummy@email.com", username: "dummy")
         XCTAssertEqual(capturedUser.count, 1)
@@ -54,8 +54,8 @@ class FirebaseGatewayTests: XCTestCase {
             }
         }
         
-        firebase.completeWithSuccess(id: "0", name: "dummy", at: 0)
-        firebase.completeWithSuccess(id: "1", name: "dummy2", at: 1)
+        firebase.completeWithSuccess(id: "0", at: 0)
+        firebase.completeWithSuccess(id: "1", at: 1)
         
         
         let user1 = UserEntity(id: "0", email: "dummy@email.com", username: "dummy")
@@ -93,6 +93,17 @@ class FirebaseGatewayTests: XCTestCase {
                                        .credentialAlreadyInUse])
     }
     
+    func test_register_onSuccess_saveUserToFirebase() {
+        let (sut, firebase) = makeSUT()
+        
+        sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234") { _ in }
+        
+        firebase.completeWithSuccess(id: "0")
+        
+        let userInfo = [["0": ["username": "dummy"]]]
+        XCTAssertEqual(firebase.updatedUserInfo, userInfo)
+    }
+    
     
     // MARK: - Helpers
     
@@ -102,7 +113,7 @@ class FirebaseGatewayTests: XCTestCase {
         }
         
         let firebase = MockFirebase.self
-        let sut = FirebaseGateway(firebase: firebase)
+        let sut = FirebaseGateway(firebaseAuth: firebase, firebaseDatabase: firebase)
         
         return (sut, firebase)
     }
@@ -110,7 +121,7 @@ class FirebaseGatewayTests: XCTestCase {
     // Auth를 상속받아서 메소드를 오버라이드 할 수도 있지만, extension에서 정의한 메소드는 오버라이드하지 못 한다. 따라서 프로토콜로 대체
     private class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper {
         
-        static var messages = [(email: String, pw: String, completed: (Result<(id: String, email: String?, name: String?), Error>) -> Void)]()
+        static var messages = [(email: String, pw: String, completed: (Result<(id: String, email: String?), Error>) -> Void)]()
         
         static var capturedEmail: [String] {
             return messages.map { $0.email }
@@ -118,12 +129,12 @@ class FirebaseGatewayTests: XCTestCase {
         
         static var updatedUserInfo = Array<[String: [String: String]]>()
         
-        static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?, name: String?), Error>) -> Void) {
+        static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void) {
             messages.append((email, password, completion))
         }
         
-        static func completeWithSuccess(id: String, name: String, at index: Int = 0) {
-            messages[index].completed(.success((id: id, email: capturedEmail[index], name: name)))
+        static func completeWithSuccess(id: String, at index: Int = 0) {
+            messages[index].completed(.success((id: id, email: capturedEmail[index])))
         }
         
         static func completeWithFailure(errorCode: Int, at index: Int = 0) {
@@ -131,7 +142,7 @@ class FirebaseGatewayTests: XCTestCase {
             messages[index].completed(.failure(error))
         }
         
-        static func update(userInfo: [String : Any], completion: @escaping (Error) -> Void) {
+        static func update(userInfo: [String : Any], completion: @escaping (Error?) -> Void) {
             updatedUserInfo.append(userInfo as! [String : [String : String]])
         }
     }

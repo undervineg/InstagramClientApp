@@ -11,25 +11,43 @@ import InstagramEngine
 
 final class FirebaseGateway: AuthGateway {
     
-    private let firebase: FirebaseAuthWrapper.Type
+    private let firebaseAuth: FirebaseAuthWrapper.Type
+    private let firebaseDatabase: FirebaseDatabaseWrapper.Type
     
-    init(firebase: FirebaseAuthWrapper.Type) {
-        self.firebase = firebase
+    init(firebaseAuth: FirebaseAuthWrapper.Type, firebaseDatabase: FirebaseDatabaseWrapper.Type) {
+        self.firebaseAuth = firebaseAuth
+        self.firebaseDatabase = firebaseDatabase
     }
     
     func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
         
-        firebase.registerUser(email: email, password: password) { (result) in
+        firebaseAuth.registerUser(email: email, password: password) { (result) in
             switch result {
             case .failure(let error):
                 let useCaseError = self.mapErrorCode(with: error._code)
                 completion(.failure(useCaseError))
+            
             case .success(let user):
-                let userEntity = UserEntity(id: user.id, email: user.email ?? "", username: user.name ?? "")
+                self.saveUser(userId: user.id, username: username) { err in
+                    if err != nil {
+                        completion(.failure(.databaseUpdateError))
+                    }
+                }
+                
+                let userEntity = UserEntity(id: user.id, email: user.email ?? "", username: username)
                 completion(.success(userEntity))
             }
         }
         
+    }
+    
+    private func saveUser(userId: String, username: String, completion: @escaping (Error?) -> Void) {
+        let usernameValues = ["username": username]
+        let userInfo = [userId: usernameValues]
+        self.firebaseDatabase.update(userInfo: userInfo, completion: { (error) in
+            print(error?.localizedDescription ?? "database error")
+            completion(error)
+        })
     }
     
     private func mapErrorCode(with errorCode: Int) -> RegisterUserUseCase.Error {
