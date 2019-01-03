@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="emailTextField" destination="d4u-WA-Kzd" id="hBn-PS-kM2"/>
                 <outlet property="passwordTextField" destination="ciu-Vk-1is" id="gJn-TG-3C7"/>
+                <outlet property="profileImageButton" destination="yHg-R9-K1J" id="a7P-8m-P6F"/>
                 <outlet property="signUpButton" destination="hNw-WI-nkt" id="EbI-jt-77O"/>
                 <outlet property="usernameTextField" destination="mAo-RT-lvu" id="Ggh-UZ-NEy"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

@@ -17,6 +17,9 @@
 		086E6C7921DC68B20094B808 /* InstagramEngine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 086E6C7721DC68B20094B808 /* InstagramEngine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		086E6C7C21DC6AC90094B808 /* FirebaseGatewayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C7B21DC6AC90094B808 /* FirebaseGatewayTests.swift */; };
 		086E6C7E21DD27380094B808 /* FirebaseWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C7D21DD27380094B808 /* FirebaseWrapper.swift */; };
+		086E6C8921DE506B0094B808 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C8821DE506B0094B808 /* Router.swift */; };
+		086E6C8D21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C8C21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift */; };
+		086E6C8F21DE71000094B808 /* iOSViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C8E21DE71000094B808 /* iOSViewControllerFactory.swift */; };
 		0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0884511A21DA665A008B8121 /* AppDelegate.swift */; };
 		0884512221DA665C008B8121 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0884512121DA665C008B8121 /* Assets.xcassets */; };
 		0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0884512321DA665C008B8121 /* LaunchScreen.storyboard */; };
@@ -56,6 +59,9 @@
 		086E6C7721DC68B20094B808 /* InstagramEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = InstagramEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		086E6C7B21DC6AC90094B808 /* FirebaseGatewayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseGatewayTests.swift; sourceTree = "<group>"; };
 		086E6C7D21DD27380094B808 /* FirebaseWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseWrapper.swift; sourceTree = "<group>"; };
+		086E6C8821DE506B0094B808 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		086E6C8C21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSViewControllerFactoryTests.swift; sourceTree = "<group>"; };
+		086E6C8E21DE71000094B808 /* iOSViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSViewControllerFactory.swift; sourceTree = "<group>"; };
 		0884511721DA665A008B8121 /* InstagramClientApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramClientApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0884511A21DA665A008B8121 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0884512121DA665C008B8121 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -159,6 +165,8 @@
 			isa = PBXGroup;
 			children = (
 				0884511A21DA665A008B8121 /* AppDelegate.swift */,
+				086E6C8821DE506B0094B808 /* Router.swift */,
+				086E6C8E21DE71000094B808 /* iOSViewControllerFactory.swift */,
 				086E6C7F21DD27840094B808 /* Gateway */,
 				086E6C8021DD27930094B808 /* View Controllers */,
 				0884512121DA665C008B8121 /* Assets.xcassets */,
@@ -175,6 +183,7 @@
 				0884513121DA665C008B8121 /* Info.plist */,
 				086E6C8221DD27A90094B808 /* View Controllers */,
 				086E6C8321DD27B00094B808 /* Gateway */,
+				086E6C8C21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift */,
 			);
 			path = InstagramClientAppTests;
 			sourceTree = "<group>";
@@ -412,6 +421,8 @@
 			files = (
 				0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */,
 				086E6C7621DC68750094B808 /* FirebaseGateway.swift in Sources */,
+				086E6C8921DE506B0094B808 /* Router.swift in Sources */,
+				086E6C8F21DE71000094B808 /* iOSViewControllerFactory.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseWrapper.swift in Sources */,
 				0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */,
 			);
@@ -421,6 +432,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				086E6C8D21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift in Sources */,
 				0858766D21DB8C7600C32422 /* RegisterUserViewControllerTests.swift in Sources */,
 				086E6C7C21DC6AC90094B808 /* FirebaseGatewayTests.swift in Sources */,
 			);
