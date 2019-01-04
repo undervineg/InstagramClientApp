@@ -19,14 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
-        
+
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        
-        let vc = RegisterUserViewController()
-        let gateway = FirebaseGateway(firebase: Auth.self)
+
+        let gateway = FirebaseGateway(firebaseAuth: Auth.self, firebaseDatabase: Database.self)
         let useCase = RegisterUserUseCase(gateway: gateway, output: Presenter())
-        vc.register = useCase.register
+        let vc = RegisterUserViewController(registerCallback: useCase.register)
         
         window?.rootViewController = vc
         

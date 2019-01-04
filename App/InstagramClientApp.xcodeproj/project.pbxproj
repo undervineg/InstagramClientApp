@@ -17,9 +17,21 @@
 		086E6C7921DC68B20094B808 /* InstagramEngine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 086E6C7721DC68B20094B808 /* InstagramEngine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		086E6C7C21DC6AC90094B808 /* FirebaseGatewayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C7B21DC6AC90094B808 /* FirebaseGatewayTests.swift */; };
 		086E6C7E21DD27380094B808 /* FirebaseWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C7D21DD27380094B808 /* FirebaseWrapper.swift */; };
-		086E6C8921DE506B0094B808 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C8821DE506B0094B808 /* Router.swift */; };
+		086E6C8921DE506B0094B808 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C8821DE506B0094B808 /* Routable.swift */; };
 		086E6C8D21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C8C21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift */; };
 		086E6C8F21DE71000094B808 /* iOSViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C8E21DE71000094B808 /* iOSViewControllerFactory.swift */; };
+		086E6C9821DE91C70094B808 /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C9721DE91C70094B808 /* Transition.swift */; };
+		086E6C9A21DE91D50094B808 /* ModalTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C9921DE91D50094B808 /* ModalTransition.swift */; };
+		086E6C9C21DE91ED0094B808 /* PushTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6C9B21DE91ED0094B808 /* PushTransition.swift */; };
+		086E6CA221DE92BF0094B808 /* BasicRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CA121DE92BF0094B808 /* BasicRouterTests.swift */; };
+		086E6CA521DEC1410094B808 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CA421DEC1410094B808 /* LoginViewController.swift */; };
+		086E6CA721DEC1670094B808 /* RegisterRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CA621DEC1670094B808 /* RegisterRouterTests.swift */; };
+		086E6CA921DF6A100094B808 /* StubTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CA821DF6A100094B808 /* StubTransition.swift */; };
+		086E6CAE21DF78F20094B808 /* Closable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CAD21DF78F20094B808 /* Closable.swift */; };
+		086E6CB021DF79070094B808 /* BasicRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CAF21DF79070094B808 /* BasicRouter.swift */; };
+		086E6CB221DF791F0094B808 /* LoginRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CB121DF791F0094B808 /* LoginRoute.swift */; };
+		086E6CB421DF79390094B808 /* RegisterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CB321DF79390094B808 /* RegisterRouter.swift */; };
+		086E6CB821DF7C8B0094B808 /* ImagePickerRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CB721DF7C8B0094B808 /* ImagePickerRoute.swift */; };
 		0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0884511A21DA665A008B8121 /* AppDelegate.swift */; };
 		0884512221DA665C008B8121 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0884512121DA665C008B8121 /* Assets.xcassets */; };
 		0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0884512321DA665C008B8121 /* LaunchScreen.storyboard */; };
@@ -59,9 +71,21 @@
 		086E6C7721DC68B20094B808 /* InstagramEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = InstagramEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		086E6C7B21DC6AC90094B808 /* FirebaseGatewayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseGatewayTests.swift; sourceTree = "<group>"; };
 		086E6C7D21DD27380094B808 /* FirebaseWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseWrapper.swift; sourceTree = "<group>"; };
-		086E6C8821DE506B0094B808 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		086E6C8821DE506B0094B808 /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		086E6C8C21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSViewControllerFactoryTests.swift; sourceTree = "<group>"; };
 		086E6C8E21DE71000094B808 /* iOSViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSViewControllerFactory.swift; sourceTree = "<group>"; };
+		086E6C9721DE91C70094B808 /* Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
+		086E6C9921DE91D50094B808 /* ModalTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalTransition.swift; sourceTree = "<group>"; };
+		086E6C9B21DE91ED0094B808 /* PushTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTransition.swift; sourceTree = "<group>"; };
+		086E6CA121DE92BF0094B808 /* BasicRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRouterTests.swift; sourceTree = "<group>"; };
+		086E6CA421DEC1410094B808 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		086E6CA621DEC1670094B808 /* RegisterRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRouterTests.swift; sourceTree = "<group>"; };
+		086E6CA821DF6A100094B808 /* StubTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubTransition.swift; sourceTree = "<group>"; };
+		086E6CAD21DF78F20094B808 /* Closable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closable.swift; sourceTree = "<group>"; };
+		086E6CAF21DF79070094B808 /* BasicRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRouter.swift; sourceTree = "<group>"; };
+		086E6CB121DF791F0094B808 /* LoginRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRoute.swift; sourceTree = "<group>"; };
+		086E6CB321DF79390094B808 /* RegisterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRouter.swift; sourceTree = "<group>"; };
+		086E6CB721DF7C8B0094B808 /* ImagePickerRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerRoute.swift; sourceTree = "<group>"; };
 		0884511721DA665A008B8121 /* InstagramClientApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramClientApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0884511A21DA665A008B8121 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0884512121DA665C008B8121 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -98,26 +122,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		086E6C7F21DD27840094B808 /* Gateway */ = {
+		086E6C7F21DD27840094B808 /* Adapter */ = {
 			isa = PBXGroup;
 			children = (
 				086E6C7521DC68750094B808 /* FirebaseGateway.swift */,
 				086E6C7D21DD27380094B808 /* FirebaseWrapper.swift */,
 			);
-			path = Gateway;
-			sourceTree = "<group>";
-		};
-		086E6C8021DD27930094B808 /* View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				086E6C8121DD279C0094B808 /* Register */,
-			);
-			path = "View Controllers";
+			path = Adapter;
 			sourceTree = "<group>";
 		};
 		086E6C8121DD279C0094B808 /* Register */ = {
 			isa = PBXGroup;
 			children = (
+				086E6CB321DF79390094B808 /* RegisterRouter.swift */,
 				0858767521DC5CC700C32422 /* RegisterUserViewController.swift */,
 				0858767621DC5CC700C32422 /* RegisterUserViewController.xib */,
 			);
@@ -132,12 +149,94 @@
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
-		086E6C8321DD27B00094B808 /* Gateway */ = {
+		086E6C8321DD27B00094B808 /* Adapter */ = {
 			isa = PBXGroup;
 			children = (
 				086E6C7B21DC6AC90094B808 /* FirebaseGatewayTests.swift */,
 			);
-			path = Gateway;
+			path = Adapter;
+			sourceTree = "<group>";
+		};
+		086E6C9021DE868D0094B808 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				086E6C8E21DE71000094B808 /* iOSViewControllerFactory.swift */,
+			);
+			path = Factory;
+			sourceTree = "<group>";
+		};
+		086E6C9121DE869D0094B808 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				086E6C8821DE506B0094B808 /* Routable.swift */,
+				086E6CAD21DF78F20094B808 /* Closable.swift */,
+				086E6CAF21DF79070094B808 /* BasicRouter.swift */,
+				086E6CB621DF794A0094B808 /* Routes */,
+				086E6C9D21DE92400094B808 /* Transition */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		086E6C9221DE86AC0094B808 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				086E6C8C21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift */,
+			);
+			path = Factory;
+			sourceTree = "<group>";
+		};
+		086E6C9D21DE92400094B808 /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				086E6C9721DE91C70094B808 /* Transition.swift */,
+				086E6C9921DE91D50094B808 /* ModalTransition.swift */,
+				086E6C9B21DE91ED0094B808 /* PushTransition.swift */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
+		086E6CA021DE92820094B808 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0884512121DA665C008B8121 /* Assets.xcassets */,
+				0884512321DA665C008B8121 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		086E6CA321DEBB1F0094B808 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				086E6CAA21DF6A1A0094B808 /* Helper */,
+				086E6CA121DE92BF0094B808 /* BasicRouterTests.swift */,
+				086E6CA621DEC1670094B808 /* RegisterRouterTests.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		086E6CAA21DF6A1A0094B808 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				086E6CA821DF6A100094B808 /* StubTransition.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		086E6CB621DF794A0094B808 /* Routes */ = {
+			isa = PBXGroup;
+			children = (
+				086E6CB121DF791F0094B808 /* LoginRoute.swift */,
+				086E6CB721DF7C8B0094B808 /* ImagePickerRoute.swift */,
+			);
+			path = Routes;
+			sourceTree = "<group>";
+		};
+		086E6CB921DF7CEE0094B808 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				086E6C8121DD279C0094B808 /* Register */,
+			);
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 		0884510E21DA665A008B8121 = {
@@ -165,12 +264,12 @@
 			isa = PBXGroup;
 			children = (
 				0884511A21DA665A008B8121 /* AppDelegate.swift */,
-				086E6C8821DE506B0094B808 /* Router.swift */,
-				086E6C8E21DE71000094B808 /* iOSViewControllerFactory.swift */,
-				086E6C7F21DD27840094B808 /* Gateway */,
-				086E6C8021DD27930094B808 /* View Controllers */,
-				0884512121DA665C008B8121 /* Assets.xcassets */,
-				0884512321DA665C008B8121 /* LaunchScreen.storyboard */,
+				086E6CA421DEC1410094B808 /* LoginViewController.swift */,
+				086E6C9121DE869D0094B808 /* Router */,
+				086E6C9021DE868D0094B808 /* Factory */,
+				086E6C7F21DD27840094B808 /* Adapter */,
+				086E6CB921DF7CEE0094B808 /* Scenes */,
+				086E6CA021DE92820094B808 /* Supporting Files */,
 				0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */,
 				0884512621DA665C008B8121 /* Info.plist */,
 			);
@@ -182,8 +281,9 @@
 			children = (
 				0884513121DA665C008B8121 /* Info.plist */,
 				086E6C8221DD27A90094B808 /* View Controllers */,
-				086E6C8321DD27B00094B808 /* Gateway */,
-				086E6C8C21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift */,
+				086E6C8321DD27B00094B808 /* Adapter */,
+				086E6C9221DE86AC0094B808 /* Factory */,
+				086E6CA321DEBB1F0094B808 /* Router */,
 			);
 			path = InstagramClientAppTests;
 			sourceTree = "<group>";
@@ -419,11 +519,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				086E6C9A21DE91D50094B808 /* ModalTransition.swift in Sources */,
+				086E6C9821DE91C70094B808 /* Transition.swift in Sources */,
+				086E6CB221DF791F0094B808 /* LoginRoute.swift in Sources */,
 				0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */,
 				086E6C7621DC68750094B808 /* FirebaseGateway.swift in Sources */,
-				086E6C8921DE506B0094B808 /* Router.swift in Sources */,
+				086E6CB821DF7C8B0094B808 /* ImagePickerRoute.swift in Sources */,
+				086E6CB421DF79390094B808 /* RegisterRouter.swift in Sources */,
+				086E6CAE21DF78F20094B808 /* Closable.swift in Sources */,
+				086E6C8921DE506B0094B808 /* Routable.swift in Sources */,
 				086E6C8F21DE71000094B808 /* iOSViewControllerFactory.swift in Sources */,
+				086E6CB021DF79070094B808 /* BasicRouter.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseWrapper.swift in Sources */,
+				086E6C9C21DE91ED0094B808 /* PushTransition.swift in Sources */,
+				086E6CA521DEC1410094B808 /* LoginViewController.swift in Sources */,
 				0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -433,7 +542,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				086E6C8D21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift in Sources */,
+				086E6CA221DE92BF0094B808 /* BasicRouterTests.swift in Sources */,
+				086E6CA721DEC1670094B808 /* RegisterRouterTests.swift in Sources */,
 				0858766D21DB8C7600C32422 /* RegisterUserViewControllerTests.swift in Sources */,
+				086E6CA921DF6A100094B808 /* StubTransition.swift in Sources */,
 				086E6C7C21DC6AC90094B808 /* FirebaseGatewayTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
