@@ -11,13 +11,13 @@ import XCTest
 
 class RegisterRouterTests: XCTestCase {
 
-    func test_defaultLoginTransitionTypeIsPushTransition() {
+    func test_defaultLoginTransitionType_isPushTransition() {
         let sut = RegisterRouter()
         
         XCTAssertTrue(sut.loginTransition is PushTransition)
     }
     
-    func test_openLoginPage_opensLoginViewController() {
+    func test_openLoginPage_opens_LoginViewController() {
         let sut = RegisterRouter()
         let root = RegisterUserViewController()
         sut.viewControllerBehind = root
@@ -27,6 +27,25 @@ class RegisterRouterTests: XCTestCase {
         
         XCTAssertEqual(stubTransition.openedVC.count, 1)
         XCTAssertTrue(stubTransition.openedVC.first is LoginViewController)
+        XCTAssertEqual(stubTransition.closedVC.count, 0)
+    }
+    
+    func test_defaultImagePickerTransitionType_isModalTransition() {
+        let sut = RegisterRouter()
+        
+        XCTAssertTrue(sut.imagePickerTransition is ModalTransition)
+    }
+    
+    func test_openImagePicker_opensImagePicker_forVCsAdoptsDelegates() {
+        let sut = RegisterRouter()
+        let root = RegisterUserViewController()
+        sut.viewControllerBehind = root
+        let stubTransition = StubTransition()
+        
+        sut.openImagePicker(with: stubTransition)
+        
+        XCTAssertEqual(stubTransition.openedVC.count, 1)
+        XCTAssertTrue(stubTransition.openedVC.first is UIImagePickerController)
         XCTAssertEqual(stubTransition.closedVC.count, 0)
     }
     
