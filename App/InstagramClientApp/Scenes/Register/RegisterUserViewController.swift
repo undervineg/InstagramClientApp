@@ -45,28 +45,28 @@ final class RegisterUserViewController: UIViewController, UIImagePickerControlle
     }
     
     @objc private func handleTextInputChange(_ sender: UITextField) {
+        signUpButton.backgroundColor = isAllTextFieldsValid() ? UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 1) : UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5)
+        signUpButton.isEnabled = isAllTextFieldsValid() ? true : false
+    }
+    
+    @objc private func signUp(_ sender: UIButton) {
+        guard isAllTextFieldsValid() else { return }
+        
+        let email = emailTextField.text ?? ""
+        let username = usernameTextField.text ?? ""
+        let password = passwordTextField.text ?? ""
+        
+        registerCallback?(email, username, password) {
+            print($0)
+        }
+    }
+    
+    private func isAllTextFieldsValid() -> Bool {
         let isEmailValid = emailTextField.text?.count ?? 0 > 0
         let isUsernameValid = usernameTextField.text?.count ?? 0 > 0
         let isPasswordValid = passwordTextField.text?.count ?? 0 > 0
         
-        if isEmailValid && isUsernameValid && isPasswordValid {
-            signUpButton.backgroundColor = UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 1)
-            signUpButton.isEnabled = true
-        } else {
-            signUpButton.backgroundColor = UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5)
-            signUpButton.isEnabled = false
-        }
-    }
-    
-    @objc private func signUp(_ sender: UIButton) {
-        guard let email = emailTextField.text, email.count > 0,
-            let username = usernameTextField.text, username.count > 0,
-            let password = passwordTextField.text, password.count > 0 else {
-            return
-        }
-        registerCallback?(email, username, password) {
-            print($0)
-        }
+        return (isEmailValid && isUsernameValid && isPasswordValid)
     }
 
 }

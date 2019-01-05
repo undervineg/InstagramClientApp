@@ -14,7 +14,7 @@ import InstagramEngine
 class RegisterUserViewControllerTests: XCTestCase {
     
     func test_viewDidLoad_rendersTextFieldsPlaceholders() {
-        let sut = makeSUT()
+        let (sut, _, _) = makeSUT()
         
         XCTAssertEqual(sut.emailTextField.placeholder, "Email")
         XCTAssertEqual(sut.usernameTextField.placeholder, "Username")
@@ -22,45 +22,43 @@ class RegisterUserViewControllerTests: XCTestCase {
     }
     
     func test_viewDidLoad_passwordTextFieldIsSecureTextEntry() {
-        let sut = makeSUT()
+        let (sut, _, _) = makeSUT()
         
         XCTAssertTrue(sut.passwordTextField.isSecureTextEntry)
     }
     
     func test_viewDidLoad_rendersSignUpButtonTitleLabel() {
-        let sut = makeSUT()
+        let (sut, _, _) = makeSUT()
         
         XCTAssertEqual(sut.signUpButton.titleLabel?.text, "Sign Up")
     }
     
     func test_viewDidLoad_disablesSignUpButton() {
-        let sut = makeSUT()
+        let (sut, _, _) = makeSUT()
         
         XCTAssertEqual(sut.signUpButton.isEnabled, false)
     }
     
     func test_viewDidLoad_weakenSignUpButtonBackgroundColor() {
-        let sut = makeSUT()
+        let (sut, _, _) = makeSUT()
         
         XCTAssertEqual(sut.signUpButton.backgroundColor, UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5))
     }
 
     func test_clickSignUpButton_doNotSendMessageWhenEmptyTextExist() {
-        let useCaseStub = RegisterUseCaseStub()
-        let sut = makeSUT(useCaseStub.register)
+        let (sut, _, useCaseStub) = makeSUT()
         
         sut.emailTextField.text = ""
-        sut.usernameTextField.text = ""
-        sut.passwordTextField.text = ""
+        sut.usernameTextField.text = "tester"
+        sut.passwordTextField.text = "1234"
         
         sut.signUpButton.sendActions(for: .touchUpInside)
         
-        XCTAssert(useCaseStub.callbackWasFired == false)
+        XCTAssertEqual(useCaseStub.callCount, 0)
     }
     
     func test_clickSignUpButton_sendMessageWhenTextExist() {
-        let useCaseStub = RegisterUseCaseStub()
-        let sut = makeSUT(useCaseStub.register)
+        let (sut, _, useCaseStub) = makeSUT()
         
         sut.emailTextField.text = "test@email.com"
         sut.usernameTextField.text = "tester"
@@ -68,11 +66,11 @@ class RegisterUserViewControllerTests: XCTestCase {
         
         sut.signUpButton.sendActions(for: .touchUpInside)
         
-        XCTAssert(useCaseStub.callbackWasFired == true)
+        XCTAssertEqual(useCaseStub.callCount, 1)
     }
     
     func test_clickSignUpButton_backgroundColorThicken_whenAllTextFieldsAreFilled() {
-        let sut = makeSUT()
+        let (sut, _, _) = makeSUT()
         
         sut.emailTextField.text = "test@email.com"
         sut.emailTextField.sendActions(for: .editingChanged)
@@ -86,7 +84,7 @@ class RegisterUserViewControllerTests: XCTestCase {
     }
     
     func test_clickSignUpButton_backgroundColorWeaken_ifOneTextFieldIsEmpty() {
-        let sut = makeSUT()
+        let (sut, _, _) = makeSUT()
         
         sut.emailTextField.text = ""
         sut.emailTextField.sendActions(for: .editingChanged)
@@ -99,32 +97,43 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.signUpButton.isEnabled, false)
     }
     
-    func test_clickProfileButton_opensUIImagePickerController() {
-        let sut = makeSUT()
-        
-        sut.profileImageButton.sendActions(for: .touchUpInside)
-        
-//        XCTAssert()
-    }
+    
+    
     
     // MARK: - Helpers
     
-    private func makeSUT(_ callback: ((String, String, String, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ())? = nil) -> RegisterUserViewController {
-        var sut: RegisterUserViewController?
-        if let callback = callback {
-            sut = RegisterUserViewController(registerCallback: callback)
-        } else {
-            sut = RegisterUserViewController()
-        }
-        _ = sut?.view
-        return sut ?? RegisterUserViewController()
+    private func makeSUT() -> (sut: RegisterUserViewController, router: RegisterRouterStub, useCase: RegisterUseCaseStub) {
+        let router = RegisterRouterStub()
+        let useCaseStub = RegisterUseCaseStub()
+        let sut = RegisterUserViewController(router: router, registerCallback: useCaseStub.register)
+        _ = sut.view
+        return (sut, router, useCaseStub)
     }
     
     private class RegisterUseCaseStub {
-        var callbackWasFired = false
+        var callCount = 0
         
         func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
-            callbackWasFired = true
+            callCount += 1
         }
+    }
+    
+    private class RegisterRouterStub: RegisterRouter.Routes {
+        var imagePickerTransition: Transition = ModalTransition()
+        var loginTransition: Transition = PushTransition()
+        
+        init() {
+            
+        }
+        
+        func openImagePicker(with transition: Transition?) {
+            
+        }
+        
+        func openLoginPage(with transition: Transition?) {
+            
+        }
+        
+        
     }
 }
