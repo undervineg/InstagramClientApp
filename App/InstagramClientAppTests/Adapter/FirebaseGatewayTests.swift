@@ -142,7 +142,7 @@ class FirebaseGatewayTests: XCTestCase {
             messages[index].completed(.failure(error))
         }
         
-        static func update(userInfo: [String : Any], completion: @escaping (Error?) -> Void) {
+        static func updateUser(with userInfo: [String : Any], completion: @escaping (Error?) -> Void) {
             updatedUserInfo.append(userInfo as! [String : [String : String]])
         }
     }

@@ -15,7 +15,7 @@ protocol FirebaseAuthWrapper {
 }
 
 protocol FirebaseDatabaseWrapper {
-    static func update(userInfo: [String : Any], completion: @escaping (Error?) -> Void)
+    static func updateUser(with userInfo: [String : Any], completion: @escaping (Error?) -> Void)
 }
 
 extension Auth: FirebaseAuthWrapper {
@@ -33,7 +33,7 @@ extension Auth: FirebaseAuthWrapper {
 }
 
 extension Database: FirebaseDatabaseWrapper {
-    static func update(userInfo: [String : Any], completion: @escaping (Error?) -> Void) {
+    static func updateUser(with userInfo: [String : Any], completion: @escaping (Error?) -> Void) {
         database().reference().child("users").updateChildValues(userInfo) { (error, ref) in
             completion(error)
         }

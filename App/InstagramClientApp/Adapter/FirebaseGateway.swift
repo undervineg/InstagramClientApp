@@ -44,7 +44,7 @@ final class FirebaseGateway: AuthGateway {
     private func saveUser(userId: String, username: String, completion: @escaping (Error?) -> Void) {
         let usernameValues = ["username": username]
         let userInfo = [userId: usernameValues]
-        self.firebaseDatabase.update(userInfo: userInfo, completion: { (error) in
+        self.firebaseDatabase.updateUser(with: userInfo, completion: { (error) in
             print(error?.localizedDescription ?? "database error")
             completion(error)
         })
