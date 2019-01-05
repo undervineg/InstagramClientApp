@@ -93,7 +93,7 @@ class FirebaseGatewayTests: XCTestCase {
                                        .credentialAlreadyInUse])
     }
     
-    func test_register_onSuccess_saveUserToFirebase() {
+    func test_saveUserToFIRDatabase_onRegisterSuccess() {
         let (sut, firebase) = makeSUT()
         
         sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234") { _ in }
@@ -102,6 +102,16 @@ class FirebaseGatewayTests: XCTestCase {
         
         let userInfo = [["0": ["username": "dummy"]]]
         XCTAssertEqual(firebase.updatedUserInfo, userInfo)
+    }
+    
+    func test_doNotSaveUserToFIRDatabase_onRegisterError() {
+        let (sut, firebase) = makeSUT()
+        
+        sut.register(email: "dummy@##gmail##.com", username: "dummy", password: "1234") { _ in }
+        
+        firebase.completeWithFailure(errorCode: AuthErrorCode.invalidEmail.rawValue)
+
+        XCTAssertEqual(firebase.updatedUserInfo, [])
     }
     
     
