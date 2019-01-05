@@ -36,17 +36,4 @@ class RegisterRouterTests: XCTestCase {
         XCTAssertTrue(sut.imagePickerTransition is ModalTransition)
     }
     
-    func test_openImagePicker_opensImagePicker_forVCsAdoptsDelegates() {
-        let sut = RegisterRouter()
-        let root = RegisterUserViewController()
-        sut.viewControllerBehind = root
-        let stubTransition = StubTransition()
-        
-        sut.openImagePicker(with: stubTransition)
-        
-        XCTAssertEqual(stubTransition.openedVC.count, 1)
-        XCTAssertTrue(stubTransition.openedVC.first is UIImagePickerController)
-        XCTAssertEqual(stubTransition.closedVC.count, 0)
-    }
-    
 }

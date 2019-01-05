@@ -9,7 +9,7 @@
 import UIKit
 import InstagramEngine
 
-final class RegisterUserViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class RegisterUserViewController: UIViewController {
     
     @IBOutlet weak var profileImageButton: UIButton!
     @IBOutlet weak var emailTextField: UITextField!
@@ -41,7 +41,12 @@ final class RegisterUserViewController: UIViewController, UIImagePickerControlle
     }
     
     @objc private func openImagePicker(_ sender: UIButton) {
-        router?.openImagePicker(with: nil)
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
+
+        router?.openImagePicker(imagePicker, with: nil)
     }
     
     @objc private func handleTextInputChange(_ sender: UITextField) {
@@ -68,5 +73,13 @@ final class RegisterUserViewController: UIViewController, UIImagePickerControlle
         
         return (isEmailValid && isUsernameValid && isPasswordValid)
     }
+}
 
+extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+//        let image = info[.editedImage] as? UIImage
+        
+        print(image?.size)
+    }
 }

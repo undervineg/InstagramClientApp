@@ -234,6 +234,7 @@
 		086E6CB921DF7CEE0094B808 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				086E6CA421DEC1410094B808 /* LoginViewController.swift */,
 				086E6C8121DD279C0094B808 /* Register */,
 			);
 			path = Scenes;
@@ -264,7 +265,6 @@
 			isa = PBXGroup;
 			children = (
 				0884511A21DA665A008B8121 /* AppDelegate.swift */,
-				086E6CA421DEC1410094B808 /* LoginViewController.swift */,
 				086E6C9121DE869D0094B808 /* Router */,
 				086E6C9021DE868D0094B808 /* Factory */,
 				086E6C7F21DD27840094B808 /* Adapter */,

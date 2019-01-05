@@ -11,7 +11,7 @@ import UIKit
 protocol ImagePickerRoute {
     var imagePickerTransition: Transition { get }
     
-    func openImagePicker(with transition: Transition?)
+    func openImagePicker(_ imagePicker: UIImagePickerController, with transition: Transition?)
 }
 
 extension ImagePickerRoute where Self: Routable {
@@ -19,18 +19,8 @@ extension ImagePickerRoute where Self: Routable {
         return ModalTransition()
     }
     
-    func openImagePicker(with transition: Transition? = nil) {
-        guard
-            let presentingViewController
-            = self.viewControllerBehind as? (UIImagePickerControllerDelegate & UINavigationControllerDelegate)
-            else { return }
-        
+    func openImagePicker(_ imagePicker: UIImagePickerController, with transition: Transition? = nil) {
         let transition = transition ?? self.imagePickerTransition
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = presentingViewController
-        imagePicker.sourceType = .photoLibrary
-        imagePicker.allowsEditing = true
-        
         self.open(imagePicker, with: transition)
     }
 }
