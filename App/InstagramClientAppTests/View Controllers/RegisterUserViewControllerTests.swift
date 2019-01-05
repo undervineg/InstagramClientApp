@@ -127,6 +127,19 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssertEqual(router.imagePickerIsClosed, true)
     }
     
+    func test_setImageWithRenderingModeAlwaysOriginal() {
+        let (sut, _, _) = makeSUT()
+        let picker = UIImagePickerController()
+        let pickedImage = UIImage(named: "test_image")
+        let pickedMedia = [UIImagePickerController.InfoKey.editedImage: pickedImage]
+        
+        sut.imagePickerController(picker, didFinishPickingMediaWithInfo: pickedMedia)
+        
+        let renderedImage = sut.profileImageButton.image(for: .normal)
+        XCTAssertNotNil(renderedImage)
+        XCTAssertEqual(renderedImage?.renderingMode, UIImage.RenderingMode.alwaysOriginal)
+    }
+    
     
     // MARK: - Helpers
     
