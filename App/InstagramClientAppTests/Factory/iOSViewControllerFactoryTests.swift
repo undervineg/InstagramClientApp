@@ -22,4 +22,11 @@ class iOSViewControllerFactoryTests: XCTestCase {
         XCTAssert(vc is RegisterUserViewController)
     }
 
+    
+    // MARK: - Helpers
+    
+    private class DummyUseCase: AuthGateway {
+        func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
+        }
+    }
 }
