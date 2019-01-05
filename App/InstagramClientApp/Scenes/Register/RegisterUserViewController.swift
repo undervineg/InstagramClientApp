@@ -9,7 +9,7 @@
 import UIKit
 import InstagramEngine
 
-class RegisterUserViewController: UIViewController {
+final class RegisterUserViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var profileImageButton: UIButton!
     @IBOutlet weak var emailTextField: UITextField!
@@ -17,13 +17,15 @@ class RegisterUserViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
     
-    convenience init(registerCallback: @escaping (String, String, String, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ()) {
+    private var router: RegisterRouter.Routes?
+    
+    private var registerCallback: ((String, String, String, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ())?
+    
+    convenience init(router: RegisterRouter.Routes, registerCallback: @escaping (String, String, String, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ()) {
         self.init()
-        
+        self.router = router
         self.registerCallback = registerCallback
     }
-    
-    private(set) var registerCallback: ((String, String, String, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
