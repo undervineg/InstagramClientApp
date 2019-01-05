@@ -43,7 +43,6 @@ final class RegisterUserViewController: UIViewController {
     @objc private func openImagePicker(_ sender: UIButton) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
 
         router?.openImagePicker(imagePicker, with: nil)
@@ -77,9 +76,10 @@ final class RegisterUserViewController: UIViewController {
 
 extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-//        let image = info[.editedImage] as? UIImage
         
-        print(image?.size)
+        let editedImage = info[.editedImage] as? UIImage
+        profileImageButton.setImage(editedImage, for: .normal)
+        
+        dismiss(animated: true, completion: nil)
     }
 }

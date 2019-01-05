@@ -105,6 +105,17 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssertEqual(router.imagePickerIsOpened, true)
     }
     
+    func test_whenPickImage_setsPickedImageIntoProfileButton() {
+        let (sut, _, _) = makeSUT()
+        let picker = UIImagePickerController()
+        let pickedImage = UIImage(named: "testImage")
+        let pickedMedia = [UIImagePickerController.InfoKey.editedImage: pickedImage]
+        
+        sut.imagePickerController(picker, didFinishPickingMediaWithInfo: pickedMedia)
+        
+        XCTAssertEqual(sut.profileImageButton.image(for: .normal), pickedImage)
+    }
+    
     
     // MARK: - Helpers
     
@@ -126,6 +137,7 @@ class RegisterUserViewControllerTests: XCTestCase {
     
     private class RegisterRouterStub: RegisterRouter.Routes {
         var imagePickerIsOpened: Bool = false
+        var imagePickerIsClosed: Bool = false
         var loginPageIsOpened: Bool = false
         
         init() {}
@@ -133,8 +145,12 @@ class RegisterUserViewControllerTests: XCTestCase {
         var imagePickerTransition: Transition = ModalTransition()
         var loginTransition: Transition = PushTransition()
         
-        func openImagePicker(with transition: Transition?) {
+        func openImagePicker(_ imagePicker: UIImagePickerController, with transition: Transition?) {
             imagePickerIsOpened = true
+        }
+        
+        func closeImagePicker(_ imagePicker: UIImagePickerController) {
+            imagePickerIsClosed = true
         }
         
         func openLoginPage(with transition: Transition?) {
