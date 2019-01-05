@@ -80,6 +80,6 @@ extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigat
         let editedImage = info[.editedImage] as? UIImage
         profileImageButton.setImage(editedImage, for: .normal)
         
-        dismiss(animated: true, completion: nil)
+        router?.closeImagePicker(picker)
     }
 }

@@ -116,6 +116,15 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.profileImageButton.image(for: .normal), pickedImage)
     }
     
+    func test_afterImagePicked_closeImagePicker() {
+        let (sut, router, _) = makeSUT()
+        let picker = UIImagePickerController()
+        
+        sut.imagePickerController(picker, didFinishPickingMediaWithInfo: [:])
+        
+        XCTAssertEqual(router.imagePickerIsClosed, true)
+    }
+    
     
     // MARK: - Helpers
     

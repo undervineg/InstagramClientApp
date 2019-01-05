@@ -12,9 +12,10 @@ protocol ImagePickerRoute {
     var imagePickerTransition: Transition { get }
     
     func openImagePicker(_ imagePicker: UIImagePickerController, with transition: Transition?)
+    func closeImagePicker(_ imagePicker: UIImagePickerController)
 }
 
-extension ImagePickerRoute where Self: Routable {
+extension ImagePickerRoute where Self: Routable & Closable {
     var imagePickerTransition: Transition {
         return ModalTransition()
     }
@@ -22,5 +23,9 @@ extension ImagePickerRoute where Self: Routable {
     func openImagePicker(_ imagePicker: UIImagePickerController, with transition: Transition? = nil) {
         let transition = transition ?? self.imagePickerTransition
         self.open(imagePicker, with: transition)
+    }
+    
+    func closeImagePicker(_ imagePicker: UIImagePickerController) {
+        close(to: imagePicker)
     }
 }
