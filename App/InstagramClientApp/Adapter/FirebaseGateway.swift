@@ -33,7 +33,7 @@ final class FirebaseGateway: AuthGateway {
             
             case .success(let user): self.firebaseStorage.uploadProfileImageData(profileImage, completion: { (error) in
                     if error != nil {
-                        
+                        completion(.failure(.storageUploadError))
                     }
                 })
                 

@@ -126,6 +126,17 @@ class FirebaseGatewayTests: XCTestCase {
         XCTAssertEqual(firebase.uploadedProfileImage, [testImageData])
     }
     
+    func test_doNotUploadProfileImageDataToFIRStorage_onRegisterFailuer() {
+        let (sut, firebase) = makeSUT()
+        
+        let testImageData = UIImage(named: "test_image")?.jpegData(compressionQuality: 0.3)
+        sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: testImageData) { _ in }
+        
+        firebase.completeWithFailure(errorCode: 0)
+        
+        XCTAssertEqual(firebase.uploadedProfileImage, [])
+    }
+    
     
     // MARK: - Helpers
     
