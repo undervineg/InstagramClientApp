@@ -16,7 +16,7 @@ import Firebase
  */
 class FirebaseGatewayTests: XCTestCase {
     
-    let testImageData = UIImage(named: "test_image")?.jpegData(compressionQuality: 0.3)
+    let testImageData = UIImage(named: "profile_selected")?.jpegData(compressionQuality: 0.3)
     
     override func tearDown() {
         MockFirebase.messages = []

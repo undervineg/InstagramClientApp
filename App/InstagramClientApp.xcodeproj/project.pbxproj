@@ -32,6 +32,8 @@
 		086E6CB221DF791F0094B808 /* LoginRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CB121DF791F0094B808 /* LoginRoute.swift */; };
 		086E6CB421DF79390094B808 /* RegisterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CB321DF79390094B808 /* RegisterRouter.swift */; };
 		086E6CB821DF7C8B0094B808 /* ImagePickerRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CB721DF7C8B0094B808 /* ImagePickerRoute.swift */; };
+		086E6CBB21E14EB20094B808 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CBA21E14EB10094B808 /* MainTabBarViewController.swift */; };
+		086E6CBD21E14EC10094B808 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E6CBC21E14EC10094B808 /* UserProfileViewController.swift */; };
 		0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0884511A21DA665A008B8121 /* AppDelegate.swift */; };
 		0884512221DA665C008B8121 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0884512121DA665C008B8121 /* Assets.xcassets */; };
 		0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0884512321DA665C008B8121 /* LaunchScreen.storyboard */; };
@@ -86,6 +88,8 @@
 		086E6CB121DF791F0094B808 /* LoginRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRoute.swift; sourceTree = "<group>"; };
 		086E6CB321DF79390094B808 /* RegisterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRouter.swift; sourceTree = "<group>"; };
 		086E6CB721DF7C8B0094B808 /* ImagePickerRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerRoute.swift; sourceTree = "<group>"; };
+		086E6CBA21E14EB10094B808 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
+		086E6CBC21E14EC10094B808 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		0884511721DA665A008B8121 /* InstagramClientApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramClientApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0884511A21DA665A008B8121 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0884512121DA665C008B8121 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -235,6 +239,8 @@
 			isa = PBXGroup;
 			children = (
 				086E6CA421DEC1410094B808 /* LoginViewController.swift */,
+				086E6CBA21E14EB10094B808 /* MainTabBarViewController.swift */,
+				086E6CBC21E14EC10094B808 /* UserProfileViewController.swift */,
 				086E6C8121DD279C0094B808 /* Register */,
 			);
 			path = Scenes;
@@ -524,10 +530,12 @@
 				086E6CB221DF791F0094B808 /* LoginRoute.swift in Sources */,
 				0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */,
 				086E6C7621DC68750094B808 /* FirebaseGateway.swift in Sources */,
+				086E6CBD21E14EC10094B808 /* UserProfileViewController.swift in Sources */,
 				086E6CB821DF7C8B0094B808 /* ImagePickerRoute.swift in Sources */,
 				086E6CB421DF79390094B808 /* RegisterRouter.swift in Sources */,
 				086E6CAE21DF78F20094B808 /* Closable.swift in Sources */,
 				086E6C8921DE506B0094B808 /* Routable.swift in Sources */,
+				086E6CBB21E14EB20094B808 /* MainTabBarViewController.swift in Sources */,
 				086E6C8F21DE71000094B808 /* iOSViewControllerFactory.swift in Sources */,
 				086E6CB021DF79070094B808 /* BasicRouter.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseWrapper.swift in Sources */,
