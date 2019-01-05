@@ -108,12 +108,14 @@ class RegisterUserViewControllerTests: XCTestCase {
     func test_whenPickImage_setsPickedImageIntoProfileButton() {
         let (sut, _, _) = makeSUT()
         let picker = UIImagePickerController()
-        let pickedImage = UIImage(named: "testImage")
+        let pickedImage = UIImage(named: "test_image")
         let pickedMedia = [UIImagePickerController.InfoKey.editedImage: pickedImage]
         
         sut.imagePickerController(picker, didFinishPickingMediaWithInfo: pickedMedia)
-        
-        XCTAssertEqual(sut.profileImageButton.image(for: .normal), pickedImage)
+       
+        let renderedImage = sut.profileImageButton.image(for: .normal)
+        XCTAssertNotNil(renderedImage?.pngData())
+        XCTAssertEqual(renderedImage?.pngData(), pickedImage?.pngData())
     }
     
     func test_afterImagePicked_closeImagePicker() {

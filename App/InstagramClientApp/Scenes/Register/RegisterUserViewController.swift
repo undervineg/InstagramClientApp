@@ -78,7 +78,7 @@ extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigat
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         let editedImage = info[.editedImage] as? UIImage
-        profileImageButton.setImage(editedImage, for: .normal)
+    profileImageButton.setImage(editedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
         
         router?.closeImagePicker(picker)
     }
