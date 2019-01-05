@@ -20,13 +20,17 @@ extension ImagePickerRoute where Self: Routable {
     }
     
     func openImagePicker(with transition: Transition? = nil) {
-        guard let presentingViewController  = self.viewControllerBehind as? (UIImagePickerControllerDelegate & UINavigationControllerDelegate) else { return }
+        guard
+            let presentingViewController
+            = self.viewControllerBehind as? (UIImagePickerControllerDelegate & UINavigationControllerDelegate)
+            else { return }
         
         let transition = transition ?? self.imagePickerTransition
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = presentingViewController
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
+        
         self.open(imagePicker, with: transition)
     }
 }
