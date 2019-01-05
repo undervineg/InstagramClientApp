@@ -18,6 +18,10 @@ protocol FirebaseDatabaseWrapper {
     static func updateUser(with userInfo: [String : Any], completion: @escaping (Error?) -> Void)
 }
 
+protocol FirebaseStorageWrapper {
+    static func uploadProfileImageData(_ imageData: Data?, completion: @escaping (Error?) -> Void)
+}
+
 extension Auth: FirebaseAuthWrapper {
     static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void) {
         auth().createUser(withEmail: email, password: password) { (result, error) in
