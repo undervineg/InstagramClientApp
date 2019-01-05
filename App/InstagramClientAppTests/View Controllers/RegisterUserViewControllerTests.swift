@@ -115,7 +115,7 @@ class RegisterUserViewControllerTests: XCTestCase {
     func test_whenPickImage_setsPickedImageIntoProfileButton() {
         let (sut, _, _) = makeSUT()
         let picker = UIImagePickerController()
-        let pickedImage = UIImage(named: "test_image")
+        let pickedImage = UIImage(named: "profile_selected")
         let pickedMedia = [UIImagePickerController.InfoKey.editedImage: pickedImage]
         
         sut.imagePickerController(picker, didFinishPickingMediaWithInfo: pickedMedia)
@@ -137,7 +137,7 @@ class RegisterUserViewControllerTests: XCTestCase {
     func test_setImageWithRenderingModeAlwaysOriginal() {
         let (sut, _, _) = makeSUT()
         let picker = UIImagePickerController()
-        let pickedImage = UIImage(named: "test_image")
+        let pickedImage = UIImage(named: "profile_selected")
         let pickedMedia = [UIImagePickerController.InfoKey.editedImage: pickedImage]
         
         sut.imagePickerController(picker, didFinishPickingMediaWithInfo: pickedMedia)
@@ -147,26 +147,35 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssertEqual(renderedImage?.renderingMode, UIImage.RenderingMode.alwaysOriginal)
     }
     
+    func test_cancelPickImage_closeImagePicker() {
+        let (sut, router, _) = makeSUT()
+        let picker = UIImagePickerController()
+        
+        sut.imagePickerControllerDidCancel(picker)
+        
+        XCTAssertEqual(router.imagePickerIsClosed, true)
+    }
+    
     
     // MARK: - Helpers
     
-    private func makeSUT() -> (sut: RegisterUserViewController, router: RegisterRouterStub, useCase: RegisterUseCaseStub) {
-        let router = RegisterRouterStub()
-        let useCaseStub = RegisterUseCaseStub()
+    private func makeSUT() -> (sut: RegisterUserViewController, router: StubRegisterRouter, useCase: StubRegisterUseCase) {
+        let router = StubRegisterRouter()
+        let useCaseStub = StubRegisterUseCase()
         let sut = RegisterUserViewController(router: router, registerCallback: useCaseStub.register)
         _ = sut.view
         return (sut, router, useCaseStub)
     }
     
-    private class RegisterUseCaseStub {
+    private class StubRegisterUseCase: AuthGateway {
         var callCount = 0
         
-        func register(email: String, username: String, password: String, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
+        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
             callCount += 1
         }
     }
     
-    private class RegisterRouterStub: RegisterRouter.Routes {
+    private class StubRegisterRouter: RegisterRouter.Routes {
         var imagePickerIsOpened: Bool = false
         var imagePickerIsClosed: Bool = false
         var loginPageIsOpened: Bool = false

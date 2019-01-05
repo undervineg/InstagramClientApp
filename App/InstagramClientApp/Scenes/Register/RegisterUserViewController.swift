@@ -19,9 +19,9 @@ final class RegisterUserViewController: UIViewController {
     
     private var router: RegisterRouter.Routes?
     
-    private var registerCallback: ((String, String, String, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ())?
+    private var registerCallback: ((String, String, String, Data, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ())?
     
-    convenience init(router: RegisterRouter.Routes, registerCallback: @escaping (String, String, String, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ()) {
+    convenience init(router: RegisterRouter.Routes, registerCallback: @escaping (String, String, String, Data, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ()) {
         self.init()
         self.router = router
         self.registerCallback = registerCallback
@@ -62,8 +62,9 @@ final class RegisterUserViewController: UIViewController {
         let email = emailTextField.text ?? ""
         let username = usernameTextField.text ?? ""
         let password = passwordTextField.text ?? ""
+        let profileImageData = profileImageButton.imageView?.image?.jpegData(compressionQuality: 0.3)
         
-        registerCallback?(email, username, password) {
+        registerCallback?(email, username, password, profileImageData!) {
             print($0)
         }
     }
@@ -81,8 +82,12 @@ extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigat
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         let editedImage = info[.editedImage] as? UIImage
-    profileImageButton.setImage(editedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+        profileImageButton.setImage(editedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
         
+        router?.closeImagePicker(picker)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         router?.closeImagePicker(picker)
     }
 }
