@@ -13,6 +13,13 @@ import InstagramEngine
 
 class RegisterUserViewControllerTests: XCTestCase {
     
+    func test_viewDidLoad_profileImageButton_isRound() {
+        let (sut, _, _) = makeSUT()
+       
+        XCTAssertEqual(sut.profileImageButton.layer.masksToBounds, true)
+        XCTAssertEqual(sut.profileImageButton.layer.cornerRadius, sut.profileImageButton.frame.width/2)
+    }
+    
     func test_viewDidLoad_rendersTextFieldsPlaceholders() {
         let (sut, _, _) = makeSUT()
         

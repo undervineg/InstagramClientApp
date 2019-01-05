@@ -30,6 +30,9 @@ final class RegisterUserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        profileImageButton.layer.cornerRadius = profileImageButton.frame.width/2
+        profileImageButton.layer.masksToBounds = true
+        
         signUpButton.isEnabled = false
         signUpButton.backgroundColor = UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5)
         
