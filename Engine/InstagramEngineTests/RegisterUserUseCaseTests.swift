@@ -54,8 +54,8 @@ class RegisterUserUseCaseTests: XCTestCase {
         let uinfo = UserInfo()
         
         var capturedErrors = [RegisterUserUseCase.Error]()
-        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) {
-            if case let Result.failure(error) = $0 {
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { error in
+            if let error = error {
                 capturedErrors.append(error)
             }
         }
@@ -69,18 +69,23 @@ class RegisterUserUseCaseTests: XCTestCase {
     // MARK: - Helpers
     
     private class AuthGatewaySpy: AuthGateway {
-        private var messages = [(userInfo: UserInfo, completion: (Result<UserEntity, RegisterUserUseCase.Error>) -> Void)]()
+        func fetchCurrentUserInfo() -> UserEntity? {
+            return nil
+        }
+        
+        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
+            messages.append((email, username, password, profileImage, completion))
+        }
+        
+        private var messages = [(email: String, username: String, password: String, profileImage: Data, completion: (RegisterUserUseCase.Error?) -> Void)]()
         
         var requestedUserInfos: [UserInfo] {
-            return messages.map { $0.userInfo }
+            return messages.map { UserInfo($0.email, $0.username, $0.password, $0.profileImage) }
         }
         
-        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
-            messages.append((UserInfo(email, username, password, profileImage), completion))
-        }
         
         func completes(with error: RegisterUserUseCase.Error, at index: Int = 0) {
-            messages[index].completion(Result.failure(error))
+            messages[index].completion(error)
         }
     }
     

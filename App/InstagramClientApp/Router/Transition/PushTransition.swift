@@ -9,7 +9,7 @@
 import UIKit
 
 final class PushTransition: Transition {
-    #warning("Should insert viewControllerBehind")
+    
     weak var viewControllerBehind: UIViewController?
     
     private let animated: Bool

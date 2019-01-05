@@ -12,11 +12,14 @@ import FirebaseStorage
 import InstagramEngine
 
 protocol FirebaseAuthWrapper {
+    static var currentUserId: String? { get }
+    
     static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void)
 }
 
 protocol FirebaseDatabaseWrapper {
-    static func updateUser(with userInfo: [String : Any], completion: @escaping (Error?) -> Void)
+    static func updateUser(userId: String, email: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void)
+    static func fetchUserInfo(_ userId: String) -> UserEntity?
 }
 
 protocol FirebaseStorageWrapper {
@@ -24,6 +27,10 @@ protocol FirebaseStorageWrapper {
 }
 
 extension Auth: FirebaseAuthWrapper {
+    static var currentUserId: String? {
+        return auth().currentUser?.uid
+    }
+    
     static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void) {
         auth().createUser(withEmail: email, password: password) { (result, error) in
             if let error = error {
@@ -38,8 +45,23 @@ extension Auth: FirebaseAuthWrapper {
 }
 
 extension Database: FirebaseDatabaseWrapper {
-    static func updateUser(with userInfo: [String : Any], completion: @escaping (Error?) -> Void) {
-        database().reference().child("users").updateChildValues(userInfo) { (error, ref) in
+    static func fetchUserInfo(_ userId: String) -> UserEntity? {
+        database().reference().child("users").child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let userInfoValues = snapshot.value as? [String: Any] else { return }
+//            let email = userInfoValues["email"] as? String ?? ""
+//            let username = userInfoValues["username"] as? String ?? ""
+//            let profileImageUrl = userInfoValues[""]
+            
+            
+        }, withCancel: nil)
+        return nil
+    }
+    
+    static func updateUser(userId: String, email: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void) {
+        
+        let userInfoValues = ["email": email, "username": username, "profileImageUrl": profileImageUrl]
+        let userInfoWithId = [userId: userInfoValues]
+    database().reference().child("users").updateChildValues(userInfoWithId) { (error, ref) in
             completion(error)
         }
     }

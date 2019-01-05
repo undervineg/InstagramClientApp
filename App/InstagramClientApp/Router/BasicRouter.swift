@@ -11,7 +11,6 @@ import UIKit
 class BasicRouter<U>: Routable, Closable where U: UIViewController{
     typealias T = U
     
-    #warning("Should insert viewController")
     weak var viewControllerBehind: T?
     
     private var transition: Transition?

@@ -26,7 +26,12 @@ class iOSViewControllerFactoryTests: XCTestCase {
     // MARK: - Helpers
     
     private class DummyUseCase: AuthGateway {
-        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
+        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
         }
+        
+        func fetchCurrentUserInfo() -> UserEntity? {
+            return nil
+        }
+        
     }
 }

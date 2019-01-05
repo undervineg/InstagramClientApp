@@ -14,11 +14,12 @@ public enum Result<T, E> {
 }
 
 public protocol AuthGateway {
-    func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void)
+    func fetchCurrentUserInfo() -> UserEntity?
+    func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void)
 }
 
 public protocol RegisterUserUseCaseOutput {
-    func registerSucceeded(_ user: UserEntity)
+    func registerSucceeded()
     func registerFailed(_ error: RegisterUserUseCase.Error)
 }
 
@@ -47,11 +48,10 @@ final public class RegisterUserUseCase {
         case unknown
     }
     
-    public func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (Result<UserEntity, Error>) -> Void) {
-        gateway.register(email: email, username: username, password: password, profileImage: profileImage) { (result) in
-            switch result {
-            case .success(let user): completion(.success(user))
-            case .failure(let error): completion(.failure(error))
+    public func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
+        gateway.register(email: email, username: username, password: password, profileImage: profileImage) { (error) in
+            if let error = error {
+                completion(error)
             }
         }
     }

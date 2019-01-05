@@ -61,7 +61,7 @@ class RegisterUserViewControllerTests: XCTestCase {
         
         sut.signUpButton.sendActions(for: .touchUpInside)
         
-        XCTAssertEqual(useCaseStub.callCount, 0)
+        XCTAssertEqual(useCaseStub.registerCallCount, 0)
     }
     
     func test_clickSignUpButton_sendMessageWhenTextExist() {
@@ -73,7 +73,7 @@ class RegisterUserViewControllerTests: XCTestCase {
         
         sut.signUpButton.sendActions(for: .touchUpInside)
         
-        XCTAssertEqual(useCaseStub.callCount, 1)
+        XCTAssertEqual(useCaseStub.registerCallCount, 1)
     }
     
     func test_clickSignUpButton_backgroundColorThicken_whenAllTextFieldsAreFilled() {
@@ -168,10 +168,14 @@ class RegisterUserViewControllerTests: XCTestCase {
     }
     
     private class StubRegisterUseCase: AuthGateway {
-        var callCount = 0
+        var registerCallCount = 0
         
-        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
-            callCount += 1
+        func fetchCurrentUserInfo() -> UserEntity? {
+            return nil
+        }
+        
+        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
+            registerCallCount += 1
         }
     }
     

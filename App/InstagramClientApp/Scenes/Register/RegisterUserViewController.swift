@@ -19,9 +19,9 @@ final class RegisterUserViewController: UIViewController {
     
     private var router: RegisterRouter.Routes?
     
-    private var registerCallback: ((String, String, String, Data, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ())?
+    private var registerCallback: ((String, String, String, Data, @escaping (RegisterUserUseCase.Error?) -> Void) -> ())?
     
-    convenience init(router: RegisterRouter.Routes, registerCallback: @escaping (String, String, String, Data, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ()) {
+    convenience init(router: RegisterRouter.Routes, registerCallback: @escaping (String, String, String, Data, @escaping (RegisterUserUseCase.Error?) -> Void) -> ()) {
         self.init()
         self.router = router
         self.registerCallback = registerCallback

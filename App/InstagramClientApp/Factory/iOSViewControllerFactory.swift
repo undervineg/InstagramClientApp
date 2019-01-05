@@ -10,12 +10,12 @@ import UIKit
 import InstagramEngine
 
 protocol ViewControllerFactory {
-    func registerViewController(router: RegisterRouter.Routes, registerCallback callback: @escaping (String, String, String, Data, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ()) -> UIViewController
+    func registerViewController(router: RegisterRouter.Routes, registerCallback callback: @escaping (String, String, String, Data, @escaping (RegisterUserUseCase.Error?) -> Void) -> ()) -> UIViewController
 }
 
 final class iOSViewControllerFactory: ViewControllerFactory {
     
-    func registerViewController(router: RegisterRouter.Routes, registerCallback callback: @escaping (String, String, String, Data, @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) -> ()) -> UIViewController {
+    func registerViewController(router: RegisterRouter.Routes, registerCallback callback: @escaping (String, String, String, Data, @escaping (RegisterUserUseCase.Error?) -> Void) -> ()) -> UIViewController {
         return RegisterUserViewController(router: router, registerCallback: callback)
     }
 }
