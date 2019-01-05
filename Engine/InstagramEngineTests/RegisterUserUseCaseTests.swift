@@ -75,7 +75,7 @@ class RegisterUserUseCaseTests: XCTestCase {
             return messages.map { $0.userInfo }
         }
         
-        func register(email: String, username: String, password: String, profileImage: Data?, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
+        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
             messages.append((UserInfo(email, username, password, profileImage), completion))
         }
         
@@ -88,16 +88,16 @@ class RegisterUserUseCaseTests: XCTestCase {
         let email: String
         let username: String
         let password: String
-        let profileImageData: Data?
+        let profileImageData: Data
         
         init() {
             self.email = "testEmail"
             self.username = "testName"
             self.password = "testPassword"
-            self.profileImageData = UIImage(named: "test_image")?.jpegData(compressionQuality: 0.3)
+            self.profileImageData = Data()
         }
         
-        init(_ email: String, _ username: String, _ password: String, _ profileImageData: Data?) {
+        init(_ email: String, _ username: String, _ password: String, _ profileImageData: Data) {
             self.email = email
             self.username = username
             self.password = password
