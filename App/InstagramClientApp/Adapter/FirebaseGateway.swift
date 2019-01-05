@@ -37,8 +37,13 @@ final class FirebaseGateway: AuthGateway {
                     switch result {
                     case .success(let url):
                         /* Save user info on FIR database after profile image uploaed.*/
-                        self.saveUser(userId: user.id, username: username, profileImageUrl: url) { error in
-                            if error != nil {
+                        self.saveUser(userId: user.id, email: email, username: username, profileImageUrl: url) { result in
+                            /* Return the Register Result */
+                            switch result {
+                            case .success(let userEntity):
+                                print(userEntity)
+                                completion(.success(userEntity))
+                            case .failure:
                                 completion(.failure(.databaseUpdateError))
                             }
                         }
@@ -46,19 +51,21 @@ final class FirebaseGateway: AuthGateway {
                         completion(.failure(.storageUploadError))
                     }
                 })
-                
-                let userEntity = UserEntity(id: user.id, email: user.email ?? "", username: username)
-                completion(.success(userEntity))
             }
         }
         
     }
     
-    private func saveUser(userId: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void) {
-        let usernameValues = ["username": username, "profileImageUrl": profileImageUrl]
-        let userInfo = [userId: usernameValues]
-        self.firebaseDatabase.updateUser(with: userInfo, completion: { (error) in
-            completion(error)
+    private func saveUser(userId: String, email: String, username: String, profileImageUrl: String, completion: @escaping (Result<UserEntity, Error>) -> Void) {
+        let userInfoValues = ["email": email, "username": username, "profileImageUrl": profileImageUrl]
+        let userInfoWithId = [userId: userInfoValues]
+        self.firebaseDatabase.updateUser(with: userInfoWithId, completion: { (error) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                let userEntity = UserEntity(id: userId, email: email, username: username, profileImageUrl: profileImageUrl)
+                completion(.success(userEntity))
+            }
         })
     }
     
