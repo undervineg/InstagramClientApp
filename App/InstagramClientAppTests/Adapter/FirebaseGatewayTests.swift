@@ -16,10 +16,12 @@ import Firebase
  */
 class FirebaseGatewayTests: XCTestCase {
     
+    let testImageData = UIImage(named: "test_image")?.jpegData(compressionQuality: 0.3)
+    
     override func tearDown() {
         MockFirebase.messages = []
+        MockFirebase.imageUploadMessages = []
         MockFirebase.updatedUserInfo = []
-        MockFirebase.uploadedProfileImage = []
         super.tearDown()
     }
     
@@ -27,7 +29,7 @@ class FirebaseGatewayTests: XCTestCase {
         let (sut, firebase) = makeSUT()
         
         var capturedUser = [UserEntity]()
-        sut.register(email: "dummy@email.com", username: "dummy", password: "1234", profileImage: nil) {
+        sut.register(email: "dummy@email.com", username: "dummy", password: "1234", profileImage: testImageData!) {
             if case let Result.success(user) = $0 {
                 capturedUser.append(user)
             }
@@ -44,12 +46,12 @@ class FirebaseGatewayTests: XCTestCase {
         let (sut, firebase) = makeSUT()
 
         var capturedUser = [UserEntity]()
-        sut.register(email: "dummy@email.com", username: "dummy", password: "1234", profileImage: nil) {
+        sut.register(email: "dummy@email.com", username: "dummy", password: "1234", profileImage: testImageData!) {
             if case let Result.success(user) = $0 {
                 capturedUser.append(user)
             }
         }
-        sut.register(email: "dummy2@email.com", username: "dummy2", password: "1234", profileImage: nil) {
+        sut.register(email: "dummy2@email.com", username: "dummy2", password: "1234", profileImage: testImageData!) {
             if case let Result.success(user) = $0 {
                 capturedUser.append(user)
             }
@@ -69,7 +71,7 @@ class FirebaseGatewayTests: XCTestCase {
         let (sut, firebase) = makeSUT()
         
         var capturedError = [RegisterUserUseCase.Error]()
-        sut.register(email: "dummy@email.com", username: "dummy", password: "1234", profileImage: nil) {
+        sut.register(email: "dummy@email.com", username: "dummy", password: "1234", profileImage: testImageData!) {
             if case let Result.failure(error) = $0 {
                 capturedError.append(error)
             }
@@ -94,47 +96,49 @@ class FirebaseGatewayTests: XCTestCase {
                                        .credentialAlreadyInUse])
     }
     
-    func test_saveUserToFIRDatabase_onRegisterSuccess() {
-        let (sut, firebase) = makeSUT()
-        
-        sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: nil) { _ in }
-        
-        firebase.completeWithSuccess(id: "0")
-        
-        let userInfo = [["0": ["username": "dummy"]]]
-        XCTAssertEqual(firebase.updatedUserInfo, userInfo)
-    }
-    
-    func test_doNotSaveUserToFIRDatabase_onRegisterFailure() {
-        let (sut, firebase) = makeSUT()
-        
-        sut.register(email: "dummy@##gmail##.com", username: "dummy", password: "1234", profileImage: nil) { _ in }
-        
-        firebase.completeWithFailure(errorCode: AuthErrorCode.invalidEmail.rawValue)
-
-        XCTAssertEqual(firebase.updatedUserInfo, [])
-    }
-    
     func test_uploadProfileImageDataToFIRStorage_onRegisterSuccess() {
         let (sut, firebase) = makeSUT()
-
-        let testImageData = UIImage(named: "test_image")?.jpegData(compressionQuality: 0.3)
-        sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: testImageData) { _ in }
-
+        
+        sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: testImageData!) { _ in }
+        
         firebase.completeWithSuccess(id: "0")
-
+        
         XCTAssertEqual(firebase.uploadedProfileImage, [testImageData])
     }
     
     func test_doNotUploadProfileImageDataToFIRStorage_onRegisterFailuer() {
         let (sut, firebase) = makeSUT()
         
-        let testImageData = UIImage(named: "test_image")?.jpegData(compressionQuality: 0.3)
-        sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: testImageData) { _ in }
+        sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: testImageData!) { _ in }
         
         firebase.completeWithFailure(errorCode: 0)
         
         XCTAssertEqual(firebase.uploadedProfileImage, [])
+    }
+    
+    func test_saveUserToFIRDatabase_onImageUploadSuccess() {
+        let (sut, firebase) = makeSUT()
+        
+        sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: testImageData!) { _ in }
+        
+        firebase.completeWithSuccess(id: "0") {
+            firebase.completeWithImageUploadSuccess()
+        }
+        
+        let userInfo = [["0": ["username": "dummy", "profileImageUrl": "http://test-image.url"]]]
+        XCTAssertEqual(firebase.updatedUserInfo, userInfo)
+    }
+    
+    func test_doNotSaveUserToFIRDatabase_onImageUploadFailure() {
+        let (sut, firebase) = makeSUT()
+        
+        sut.register(email: "dummy@##gmail##.com", username: "dummy", password: "1234", profileImage: testImageData!) { _ in }
+        
+        firebase.completeWithSuccess(id: "0") {
+            firebase.completeWithImageUploadFailure()
+        }
+
+        XCTAssertEqual(firebase.updatedUserInfo, [])
     }
     
     
@@ -157,21 +161,34 @@ class FirebaseGatewayTests: XCTestCase {
         // MARK: - Properties for Mock
         
         static var messages = [(email: String, pw: String, completed: (Result<(id: String, email: String?), Error>) -> Void)]()
+        static var imageUploadMessages = [(imageData: Data, completion: (Result<String, Error>) -> Void)]()
         static var capturedEmail: [String] {
             return messages.map { $0.email }
         }
         static var updatedUserInfo: [[String: [String: String]]] = []
-        static var uploadedProfileImage: [Data?] = []
+        static var uploadedProfileImage: [Data] {
+            return imageUploadMessages.map { $0.imageData }
+        }
         
         // MARK: - Methods for Mock
         
-        static func completeWithSuccess(id: String, at index: Int = 0) {
+        static func completeWithSuccess(id: String, at index: Int = 0, completion: () -> Void = {}) {
             messages[index].completed(.success((id: id, email: capturedEmail[index])))
+            completion()
         }
         
         static func completeWithFailure(errorCode: Int, at index: Int = 0) {
             let error = NSError(domain: "test", code: errorCode)
             messages[index].completed(.failure(error))
+        }
+        
+        static func completeWithImageUploadSuccess(at index: Int = 0) {
+            imageUploadMessages[index].completion(.success("http://test-image.url"))
+        }
+        
+        static func completeWithImageUploadFailure(at index: Int = 0) {
+            let error = NSError(domain: "test", code: 0)
+            imageUploadMessages[index].completion(.failure(error))
         }
         
         // MARK: - Methods for Protocols
@@ -184,8 +201,8 @@ class FirebaseGatewayTests: XCTestCase {
             updatedUserInfo.append(userInfo as! [String : [String : String]])
         }
         
-        static func uploadProfileImageData(_ imageData: Data?, completion: @escaping (Error?) -> Void) {
-            uploadedProfileImage.append(imageData)
+        static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
+            imageUploadMessages.append((imageData, completion))
         }
     }
 }

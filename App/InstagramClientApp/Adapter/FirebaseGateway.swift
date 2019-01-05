@@ -23,7 +23,7 @@ final class FirebaseGateway: AuthGateway {
         self.firebaseStorage = firebaseStorage
     }
     
-    func register(email: String, username: String, password: String, profileImage: Data?, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
+    func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
         
         firebaseAuth.registerUser(email: email, password: password) { (result) in
             switch result {
@@ -31,17 +31,21 @@ final class FirebaseGateway: AuthGateway {
                 let useCaseError = self.mapErrorCode(with: error._code)
                 completion(.failure(useCaseError))
             
-            case .success(let user): self.firebaseStorage.uploadProfileImageData(profileImage, completion: { (error) in
-                    if error != nil {
+            case .success(let user):
+                /* Upload profile image after user created.*/
+                self.firebaseStorage.uploadProfileImageData(profileImage, completion: { (result) in
+                    switch result {
+                    case .success(let url):
+                        /* Save user info on FIR database after profile image uploaed.*/
+                        self.saveUser(userId: user.id, username: username, profileImageUrl: url) { error in
+                            if error != nil {
+                                completion(.failure(.databaseUpdateError))
+                            }
+                        }
+                    case .failure:
                         completion(.failure(.storageUploadError))
                     }
                 })
-                
-                self.saveUser(userId: user.id, username: username) { error in
-                    if error != nil {
-                        completion(.failure(.databaseUpdateError))
-                    }
-                }
                 
                 let userEntity = UserEntity(id: user.id, email: user.email ?? "", username: username)
                 completion(.success(userEntity))
@@ -50,11 +54,10 @@ final class FirebaseGateway: AuthGateway {
         
     }
     
-    private func saveUser(userId: String, username: String, completion: @escaping (Error?) -> Void) {
-        let usernameValues = ["username": username]
+    private func saveUser(userId: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void) {
+        let usernameValues = ["username": username, "profileImageUrl": profileImageUrl]
         let userInfo = [userId: usernameValues]
         self.firebaseDatabase.updateUser(with: userInfo, completion: { (error) in
-            print(error?.localizedDescription ?? "database error")
             completion(error)
         })
     }
