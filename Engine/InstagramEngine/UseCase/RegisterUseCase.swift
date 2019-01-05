@@ -43,6 +43,7 @@ final public class RegisterUserUseCase {
         case networkError
         case credentialAlreadyInUse
         case databaseUpdateError
+        case storageUploadError
         case unknown
     }
     
