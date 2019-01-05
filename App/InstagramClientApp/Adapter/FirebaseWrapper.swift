@@ -8,6 +8,7 @@
 
 import FirebaseAuth
 import FirebaseDatabase
+import FirebaseStorage
 import InstagramEngine
 
 protocol FirebaseAuthWrapper {
@@ -19,7 +20,7 @@ protocol FirebaseDatabaseWrapper {
 }
 
 protocol FirebaseStorageWrapper {
-    static func uploadProfileImageData(_ imageData: Data?, completion: @escaping (Error?) -> Void)
+    static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void)
 }
 
 extension Auth: FirebaseAuthWrapper {
@@ -42,4 +43,29 @@ extension Database: FirebaseDatabaseWrapper {
             completion(error)
         }
     }
+}
+
+extension Storage: FirebaseStorageWrapper {
+    static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
+        let filename = UUID().uuidString
+        let profileImageStorageRef = storage().reference().child("profile_images").child(filename)
+        
+        profileImageStorageRef.putData(imageData, metadata: nil) { (metadata, error) in
+            if let error = error {
+                completion(.failure(error))
+            }
+            profileImageStorageRef.downloadURL(completion: { (url, error) in
+                if let error = error {
+                    completion(.failure(error))
+                }
+                guard let url = url else {
+                    let noURLError = NSError(domain: "Download URL Not Exist", code: 0)
+                    completion(.failure(noURLError))
+                    return
+                }
+                completion(.success(url.absoluteString))
+            })
+        }
+    }
+    
 }
