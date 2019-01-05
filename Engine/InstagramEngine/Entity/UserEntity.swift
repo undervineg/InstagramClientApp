@@ -12,10 +12,12 @@ public struct UserEntity: Equatable {
     public let id: String
     public let email: String
     public let username: String
+    public let profileImageUrl: String
     
-    public init(id: String, email: String, username: String) {
+    public init(id: String, email: String, username: String, profileImageUrl: String) {
         self.id = id
         self.email = email
         self.username = username
+        self.profileImageUrl = profileImageUrl
     }
 }
