@@ -41,7 +41,7 @@ final class RegisterUserViewController: UIViewController, UIImagePickerControlle
     }
     
     @objc private func openImagePicker(_ sender: UIButton) {
-        
+        router?.openImagePicker(with: nil)
     }
     
     @objc private func handleTextInputChange(_ sender: UITextField) {

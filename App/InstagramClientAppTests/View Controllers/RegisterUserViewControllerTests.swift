@@ -97,7 +97,13 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.signUpButton.isEnabled, false)
     }
     
-    
+    func test_clickProfileImageButton_opensImagePicker() {
+        let (sut, router, _) = makeSUT()
+        
+        sut.profileImageButton.sendActions(for: .touchUpInside)
+        
+        XCTAssertEqual(router.imagePickerIsOpened, true)
+    }
     
     
     // MARK: - Helpers
@@ -119,21 +125,20 @@ class RegisterUserViewControllerTests: XCTestCase {
     }
     
     private class RegisterRouterStub: RegisterRouter.Routes {
+        var imagePickerIsOpened: Bool = false
+        var loginPageIsOpened: Bool = false
+        
+        init() {}
+        
         var imagePickerTransition: Transition = ModalTransition()
         var loginTransition: Transition = PushTransition()
         
-        init() {
-            
-        }
-        
         func openImagePicker(with transition: Transition?) {
-            
+            imagePickerIsOpened = true
         }
         
         func openLoginPage(with transition: Transition?) {
-            
+            loginPageIsOpened = true
         }
-        
-        
     }
 }
