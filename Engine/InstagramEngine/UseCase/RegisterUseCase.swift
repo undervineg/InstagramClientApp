@@ -23,11 +23,11 @@ public protocol RegisterUserUseCaseOutput {
 }
 
 final public class RegisterUserUseCase {
-    private let gateway: RegisterUserClient
+    private let client: RegisterUserClient
     private let output: RegisterUserUseCaseOutput
     
-    public init(gateway: RegisterUserClient, output: RegisterUserUseCaseOutput) {
-        self.gateway = gateway
+    public init(client: RegisterUserClient, output: RegisterUserUseCaseOutput) {
+        self.client = client
         self.output = output
     }
     
@@ -48,7 +48,7 @@ final public class RegisterUserUseCase {
     }
     
     public func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
-        gateway.register(email: email, username: username, password: password, profileImage: profileImage) { (error) in
+        client.register(email: email, username: username, password: password, profileImage: profileImage) { (error) in
             if let error = error {
                 completion(error)
             }
