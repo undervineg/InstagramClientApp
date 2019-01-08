@@ -10,4 +10,5 @@ import Foundation
 
 protocol RegisterUserView {
     func display(_ errorMessage: String)
+    func displayMain()
 }

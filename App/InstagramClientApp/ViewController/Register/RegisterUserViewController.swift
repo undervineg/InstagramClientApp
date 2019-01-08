@@ -92,6 +92,10 @@ extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigat
 }
 
 extension RegisterUserViewController: RegisterUserView {
+    func displayMain() {
+        // TODO: Open Main
+    }
+    
     func display(_ errorMessage: String) {
         let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))

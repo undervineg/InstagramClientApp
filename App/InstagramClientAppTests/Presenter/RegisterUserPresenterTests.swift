@@ -38,15 +38,29 @@ class RegisterUserPresenterTests: XCTestCase {
         
         XCTAssertEqual(view.stubbedErrorMessages, errors.map { $0.localizedDescription })
     }
+    
+    func test_displayMain_whenRegisterSucceeded() {
+        let view = RegisterUserViewStub()
+        let presenter = RegisterUserPresenter(view: view)
+        
+        presenter.registerSucceeded()
+        
+        XCTAssertEqual(view.didMoveMain, true)
+    }
 
     
     // MARK: - Helpers
     
     private class RegisterUserViewStub: RegisterUserView {
         var stubbedErrorMessages = [String]()
+        var didMoveMain = false
         
         func display(_ errorMessage: String) {
             stubbedErrorMessages.append(errorMessage)
+        }
+        
+        func displayMain() {
+            didMoveMain = true
         }
     }
 }

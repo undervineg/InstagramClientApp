@@ -17,7 +17,7 @@ class RegisterUserPresenter: RegisterUserUseCaseOutput {
     }
     
     func registerSucceeded() {
-        // move to MainTabBarViewController
+        view.displayMain()
     }
     
     func registerFailed(_ error: RegisterUserUseCase.Error) {
@@ -27,6 +27,10 @@ class RegisterUserPresenter: RegisterUserUseCaseOutput {
 }
 
 extension WeakRef: RegisterUserView where T: RegisterUserView {
+    func displayMain() {
+        object?.displayMain()
+    }
+    
     func display(_ errorMessage: String) {
         object?.display(errorMessage)
     }
