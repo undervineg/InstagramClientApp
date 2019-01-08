@@ -21,9 +21,9 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
     
     static var stubbedUser: [String: UserEntity] = [:]
     
-    static var messages = [(email: String, pw: String, completed: (Result<(id: String, email: String?), Error>) -> Void)]()
+    static var registerMessages = [(email: String, pw: String, completed: (Result<(id: String, email: String?), Error>) -> Void)]()
     static var capturedEmail: [String] {
-        return messages.map { $0.email }
+        return registerMessages.map { $0.email }
     }
     
     static var imageUploadMessages = [(imageData: Data, completion: (Result<String, Error>) -> Void)]()
@@ -42,14 +42,14 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
         stubbedUser.updateValue(user, forKey: user.id)
     }
     
-    static func completeWithSuccess(id: String, at index: Int = 0, completion: () -> Void = {}) {
-        messages[index].completed(.success((id: id, email: capturedEmail[index])))
+    static func completeWithRegisterSuccess(id: String, at index: Int = 0, completion: () -> Void = {}) {
+        registerMessages[index].completed(.success((id: id, email: capturedEmail[index])))
         completion()
     }
     
-    static func completeWithFailure(errorCode: Int, at index: Int = 0) {
+    static func completeWithRegisterFailure(errorCode: Int, at index: Int = 0) {
         let error = NSError(domain: "test", code: errorCode)
-        messages[index].completed(.failure(error))
+        registerMessages[index].completed(.failure(error))
     }
     
     static func completeWithImageUploadSuccess(at index: Int = 0, completion: () -> Void = {}) {
@@ -74,7 +74,7 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
     // MARK: - Methods for Protocols
     
     static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void) {
-        messages.append((email, password, completion))
+        registerMessages.append((email, password, completion))
     }
     
     static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
