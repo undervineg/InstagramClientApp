@@ -89,7 +89,7 @@ class BasicRouterTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT<T>(isOpening: Bool = true) -> (sut: BasicRouter<T>, transition: StubTransition) {
+    private func makeSUT(isOpening: Bool = true) -> (sut: BasicRouter, transition: StubTransition) {
         return (BasicRouter(), StubTransition())
     }
 

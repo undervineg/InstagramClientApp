@@ -8,10 +8,8 @@
 
 import UIKit
 
-class BasicRouter<U>: Routable, Closable where U: UIViewController{
-    typealias T = U
-    
-    weak var viewControllerBehind: T?
+class BasicRouter: Routable, Closable {
+    weak var viewControllerBehind: UIViewController?
     
     private var transition: Transition?
     

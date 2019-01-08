@@ -8,6 +8,6 @@
 
 import Foundation
 
-final class RegisterRouter: BasicRouter<RegisterUserViewController>, RegisterRouter.Routes {
+final class RegisterRouter: BasicRouter, RegisterRouter.Routes {
     typealias Routes = LoginRoute & ImagePickerRoute
 }
