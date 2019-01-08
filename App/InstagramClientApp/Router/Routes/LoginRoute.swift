@@ -20,8 +20,6 @@ extension LoginRoute where Self: Routable {
     }
     
     func openLoginPage(with transition: Transition? = nil) {
-        let transition = transition ?? self.loginTransition
-        let loginVC = LoginViewController()
-        self.open(loginVC, with: transition)
+        // open login view controller
     }
 }
