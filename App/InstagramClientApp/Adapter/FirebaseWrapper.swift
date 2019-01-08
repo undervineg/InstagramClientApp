@@ -45,32 +45,40 @@ extension Auth: FirebaseAuthWrapper {
 }
 
 extension Database: FirebaseDatabaseWrapper {
+    private static let usersRef = "users"
+    private static let emailKey = "email"
+    private static let usernameKey = "username"
+    private static let profileImageUrlKey = "profileImageUrl"
+    
     static func fetchUserInfo(_ userId: String) -> UserEntity? {
-        database().reference().child("users").child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+        var userInfo: UserEntity?
+        database().reference().child(usersRef).child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let userInfoValues = snapshot.value as? [String: Any] else { return }
-//            let email = userInfoValues["email"] as? String ?? ""
-//            let username = userInfoValues["username"] as? String ?? ""
-//            let profileImageUrl = userInfoValues[""]
+            let email = userInfoValues[emailKey] as? String ?? ""
+            let username = userInfoValues[usernameKey] as? String ?? ""
+            let profileImageUrl = userInfoValues[profileImageUrlKey] as? String ?? ""
             
-            
+            userInfo = UserEntity(id: userId, email: email, username: username, profileImageUrl: profileImageUrl)
         }, withCancel: nil)
-        return nil
+        
+        return userInfo
     }
     
     static func updateUser(userId: String, email: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void) {
-        
-        let userInfoValues = ["email": email, "username": username, "profileImageUrl": profileImageUrl]
+        let userInfoValues = [emailKey: email, usernameKey: username, profileImageUrlKey: profileImageUrl]
         let userInfoWithId = [userId: userInfoValues]
-    database().reference().child("users").updateChildValues(userInfoWithId) { (error, ref) in
+        database().reference().child(usersRef).updateChildValues(userInfoWithId) { (error, ref) in
             completion(error)
         }
     }
 }
 
 extension Storage: FirebaseStorageWrapper {
+    private static let profileImagesRef = "profile_images"
+    
     static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
         let filename = UUID().uuidString
-        let profileImageStorageRef = storage().reference().child("profile_images").child(filename)
+        let profileImageStorageRef = storage().reference().child(profileImagesRef).child(filename)
         
         profileImageStorageRef.putData(imageData, metadata: nil) { (metadata, error) in
             if let error = error {
