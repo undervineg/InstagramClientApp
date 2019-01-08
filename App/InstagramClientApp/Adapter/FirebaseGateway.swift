@@ -9,7 +9,7 @@
 import FirebaseAuth
 import InstagramEngine
 
-final class FirebaseGateway: AuthGateway {
+final class FirebaseGateway: RegisterUserClient {
     
     private let firebaseAuth: FirebaseAuthWrapper.Type
     private let firebaseDatabase: FirebaseDatabaseWrapper.Type

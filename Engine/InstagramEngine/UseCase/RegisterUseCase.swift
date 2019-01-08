@@ -13,8 +13,7 @@ public enum Result<T, E> {
     case failure(E)
 }
 
-public protocol AuthGateway {
-    func fetchCurrentUserInfo() -> UserEntity?
+public protocol RegisterUserClient {
     func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void)
 }
 
@@ -24,10 +23,10 @@ public protocol RegisterUserUseCaseOutput {
 }
 
 final public class RegisterUserUseCase {
-    private let gateway: AuthGateway
+    private let gateway: RegisterUserClient
     private let output: RegisterUserUseCaseOutput
     
-    public init(gateway: AuthGateway, output: RegisterUserUseCaseOutput) {
+    public init(gateway: RegisterUserClient, output: RegisterUserUseCaseOutput) {
         self.gateway = gateway
         self.output = output
     }

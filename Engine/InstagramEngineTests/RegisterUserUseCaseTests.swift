@@ -68,7 +68,7 @@ class RegisterUserUseCaseTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private class AuthGatewaySpy: AuthGateway {
+    private class AuthGatewaySpy: RegisterUserClient {
         func fetchCurrentUserInfo() -> UserEntity? {
             return nil
         }

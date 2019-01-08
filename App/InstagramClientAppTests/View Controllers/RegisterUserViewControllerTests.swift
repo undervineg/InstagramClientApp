@@ -167,7 +167,7 @@ class RegisterUserViewControllerTests: XCTestCase {
         return (sut, router, useCaseStub)
     }
     
-    private class StubRegisterUseCase: AuthGateway {
+    private class StubRegisterUseCase: RegisterUserClient {
         var registerCallCount = 0
         
         func fetchCurrentUserInfo() -> UserEntity? {
