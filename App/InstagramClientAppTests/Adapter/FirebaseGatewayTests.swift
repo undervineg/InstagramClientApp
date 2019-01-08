@@ -132,6 +132,7 @@ class FirebaseGatewayTests: XCTestCase {
         
         let uinfo = sut.fetchCurrentUserInfo()
         
+        XCTAssertNotNil(uinfo)
         XCTAssertEqual(uinfo, dummyUser)
     }
     
