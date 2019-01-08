@@ -69,20 +69,15 @@ class RegisterUserUseCaseTests: XCTestCase {
     // MARK: - Helpers
     
     private class RegisterUserClientSpy: RegisterUserClient {
-        func fetchCurrentUserInfo() -> UserEntity? {
-            return nil
-        }
-        
-        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
-            messages.append((email, username, password, profileImage, completion))
-        }
-        
         private var messages = [(email: String, username: String, password: String, profileImage: Data, completion: (RegisterUserUseCase.Error?) -> Void)]()
         
         var requestedUserInfos: [UserInfo] {
             return messages.map { UserInfo($0.email, $0.username, $0.password, $0.profileImage) }
         }
         
+        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
+            messages.append((email, username, password, profileImage, completion))
+        }
         
         func completes(with error: RegisterUserUseCase.Error, at index: Int = 0) {
             messages[index].completion(error)
