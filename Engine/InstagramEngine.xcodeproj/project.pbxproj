@@ -13,6 +13,7 @@
 		0884514E21DA6676008B8121 /* InstagramEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0884514421DA6676008B8121 /* InstagramEngine.framework */; };
 		08F9847521E17CF200DE6E78 /* UserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847421E17CF200DE6E78 /* UserProfileUseCase.swift */; };
 		08F9847721E17D2A00DE6E78 /* UserProfileUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847621E17D2A00DE6E78 /* UserProfileUseCaseTests.swift */; };
+		08F9848421E4B67500DE6E78 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848321E4B67500DE6E78 /* Result.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,7 @@
 		0884515421DA6676008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08F9847421E17CF200DE6E78 /* UserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileUseCase.swift; sourceTree = "<group>"; };
 		08F9847621E17D2A00DE6E78 /* UserProfileUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileUseCaseTests.swift; sourceTree = "<group>"; };
+		08F9848321E4B67500DE6E78 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 			children = (
 				0858764E21DA70A700C32422 /* RegisterUseCase.swift */,
 				08F9847421E17CF200DE6E78 /* UserProfileUseCase.swift */,
+				08F9848321E4B67500DE6E78 /* Result.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 			files = (
 				08F9847521E17CF200DE6E78 /* UserProfileUseCase.swift in Sources */,
 				0858765521DA73FA00C32422 /* UserEntity.swift in Sources */,
+				08F9848421E4B67500DE6E78 /* Result.swift in Sources */,
 				0858764F21DA70A700C32422 /* RegisterUseCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

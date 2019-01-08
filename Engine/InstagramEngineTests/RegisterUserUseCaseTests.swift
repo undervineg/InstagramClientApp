@@ -16,18 +16,18 @@ import XCTest
 class RegisterUserUseCaseTests: XCTestCase {
     
     func test_init_doesNotRequestRegister() {
-        let gateway = AuthGatewaySpy()
+        let gateway = RegisterUserClientSpy()
         let output = RegisterUserUseCaseOutputDummy()
         
-        let _ = RegisterUserUseCase.init(gateway: gateway, output: output)
+        let _ = RegisterUserUseCase.init(client: gateway, output: output)
         
         XCTAssert(gateway.requestedUserInfos.isEmpty)
     }
     
     func test_register_requestsRegisterTheRightUser() {
-        let gateway = AuthGatewaySpy()
+        let gateway = RegisterUserClientSpy()
         let output = RegisterUserUseCaseOutputDummy()
-        let sut = RegisterUserUseCase(gateway: gateway, output: output)
+        let sut = RegisterUserUseCase(client: gateway, output: output)
         let uinfo = UserInfo()
         
         sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
@@ -36,9 +36,9 @@ class RegisterUserUseCaseTests: XCTestCase {
     }
 
     func test_registerTwice_requestsRegisterTheRightUserTwice() {
-        let gateway = AuthGatewaySpy()
+        let gateway = RegisterUserClientSpy()
         let output = RegisterUserUseCaseOutputDummy()
-        let sut = RegisterUserUseCase(gateway: gateway, output: output)
+        let sut = RegisterUserUseCase(client: gateway, output: output)
         let uinfo = UserInfo()
         
         sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
@@ -48,9 +48,9 @@ class RegisterUserUseCaseTests: XCTestCase {
     }
     
     func test_register_deliversErrorWhenGatewayError() {
-        let gateway = AuthGatewaySpy()
+        let gateway = RegisterUserClientSpy()
         let output = RegisterUserUseCaseOutputDummy()
-        let sut = RegisterUserUseCase(gateway: gateway, output: output)
+        let sut = RegisterUserUseCase(client: gateway, output: output)
         let uinfo = UserInfo()
         
         var capturedErrors = [RegisterUserUseCase.Error]()
@@ -68,7 +68,7 @@ class RegisterUserUseCaseTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private class AuthGatewaySpy: RegisterUserClient {
+    private class RegisterUserClientSpy: RegisterUserClient {
         func fetchCurrentUserInfo() -> UserEntity? {
             return nil
         }
@@ -111,7 +111,8 @@ class RegisterUserUseCaseTests: XCTestCase {
     }
     
     private class RegisterUserUseCaseOutputDummy: RegisterUserUseCaseOutput {
-        func registerSucceeded(_ user: UserEntity) {
+        
+        func registerSucceeded() {
             
         }
         
