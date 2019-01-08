@@ -16,6 +16,8 @@ protocol ViewControllerFactory {
 final class iOSViewControllerFactory: ViewControllerFactory {
     
     func registerViewController(router: RegisterRouter.Routes, registerCallback callback: @escaping (String, String, String, Data, @escaping (RegisterUserUseCase.Error?) -> Void) -> ()) -> UIViewController {
-        return RegisterUserViewController(router: router, registerCallback: callback)
+        let vc = RegisterUserViewController(router: router)
+        vc.registerCallback = callback
+        return vc
     }
 }

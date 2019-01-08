@@ -162,7 +162,8 @@ class RegisterUserViewControllerTests: XCTestCase {
     private func makeSUT() -> (sut: RegisterUserViewController, router: StubRegisterRouter, useCase: StubRegisterUseCase) {
         let router = StubRegisterRouter()
         let useCaseStub = StubRegisterUseCase()
-        let sut = RegisterUserViewController(router: router, registerCallback: useCaseStub.register)
+        let sut = RegisterUserViewController(router: router)
+        sut.registerCallback = useCaseStub.register
         _ = sut.view
         return (sut, router, useCaseStub)
     }

@@ -19,12 +19,11 @@ final class RegisterUserViewController: UIViewController {
     
     private var router: RegisterRouter.Routes?
     
-    private var registerCallback: ((String, String, String, Data, @escaping (RegisterUserUseCase.Error?) -> Void) -> ())?
+    var registerCallback: ((String, String, String, Data, @escaping (RegisterUserUseCase.Error?) -> Void) -> ())?
     
-    convenience init(router: RegisterRouter.Routes, registerCallback: @escaping (String, String, String, Data, @escaping (RegisterUserUseCase.Error?) -> Void) -> ()) {
+    convenience init(router: RegisterRouter.Routes) {
         self.init()
         self.router = router
-        self.registerCallback = registerCallback
     }
     
     override func viewDidLoad() {
@@ -89,5 +88,13 @@ extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigat
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         router?.closeImagePicker(picker)
+    }
+}
+
+extension RegisterUserViewController: RegisterUserView {
+    func display(_ errorMessage: String) {
+        let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
