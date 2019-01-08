@@ -8,11 +8,6 @@
 
 import Foundation
 
-public enum Result<T, E> {
-    case success(T)
-    case failure(E)
-}
-
 public protocol RegisterUserClient {
     func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void)
 }

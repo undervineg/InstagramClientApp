@@ -1,5 +1,5 @@
 //
-//  FirebaseGatewayTests.swift
+//  RegisterUserClientAdapterTests.swift
 //  InstagramClientAppTests
 //
 //  Created by 심승민 on 02/01/2019.
@@ -14,7 +14,7 @@ import Firebase
 /*
  * Role: Register user to firebase
  */
-class FirebaseGatewayTests: XCTestCase {
+class RegisterUserClientAdapterTests: XCTestCase {
     
     let testImageData = UIImage(named: "profile_selected")?.jpegData(compressionQuality: 0.3)
     
@@ -156,13 +156,13 @@ class FirebaseGatewayTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT() -> (sut: FirebaseGateway, firebase: MockFirebase.Type) {
+    private func makeSUT() -> (sut: RegisterUserClientAdapter, firebase: MockFirebase.Type) {
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
         
         let firebase = MockFirebase.self
-        let sut = FirebaseGateway(firebaseAuth: firebase, firebaseDatabase: firebase, firebaseStorage: firebase)
+        let sut = RegisterUserClientAdapter(firebaseAuth: firebase, firebaseDatabase: firebase, firebaseStorage: firebase)
         
         return (sut, firebase)
     }
@@ -230,7 +230,7 @@ class FirebaseGatewayTests: XCTestCase {
         
         // MARK: - Methods for Protocols
         
-        static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void) {
+        static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), AuthErrorCode>) -> Void) {
             messages.append((email, password, completion))
         }
         
