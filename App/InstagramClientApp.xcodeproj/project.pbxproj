@@ -42,6 +42,10 @@
 		08F9848821E4B8C900DE6E78 /* MockFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848721E4B8C900DE6E78 /* MockFirebase.swift */; };
 		08F9848B21E4C0C000DE6E78 /* RegisterUserPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848A21E4C0C000DE6E78 /* RegisterUserPresenter.swift */; };
 		08F9848F21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848E21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift */; };
+		08F9849521E4EBDA00DE6E78 /* WeakRefTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9849421E4EBDA00DE6E78 /* WeakRefTests.swift */; };
+		08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9849621E4EBE500DE6E78 /* WeakRef.swift */; };
+		08F9849921E4EDBA00DE6E78 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9849821E4EDBA00DE6E78 /* AppDelegateTests.swift */; };
+		08F984A221E5092300DE6E78 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A121E5092300DE6E78 /* main.swift */; };
 		6EC36F26F45DA30F8999551A /* Pods_InstagramClientApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +111,10 @@
 		08F9848721E4B8C900DE6E78 /* MockFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFirebase.swift; sourceTree = "<group>"; };
 		08F9848A21E4C0C000DE6E78 /* RegisterUserPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserPresenter.swift; sourceTree = "<group>"; };
 		08F9848E21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserPresenterTests.swift; sourceTree = "<group>"; };
+		08F9849421E4EBDA00DE6E78 /* WeakRefTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRefTests.swift; sourceTree = "<group>"; };
+		08F9849621E4EBE500DE6E78 /* WeakRef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRef.swift; sourceTree = "<group>"; };
+		08F9849821E4EDBA00DE6E78 /* AppDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
+		08F984A121E5092300DE6E78 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		20519A3EAF3AB2EFD22FA90B /* Pods-InstagramClientApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClientApp.release.xcconfig"; path = "Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp.release.xcconfig"; sourceTree = "<group>"; };
 		68B1D645F06D4FB4E193462D /* Pods-InstagramClientApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClientApp.debug.xcconfig"; path = "Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp.debug.xcconfig"; sourceTree = "<group>"; };
 		AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramClientApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -281,6 +289,8 @@
 			isa = PBXGroup;
 			children = (
 				0884511A21DA665A008B8121 /* AppDelegate.swift */,
+				08F984A121E5092300DE6E78 /* main.swift */,
+				08F9849621E4EBE500DE6E78 /* WeakRef.swift */,
 				08F9849121E4D71400DE6E78 /* Presenter */,
 				086E6C9121DE869D0094B808 /* Router */,
 				086E6C9021DE868D0094B808 /* Factory */,
@@ -303,6 +313,8 @@
 				086E6C9221DE86AC0094B808 /* Factory */,
 				086E6CA321DEBB1F0094B808 /* Router */,
 				08F9849021E4D6EE00DE6E78 /* Presenter */,
+				08F9849421E4EBDA00DE6E78 /* WeakRefTests.swift */,
+				08F9849821E4EDBA00DE6E78 /* AppDelegateTests.swift */,
 			);
 			path = InstagramClientAppTests;
 			sourceTree = "<group>";
@@ -580,6 +592,7 @@
 				08F9847D21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift in Sources */,
 				086E6CB421DF79390094B808 /* RegisterRouter.swift in Sources */,
 				086E6CAE21DF78F20094B808 /* Closable.swift in Sources */,
+				08F984A221E5092300DE6E78 /* main.swift in Sources */,
 				086E6C8921DE506B0094B808 /* Routable.swift in Sources */,
 				086E6C8F21DE71000094B808 /* iOSViewControllerFactory.swift in Sources */,
 				086E6CB021DF79070094B808 /* BasicRouter.swift in Sources */,
@@ -589,6 +602,7 @@
 				08F9848221E4B60F00DE6E78 /* UserProfileClientAdapter.swift in Sources */,
 				08F9847F21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift in Sources */,
 				08F9848B21E4C0C000DE6E78 /* RegisterUserPresenter.swift in Sources */,
+				08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */,
 				08F9847921E4B1E100DE6E78 /* RegisterUserClientAdapter.swift in Sources */,
 				0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */,
 			);
@@ -601,12 +615,14 @@
 				08F9848F21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift in Sources */,
 				08F9848821E4B8C900DE6E78 /* MockFirebase.swift in Sources */,
 				086E6C8D21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift in Sources */,
+				08F9849521E4EBDA00DE6E78 /* WeakRefTests.swift in Sources */,
 				086E6CA221DE92BF0094B808 /* BasicRouterTests.swift in Sources */,
 				086E6CA721DEC1670094B808 /* RegisterRouterTests.swift in Sources */,
 				08F9848621E4B7EB00DE6E78 /* UserProfileClientAdapterTests.swift in Sources */,
 				0858766D21DB8C7600C32422 /* RegisterUserViewControllerTests.swift in Sources */,
 				086E6CA921DF6A100094B808 /* StubTransition.swift in Sources */,
 				086E6C7C21DC6AC90094B808 /* RegisterUserClientAdapterTests.swift in Sources */,
+				08F9849921E4EDBA00DE6E78 /* AppDelegateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
