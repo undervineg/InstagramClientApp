@@ -12,26 +12,15 @@ import InstagramEngine
 
 class iOSViewControllerFactoryTests: XCTestCase {
 
+    private var vc: UIViewController?
+    
     func test_creates_resultViewController() {
         let sut = iOSViewControllerFactory()
         let router = RegisterRouter()
-        let useCase = DummyUseCase()
         
-        let vc = sut.registerViewController(router: router, registerCallback: useCase.register)
+        let vc = sut.registerViewController(router: router)
         
         XCTAssert(vc is RegisterUserViewController)
     }
 
-    
-    // MARK: - Helpers
-    
-    private class DummyUseCase: RegisterUserClient {
-        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
-        }
-        
-        func fetchCurrentUserInfo() -> UserEntity? {
-            return nil
-        }
-        
-    }
 }

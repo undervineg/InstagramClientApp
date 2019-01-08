@@ -10,36 +10,29 @@ import UIKit
 import InstagramEngine
 import Firebase
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+//@UIApplicationMain
+final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        FirebaseApp.configure()
+        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+        }
 
+        let factory = iOSViewControllerFactory()
+        
+        let registerRouter = RegisterRouter()
+        let registerViewController = factory.registerViewController(router: registerRouter)
+        registerRouter.viewControllerBehind = registerViewController
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-
-        let gateway = FirebaseGateway(firebaseAuth: Auth.self, firebaseDatabase: Database.self)
-        let useCase = RegisterUserUseCase(gateway: gateway, output: Presenter())
-        let vc = RegisterUserViewController(registerCallback: useCase.register)
-        
-        window?.rootViewController = vc
+        window?.rootViewController = registerViewController
         
         return true
     }
 
-}
-
-private class Presenter: RegisterUserUseCaseOutput {
-    func registerSucceeded(_ user: UserEntity) {
-        
-    }
-    
-    func registerFailed(_ error: RegisterUserUseCase.Error) {
-        
-    }
 }
