@@ -41,6 +41,7 @@
 		08F9848621E4B7EB00DE6E78 /* UserProfileClientAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848521E4B7EB00DE6E78 /* UserProfileClientAdapterTests.swift */; };
 		08F9848821E4B8C900DE6E78 /* MockFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848721E4B8C900DE6E78 /* MockFirebase.swift */; };
 		08F9848B21E4C0C000DE6E78 /* RegisterUserPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848A21E4C0C000DE6E78 /* RegisterUserPresenter.swift */; };
+		08F9848F21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848E21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift */; };
 		6EC36F26F45DA30F8999551A /* Pods_InstagramClientApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +106,7 @@
 		08F9848521E4B7EB00DE6E78 /* UserProfileClientAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileClientAdapterTests.swift; sourceTree = "<group>"; };
 		08F9848721E4B8C900DE6E78 /* MockFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFirebase.swift; sourceTree = "<group>"; };
 		08F9848A21E4C0C000DE6E78 /* RegisterUserPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserPresenter.swift; sourceTree = "<group>"; };
+		08F9848E21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserPresenterTests.swift; sourceTree = "<group>"; };
 		20519A3EAF3AB2EFD22FA90B /* Pods-InstagramClientApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClientApp.release.xcconfig"; path = "Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp.release.xcconfig"; sourceTree = "<group>"; };
 		68B1D645F06D4FB4E193462D /* Pods-InstagramClientApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClientApp.debug.xcconfig"; path = "Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp.debug.xcconfig"; sourceTree = "<group>"; };
 		AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramClientApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -279,7 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				0884511A21DA665A008B8121 /* AppDelegate.swift */,
-				08F9848A21E4C0C000DE6E78 /* RegisterUserPresenter.swift */,
+				08F9849121E4D71400DE6E78 /* Presenter */,
 				086E6C9121DE869D0094B808 /* Router */,
 				086E6C9021DE868D0094B808 /* Factory */,
 				08F9848021E4B37B00DE6E78 /* Frameworks */,
@@ -300,6 +302,7 @@
 				086E6C8321DD27B00094B808 /* Adapter */,
 				086E6C9221DE86AC0094B808 /* Factory */,
 				086E6CA321DEBB1F0094B808 /* Router */,
+				08F9849021E4D6EE00DE6E78 /* Presenter */,
 			);
 			path = InstagramClientAppTests;
 			sourceTree = "<group>";
@@ -320,6 +323,22 @@
 				08F9848721E4B8C900DE6E78 /* MockFirebase.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		08F9849021E4D6EE00DE6E78 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				08F9848E21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		08F9849121E4D71400DE6E78 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				08F9848A21E4C0C000DE6E78 /* RegisterUserPresenter.swift */,
+			);
+			path = Presenter;
 			sourceTree = "<group>";
 		};
 		0F6E0E952D28CD93E8714FA9 /* Frameworks */ = {
@@ -579,6 +598,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08F9848F21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift in Sources */,
 				08F9848821E4B8C900DE6E78 /* MockFirebase.swift in Sources */,
 				086E6C8D21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift in Sources */,
 				086E6CA221DE92BF0094B808 /* BasicRouterTests.swift in Sources */,
