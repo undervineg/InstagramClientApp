@@ -29,3 +29,9 @@ class RegisterUserPresenter: RegisterUserUseCaseOutput {
 protocol RegisterUserView {
     func display(_ errorMessage: String)
 }
+
+extension WeakRef: RegisterUserView where T: RegisterUserView {
+    func display(_ errorMessage: String) {
+        object?.display(errorMessage)
+    }
+}
