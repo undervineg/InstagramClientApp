@@ -11,21 +11,21 @@ import InstagramEngine
 
 class RegisterUserClientAdapter: RegisterUserClient {
     
-    private let firebaseAuth: FirebaseAuthWrapper.Type
-    private let firebaseDatabase: FirebaseDatabaseWrapper.Type
-    private let firebaseStorage: FirebaseStorageWrapper.Type
+    private let auth: FirebaseAuthWrapper.Type
+    private let database: FirebaseDatabaseWrapper.Type
+    private let storage: FirebaseStorageWrapper.Type
     
     init(firebaseAuth: FirebaseAuthWrapper.Type,
          firebaseDatabase: FirebaseDatabaseWrapper.Type,
          firebaseStorage: FirebaseStorageWrapper.Type) {
-        self.firebaseAuth = firebaseAuth
-        self.firebaseDatabase = firebaseDatabase
-        self.firebaseStorage = firebaseStorage
+        self.auth = firebaseAuth
+        self.database = firebaseDatabase
+        self.storage = firebaseStorage
     }
     
     func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
         
-        firebaseAuth.registerUser(email: email, password: password) { (result) in
+        auth.registerUser(email: email, password: password) { (result) in
             switch result {
             case .failure(let error):
                 let useCaseError = self.mapErrorCode(with: error._code)
@@ -33,7 +33,7 @@ class RegisterUserClientAdapter: RegisterUserClient {
                 
             case .success(let user):
                 /* Upload profile image after user created.*/
-                self.firebaseStorage.uploadProfileImageData(profileImage, completion: { (result) in
+                self.storage.uploadProfileImageData(profileImage, completion: { (result) in
                     switch result {
                     case .success(let url):
                         /* Save user info on FIR database after profile image uploaed.*/
@@ -53,7 +53,7 @@ class RegisterUserClientAdapter: RegisterUserClient {
     }
     
     private func saveUser(userId: String, email: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void) {
-        self.firebaseDatabase.updateUser(userId: userId, email: email, username: username, profileImageUrl: profileImageUrl) { (error) in
+        self.database.updateUser(userId: userId, email: email, username: username, profileImageUrl: profileImageUrl) { (error) in
             if let error = error {
                 completion(error)
             }
