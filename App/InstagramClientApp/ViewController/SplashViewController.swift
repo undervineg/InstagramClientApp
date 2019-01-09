@@ -14,6 +14,12 @@ class SplashViewController: UIViewController {
     
     var checkIfAuthenticatedCallback: (() -> Void)?
     
+    private var router: SplashRouter.Route?
+    
+    convenience init(router: SplashRouter.Route) {
+        self.init()
+        self.router = router
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,10 +47,10 @@ class SplashViewController: UIViewController {
 
 extension SplashViewController: SplashView {
     func displayMain() {
-        
+        router?.openMainPage()
     }
     
     func displayRegister() {
-        
+        router?.openRegisterPage()
     }
 }
