@@ -10,31 +10,35 @@ import XCTest
 @testable import InstagramEngine
 
 class AuthUseCaseTests: XCTestCase {
-
-    func test_checkIfAuthenticated_sendSuccessMessage() {
+    
+    func test_checkIfAuthenticatedTwice_sendSuccessMessageTwice() {
         let client = StubClient()
         let output = StubAuthUseCaseOutput()
         let sut = AuthUseCase(client: client, output: output)
         
         sut.checkIfAuthenticated()
+        sut.checkIfAuthenticated()
         
-        client.completeWithSuccess()
+        client.completeWithSuccess(at: 0)
+        client.completeWithSuccess(at: 1)
         
-        XCTAssertEqual(output.succeededCallCount, 1)
+        XCTAssertEqual(output.succeededCallCount, 2)
         XCTAssertEqual(output.failedCallCount, 0)
     }
     
-    func test_checkIfAuthenticated_sendFailureMessage() {
+    func test_checkIfAuthenticatedTwice_sendFailureMessageTwice() {
         let client = StubClient()
         let output = StubAuthUseCaseOutput()
         let sut = AuthUseCase(client: client, output: output)
         
         sut.checkIfAuthenticated()
+        sut.checkIfAuthenticated()
         
-        client.completeWithFailure()
+        client.completeWithFailure(at: 0)
+        client.completeWithFailure(at: 1)
         
         XCTAssertEqual(output.succeededCallCount, 0)
-        XCTAssertEqual(output.failedCallCount, 1)
+        XCTAssertEqual(output.failedCallCount, 2)
     }
 
     
