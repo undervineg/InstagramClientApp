@@ -26,6 +26,6 @@ extension ImagePickerRoute where Self: Routable & Closable {
     }
     
     func closeImagePicker(_ imagePicker: UIImagePickerController) {
-        close(to: imagePicker)
+        self.close(to: nil)
     }
 }
