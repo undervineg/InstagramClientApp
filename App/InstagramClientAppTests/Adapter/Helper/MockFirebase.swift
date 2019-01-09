@@ -64,13 +64,20 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
         imageUploadMessages[index].completion(.failure(error))
     }
     
-    static func completeWithUpdateUserInfoSuccess(at index: Int = 0) {
+    static func completeWithUpdateUserInfoSuccess(at index: Int = 0, completion: () -> Void = {}) {
         updateUserInfoMessages[index].completion(nil)
+        completion()
     }
     
     static func completeWithUpdateUserInfoFailure(at index: Int = 0) {
         let error = NSError(domain: "test", code: 0)
         updateUserInfoMessages[index].completion(error)
+    }
+    
+    static func completeWithLoadUserInfoSuccess(with uid: String, at index: Int = 0) {
+        if let user = stubbedUser[uid] {
+            loadUserInfoMessages[index].completion(user)
+        }
     }
     
     static func completeWithLoadUserInfoSuccess(at index: Int = 0) {

@@ -10,7 +10,6 @@ import FirebaseAuth
 import InstagramEngine
 
 class RegisterUserClientAdapter: RegisterUserClient {
-    
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let storage: FirebaseStorageWrapper.Type
@@ -23,41 +22,70 @@ class RegisterUserClientAdapter: RegisterUserClient {
         self.storage = firebaseStorage
     }
     
-    func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
+    func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
         
-        auth.registerUser(email: email, password: password) { (result) in
-            switch result {
-            case .failure(let error):
-                let useCaseError = self.mapErrorCode(with: error._code)
-                completion(useCaseError)
-                
+        auth.registerUser(email: email, password: password) { userCreatedResult in
+            switch userCreatedResult {
             case .success(let user):
                 /* Upload profile image after user created.*/
-                self.storage.uploadProfileImageData(profileImage, completion: { (result) in
-                    switch result {
+                self.uploadProfileImage(profileImage, { imageUploadResult in
+                    switch imageUploadResult {
                     case .success(let url):
                         /* Save user info on FIR database after profile image uploaed.*/
-                        self.saveUser(userId: user.id, email: email, username: username, profileImageUrl: url) { error in
-                            /* Return the Register Result */
-                            if error != nil {
-                                completion(.databaseUpdateError)
-                            }
+                        self.saveUser(user.id, email, username, url) { userSavedResult in
+                            /* Return the Registered Result */
+                            completion(userSavedResult)
                         }
-                    case .failure:
-                        completion(.storageUploadError)
+                    case .failure(let error):
+                        completion(.failure(error))
                     }
                 })
+            case .failure(let error):
+                let useCaseError = self.mapErrorCode(with: error._code)
+                completion(.failure(useCaseError))
             }
         }
         
     }
     
-    private func saveUser(userId: String, email: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void) {
-        self.database.updateUser(userId: userId, email: email, username: username, profileImageUrl: profileImageUrl) { (error) in
-            if let error = error {
-                completion(error)
+    private func uploadProfileImage(_ profileImage: Data,
+                                    _ completion: @escaping (Result<String, RegisterUserUseCase.Error>) -> Void) {
+        
+        storage.uploadProfileImageData(profileImage, completion: { (result) in
+            switch result {
+            case .success(let url):
+                completion(.success(url))
+            case .failure:
+                completion(.failure(.storageUploadError))
+            }
+        })
+    }
+    
+    private func saveUser(_ userId: String,
+                          _ email: String,
+                          _ username: String,
+                          _ profileImageUrl: String,
+                          _ completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
+        
+        database.updateUser(userId: userId, email: email, username: username, profileImageUrl: profileImageUrl) { (error) in
+            if error != nil {
+                completion(.failure(.databaseUpdateError))
+            } else {
+                self.fetchSavedUserInfo(userId, completion: {
+                    completion($0)
+                })
             }
         }
+    }
+    
+    private func fetchSavedUserInfo(_ uid: String, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
+        self.database.fetchUserInfo(uid, completion: { (userEntity) in
+            if let user = userEntity {
+                completion(.success(user))
+            } else {
+                completion(.failure(.userNotFound))
+            }
+        })
     }
     
     private func mapErrorCode(with errorCode: Int) -> RegisterUserUseCase.Error {
