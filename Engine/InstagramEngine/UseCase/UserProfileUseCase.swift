@@ -22,7 +22,7 @@ final public class UserProfileUseCase {
     private let client: UserProfileClient
     private let output: UserProfileUseCaseOutput
     
-    init(client: UserProfileClient, output: UserProfileUseCaseOutput) {
+    public init(client: UserProfileClient, output: UserProfileUseCaseOutput) {
         self.client = client
         self.output = output
     }
