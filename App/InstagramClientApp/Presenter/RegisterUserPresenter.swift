@@ -8,7 +8,7 @@
 
 import InstagramEngine
 
-class RegisterUserPresenter: RegisterUserUseCaseOutput {
+final class RegisterUserPresenter: RegisterUserUseCaseOutput {
     
     private let view: RegisterUserView
     
