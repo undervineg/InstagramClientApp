@@ -46,7 +46,10 @@ final public class RegisterUserUseCase {
         client.register(email: email, username: username, password: password, profileImage: profileImage) { (error) in
             if let error = error {
                 completion(error)
+                self.output.registerFailed(error)
+                return
             }
+            self.output.registerSucceeded()
         }
     }
 }

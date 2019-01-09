@@ -16,18 +16,13 @@ import XCTest
 class RegisterUserUseCaseTests: XCTestCase {
     
     func test_init_doesNotRequestRegister() {
-        let gateway = RegisterUserClientSpy()
-        let output = RegisterUserUseCaseOutputDummy()
-        
-        let _ = RegisterUserUseCase.init(client: gateway, output: output)
+        let (_, gateway, _) = makeSUT()
         
         XCTAssert(gateway.requestedUserInfos.isEmpty)
     }
     
     func test_register_requestsRegisterTheRightUser() {
-        let gateway = RegisterUserClientSpy()
-        let output = RegisterUserUseCaseOutputDummy()
-        let sut = RegisterUserUseCase(client: gateway, output: output)
+        let (sut, gateway, _) = makeSUT()
         let uinfo = UserInfo()
         
         sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
@@ -36,9 +31,7 @@ class RegisterUserUseCaseTests: XCTestCase {
     }
 
     func test_registerTwice_requestsRegisterTheRightUserTwice() {
-        let gateway = RegisterUserClientSpy()
-        let output = RegisterUserUseCaseOutputDummy()
-        let sut = RegisterUserUseCase(client: gateway, output: output)
+        let (sut, gateway, _) = makeSUT()
         let uinfo = UserInfo()
         
         sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
@@ -47,10 +40,8 @@ class RegisterUserUseCaseTests: XCTestCase {
         XCTAssertEqual(gateway.requestedUserInfos, [uinfo, uinfo])
     }
     
-    func test_register_deliversErrorWhenGatewayError() {
-        let gateway = RegisterUserClientSpy()
-        let output = RegisterUserUseCaseOutputDummy()
-        let sut = RegisterUserUseCase(client: gateway, output: output)
+    func test_register_deliversError_onError() {
+        let (sut, gateway, _) = makeSUT()
         let uinfo = UserInfo()
         
         var capturedErrors = [RegisterUserUseCase.Error]()
@@ -65,8 +56,42 @@ class RegisterUserUseCaseTests: XCTestCase {
         XCTAssertEqual(capturedErrors, [.invalidName])
     }
     
+    func test_registerTwice_sendMessageToOutputTwice_onSuccess() {
+        let (sut, gateway, output) = makeSUT()
+        
+        let uinfo = UserInfo()
+        
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
+        
+        gateway.completeWithSuccess(at: 0)
+        gateway.completeWithSuccess(at: 1)
+        
+        XCTAssertEqual(output.successCallCount, 2)
+    }
+    
+    func test_registerTwice_sendErrorMessageToOutputTwice_onFailure() {
+        let (sut, gateway, output) = makeSUT()
+        
+        let uinfo = UserInfo()
+        
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
+        
+        gateway.completes(with: .invalidName, at: 0)
+        gateway.completes(with: .invalidEmail, at: 1)
+        
+        XCTAssertEqual(output.capturedError, [.invalidName, .invalidEmail])
+    }
     
     // MARK: - Helpers
+    
+    private func makeSUT() -> (sut: RegisterUserUseCase, gateway: RegisterUserClientSpy, output: RegisterUserUseCaseOutputDummy) {
+        let gateway = RegisterUserClientSpy()
+        let output = RegisterUserUseCaseOutputDummy()
+        let sut = RegisterUserUseCase(client: gateway, output: output)
+        return (sut, gateway, output)
+    }
     
     private class RegisterUserClientSpy: RegisterUserClient {
         private var messages = [(email: String, username: String, password: String, profileImage: Data, completion: (RegisterUserUseCase.Error?) -> Void)]()
@@ -77,6 +102,10 @@ class RegisterUserUseCaseTests: XCTestCase {
         
         func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
             messages.append((email, username, password, profileImage, completion))
+        }
+        
+        func completeWithSuccess(at index: Int = 0) {
+            messages[index].completion(nil)
         }
         
         func completes(with error: RegisterUserUseCase.Error, at index: Int = 0) {
@@ -106,13 +135,15 @@ class RegisterUserUseCaseTests: XCTestCase {
     }
     
     private class RegisterUserUseCaseOutputDummy: RegisterUserUseCaseOutput {
+        var successCallCount = 0
+        var capturedError = [RegisterUserUseCase.Error]()
         
         func registerSucceeded() {
-            
+            successCallCount += 1
         }
         
         func registerFailed(_ error: RegisterUserUseCase.Error) {
-            
+            capturedError.append(error)
         }
     }
 
