@@ -57,7 +57,6 @@
 		08F984BC21E5D5D600DE6E78 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984BB21E5D5D600DE6E78 /* UserProfileView.swift */; };
 		08F984C021E5E3F600DE6E78 /* RegisterRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984BF21E5E3F600DE6E78 /* RegisterRoute.swift */; };
 		08F984C221E5E5F000DE6E78 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C121E5E5F000DE6E78 /* MainRouter.swift */; };
-		08F984C421E6770C00DE6E78 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C321E6770C00DE6E78 /* MainView.swift */; };
 		08F984CA21E6878E00DE6E78 /* AuthClientAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C921E6878E00DE6E78 /* AuthClientAdapter.swift */; };
 		08F984CC21E687DB00DE6E78 /* AuthClientAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984CB21E687DB00DE6E78 /* AuthClientAdapterTests.swift */; };
 		08F984CE21E6918700DE6E78 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984CD21E6918700DE6E78 /* SplashView.swift */; };
@@ -146,7 +145,6 @@
 		08F984BB21E5D5D600DE6E78 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		08F984BF21E5E3F600DE6E78 /* RegisterRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRoute.swift; sourceTree = "<group>"; };
 		08F984C121E5E5F000DE6E78 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
-		08F984C321E6770C00DE6E78 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		08F984C921E6878E00DE6E78 /* AuthClientAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClientAdapter.swift; sourceTree = "<group>"; };
 		08F984CB21E687DB00DE6E78 /* AuthClientAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClientAdapterTests.swift; sourceTree = "<group>"; };
 		08F984CD21E6918700DE6E78 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
@@ -187,9 +185,9 @@
 		086E6C7F21DD27840094B808 /* Adapter */ = {
 			isa = PBXGroup;
 			children = (
+				08F984C921E6878E00DE6E78 /* AuthClientAdapter.swift */,
 				08F9847821E4B1E100DE6E78 /* RegisterUserClientAdapter.swift */,
 				08F984B721E54B6C00DE6E78 /* UserProfileClientAdapter.swift */,
-				08F984C921E6878E00DE6E78 /* AuthClientAdapter.swift */,
 			);
 			path = Adapter;
 			sourceTree = "<group>";
@@ -420,7 +418,6 @@
 			children = (
 				08F984CD21E6918700DE6E78 /* SplashView.swift */,
 				08F984A521E5266800DE6E78 /* RegisterUserView.swift */,
-				08F984C321E6770C00DE6E78 /* MainView.swift */,
 				08F984BB21E5D5D600DE6E78 /* UserProfileView.swift */,
 			);
 			path = Protocols;
@@ -699,7 +696,6 @@
 				08F984A621E5266800DE6E78 /* RegisterUserView.swift in Sources */,
 				08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */,
 				08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */,
-				08F984C421E6770C00DE6E78 /* MainView.swift in Sources */,
 				08F9847921E4B1E100DE6E78 /* RegisterUserClientAdapter.swift in Sources */,
 				08F984B821E54B6C00DE6E78 /* UserProfileClientAdapter.swift in Sources */,
 				0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */,

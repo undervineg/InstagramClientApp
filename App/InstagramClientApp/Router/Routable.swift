@@ -9,8 +9,7 @@
 import UIKit
 
 protocol Routable: class {
-    associatedtype T: UIViewController
-    var viewControllerBehind: T? { get }
+    var viewControllerBehind: UIViewController? { get }
     
     func open(_ viewController: UIViewController, with transition: Transition)
 }

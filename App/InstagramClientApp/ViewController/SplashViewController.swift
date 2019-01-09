@@ -12,7 +12,7 @@ class SplashViewController: UIViewController {
     
     private let indicatorView = UIActivityIndicatorView(style: .gray)
     
-    var checkIfAuthenticatedCallback: (() -> Void)?
+    var checkIfAuthenticated: (() -> Void)?
     
     private var router: SplashRouter.Route?
     
@@ -31,7 +31,7 @@ class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        checkIfAuthenticatedCallback?()
+        checkIfAuthenticated?()
     }
     
     private func configureView() {
@@ -41,7 +41,7 @@ class SplashViewController: UIViewController {
         NSLayoutConstraint.activate([
             indicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             indicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            ])
+        ])
     }
 }
 
