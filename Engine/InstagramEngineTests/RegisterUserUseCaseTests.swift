@@ -48,8 +48,8 @@ class RegisterUserUseCaseTests: XCTestCase {
         sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData)
         sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData)
         
-        gateway.completeWithSuccess(with: "0", uinfo: uinfo, at: 0)
-        gateway.completeWithSuccess(with: "1", uinfo: uinfo, at: 1)
+        gateway.completeWithSuccess(at: 0)
+        gateway.completeWithSuccess(at: 1)
         
         XCTAssertEqual(output.successCallCount, 2)
         XCTAssertEqual(output.capturedError, [])
@@ -80,23 +80,22 @@ class RegisterUserUseCaseTests: XCTestCase {
     }
     
     private class RegisterUserClientSpy: RegisterUserClient {
-        private var messages = [(email: String, username: String, password: String, profileImage: Data, completion: (Result<UserEntity, RegisterUserUseCase.Error>) -> Void)]()
+        private var messages = [(email: String, username: String, password: String, profileImage: Data, completion: (RegisterUserUseCase.Error?) -> Void)]()
         
         var requestedUserInfos: [UserInfo] {
             return messages.map { UserInfo($0.email, $0.username, $0.password, $0.profileImage) }
         }
         
-        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (Result<UserEntity, RegisterUserUseCase.Error>) -> Void) {
+        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
             messages.append((email, username, password, profileImage, completion))
         }
         
-        func completeWithSuccess(with uid: String, uinfo: UserInfo, at index: Int = 0) {
-            let user = UserEntity(id: uid, email: uinfo.email, username: uinfo.username, profileImageUrl: "http://a-url.com")
-            messages[index].completion(.success(user))
+        func completeWithSuccess(at index: Int = 0) {
+            messages[index].completion(nil)
         }
         
         func completes(with error: RegisterUserUseCase.Error, at index: Int = 0) {
-            messages[index].completion(.failure(error))
+            messages[index].completion(error)
         }
     }
     

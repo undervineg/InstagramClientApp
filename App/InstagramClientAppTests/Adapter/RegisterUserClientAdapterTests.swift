@@ -30,7 +30,7 @@ class RegisterUserClientAdapterTests: XCTestCase {
         
         var capturedError = [RegisterUserUseCase.Error]()
         sut.register(email: "dummy@email.com", username: "dummy", password: "1234", profileImage: testImageData!) {
-            if case let Result.failure(error) = $0 {
+            if let error = $0 {
                 capturedError.append(error)
             }
         }
@@ -93,7 +93,7 @@ class RegisterUserClientAdapterTests: XCTestCase {
         
         var capturedError = [RegisterUserUseCase.Error]()
         sut.register(email: "dummy@##gmail##.com", username: "dummy", password: "1234", profileImage: testImageData!) {
-            if case let Result.failure(error) = $0 {
+            if let error = $0 {
                 capturedError.append(error)
             }
         }
@@ -111,7 +111,7 @@ class RegisterUserClientAdapterTests: XCTestCase {
         
         var capturedError = [RegisterUserUseCase.Error]()
         sut.register(email: "dummy@email.com", username: "dummy", password: "1234", profileImage: testImageData!) {
-            if case let Result.failure(error) = $0 {
+            if let error = $0 {
                 capturedError.append(error)
             }
         }
@@ -123,32 +123,6 @@ class RegisterUserClientAdapterTests: XCTestCase {
         }
         
         XCTAssertEqual(capturedError, [RegisterUserUseCase.Error.databaseUpdateError])
-    }
-    
-    func test_register_deliversSavedUser_onUpdateDatabaseSuccess() {
-        let (sut, firebase) = makeSUT()
-        
-        var capturedUser = [UserEntity]()
-        sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: testImageData!) {
-            if case let Result.success(user) = $0 {
-                capturedUser.append(user)
-            }
-        }
-        
-        let userEntity = UserEntity(id: "0", email: "dummy@gmail.com", username: "dummy", profileImageUrl: "http://test-image.url")
-        firebase.completeWithRegisterSuccess(id: "0") {
-            firebase.completeWithImageUploadSuccess() {
-                firebase.completeWithUpdateUserInfoSuccess() {
-                    firebase.stubUser(userEntity)
-                    firebase.completeWithLoadUserInfoSuccess(with: "0")
-                }
-            }
-        }
-        
-        let userInfo = [["0": ["username": "dummy", "profileImageUrl": "http://test-image.url", "email": "dummy@gmail.com"]]]
-        XCTAssertEqual(firebase.uploadedProfileImage, [testImageData!])
-        XCTAssertEqual(firebase.updatedUserInfo, userInfo)
-        XCTAssertEqual(capturedUser, [userEntity])
     }
     
     

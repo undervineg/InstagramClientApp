@@ -74,9 +74,9 @@
 			isa = PBXGroup;
 			children = (
 				08F9848321E4B67500DE6E78 /* Result.swift */,
+				08F984C521E6816900DE6E78 /* AuthUseCase.swift */,
 				0858764E21DA70A700C32422 /* RegisterUseCase.swift */,
 				08F9847421E17CF200DE6E78 /* UserProfileUseCase.swift */,
-				08F984C521E6816900DE6E78 /* AuthUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
