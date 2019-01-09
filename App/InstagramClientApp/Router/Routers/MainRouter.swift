@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+final class MainRouter: BasicRouter, MainRouter.Routes {
+    typealias Routes = RegisterRoute & LoginRoute
+}

@@ -16,11 +16,27 @@ class MainTabBarViewControllerTests: XCTestCase {
                         UIViewController(),
                         UIViewController(),
                         UIViewController()]
+        let router = MockMainRouter()
         
-        let sut = MainTabBarViewController.init(subViewControllers: dummyVCs)
+        let sut = MainTabBarViewController.init(subViewControllers: dummyVCs, router: router)
         
         XCTAssertNotNil(sut.viewControllers)
         XCTAssertEqual(sut.viewControllers, dummyVCs)
     }
 
+    
+    // MARK: - Helpers
+    
+    private class MockMainRouter: MainRouter.Routes {
+        var loginTransition: Transition = PushTransition()
+        var registerTransition: Transition = PushTransition()
+        
+        func openLoginPage(with transition: Transition?) {
+            
+        }
+        
+        func openRegisterPage() {
+            
+        }
+    }
 }
