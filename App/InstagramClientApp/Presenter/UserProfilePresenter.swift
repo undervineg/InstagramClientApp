@@ -8,6 +8,11 @@
 
 import InstagramEngine
 
+protocol UserProfileView {
+    func displayTitle(_ title: String)
+    func displayError(_ errorMessage: String)
+}
+
 final class UserProfilePresenter: UserProfileUseCaseOutput {
     
     private let view: UserProfileView

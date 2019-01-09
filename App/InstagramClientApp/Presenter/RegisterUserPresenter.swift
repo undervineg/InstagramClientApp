@@ -8,6 +8,11 @@
 
 import InstagramEngine
 
+protocol RegisterUserView {
+    func display(_ errorMessage: String)
+    func displayMain()
+}
+
 final class RegisterUserPresenter: RegisterUserUseCaseOutput {
     
     private let view: RegisterUserView

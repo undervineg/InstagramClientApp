@@ -8,6 +8,11 @@
 
 import InstagramEngine
 
+protocol SplashView {
+    func displayMain()
+    func displayRegister()
+}
+
 final class SplashPresenter: AuthUseCaseOutput {
     
     private let view: SplashView
@@ -22,5 +27,15 @@ final class SplashPresenter: AuthUseCaseOutput {
     
     func authFailed() {
         view.displayRegister()
+    }
+}
+
+extension WeakRef: SplashView where T: SplashView {
+    func displayMain() {
+        object?.displayMain()
+    }
+    
+    func displayRegister() {
+        object?.displayRegister()
     }
 }
