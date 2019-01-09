@@ -7,3 +7,23 @@
 //
 
 import Foundation
+
+protocol RegisterRoute {
+    var registerTransition: Transition { get }
+    
+    func openRegisterPage()
+}
+
+extension RegisterRoute where Self: Routable {
+    var registerTransition: Transition {
+        return ModalTransition()
+    }
+    
+    func openRegisterPage() {
+        let factory = iOSViewControllerFactory()
+        let router = RegisterRouter()
+        let registerVC = factory.registerViewController(router: router)
+        router.viewControllerBehind = registerVC
+        self.open(registerVC, with: self.registerTransition)
+    }
+}
