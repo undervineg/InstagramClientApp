@@ -6,4 +6,21 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import InstagramEngine
+
+final class SplashPresenter: AuthUseCaseOutput {
+    
+    private let view: SplashView
+    
+    init(view: SplashView) {
+        self.view = view
+    }
+    
+    func authSucceeded() {
+        view.displayMain()
+    }
+    
+    func authFailed() {
+        view.displayRegister()
+    }
+}

@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+protocol SplashView {
+    func displayMain()
+    func displayRegister()
+}
