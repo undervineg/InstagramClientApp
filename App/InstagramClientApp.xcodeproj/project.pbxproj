@@ -174,7 +174,6 @@
 		086E6C8121DD279C0094B808 /* Register */ = {
 			isa = PBXGroup;
 			children = (
-				086E6CB321DF79390094B808 /* RegisterRouter.swift */,
 				0858767521DC5CC700C32422 /* RegisterUserViewController.swift */,
 				0858767621DC5CC700C32422 /* RegisterUserViewController.xib */,
 			);
@@ -213,7 +212,7 @@
 			children = (
 				086E6C8821DE506B0094B808 /* Routable.swift */,
 				086E6CAD21DF78F20094B808 /* Closable.swift */,
-				086E6CAF21DF79070094B808 /* BasicRouter.swift */,
+				08F984BE21E5E1B700DE6E78 /* Routers */,
 				086E6CB621DF794A0094B808 /* Routes */,
 				086E6C9D21DE92400094B808 /* Transition */,
 			);
@@ -394,6 +393,15 @@
 				08F984BB21E5D5D600DE6E78 /* UserProfileView.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		08F984BE21E5E1B700DE6E78 /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				086E6CAF21DF79070094B808 /* BasicRouter.swift */,
+				086E6CB321DF79390094B808 /* RegisterRouter.swift */,
+			);
+			path = Routers;
 			sourceTree = "<group>";
 		};
 		0F6E0E952D28CD93E8714FA9 /* Frameworks */ = {

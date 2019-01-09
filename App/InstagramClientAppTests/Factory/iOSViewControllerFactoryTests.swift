@@ -23,4 +23,11 @@ class iOSViewControllerFactoryTests: XCTestCase {
         XCTAssert(vc is RegisterUserViewController)
     }
 
+    func test_creates_userProfileViewController() {
+        let sut = iOSViewControllerFactory()
+        
+        let vc = sut.userProfileViewController()
+        
+        XCTAssert(vc is UserProfileViewController)
+    }
 }

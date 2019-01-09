@@ -28,4 +28,17 @@ final class iOSViewControllerFactory: ViewControllerFactory {
         
         return vc
     }
+    
+    func userProfileViewController() -> UIViewController {
+        let vc = UserProfileViewController()
+        let client = UserProfileClientAdapter(firebaseAuth: Auth.self,
+                                              firebaseDatabase: Database.self,
+                                              firebaseStorage: Storage.self)
+        let presenter = UserProfilePresenter(view: vc)
+        let useCase = UserProfileUseCase(client: client, output: presenter)
+        
+        vc.loadProfile = useCase.loadProfile
+        
+        return vc
+    }
 }
