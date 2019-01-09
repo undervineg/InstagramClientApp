@@ -19,7 +19,7 @@ class RegisterUserClientAdapterTests: XCTestCase {
     let testImageData = UIImage(named: "profile_selected")?.jpegData(compressionQuality: 0.3)
     
     override func tearDown() {
-        MockFirebase.messages = []
+        MockFirebase.registerMessages = []
         MockFirebase.imageUploadMessages = []
         MockFirebase.updateUserInfoMessages = []
         super.tearDown()
@@ -35,14 +35,14 @@ class RegisterUserClientAdapterTests: XCTestCase {
             }
         }
         
-        firebase.completeWithFailure(errorCode: AuthErrorCode.invalidEmail.rawValue)
-        firebase.completeWithFailure(errorCode: AuthErrorCode.emailAlreadyInUse.rawValue)
-        firebase.completeWithFailure(errorCode: AuthErrorCode.userDisabled.rawValue)
-        firebase.completeWithFailure(errorCode: AuthErrorCode.wrongPassword.rawValue)
-        firebase.completeWithFailure(errorCode: AuthErrorCode.userNotFound.rawValue)
-        firebase.completeWithFailure(errorCode: AuthErrorCode.accountExistsWithDifferentCredential.rawValue)
-        firebase.completeWithFailure(errorCode: AuthErrorCode.networkError.rawValue)
-        firebase.completeWithFailure(errorCode: AuthErrorCode.credentialAlreadyInUse.rawValue)
+        firebase.completeWithRegisterFailure(errorCode: AuthErrorCode.invalidEmail.rawValue)
+        firebase.completeWithRegisterFailure(errorCode: AuthErrorCode.emailAlreadyInUse.rawValue)
+        firebase.completeWithRegisterFailure(errorCode: AuthErrorCode.userDisabled.rawValue)
+        firebase.completeWithRegisterFailure(errorCode: AuthErrorCode.wrongPassword.rawValue)
+        firebase.completeWithRegisterFailure(errorCode: AuthErrorCode.userNotFound.rawValue)
+        firebase.completeWithRegisterFailure(errorCode: AuthErrorCode.accountExistsWithDifferentCredential.rawValue)
+        firebase.completeWithRegisterFailure(errorCode: AuthErrorCode.networkError.rawValue)
+        firebase.completeWithRegisterFailure(errorCode: AuthErrorCode.credentialAlreadyInUse.rawValue)
         
         XCTAssertEqual(capturedError, [.invalidEmail,
                                        .emailAlreadyInUse,
@@ -59,7 +59,7 @@ class RegisterUserClientAdapterTests: XCTestCase {
         
         sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: testImageData!) { _ in }
         
-        firebase.completeWithSuccess(id: "0")
+        firebase.completeWithRegisterSuccess(id: "0")
         
         XCTAssertEqual(firebase.uploadedProfileImage, [testImageData])
     }
@@ -69,7 +69,7 @@ class RegisterUserClientAdapterTests: XCTestCase {
         
         sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: testImageData!) { _ in }
         
-        firebase.completeWithFailure(errorCode: 0)
+        firebase.completeWithRegisterFailure(errorCode: 0)
         
         XCTAssertEqual(firebase.uploadedProfileImage, [])
     }
@@ -79,7 +79,7 @@ class RegisterUserClientAdapterTests: XCTestCase {
         
         sut.register(email: "dummy@gmail.com", username: "dummy", password: "1234", profileImage: testImageData!) { _ in }
         
-        firebase.completeWithSuccess(id: "0") {
+        firebase.completeWithRegisterSuccess(id: "0") {
             firebase.completeWithImageUploadSuccess()
         }
         
@@ -97,7 +97,7 @@ class RegisterUserClientAdapterTests: XCTestCase {
             }
         }
         
-        firebase.completeWithSuccess(id: "0") {
+        firebase.completeWithRegisterSuccess(id: "0") {
             firebase.completeWithImageUploadFailure()
         }
 
@@ -115,7 +115,7 @@ class RegisterUserClientAdapterTests: XCTestCase {
             }
         }
         
-        firebase.completeWithSuccess(id: "0") {
+        firebase.completeWithRegisterSuccess(id: "0") {
             firebase.completeWithImageUploadSuccess() {
                 firebase.completeWithUpdateUserInfoFailure()
             }

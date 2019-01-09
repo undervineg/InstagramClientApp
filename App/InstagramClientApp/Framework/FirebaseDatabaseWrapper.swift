@@ -11,7 +11,7 @@ import InstagramEngine
 
 protocol FirebaseDatabaseWrapper {
     static func updateUser(userId: String, email: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void)
-    static func fetchUserInfo(_ userId: String) -> UserEntity?
+    static func fetchUserInfo(_ userId: String, completion: @escaping (UserEntity?) -> Void)
 }
 
 extension Database: FirebaseDatabaseWrapper {
@@ -20,18 +20,20 @@ extension Database: FirebaseDatabaseWrapper {
     private static let usernameKey = "username"
     private static let profileImageUrlKey = "profileImageUrl"
     
-    static func fetchUserInfo(_ userId: String) -> UserEntity? {
-        var userInfo: UserEntity?
+    static func fetchUserInfo(_ userId: String, completion: @escaping (UserEntity?) -> Void) {
         database().reference().child(usersRef).child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let userInfoValues = snapshot.value as? [String: Any] else { return }
+            guard let userInfoValues = snapshot.value as? [String: Any] else {
+                completion(nil)
+                return
+            }
             let email = userInfoValues[emailKey] as? String ?? ""
             let username = userInfoValues[usernameKey] as? String ?? ""
             let profileImageUrl = userInfoValues[profileImageUrlKey] as? String ?? ""
             
-            userInfo = UserEntity(id: userId, email: email, username: username, profileImageUrl: profileImageUrl)
+            let userInfo = UserEntity(id: userId, email: email, username: username, profileImageUrl: profileImageUrl)
+            completion(userInfo)
+            
         }, withCancel: nil)
-        
-        return userInfo
     }
     
     static func updateUser(userId: String, email: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void) {

@@ -36,6 +36,8 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
         return updateUserInfoMessages.map { $0.userInfo }
     }
     
+    static var loadUserInfoMessages = [(userId: String, completion: (UserEntity?) -> Void)]()
+    
     // MARK: - Methods for Mock
     
     static func stubUser(_ user: UserEntity) {
@@ -71,6 +73,18 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
         updateUserInfoMessages[index].completion(error)
     }
     
+    static func completeWithLoadUserInfoSuccess(at index: Int = 0) {
+        if let userId = currentUserId,
+            loadUserInfoMessages[index].userId == userId,
+            let user = stubbedUser[userId] {
+            loadUserInfoMessages[index].completion(user)
+        }
+    }
+    
+    static func completeWithLoadUserInfoFailure(at index: Int = 0) {
+        loadUserInfoMessages[index].completion(nil)
+    }
+    
     // MARK: - Methods for Protocols
     
     static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void) {
@@ -92,7 +106,8 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
         updateUserInfoMessages.append((userInfo, completion))
     }
     
-    static func fetchUserInfo(_ userId: String) -> UserEntity? {
-        return stubbedUser[userId]
+    static func fetchUserInfo(_ userId: String, completion: @escaping (UserEntity?) -> Void) {
+        loadUserInfoMessages.append((userId, completion))
     }
+    
 }

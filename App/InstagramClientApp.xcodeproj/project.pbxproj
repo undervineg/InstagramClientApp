@@ -45,6 +45,15 @@
 		08F984A221E5092300DE6E78 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A121E5092300DE6E78 /* main.swift */; };
 		08F984A421E5196400DE6E78 /* StubAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A321E5196400DE6E78 /* StubAppDelegate.swift */; };
 		08F984A621E5266800DE6E78 /* RegisterUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A521E5266800DE6E78 /* RegisterUserView.swift */; };
+		08F984A921E53CAD00DE6E78 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A821E53CAD00DE6E78 /* MainTabBarViewController.swift */; };
+		08F984AB21E53D2E00DE6E78 /* MainRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984AA21E53D2E00DE6E78 /* MainRoute.swift */; };
+		08F984AD21E5420A00DE6E78 /* MainTabBarViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984AC21E5420A00DE6E78 /* MainTabBarViewControllerTests.swift */; };
+		08F984B021E5437A00DE6E78 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984AE21E5437A00DE6E78 /* UserProfileViewController.swift */; };
+		08F984B121E5437A00DE6E78 /* UserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08F984AF21E5437A00DE6E78 /* UserProfileViewController.xib */; };
+		08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B321E54A4700DE6E78 /* UserProfilePresenter.swift */; };
+		08F984B621E54B3300DE6E78 /* UserProfilePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B521E54B3300DE6E78 /* UserProfilePresenterTests.swift */; };
+		08F984B821E54B6C00DE6E78 /* UserProfileClientAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B721E54B6C00DE6E78 /* UserProfileClientAdapter.swift */; };
+		08F984BA21E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B921E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift */; };
 		6EC36F26F45DA30F8999551A /* Pods_InstagramClientApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +122,15 @@
 		08F984A121E5092300DE6E78 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		08F984A321E5196400DE6E78 /* StubAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubAppDelegate.swift; sourceTree = "<group>"; };
 		08F984A521E5266800DE6E78 /* RegisterUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserView.swift; sourceTree = "<group>"; };
+		08F984A821E53CAD00DE6E78 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
+		08F984AA21E53D2E00DE6E78 /* MainRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRoute.swift; sourceTree = "<group>"; };
+		08F984AC21E5420A00DE6E78 /* MainTabBarViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewControllerTests.swift; sourceTree = "<group>"; };
+		08F984AE21E5437A00DE6E78 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		08F984AF21E5437A00DE6E78 /* UserProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileViewController.xib; sourceTree = "<group>"; };
+		08F984B321E54A4700DE6E78 /* UserProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePresenter.swift; sourceTree = "<group>"; };
+		08F984B521E54B3300DE6E78 /* UserProfilePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePresenterTests.swift; sourceTree = "<group>"; };
+		08F984B721E54B6C00DE6E78 /* UserProfileClientAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileClientAdapter.swift; sourceTree = "<group>"; };
+		08F984B921E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileClientAdapterTests.swift; sourceTree = "<group>"; };
 		20519A3EAF3AB2EFD22FA90B /* Pods-InstagramClientApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClientApp.release.xcconfig"; path = "Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp.release.xcconfig"; sourceTree = "<group>"; };
 		68B1D645F06D4FB4E193462D /* Pods-InstagramClientApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClientApp.debug.xcconfig"; path = "Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp.debug.xcconfig"; sourceTree = "<group>"; };
 		AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramClientApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				08F9847821E4B1E100DE6E78 /* RegisterUserClientAdapter.swift */,
+				08F984B721E54B6C00DE6E78 /* UserProfileClientAdapter.swift */,
 			);
 			path = Adapter;
 			sourceTree = "<group>";
@@ -164,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				0858766C21DB8C7600C32422 /* RegisterUserViewControllerTests.swift */,
+				08F984AC21E5420A00DE6E78 /* MainTabBarViewControllerTests.swift */,
 			);
 			path = "View Controller";
 			sourceTree = "<group>";
@@ -173,6 +193,7 @@
 			children = (
 				08F9848921E4B8CE00DE6E78 /* Helper */,
 				086E6C7B21DC6AC90094B808 /* RegisterUserClientAdapterTests.swift */,
+				08F984B921E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift */,
 			);
 			path = Adapter;
 			sourceTree = "<group>";
@@ -246,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				086E6CB121DF791F0094B808 /* LoginRoute.swift */,
+				08F984AA21E53D2E00DE6E78 /* MainRoute.swift */,
 				086E6CB721DF7C8B0094B808 /* ImagePickerRoute.swift */,
 			);
 			path = Routes;
@@ -254,6 +276,8 @@
 		086E6CB921DF7CEE0094B808 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				08F984A821E53CAD00DE6E78 /* MainTabBarViewController.swift */,
+				08F984B221E5498A00DE6E78 /* UserProfile */,
 				086E6C8121DD279C0094B808 /* Register */,
 			);
 			path = ViewController;
@@ -337,6 +361,7 @@
 			isa = PBXGroup;
 			children = (
 				08F9848E21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift */,
+				08F984B521E54B3300DE6E78 /* UserProfilePresenterTests.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -346,8 +371,18 @@
 			children = (
 				08F984A521E5266800DE6E78 /* RegisterUserView.swift */,
 				08F9848A21E4C0C000DE6E78 /* RegisterUserPresenter.swift */,
+				08F984B321E54A4700DE6E78 /* UserProfilePresenter.swift */,
 			);
 			path = Presenter;
+			sourceTree = "<group>";
+		};
+		08F984B221E5498A00DE6E78 /* UserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				08F984AE21E5437A00DE6E78 /* UserProfileViewController.swift */,
+				08F984AF21E5437A00DE6E78 /* UserProfileViewController.xib */,
+			);
+			path = UserProfile;
 			sourceTree = "<group>";
 		};
 		0F6E0E952D28CD93E8714FA9 /* Frameworks */ = {
@@ -457,6 +492,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08F984B121E5437A00DE6E78 /* UserProfileViewController.xib in Resources */,
 				0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */,
 				0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */,
 				0858767821DC5CC700C32422 /* RegisterUserViewController.xib in Resources */,
@@ -584,13 +620,17 @@
 				086E6C9A21DE91D50094B808 /* ModalTransition.swift in Sources */,
 				086E6C9821DE91C70094B808 /* Transition.swift in Sources */,
 				086E6CB221DF791F0094B808 /* LoginRoute.swift in Sources */,
+				08F984A921E53CAD00DE6E78 /* MainTabBarViewController.swift in Sources */,
+				08F984B021E5437A00DE6E78 /* UserProfileViewController.swift in Sources */,
 				0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */,
 				086E6CB821DF7C8B0094B808 /* ImagePickerRoute.swift in Sources */,
 				08F9847D21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift in Sources */,
 				086E6CB421DF79390094B808 /* RegisterRouter.swift in Sources */,
 				086E6CAE21DF78F20094B808 /* Closable.swift in Sources */,
 				08F984A221E5092300DE6E78 /* main.swift in Sources */,
+				08F984AB21E53D2E00DE6E78 /* MainRoute.swift in Sources */,
 				086E6C8921DE506B0094B808 /* Routable.swift in Sources */,
+				08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */,
 				086E6C8F21DE71000094B808 /* iOSViewControllerFactory.swift in Sources */,
 				086E6CB021DF79070094B808 /* BasicRouter.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseStorageWrapper.swift in Sources */,
@@ -600,6 +640,7 @@
 				08F984A621E5266800DE6E78 /* RegisterUserView.swift in Sources */,
 				08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */,
 				08F9847921E4B1E100DE6E78 /* RegisterUserClientAdapter.swift in Sources */,
+				08F984B821E54B6C00DE6E78 /* UserProfileClientAdapter.swift in Sources */,
 				0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -611,12 +652,15 @@
 				08F9848F21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift in Sources */,
 				08F9848821E4B8C900DE6E78 /* MockFirebase.swift in Sources */,
 				08F984A421E5196400DE6E78 /* StubAppDelegate.swift in Sources */,
+				08F984BA21E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift in Sources */,
 				086E6C8D21DE6F5D0094B808 /* iOSViewControllerFactoryTests.swift in Sources */,
+				08F984B621E54B3300DE6E78 /* UserProfilePresenterTests.swift in Sources */,
 				08F9849521E4EBDA00DE6E78 /* WeakRefTests.swift in Sources */,
 				086E6CA221DE92BF0094B808 /* BasicRouterTests.swift in Sources */,
 				086E6CA721DEC1670094B808 /* RegisterRouterTests.swift in Sources */,
 				0858766D21DB8C7600C32422 /* RegisterUserViewControllerTests.swift in Sources */,
 				086E6CA921DF6A100094B808 /* StubTransition.swift in Sources */,
+				08F984AD21E5420A00DE6E78 /* MainTabBarViewControllerTests.swift in Sources */,
 				086E6C7C21DC6AC90094B808 /* RegisterUserClientAdapterTests.swift in Sources */,
 				08F9849921E4EDBA00DE6E78 /* AppDelegateTests.swift in Sources */,
 			);
