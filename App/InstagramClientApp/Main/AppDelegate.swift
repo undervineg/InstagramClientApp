@@ -22,17 +22,17 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             FirebaseApp.configure()
         }
 
+        let window = UIWindow(frame: UIScreen.main.bounds)
         let factory = iOSViewControllerFactory()
+        let router = SplashRouter(window: window)
+        let splashVC = factory.splashViewController(router: router)
         
-        let registerRouter = RegisterRouter()
-        let registerViewController = factory.registerViewController(router: registerRouter)
-        registerRouter.viewControllerBehind = registerViewController
+        window.rootViewController = splashVC
+        window.backgroundColor = .white
+        window.makeKeyAndVisible()
         
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.makeKeyAndVisible()
-        window?.rootViewController = registerViewController
+        self.window = window
         
         return true
     }
-
 }

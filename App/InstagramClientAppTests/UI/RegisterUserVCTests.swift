@@ -156,6 +156,14 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssertEqual(router.imagePickerIsClosed, true)
     }
     
+//    func test() {
+//        let (sut, router, _) = makeSUT()
+//
+//        sut.displayMain()
+//
+//        XCTAssertEqual(router.mainPageIsOpened, true)
+//    }
+    
     
     // MARK: - Helpers
     
@@ -201,6 +209,10 @@ class RegisterUserViewControllerTests: XCTestCase {
         
         func openMainPage() {
             mainPageIsOpened = true
+        }
+        
+        func prepareMainScreen() -> UIViewController {
+            return UIViewController()
         }
     }
 }

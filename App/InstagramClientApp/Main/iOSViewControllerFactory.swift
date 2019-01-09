@@ -16,6 +16,17 @@ protocol ViewControllerFactory {
 
 final class iOSViewControllerFactory: ViewControllerFactory {
     
+    func splashViewController(router: SplashRouter.Route) -> UIViewController {
+        let vc = SplashViewController(router: router)
+        let client = AuthClientAdapter(auth: Auth.self)
+        let presenter = SplashPresenter(view: WeakRef(vc))
+        let useCase = AuthUseCase(client: client, output: presenter)
+        
+        vc.checkIfAuthenticated = useCase.checkIfAuthenticated
+        
+        return vc
+    }
+    
     func registerViewController(router: RegisterRouter.Routes) -> UIViewController {
         let vc = RegisterUserViewController(router: router)
         let adapter = RegisterUserClientAdapter(firebaseAuth: Auth.self,

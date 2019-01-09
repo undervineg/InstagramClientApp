@@ -14,7 +14,17 @@ class iOSViewControllerFactoryTests: XCTestCase {
 
     private var vc: UIViewController?
     
-    func test_creates_resultViewController() {
+    func test_creates_splashVC() {
+        let sut = iOSViewControllerFactory()
+        let window = UIWindow()
+        let router = SplashRouter(window: window)
+        
+        let vc = sut.splashViewController(router: router)
+        
+        XCTAssert(vc is SplashViewController)
+    }
+    
+    func test_creates_resultVC() {
         let sut = iOSViewControllerFactory()
         let router = RegisterRouter()
         
@@ -23,7 +33,7 @@ class iOSViewControllerFactoryTests: XCTestCase {
         XCTAssert(vc is RegisterUserViewController)
     }
 
-    func test_creates_userProfileViewController() {
+    func test_creates_userProfileVC() {
         let sut = iOSViewControllerFactory()
         
         let vc = sut.userProfileViewController()

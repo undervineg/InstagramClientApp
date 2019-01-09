@@ -8,6 +8,16 @@
 
 import UIKit
 
+protocol Routable: class {
+    var viewControllerBehind: UIViewController? { get }
+    
+    func open(_ viewController: UIViewController, with transition: Transition)
+}
+
+protocol Closable: class {
+    func close(to destination: UIViewController?)
+}
+
 class BasicRouter: Routable, Closable {
     weak var viewControllerBehind: UIViewController?
     
