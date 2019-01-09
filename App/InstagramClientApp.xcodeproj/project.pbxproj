@@ -65,6 +65,7 @@
 		08F984D221E6922F00DE6E78 /* SplashPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984D121E6922F00DE6E78 /* SplashPresenterTests.swift */; };
 		08F984D621E6964600DE6E78 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984D521E6964600DE6E78 /* SplashViewController.swift */; };
 		08F984D821E696A300DE6E78 /* SplashViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984D721E696A300DE6E78 /* SplashViewControllerTests.swift */; };
+		08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984DB21E69A8F00DE6E78 /* SplashRouter.swift */; };
 		6EC36F26F45DA30F8999551A /* Pods_InstagramClientApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -153,6 +154,7 @@
 		08F984D121E6922F00DE6E78 /* SplashPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashPresenterTests.swift; sourceTree = "<group>"; };
 		08F984D521E6964600DE6E78 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		08F984D721E696A300DE6E78 /* SplashViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewControllerTests.swift; sourceTree = "<group>"; };
+		08F984DB21E69A8F00DE6E78 /* SplashRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashRouter.swift; sourceTree = "<group>"; };
 		20519A3EAF3AB2EFD22FA90B /* Pods-InstagramClientApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClientApp.release.xcconfig"; path = "Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp.release.xcconfig"; sourceTree = "<group>"; };
 		68B1D645F06D4FB4E193462D /* Pods-InstagramClientApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClientApp.debug.xcconfig"; path = "Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp.debug.xcconfig"; sourceTree = "<group>"; };
 		AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramClientApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -428,6 +430,7 @@
 			isa = PBXGroup;
 			children = (
 				086E6CAF21DF79070094B808 /* BasicRouter.swift */,
+				08F984DB21E69A8F00DE6E78 /* SplashRouter.swift */,
 				086E6CB321DF79390094B808 /* RegisterRouter.swift */,
 				08F984C121E5E5F000DE6E78 /* MainRouter.swift */,
 			);
@@ -695,6 +698,7 @@
 				08F9848B21E4C0C000DE6E78 /* RegisterUserPresenter.swift in Sources */,
 				08F984A621E5266800DE6E78 /* RegisterUserView.swift in Sources */,
 				08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */,
+				08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */,
 				08F984C421E6770C00DE6E78 /* MainView.swift in Sources */,
 				08F9847921E4B1E100DE6E78 /* RegisterUserClientAdapter.swift in Sources */,
 				08F984B821E54B6C00DE6E78 /* UserProfileClientAdapter.swift in Sources */,

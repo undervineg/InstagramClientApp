@@ -6,12 +6,13 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol RegisterRoute {
     var registerTransition: Transition { get }
     
     func openRegisterPage()
+    func prepareRegisterScreen() -> UIViewController
 }
 
 extension RegisterRoute where Self: Routable {
@@ -20,10 +21,15 @@ extension RegisterRoute where Self: Routable {
     }
     
     func openRegisterPage() {
+        let registerVC = prepareRegisterScreen()
+        self.open(registerVC, with: self.registerTransition)
+    }
+    
+    func prepareRegisterScreen() -> UIViewController {
         let factory = iOSViewControllerFactory()
         let router = RegisterRouter()
-        let registerVC = factory.registerViewController(router: router)
-        router.viewControllerBehind = registerVC
-        self.open(registerVC, with: self.registerTransition)
+        let vc = factory.registerViewController(router: router)
+        router.viewControllerBehind = vc
+        return vc
     }
 }

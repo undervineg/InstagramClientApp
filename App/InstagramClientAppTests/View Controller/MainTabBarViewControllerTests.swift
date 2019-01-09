@@ -28,8 +28,12 @@ class MainTabBarViewControllerTests: XCTestCase {
     // MARK: - Helpers
     
     private class MockMainRouter: MainRouter.Routes {
-        var loginTransition: Transition = PushTransition()
-        var registerTransition: Transition = PushTransition()
+        var registerTransition: Transition {
+            return ModalTransition()
+        }
+        var loginTransition: Transition {
+            return ModalTransition()
+        }
         
         func openLoginPage(with transition: Transition?) {
             
@@ -37,6 +41,10 @@ class MainTabBarViewControllerTests: XCTestCase {
         
         func openRegisterPage() {
             
+        }
+        
+        func prepareRegisterScreen() -> UIViewController {
+            return UIViewController()
         }
     }
 }
