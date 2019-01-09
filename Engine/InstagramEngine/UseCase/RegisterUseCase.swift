@@ -42,10 +42,9 @@ final public class RegisterUserUseCase {
         case unknown
     }
     
-    public func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
+    public func register(email: String, username: String, password: String, profileImage: Data) {
         client.register(email: email, username: username, password: password, profileImage: profileImage) { (error) in
             if let error = error {
-                completion(error)
                 self.output.registerFailed(error)
                 return
             }

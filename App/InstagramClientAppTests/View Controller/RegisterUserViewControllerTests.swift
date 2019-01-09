@@ -168,14 +168,10 @@ class RegisterUserViewControllerTests: XCTestCase {
         return (sut, router, useCaseStub)
     }
     
-    private class StubRegisterUseCase: RegisterUserClient {
+    private class StubRegisterUseCase {
         var registerCallCount = 0
         
-        func fetchCurrentUserInfo() -> UserEntity? {
-            return nil
-        }
-        
-        func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
+        func register(email: String, username: String, password: String, profileImage: Data) {
             registerCallCount += 1
         }
     }
@@ -184,6 +180,7 @@ class RegisterUserViewControllerTests: XCTestCase {
         var imagePickerIsOpened: Bool = false
         var imagePickerIsClosed: Bool = false
         var loginPageIsOpened: Bool = false
+        var mainPageIsOpened: Bool = false
         
         init() {}
         
@@ -200,6 +197,10 @@ class RegisterUserViewControllerTests: XCTestCase {
         
         func openLoginPage(with transition: Transition?) {
             loginPageIsOpened = true
+        }
+        
+        func openMainPage() {
+            mainPageIsOpened = true
         }
     }
 }

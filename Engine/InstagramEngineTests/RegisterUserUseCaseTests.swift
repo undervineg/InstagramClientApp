@@ -24,36 +24,20 @@ class RegisterUserUseCaseTests: XCTestCase {
     func test_register_requestsRegisterTheRightUser() {
         let (sut, gateway, _) = makeSUT()
         let uinfo = UserInfo()
-        
-        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
-        
+
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData)
+
         XCTAssertEqual(gateway.requestedUserInfos, [uinfo])
     }
 
     func test_registerTwice_requestsRegisterTheRightUserTwice() {
         let (sut, gateway, _) = makeSUT()
         let uinfo = UserInfo()
-        
-        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
-        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
-        
-        XCTAssertEqual(gateway.requestedUserInfos, [uinfo, uinfo])
-    }
-    
-    func test_register_deliversError_onError() {
-        let (sut, gateway, _) = makeSUT()
-        let uinfo = UserInfo()
-        
-        var capturedErrors = [RegisterUserUseCase.Error]()
-        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { error in
-            if let error = error {
-                capturedErrors.append(error)
-            }
-        }
 
-        gateway.completes(with: RegisterUserUseCase.Error.invalidName)
-        
-        XCTAssertEqual(capturedErrors, [.invalidName])
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData)
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData)
+
+        XCTAssertEqual(gateway.requestedUserInfos, [uinfo, uinfo])
     }
     
     func test_registerTwice_sendMessageToOutputTwice_onSuccess() {
@@ -61,13 +45,14 @@ class RegisterUserUseCaseTests: XCTestCase {
         
         let uinfo = UserInfo()
         
-        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
-        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData)
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData)
         
         gateway.completeWithSuccess(at: 0)
         gateway.completeWithSuccess(at: 1)
         
         XCTAssertEqual(output.successCallCount, 2)
+        XCTAssertEqual(output.capturedError, [])
     }
     
     func test_registerTwice_sendErrorMessageToOutputTwice_onFailure() {
@@ -75,13 +60,14 @@ class RegisterUserUseCaseTests: XCTestCase {
         
         let uinfo = UserInfo()
         
-        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
-        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData) { _ in }
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData)
+        sut.register(email: uinfo.email, username: uinfo.username, password: uinfo.password, profileImage: uinfo.profileImageData)
         
         gateway.completes(with: .invalidName, at: 0)
         gateway.completes(with: .invalidEmail, at: 1)
         
         XCTAssertEqual(output.capturedError, [.invalidName, .invalidEmail])
+        XCTAssertEqual(output.successCallCount, 0)
     }
     
     // MARK: - Helpers

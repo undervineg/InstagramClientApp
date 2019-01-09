@@ -9,5 +9,5 @@
 import Foundation
 
 final class RegisterRouter: BasicRouter, RegisterRouter.Routes {
-    typealias Routes = LoginRoute & ImagePickerRoute
+    typealias Routes = LoginRoute & ImagePickerRoute & MainRoute
 }

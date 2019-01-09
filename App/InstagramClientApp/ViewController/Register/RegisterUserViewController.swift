@@ -19,7 +19,7 @@ final class RegisterUserViewController: UIViewController {
     
     private var router: RegisterRouter.Routes?
     
-    var registerCallback: ((String, String, String, Data, @escaping (RegisterUserUseCase.Error?) -> Void) -> ())?
+    var registerCallback: ((String, String, String, Data) -> ())?
     
     convenience init(router: RegisterRouter.Routes) {
         self.init()
@@ -63,9 +63,7 @@ final class RegisterUserViewController: UIViewController {
         let password = passwordTextField.text ?? ""
         let profileImageData = profileImageButton.imageView?.image?.jpegData(compressionQuality: 0.3)
         
-        registerCallback?(email, username, password, profileImageData!) {
-            print($0)
-        }
+        registerCallback?(email, username, password, profileImageData!)
     }
     
     private func isAllTextFieldsValid() -> Bool {
@@ -93,7 +91,8 @@ extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigat
 
 extension RegisterUserViewController: RegisterUserView {
     func displayMain() {
-        // TODO: Open Main
+        // close current vc
+        router?.openMainPage()
     }
     
     func display(_ errorMessage: String) {

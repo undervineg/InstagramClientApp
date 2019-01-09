@@ -20,7 +20,7 @@ final class StubAppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         if let rootVC = window?.rootViewController as? RegisterUserViewController {
-            rootVC.registerCallback?("", "", "", Data(), { _ in })
+            rootVC.registerCallback?("", "", "", Data())
         }
         
         return true

@@ -55,6 +55,8 @@
 		08F984B821E54B6C00DE6E78 /* UserProfileClientAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B721E54B6C00DE6E78 /* UserProfileClientAdapter.swift */; };
 		08F984BA21E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B921E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift */; };
 		08F984BC21E5D5D600DE6E78 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984BB21E5D5D600DE6E78 /* UserProfileView.swift */; };
+		08F984C021E5E3F600DE6E78 /* RegisterRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984BF21E5E3F600DE6E78 /* RegisterRoute.swift */; };
+		08F984C221E5E5F000DE6E78 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C121E5E5F000DE6E78 /* MainRouter.swift */; };
 		6EC36F26F45DA30F8999551A /* Pods_InstagramClientApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +135,8 @@
 		08F984B721E54B6C00DE6E78 /* UserProfileClientAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileClientAdapter.swift; sourceTree = "<group>"; };
 		08F984B921E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileClientAdapterTests.swift; sourceTree = "<group>"; };
 		08F984BB21E5D5D600DE6E78 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
+		08F984BF21E5E3F600DE6E78 /* RegisterRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRoute.swift; sourceTree = "<group>"; };
+		08F984C121E5E5F000DE6E78 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		20519A3EAF3AB2EFD22FA90B /* Pods-InstagramClientApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClientApp.release.xcconfig"; path = "Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp.release.xcconfig"; sourceTree = "<group>"; };
 		68B1D645F06D4FB4E193462D /* Pods-InstagramClientApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramClientApp.debug.xcconfig"; path = "Target Support Files/Pods-InstagramClientApp/Pods-InstagramClientApp.debug.xcconfig"; sourceTree = "<group>"; };
 		AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramClientApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,6 +271,7 @@
 		086E6CB621DF794A0094B808 /* Routes */ = {
 			isa = PBXGroup;
 			children = (
+				08F984BF21E5E3F600DE6E78 /* RegisterRoute.swift */,
 				086E6CB121DF791F0094B808 /* LoginRoute.swift */,
 				08F984AA21E53D2E00DE6E78 /* MainRoute.swift */,
 				086E6CB721DF7C8B0094B808 /* ImagePickerRoute.swift */,
@@ -400,6 +405,7 @@
 			children = (
 				086E6CAF21DF79070094B808 /* BasicRouter.swift */,
 				086E6CB321DF79390094B808 /* RegisterRouter.swift */,
+				08F984C121E5E5F000DE6E78 /* MainRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -637,6 +643,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				086E6C9A21DE91D50094B808 /* ModalTransition.swift in Sources */,
+				08F984C221E5E5F000DE6E78 /* MainRouter.swift in Sources */,
+				08F984C021E5E3F600DE6E78 /* RegisterRoute.swift in Sources */,
 				086E6C9821DE91C70094B808 /* Transition.swift in Sources */,
 				086E6CB221DF791F0094B808 /* LoginRoute.swift in Sources */,
 				08F984A921E53CAD00DE6E78 /* MainTabBarViewController.swift in Sources */,
