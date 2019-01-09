@@ -10,4 +10,5 @@ import Foundation
 
 protocol UserProfileView {
     func displayTitle(_ title: String)
+    func displayError(_ errorMessage: String)
 }

@@ -21,12 +21,23 @@ final class UserProfilePresenter: UserProfileUseCaseOutput {
     }
     
     func loadUserFailed(_ error: UserProfileUseCase.Error) {
-        
+        var errorMessage = ""
+        switch error {
+        case .currentUserIDNotExist:
+            errorMessage = "사용자 계정이 없습니다."
+        case .currentUserNotExist:
+            errorMessage = "사용자 정보가 없습니다."
+        }
+        view.displayError(errorMessage)
     }
 }
 
 extension WeakRef: UserProfileView where T: UserProfileView {
     func displayTitle(_ title: String) {
         object?.displayTitle(title)
+    }
+    
+    func displayError(_ errorMessage: String) {
+        object?.displayError(errorMessage)
     }
 }

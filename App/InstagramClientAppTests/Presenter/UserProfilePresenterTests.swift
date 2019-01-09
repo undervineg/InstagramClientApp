@@ -25,14 +25,31 @@ class UserProfilePresenterTests: XCTestCase {
         XCTAssertEqual(view.stubbedTitle, [user.username])
     }
 
+    func test_loadUserFailed_displayCurrentUserNotExistError() {
+        let view = UserProfileViewStub()
+        let sut = UserProfilePresenter(view: view)
+        
+        sut.loadUserFailed(.currentUserIDNotExist)
+        sut.loadUserFailed(.currentUserNotExist)
+        
+        XCTAssertEqual(view.stubbedErrorMessage, [
+            "사용자 계정이 없습니다.",
+            "사용자 정보가 없습니다."
+        ])
+    }
     
     // MARK: - Helpers
     
     private class UserProfileViewStub: UserProfileView {
         var stubbedTitle = [String]()
+        var stubbedErrorMessage = [String]()
         
         func displayTitle(_ title: String) {
             stubbedTitle.append(title)
+        }
+        
+        func displayError(_ errorMessage: String) {
+            stubbedErrorMessage.append(errorMessage)
         }
     }
         
