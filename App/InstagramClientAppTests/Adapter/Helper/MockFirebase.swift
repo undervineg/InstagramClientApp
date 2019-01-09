@@ -15,7 +15,36 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
     
     // MARK: - Properties for Protocols
     
+    static var isAuthenticated: Bool = false
     static var currentUserId: String?
+    
+    
+    // MARK: - Methods for Protocols
+    
+    static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void) {
+        registerMessages.append((email, password, completion))
+    }
+    
+    static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
+        imageUploadMessages.append((imageData, completion))
+    }
+    
+    static func updateUser(userId: String, email: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void) {
+        let userInfo = [
+            userId: [
+                "email": email,
+                "username": username,
+                "profileImageUrl": profileImageUrl
+            ]
+        ]
+        updateUserInfoMessages.append((userInfo, completion))
+    }
+    
+    static func fetchUserInfo(_ userId: String, completion: @escaping (UserEntity?) -> Void) {
+        loadUserInfoMessages.append((userId, completion))
+    }
+    
+    
     
     // MARK: - Properties for Mock
     
@@ -38,7 +67,8 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
     
     static var loadUserInfoMessages = [(userId: String, completion: (UserEntity?) -> Void)]()
     
-    // MARK: - Methods for Mock
+    
+    // MARK: - Helper Methods for Mock
     
     static func stubUser(_ user: UserEntity) {
         stubbedUser.updateValue(user, forKey: user.id)
@@ -90,31 +120,6 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
     
     static func completeWithLoadUserInfoFailure(at index: Int = 0) {
         loadUserInfoMessages[index].completion(nil)
-    }
-    
-    // MARK: - Methods for Protocols
-    
-    static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void) {
-        registerMessages.append((email, password, completion))
-    }
-    
-    static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
-        imageUploadMessages.append((imageData, completion))
-    }
-    
-    static func updateUser(userId: String, email: String, username: String, profileImageUrl: String, completion: @escaping (Error?) -> Void) {
-        let userInfo = [
-            userId: [
-                "email": email,
-                "username": username,
-                "profileImageUrl": profileImageUrl
-            ]
-        ]
-        updateUserInfoMessages.append((userInfo, completion))
-    }
-    
-    static func fetchUserInfo(_ userId: String, completion: @escaping (UserEntity?) -> Void) {
-        loadUserInfoMessages.append((userId, completion))
     }
     
 }

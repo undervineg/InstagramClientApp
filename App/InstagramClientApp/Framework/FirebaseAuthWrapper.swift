@@ -10,12 +10,17 @@ import FirebaseAuth
 import InstagramEngine
 
 protocol FirebaseAuthWrapper {
+    static var isAuthenticated: Bool { get }
     static var currentUserId: String? { get }
     
     static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void)
 }
 
 extension Auth: FirebaseAuthWrapper {
+    static var isAuthenticated: Bool {
+        return auth().currentUser != nil
+    }
+    
     static var currentUserId: String? {
         return auth().currentUser?.uid
     }
