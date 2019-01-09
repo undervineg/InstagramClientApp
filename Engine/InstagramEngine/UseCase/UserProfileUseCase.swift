@@ -13,7 +13,8 @@ public protocol UserProfileClient {
 }
 
 public protocol UserProfileUseCaseOutput {
-    
+    func loadUserSucceeded(_ user: UserEntity)
+    func loadUserFailed(_ error: UserProfileUseCase.Error)
 }
 
 final public class UserProfileUseCase {
@@ -27,6 +28,7 @@ final public class UserProfileUseCase {
     }
     
     public enum Error: Swift.Error {
+        case currentUserIDNotExist
         case currentUserNotExist
     }
     
