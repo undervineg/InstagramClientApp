@@ -45,7 +45,7 @@ final class iOSViewControllerFactory: ViewControllerFactory {
         let client = UserProfileClientAdapter(firebaseAuth: Auth.self,
                                               firebaseDatabase: Database.self,
                                               firebaseStorage: Storage.self)
-        let presenter = UserProfilePresenter(view: vc)
+        let presenter = UserProfilePresenter(view: WeakRef(vc))
         let useCase = UserProfileUseCase(client: client, output: presenter)
         
         vc.loadProfile = useCase.loadProfile
