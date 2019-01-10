@@ -13,13 +13,14 @@ class UserProfileVCTests: XCTestCase {
     
     func test_loadProfile_whenViewWillAppear() {
         let sut = UserProfileViewController()
+        _ = sut.view
         
         var callCount = 0
         sut.loadProfile = {
             callCount += 1
         }
         
-        _ = sut.view
+        sut.viewWillAppear(false)
         
         XCTAssertEqual(callCount, 1)
     }

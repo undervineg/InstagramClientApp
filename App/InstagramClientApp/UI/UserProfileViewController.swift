@@ -25,6 +25,10 @@ class UserProfileViewController: UICollectionViewController {
         tabBarItem = UITabBarItem(title: "Profile",
                                   image: UIImage(named: "profile_unselected")?.withRenderingMode(.alwaysTemplate),
                                   selectedImage: UIImage(named: "profile_selected")?.withRenderingMode(.alwaysTemplate))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         loadProfile?()
     }
