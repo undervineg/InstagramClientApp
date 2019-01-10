@@ -40,4 +40,12 @@ class iOSViewControllerFactoryTests: XCTestCase {
         
         XCTAssert(vc is UserProfileViewController)
     }
+    
+    func test_creates_mainVC() {
+        let sut = iOSViewControllerFactory()
+        
+        let vc = sut.mainViewController()
+        
+        XCTAssert(vc is MainTabBarViewController)
+    }
 }

@@ -21,18 +21,8 @@ extension MainRoute where Self: Closable {
     
     func prepareMainScreen() -> UIViewController {
         let factory = iOSViewControllerFactory()
-        let defaultVC = UIViewController()
-        defaultVC.view.backgroundColor = .white
-        let defaultNavigation = UINavigationController(rootViewController: defaultVC)
-
-        let profileVC = factory.userProfileViewController()
-        let profileNavigation = UINavigationController(rootViewController: profileVC)
-
-        let router = MainRouter()
-        let mainTabBarVC = MainTabBarViewController(subViewControllers: [defaultNavigation, profileNavigation],
-                                                    router: router)
-        router.viewControllerBehind = mainTabBarVC
-        mainTabBarVC.selectedIndex = 0
+        
+        let mainTabBarVC = factory.mainViewController()
 
         return mainTabBarVC
     }

@@ -16,6 +16,21 @@ protocol ViewControllerFactory {
 
 final class iOSViewControllerFactory: ViewControllerFactory {
     
+    func mainViewController() -> UIViewController {
+        let defaultVC = UIViewController()
+        defaultVC.view.backgroundColor = .white
+        
+        let profileVC = userProfileViewController()
+        let profileNavigation = UINavigationController(rootViewController: profileVC)
+        
+        let router = MainRouter()
+        let mainTabBarVC = MainTabBarViewController(subViewControllers: [profileNavigation, defaultVC], router: router)
+        router.viewControllerBehind = mainTabBarVC
+        mainTabBarVC.selectedIndex = 0
+        
+        return mainTabBarVC
+    }
+    
     func splashViewController(router: SplashRouter.Route) -> UIViewController {
         let vc = SplashViewController(router: router)
         let client = AuthClientAdapter(auth: Auth.self)
