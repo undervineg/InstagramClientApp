@@ -22,6 +22,9 @@ class UserProfileViewController: UICollectionViewController {
         super.viewDidLoad()
         
         collectionView.backgroundColor = .white
+        tabBarItem = UITabBarItem(title: "Profile",
+                                  image: UIImage(named: "profile_unselected")?.withRenderingMode(.alwaysTemplate),
+                                  selectedImage: UIImage(named: "profile_selected")?.withRenderingMode(.alwaysTemplate))
         
         loadProfile?()
     }
