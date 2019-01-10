@@ -12,7 +12,7 @@ class MainTabBarViewController: UITabBarController {
     
     private var router: MainRouter.Routes?
     
-    convenience init(subViewControllers: [UIViewController], router: MainRouter.Routes) {
+    convenience init(router: MainRouter.Routes, subViewControllers: [UIViewController]) {
         self.init()
         viewControllers = subViewControllers
         self.router = router

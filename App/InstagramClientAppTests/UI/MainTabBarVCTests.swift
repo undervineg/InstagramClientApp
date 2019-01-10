@@ -18,7 +18,7 @@ class MainTabBarViewControllerTests: XCTestCase {
                         UIViewController()]
         let router = MockMainRouter()
         
-        let sut = MainTabBarViewController.init(subViewControllers: dummyVCs, router: router)
+        let sut = MainTabBarViewController.init(router: router, subViewControllers: dummyVCs)
         
         XCTAssertNotNil(sut.viewControllers)
         XCTAssertEqual(sut.viewControllers, dummyVCs)
