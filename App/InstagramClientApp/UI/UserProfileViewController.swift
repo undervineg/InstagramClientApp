@@ -11,7 +11,7 @@ import InstagramEngine
 
 class UserProfileViewController: UICollectionViewController {
 
-    var loadProfile: ((@escaping (Result<UserEntity, UserProfileUseCase.Error>) -> Void) -> ())?
+    var loadProfile: (() -> Void)?
     
     convenience init() {
         let layout = UICollectionViewFlowLayout()
