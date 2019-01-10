@@ -15,7 +15,7 @@ class SplashViewControllerTests: XCTestCase {
         let (sut, _) = makeSUT()
         
         var callCount = 0
-        sut.checkIfAuthenticatedCallback = {
+        sut.checkIfAuthenticated = {
             callCount += 1
         }
         
