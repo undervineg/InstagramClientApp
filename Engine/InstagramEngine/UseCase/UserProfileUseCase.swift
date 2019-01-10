@@ -32,13 +32,13 @@ final public class UserProfileUseCase {
         case currentUserNotExist
     }
     
-    public func loadProfile(_ completion: @escaping (Result<UserEntity, Error>) -> Void) {
-        client.loadCurrentUserInfo() { result in
+    public func loadProfile() {
+        client.loadCurrentUserInfo() { [weak self] result in
             switch result {
             case .success(let user):
-                completion(.success(user))
+                self?.output.loadUserSucceeded(user)
             case .failure(let error):
-                completion(.failure(error))
+                self?.output.loadUserFailed(error)
             }
         }
     }

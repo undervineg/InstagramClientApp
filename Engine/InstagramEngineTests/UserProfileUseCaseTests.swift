@@ -12,25 +12,16 @@ import XCTest
 class UserProfileUseCaseTests: XCTestCase {
 
     func test_init_doesNotRequestUserInfo() {
-        let (_, client) = makeSUT()
+        let (_, client, _) = makeSUT()
         
         XCTAssertEqual(client.requestedCount, 0)
     }
     
-    func test_loadProfileTwice_loadUserInfoTwice() {
-        let (sut, client) = makeSUT()
-        
-        var capturedUser = [UserEntity]()
-        sut.loadProfile { result in
-            if case let Result.success(user) = result {
-                capturedUser.append(user)
-            }
-        }
-        sut.loadProfile { result in
-            if case let Result.success(user) = result {
-                capturedUser.append(user)
-            }
-        }
+    func test_loadProfileTwice_sendMessageToOutputTwice_onSuccess() {
+        let (sut, client, output) = makeSUT()
+
+        sut.loadProfile()
+        sut.loadProfile()
         
         let user1 = UserEntity(id: "0",
                                email: "dummy1@naver.com",
@@ -43,35 +34,29 @@ class UserProfileUseCaseTests: XCTestCase {
         client.completeWithSuccess(user1, at: 0)
         client.completeWithSuccess(user2, at: 1)
         
-        XCTAssertEqual(capturedUser, [user1, user2])
+        XCTAssertEqual(output.capturedUser, [user1, user2])
     }
     
-    func test_loadProfile_deliverscurrentUserNotExistError() {
-        let client = UserProfileClientStub()
-        let output = UserProfileUseCaseOutputDummy()
-        let sut = UserProfileUseCase(client: client, output: output)
+    func test_loadProfileTwice_sendErrorMessageToOutputTwice_onFailure() {
+        let (sut, client, output) = makeSUT()
         
-        var capturedError = [UserProfileUseCase.Error]()
-        sut.loadProfile { result in
-            if case let Result.failure(error) = result {
-                capturedError.append(error)
-            }
-        }
+        sut.loadProfile()
+        sut.loadProfile()
         
-        let clientError = NSError(domain: "test", code: 0)
-        client.completeWithFailure(clientError)
+        client.completeWithFailure(.currentUserNotExist, at: 0)
+        client.completeWithFailure(.currentUserIDNotExist, at: 1)
         
-        XCTAssertEqual(capturedError, [.currentUserNotExist])
+        XCTAssertEqual(output.capturedError, [.currentUserNotExist, .currentUserIDNotExist])
     }
     
     
     // MARK: - Helpers
     
-    private func makeSUT() -> (sut: UserProfileUseCase, client: UserProfileClientStub) {
+    private func makeSUT() -> (sut: UserProfileUseCase, client: UserProfileClientStub, output: UserProfileUseCaseOutputDummy) {
         let client = UserProfileClientStub()
         let output = UserProfileUseCaseOutputDummy()
         let sut = UserProfileUseCase(client: client, output: output)
-        return (sut, client)
+        return (sut, client, output)
     }
     
     private class UserProfileClientStub: UserProfileClient {
@@ -88,12 +73,21 @@ class UserProfileUseCaseTests: XCTestCase {
             messages[index](.success(user))
         }
         
-        func completeWithFailure(_ error: Error, at index: Int = 0) {
-            messages[index](.failure(.currentUserNotExist))
+        func completeWithFailure(_ error: UserProfileUseCase.Error, at index: Int = 0) {
+            messages[index](.failure(error))
         }
     }
     
     private class UserProfileUseCaseOutputDummy: UserProfileUseCaseOutput {
+        var capturedUser = [UserEntity]()
+        var capturedError = [UserProfileUseCase.Error]()
         
+        func loadUserSucceeded(_ user: UserEntity) {
+            capturedUser.append(user)
+        }
+        
+        func loadUserFailed(_ error: UserProfileUseCase.Error) {
+            capturedError.append(error)
+        }
     }
 }

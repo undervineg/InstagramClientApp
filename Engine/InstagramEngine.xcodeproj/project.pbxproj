@@ -102,9 +102,9 @@
 		0884514621DA6676008B8121 /* InstagramEngine */ = {
 			isa = PBXGroup;
 			children = (
+				0884514821DA6676008B8121 /* Info.plist */,
 				0858765821DA741E00C32422 /* Entity */,
 				0858765B21DB7C7F00C32422 /* UseCase */,
-				0884514821DA6676008B8121 /* Info.plist */,
 			);
 			path = InstagramEngine;
 			sourceTree = "<group>";
@@ -113,9 +113,9 @@
 			isa = PBXGroup;
 			children = (
 				0884515421DA6676008B8121 /* Info.plist */,
+				08F984C721E6829000DE6E78 /* AuthUseCaseTests.swift */,
 				0858765921DA74D000C32422 /* RegisterUserUseCaseTests.swift */,
 				08F9847621E17D2A00DE6E78 /* UserProfileUseCaseTests.swift */,
-				08F984C721E6829000DE6E78 /* AuthUseCaseTests.swift */,
 			);
 			path = InstagramEngineTests;
 			sourceTree = "<group>";
