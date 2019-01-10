@@ -22,6 +22,8 @@ class UserProfileViewController: UICollectionViewController {
         super.viewDidLoad()
         
         collectionView.backgroundColor = .white
+        
+        loadProfile?()
     }
 }
 
