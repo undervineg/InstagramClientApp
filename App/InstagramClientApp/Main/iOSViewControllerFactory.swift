@@ -21,9 +21,9 @@ final class iOSViewControllerFactory: ViewControllerFactory {
     
     func splashViewController(router: SplashRouter.Routes) -> UIViewController {
         let vc = SplashViewController(router: router)
-        let client = AuthClientAdapter(auth: Auth.self)
+        let service = AuthService(auth: Auth.self)
         let presenter = SplashPresenter(view: WeakRef(vc))
-        let useCase = AuthUseCase(client: client, output: presenter)
+        let useCase = AuthUseCase(client: service, output: presenter)
         
         vc.checkIfAuthenticated = useCase.checkIfAuthenticated
         
@@ -43,11 +43,11 @@ final class iOSViewControllerFactory: ViewControllerFactory {
     
     func registerViewController(router: RegisterRouter.Routes) -> UIViewController {
         let vc = RegisterUserViewController(router: router)
-        let adapter = RegisterUserClientAdapter(firebaseAuth: Auth.self,
+        let service = RegisterUserService(firebaseAuth: Auth.self,
                                                 firebaseDatabase: Database.self,
                                                 firebaseStorage: Storage.self)
         let presenter = RegisterUserPresenter(view: WeakRef(vc))
-        let useCase = RegisterUserUseCase(client: adapter, output: presenter)
+        let useCase = RegisterUserUseCase(client: service, output: presenter)
         
         vc.registerCallback = useCase.register
         
@@ -56,11 +56,11 @@ final class iOSViewControllerFactory: ViewControllerFactory {
     
     func userProfileViewController() -> UIViewController {
         let vc = UserProfileViewController()
-        let client = UserProfileClientAdapter(firebaseAuth: Auth.self,
+        let service = UserProfileService(firebaseAuth: Auth.self,
                                               firebaseDatabase: Database.self,
                                               firebaseStorage: Storage.self)
         let presenter = UserProfilePresenter(view: WeakRef(vc))
-        let useCase = UserProfileUseCase(client: client, output: presenter)
+        let useCase = UserProfileUseCase(client: service, output: presenter)
         
         vc.loadProfile = useCase.loadProfile
         

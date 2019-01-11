@@ -34,7 +34,12 @@
 		0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0884512321DA665C008B8121 /* LaunchScreen.storyboard */; };
 		08BF0C4E21E840C3004CE846 /* SplashRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C4D21E840C3004CE846 /* SplashRouterTests.swift */; };
 		08BF0C5021E845DF004CE846 /* MainRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C4F21E845DF004CE846 /* MainRouterTests.swift */; };
-		08F9847921E4B1E100DE6E78 /* RegisterUserClientAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847821E4B1E100DE6E78 /* RegisterUserClientAdapter.swift */; };
+		08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */; };
+		08BF0C5821E854EB004CE846 /* UserProfileHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08BF0C5621E854EB004CE846 /* UserProfileHeaderCell.xib */; };
+		08BF0C5B21E85EDF004CE846 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A121E5092300DE6E78 /* main.swift */; };
+		08BF0C6821E8652F004CE846 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */; };
+		08BF0C6B21E868E7004CE846 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C6A21E868E7004CE846 /* APIClient.swift */; };
+		08F9847921E4B1E100DE6E78 /* RegisterUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847821E4B1E100DE6E78 /* RegisterUserService.swift */; };
 		08F9847D21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847C21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift */; };
 		08F9847F21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847E21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift */; };
 		08F9848821E4B8C900DE6E78 /* MockFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848721E4B8C900DE6E78 /* MockFirebase.swift */; };
@@ -43,20 +48,17 @@
 		08F9849521E4EBDA00DE6E78 /* WeakRefTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9849421E4EBDA00DE6E78 /* WeakRefTests.swift */; };
 		08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9849621E4EBE500DE6E78 /* WeakRef.swift */; };
 		08F9849921E4EDBA00DE6E78 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9849821E4EDBA00DE6E78 /* AppDelegateTests.swift */; };
-		08F984A221E5092300DE6E78 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A121E5092300DE6E78 /* main.swift */; };
 		08F984A421E5196400DE6E78 /* StubAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A321E5196400DE6E78 /* StubAppDelegate.swift */; };
 		08F984A921E53CAD00DE6E78 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A821E53CAD00DE6E78 /* MainTabBarViewController.swift */; };
 		08F984AB21E53D2E00DE6E78 /* MainRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984AA21E53D2E00DE6E78 /* MainRoute.swift */; };
 		08F984AD21E5420A00DE6E78 /* MainTabBarVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984AC21E5420A00DE6E78 /* MainTabBarVCTests.swift */; };
-		08F984B021E5437A00DE6E78 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984AE21E5437A00DE6E78 /* UserProfileViewController.swift */; };
-		08F984B121E5437A00DE6E78 /* UserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08F984AF21E5437A00DE6E78 /* UserProfileViewController.xib */; };
 		08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B321E54A4700DE6E78 /* UserProfilePresenter.swift */; };
 		08F984B621E54B3300DE6E78 /* UserProfilePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B521E54B3300DE6E78 /* UserProfilePresenterTests.swift */; };
-		08F984B821E54B6C00DE6E78 /* UserProfileClientAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B721E54B6C00DE6E78 /* UserProfileClientAdapter.swift */; };
+		08F984B821E54B6C00DE6E78 /* UserProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B721E54B6C00DE6E78 /* UserProfileService.swift */; };
 		08F984BA21E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984B921E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift */; };
 		08F984C021E5E3F600DE6E78 /* RegisterRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984BF21E5E3F600DE6E78 /* RegisterRoute.swift */; };
 		08F984C221E5E5F000DE6E78 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C121E5E5F000DE6E78 /* MainRouter.swift */; };
-		08F984CA21E6878E00DE6E78 /* AuthClientAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C921E6878E00DE6E78 /* AuthClientAdapter.swift */; };
+		08F984CA21E6878E00DE6E78 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C921E6878E00DE6E78 /* AuthService.swift */; };
 		08F984CC21E687DB00DE6E78 /* AuthClientAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984CB21E687DB00DE6E78 /* AuthClientAdapterTests.swift */; };
 		08F984D021E691B100DE6E78 /* SplashPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984CF21E691B100DE6E78 /* SplashPresenter.swift */; };
 		08F984D221E6922F00DE6E78 /* SplashPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984D121E6922F00DE6E78 /* SplashPresenterTests.swift */; };
@@ -120,7 +122,11 @@
 		0884513121DA665C008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08BF0C4D21E840C3004CE846 /* SplashRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashRouterTests.swift; sourceTree = "<group>"; };
 		08BF0C4F21E845DF004CE846 /* MainRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouterTests.swift; sourceTree = "<group>"; };
-		08F9847821E4B1E100DE6E78 /* RegisterUserClientAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserClientAdapter.swift; sourceTree = "<group>"; };
+		08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderCell.swift; sourceTree = "<group>"; };
+		08BF0C5621E854EB004CE846 /* UserProfileHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderCell.xib; sourceTree = "<group>"; };
+		08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		08BF0C6A21E868E7004CE846 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		08F9847821E4B1E100DE6E78 /* RegisterUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserService.swift; sourceTree = "<group>"; };
 		08F9847C21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthWrapper.swift; sourceTree = "<group>"; };
 		08F9847E21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseWrapper.swift; sourceTree = "<group>"; };
 		08F9848721E4B8C900DE6E78 /* MockFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFirebase.swift; sourceTree = "<group>"; };
@@ -134,15 +140,13 @@
 		08F984A821E53CAD00DE6E78 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		08F984AA21E53D2E00DE6E78 /* MainRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRoute.swift; sourceTree = "<group>"; };
 		08F984AC21E5420A00DE6E78 /* MainTabBarVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarVCTests.swift; sourceTree = "<group>"; };
-		08F984AE21E5437A00DE6E78 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
-		08F984AF21E5437A00DE6E78 /* UserProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileViewController.xib; sourceTree = "<group>"; };
 		08F984B321E54A4700DE6E78 /* UserProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePresenter.swift; sourceTree = "<group>"; };
 		08F984B521E54B3300DE6E78 /* UserProfilePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePresenterTests.swift; sourceTree = "<group>"; };
-		08F984B721E54B6C00DE6E78 /* UserProfileClientAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileClientAdapter.swift; sourceTree = "<group>"; };
+		08F984B721E54B6C00DE6E78 /* UserProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileService.swift; sourceTree = "<group>"; };
 		08F984B921E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileClientAdapterTests.swift; sourceTree = "<group>"; };
 		08F984BF21E5E3F600DE6E78 /* RegisterRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRoute.swift; sourceTree = "<group>"; };
 		08F984C121E5E5F000DE6E78 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
-		08F984C921E6878E00DE6E78 /* AuthClientAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClientAdapter.swift; sourceTree = "<group>"; };
+		08F984C921E6878E00DE6E78 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		08F984CB21E687DB00DE6E78 /* AuthClientAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClientAdapterTests.swift; sourceTree = "<group>"; };
 		08F984CF21E691B100DE6E78 /* SplashPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashPresenter.swift; sourceTree = "<group>"; };
 		08F984D121E6922F00DE6E78 /* SplashPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashPresenterTests.swift; sourceTree = "<group>"; };
@@ -203,19 +207,19 @@
 			isa = PBXGroup;
 			children = (
 				0858767621DC5CC700C32422 /* RegisterUserViewController.xib */,
-				08F984AF21E5437A00DE6E78 /* UserProfileViewController.xib */,
+				08BF0C5621E854EB004CE846 /* UserProfileHeaderCell.xib */,
 			);
 			path = XIB;
 			sourceTree = "<group>";
 		};
-		086E6C7F21DD27840094B808 /* Adapter */ = {
+		086E6C7F21DD27840094B808 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				08F984C921E6878E00DE6E78 /* AuthClientAdapter.swift */,
-				08F9847821E4B1E100DE6E78 /* RegisterUserClientAdapter.swift */,
-				08F984B721E54B6C00DE6E78 /* UserProfileClientAdapter.swift */,
+				08F984C921E6878E00DE6E78 /* AuthService.swift */,
+				08F9847821E4B1E100DE6E78 /* RegisterUserService.swift */,
+				08F984B721E54B6C00DE6E78 /* UserProfileService.swift */,
 			);
-			path = Adapter;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		086E6C8221DD27A90094B808 /* UI */ = {
@@ -300,7 +304,8 @@
 				08F984D521E6964600DE6E78 /* SplashViewController.swift */,
 				08F984A821E53CAD00DE6E78 /* MainTabBarViewController.swift */,
 				0858767521DC5CC700C32422 /* RegisterUserViewController.swift */,
-				08F984AE21E5437A00DE6E78 /* UserProfileViewController.swift */,
+				08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */,
+				08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -333,11 +338,12 @@
 				0884512621DA665C008B8121 /* Info.plist */,
 				085EED2021E6B86200A6D98E /* Main */,
 				086E6C9121DE869D0094B808 /* Routing */,
-				086E6C7F21DD27840094B808 /* Adapter */,
+				086E6C7F21DD27840094B808 /* Service */,
 				08F9849121E4D71400DE6E78 /* Presenter */,
 				086E6CB921DF7CEE0094B808 /* UI */,
 				08F9848021E4B37B00DE6E78 /* Framework */,
 				086E6CA021DE92820094B808 /* Supporting Files */,
+				08BF0C6A21E868E7004CE846 /* APIClient.swift */,
 			);
 			path = InstagramClientApp;
 			sourceTree = "<group>";
@@ -503,9 +509,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08F984B121E5437A00DE6E78 /* UserProfileViewController.xib in Resources */,
 				0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */,
 				0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */,
+				08BF0C5821E854EB004CE846 /* UserProfileHeaderCell.xib in Resources */,
 				0858767821DC5CC700C32422 /* RegisterUserViewController.xib in Resources */,
 				0884512221DA665C008B8121 /* Assets.xcassets in Resources */,
 			);
@@ -629,32 +635,34 @@
 			buildActionMask = 2147483647;
 			files = (
 				086E6C9A21DE91D50094B808 /* ModalTransition.swift in Sources */,
+				08BF0C6821E8652F004CE846 /* UserProfileViewController.swift in Sources */,
 				08F984C221E5E5F000DE6E78 /* MainRouter.swift in Sources */,
-				08F984CA21E6878E00DE6E78 /* AuthClientAdapter.swift in Sources */,
+				08F984CA21E6878E00DE6E78 /* AuthService.swift in Sources */,
 				08F984C021E5E3F600DE6E78 /* RegisterRoute.swift in Sources */,
 				086E6C9821DE91C70094B808 /* Transition.swift in Sources */,
 				086E6CB221DF791F0094B808 /* LoginRoute.swift in Sources */,
 				08F984A921E53CAD00DE6E78 /* MainTabBarViewController.swift in Sources */,
-				08F984B021E5437A00DE6E78 /* UserProfileViewController.swift in Sources */,
+				08BF0C5B21E85EDF004CE846 /* main.swift in Sources */,
 				0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */,
 				086E6CB821DF7C8B0094B808 /* ImagePickerRoute.swift in Sources */,
 				08F9847D21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift in Sources */,
 				086E6CB421DF79390094B808 /* RegisterRouter.swift in Sources */,
-				08F984A221E5092300DE6E78 /* main.swift in Sources */,
 				08F984AB21E53D2E00DE6E78 /* MainRoute.swift in Sources */,
 				08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */,
 				08F984D021E691B100DE6E78 /* SplashPresenter.swift in Sources */,
 				086E6C8F21DE71000094B808 /* iOSViewControllerFactory.swift in Sources */,
 				08F984D621E6964600DE6E78 /* SplashViewController.swift in Sources */,
 				086E6CB021DF79070094B808 /* BasicRouter.swift in Sources */,
+				08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseStorageWrapper.swift in Sources */,
 				086E6C9C21DE91ED0094B808 /* PushTransition.swift in Sources */,
 				08F9847F21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift in Sources */,
 				08F9848B21E4C0C000DE6E78 /* RegisterUserPresenter.swift in Sources */,
 				08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */,
 				08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */,
-				08F9847921E4B1E100DE6E78 /* RegisterUserClientAdapter.swift in Sources */,
-				08F984B821E54B6C00DE6E78 /* UserProfileClientAdapter.swift in Sources */,
+				08BF0C6B21E868E7004CE846 /* APIClient.swift in Sources */,
+				08F9847921E4B1E100DE6E78 /* RegisterUserService.swift in Sources */,
+				08F984B821E54B6C00DE6E78 /* UserProfileService.swift in Sources */,
 				0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

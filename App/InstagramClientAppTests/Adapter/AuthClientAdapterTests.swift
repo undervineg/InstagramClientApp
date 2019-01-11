@@ -15,7 +15,7 @@ class AuthClientAdapterTests: XCTestCase {
 
     func test_isAuthenticated_succeeded() {
         let firebase = MockFirebase.self
-        let sut = AuthClientAdapter(auth: firebase)
+        let sut = AuthService(auth: firebase)
         firebase.isAuthenticated = true
         
         var isAuthenticated = false
@@ -28,7 +28,7 @@ class AuthClientAdapterTests: XCTestCase {
     
     func test_isAuthenticated_failed() {
         let firebase = MockFirebase.self
-        let sut = AuthClientAdapter(auth: firebase)
+        let sut = AuthService(auth: firebase)
         firebase.isAuthenticated = false
         
         var isAuthenticated = false

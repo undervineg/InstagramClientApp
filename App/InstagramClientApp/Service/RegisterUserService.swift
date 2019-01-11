@@ -9,7 +9,7 @@
 import FirebaseAuth
 import InstagramEngine
 
-final class RegisterUserClientAdapter: RegisterUserClient {
+final class RegisterUserService: RegisterUserClient {
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let storage: FirebaseStorageWrapper.Type

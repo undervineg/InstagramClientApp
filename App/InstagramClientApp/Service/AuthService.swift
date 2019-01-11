@@ -9,7 +9,7 @@
 import Foundation
 import InstagramEngine
 
-final class AuthClientAdapter: AuthClient {
+final class AuthService: AuthClient {
     
     private let auth: FirebaseAuthWrapper.Type
     

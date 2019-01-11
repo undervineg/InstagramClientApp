@@ -67,13 +67,13 @@ class UserProfileClientAdapterTests: XCTestCase {
 
     // MARK: - Helopers
     
-    private func makeSUT() -> (sut: UserProfileClientAdapter, firebase: MockFirebase.Type) {
+    private func makeSUT() -> (sut: UserProfileService, firebase: MockFirebase.Type) {
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
         
         let firebase = MockFirebase.self
-        let sut = UserProfileClientAdapter(firebaseAuth: firebase, firebaseDatabase: firebase, firebaseStorage: firebase)
+        let sut = UserProfileService(firebaseAuth: firebase, firebaseDatabase: firebase, firebaseStorage: firebase)
         
         return (sut, firebase)
     }

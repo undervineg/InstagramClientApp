@@ -128,13 +128,13 @@ class RegisterUserClientAdapterTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT() -> (sut: RegisterUserClientAdapter, firebase: MockFirebase.Type) {
+    private func makeSUT() -> (sut: RegisterUserService, firebase: MockFirebase.Type) {
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
         
         let firebase = MockFirebase.self
-        let sut = RegisterUserClientAdapter(firebaseAuth: firebase, firebaseDatabase: firebase, firebaseStorage: firebase)
+        let sut = RegisterUserService(firebaseAuth: firebase, firebaseDatabase: firebase, firebaseStorage: firebase)
         
         return (sut, firebase)
     }

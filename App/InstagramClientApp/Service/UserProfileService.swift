@@ -8,7 +8,7 @@
 
 import InstagramEngine
 
-final class UserProfileClientAdapter: UserProfileClient {
+final class UserProfileService: UserProfileClient {
     
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
