@@ -60,8 +60,8 @@ class UserProfileUseCaseTests: XCTestCase {
                                username: "dummy2",
                                profileImageUrl: "http://b-url.com")
         
-        sut.downloadProfileImage(from: user1.profileImageUrl)
-        sut.downloadProfileImage(from: user2.profileImageUrl)
+        sut.downloadProfileImage(from: URL(string: user1.profileImageUrl)!)
+        sut.downloadProfileImage(from: URL(string: user2.profileImageUrl)!)
         
         let data1 = Data(bytes: "http://a-url.com".utf8)
         let data2 = Data(bytes: "http://b-url.com".utf8)
@@ -79,7 +79,7 @@ class UserProfileUseCaseTests: XCTestCase {
                                username: "dummy1",
                                profileImageUrl: "http://a-url.com")
         
-        sut.downloadProfileImage(from: user1.profileImageUrl)
+        sut.downloadProfileImage(from: URL(string: user1.profileImageUrl)!)
         client.completeDownloadProfileImageWithFailure(.profileImageNotExist)
         
         XCTAssertEqual(output.capturedError, [.profileImageNotExist])
@@ -99,16 +99,19 @@ class UserProfileUseCaseTests: XCTestCase {
     private class UserProfileClientStub: UserProfileClient {
         
         private var loadUserInfoMessages = [(Result<UserEntity, UserProfileUseCase.Error>) -> Void]()
-        private var downloadImageMessages = [(url: String, completion: (Result<Data, UserProfileUseCase.Error>) -> Void)]()
+        private var downloadImageMessages = [(url: URL, completion: (Result<Data, UserProfileUseCase.Error>) -> Void)]()
         
         var requestedCount = 0
+        var requestedURLs: [URL] {
+            return downloadImageMessages.map { $0.url }
+        }
         
         func loadCurrentUserInfo(_ completion: @escaping (Result<UserEntity, UserProfileUseCase.Error>) -> Void) {
             requestedCount += 1
             loadUserInfoMessages.append(completion)
         }
         
-        func downloadProfileImage(from url: String, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) {
+        func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) {
             downloadImageMessages.append((url, completion))
         }
         

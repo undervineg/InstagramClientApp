@@ -10,7 +10,7 @@ import Foundation
 
 public protocol UserProfileClient {
     func loadCurrentUserInfo(_ completion: @escaping (Result<UserEntity, UserProfileUseCase.Error>) -> Void)
-    func downloadProfileImage(from url: String, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
+    func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
 }
 
 public protocol UserProfileUseCaseOutput {
@@ -47,11 +47,11 @@ final public class UserProfileUseCase {
         }
     }
     
-    public func downloadProfileImage(from url: String) {
+    public func downloadProfileImage(from url: URL) {
         client.downloadProfileImage(from: url) { [weak self] (result) in
             switch result {
-            case .success(let imageData):
-                self?.output.downloadProfileImageSucceeded(imageData)
+            case .success(let data):
+                self?.output.downloadProfileImageSucceeded(data)
             case .failure(let error):
                 self?.output.downloadProfileImageFailed(error)
             }

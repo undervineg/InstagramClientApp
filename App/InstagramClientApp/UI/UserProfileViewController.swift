@@ -7,46 +7,65 @@
 //
 
 import UIKit
+import InstagramEngine
 
+private let headerId = "headerId"
 private let reuseIdentifier = "Cell"
 
 class UserProfileViewController: UICollectionViewController {
     
+    var loadProfile: (() -> Void)?
+    var downloadProfileImage: ((URL) -> Void)?
+    
+    private var imageUrl: String? = nil {
+        didSet {
+            guard let urlString = imageUrl,
+                let url = URL(string: urlString) else { return }
+            downloadProfileImage?(url)
+        }
+    }
+    
+    convenience init() {
+        let layout = UICollectionViewFlowLayout()
+        self.init(collectionViewLayout: layout)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
+        collectionView.backgroundColor = .white
+        tabBarItem = UITabBarItem(title: "Profile",
+                                  image: UIImage(named: "profile_unselected")?.withRenderingMode(.alwaysTemplate),
+                                  selectedImage: UIImage(named: "profile_selected")?.withRenderingMode(.alwaysTemplate))
+        
+        let profileHeaderCell = UINib(nibName: "UserProfileHeaderCell", bundle: nil)
+        collectionView.register(profileHeaderCell, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        loadProfile?()
     }
-    */
 
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
         return 0
     }
 
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                     withReuseIdentifier: headerId,
+                                                                     for: indexPath)
+        return header
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
     
@@ -86,4 +105,33 @@ class UserProfileViewController: UICollectionViewController {
     }
     */
     
+}
+
+extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 200)
+    }
+}
+
+extension UserProfileViewController: UserProfileView {
+    func displayProfileImage(_ imageData: Data) {
+        DispatchQueue.main.async {
+            let headerView = self.collectionView.supplementaryView(
+                forElementKind: UICollectionView.elementKindSectionHeader,
+                at: IndexPath(item: 0, section: 0)) as? UserProfileHeaderCell
+            
+            headerView?.profileImageView.image = UIImage(data: imageData)
+        }
+    }
+    
+    func displayUserInfo(_ user: UserEntity) {
+        navigationItem.title = user.username
+        imageUrl = user.profileImageUrl
+    }
+    
+    func displayError(_ errorMessage: String) {
+        let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }

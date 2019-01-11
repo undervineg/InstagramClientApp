@@ -42,10 +42,15 @@ class UserProfilePresenterTests: XCTestCase {
     
     private class UserProfileViewStub: UserProfileView {
         var stubbedTitle = [String]()
+        var stubbedImageData = [Data]()
         var stubbedErrorMessage = [String]()
         
-        func displayTitle(_ title: String) {
-            stubbedTitle.append(title)
+        func displayUserInfo(_ user: UserEntity) {
+            stubbedTitle.append(user.username)
+        }
+        
+        func displayProfileImage(_ imageData: Data) {
+            stubbedImageData.append(imageData)
         }
         
         func displayError(_ errorMessage: String) {

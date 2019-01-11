@@ -6,23 +6,26 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
+import InstagramEngine
 import Foundation
 
 protocol APIClient {
-    func downloadData(from urlString: String, completion: @escaping (Data) -> Void)
+    func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void)
 }
 
 extension URLSession: APIClient {
-    func downloadData(from urlString: String, completion: @escaping (Data) -> Void) {
-        guard let url = URL(string: urlString) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+    func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
-                print(error)
-            }
-            guard let data = data else {
+                completion(.failure(error))
                 return
             }
-            completion(data)
-            }.resume()
+            guard let data = data else {
+                let error = NSError(domain: "Data not exist", code: 0)
+                completion(.failure(error))
+                return
+            }
+            completion(.success(data))
+        }.resume()
     }
 }

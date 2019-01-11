@@ -10,9 +10,15 @@ import UIKit
 
 class UserProfileHeaderCell: UICollectionViewCell {
 
+    @IBOutlet weak var profileImageView: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.lightGray.cgColor
+        
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+        profileImageView.clipsToBounds = true
     }
-
 }

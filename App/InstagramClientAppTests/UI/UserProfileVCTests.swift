@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import InstagramEngine
 @testable import InstagramClientApp
 
 class UserProfileVCTests: XCTestCase {
@@ -28,10 +29,14 @@ class UserProfileVCTests: XCTestCase {
     func test_displayTitle_setTitleOnNavigationBar() {
         let sut = UserProfileViewController()
         _ = sut.view
+        let user = UserEntity(id: "0",
+                              email: "dummy@naver.com",
+                              username: "dummyUser",
+                              profileImageUrl: "http://a-url.com")
         
-        sut.displayTitle("TestTitle")
+        sut.displayUserInfo(user)
         
-        XCTAssertEqual(sut.navigationItem.title, "TestTitle")
+        XCTAssertEqual(sut.navigationItem.title, "dummyUser")
     }
 
 }

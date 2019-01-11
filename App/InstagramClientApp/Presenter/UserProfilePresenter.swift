@@ -7,9 +7,11 @@
 //
 
 import InstagramEngine
+import Foundation
 
 protocol UserProfileView {
-    func displayTitle(_ title: String)
+    func displayUserInfo(_ user: UserEntity)
+    func displayProfileImage(_ imageData: Data)
     func displayError(_ errorMessage: String)
 }
 
@@ -22,7 +24,7 @@ final class UserProfilePresenter: UserProfileUseCaseOutput {
     }
     
     func loadUserSucceeded(_ user: UserEntity) {
-        view.displayTitle(user.username)
+        view.displayUserInfo(user)
     }
     
     func loadUserFailed(_ error: UserProfileUseCase.Error) {
@@ -32,17 +34,31 @@ final class UserProfilePresenter: UserProfileUseCaseOutput {
             errorMessage = "사용자 계정이 없습니다."
         case .currentUserNotExist:
             errorMessage = "사용자 정보가 없습니다."
+        case .profileImageNotExist:
+            errorMessage = "프로필 이미지를 불러올 수 없습니다."
         }
         view.displayError(errorMessage)
+    }
+    
+    func downloadProfileImageSucceeded(_ imageData: Data) {
+        view.displayProfileImage(imageData)
+    }
+    
+    func downloadProfileImageFailed(_ error: UserProfileUseCase.Error) {
+        view.displayError(error.localizedDescription)
     }
 }
 
 extension WeakRef: UserProfileView where T: UserProfileView {
-    func displayTitle(_ title: String) {
-        object?.displayTitle(title)
+    func displayUserInfo(_ user: UserEntity) {
+        object?.displayUserInfo(user)
     }
     
     func displayError(_ errorMessage: String) {
         object?.displayError(errorMessage)
+    }
+    
+    func displayProfileImage(_ imageData: Data) {
+        object?.displayProfileImage(imageData)
     }
 }
