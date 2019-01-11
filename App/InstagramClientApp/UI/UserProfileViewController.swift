@@ -17,11 +17,12 @@ class UserProfileViewController: UICollectionViewController {
     var loadProfile: (() -> Void)?
     var downloadProfileImage: ((URL) -> Void)?
     
-    private var imageUrl: String? = nil {
+    private var userInfo: UserEntity?  = nil {
         didSet {
-            guard let urlString = imageUrl,
-                let url = URL(string: urlString) else { return }
-            downloadProfileImage?(url)
+            navigationItem.title = userInfo?.username
+            if let urlString = userInfo?.profileImageUrl, let url = URL(string: urlString) {
+                downloadProfileImage?(url)
+            }
         }
     }
     
@@ -40,8 +41,12 @@ class UserProfileViewController: UICollectionViewController {
                                   image: UIImage(named: "profile_unselected")?.withRenderingMode(.alwaysTemplate),
                                   selectedImage: UIImage(named: "profile_selected")?.withRenderingMode(.alwaysTemplate))
         
-        let profileHeaderCell = UINib(nibName: "UserProfileHeaderCell", bundle: nil)
-        collectionView.register(profileHeaderCell, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+        let profileHeaderCellNib = UINib(nibName: "UserProfileHeaderCell", bundle: nil)
+        collectionView.register(profileHeaderCellNib,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: headerId)
+        
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier )
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,13 +63,14 @@ class UserProfileViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return 7 
     }
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                      withReuseIdentifier: headerId,
                                                                      for: indexPath) as! UserProfileHeaderCell
+        header.usernameLabel.text = userInfo?.username
         if let data = imageData {
             header.profileImageView.image = UIImage(data: data)
         }
@@ -74,8 +80,8 @@ class UserProfileViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
     
-        // Configure the cell
-    
+        cell.backgroundColor = .purple
+        
         return cell
     }
 
@@ -116,6 +122,19 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 200)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let w = (view.frame.width - 2) / 3
+        return CGSize(width: w, height: w)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
 }
 
 extension UserProfileViewController: UserProfileView {
@@ -126,9 +145,9 @@ extension UserProfileViewController: UserProfileView {
         }
     }
     
-    func displayUserInfo(_ user: UserEntity) {
-        navigationItem.title = user.username
-        imageUrl = user.profileImageUrl
+    func displayUserInfo(_ userInfo: UserEntity) {
+        self.userInfo = userInfo
+        self.collectionView.reloadData()
     }
     
     func displayError(_ errorMessage: String) {
