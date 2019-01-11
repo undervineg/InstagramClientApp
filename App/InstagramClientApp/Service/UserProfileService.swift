@@ -50,4 +50,8 @@ final class UserProfileService: UserProfileClient {
             }
         }
     }
+    
+    func logout(_ completion: @escaping (Error?) -> Void) {
+         auth.logout(completion)
+    }
 }

@@ -16,13 +16,12 @@ class UserProfileViewController: UICollectionViewController {
     
     var loadProfile: (() -> Void)?
     var downloadProfileImage: ((URL) -> Void)?
+    var logout: (() -> Void)?
     
-    private var userInfo: UserEntity?  = nil {
+    private var userModel: UserEntity?  = nil {
         didSet {
-            navigationItem.title = userInfo?.username
-            if let urlString = userInfo?.profileImageUrl, let url = URL(string: urlString) {
-                downloadProfileImage?(url)
-            }
+            setTitleOnNavigationBar()
+            downloadProfileImage(from: userModel?.profileImageUrl)
         }
     }
     
@@ -37,16 +36,10 @@ class UserProfileViewController: UICollectionViewController {
         super.viewDidLoad()
 
         collectionView.backgroundColor = .white
-        tabBarItem = UITabBarItem(title: "Profile",
-                                  image: UIImage(named: "profile_unselected")?.withRenderingMode(.alwaysTemplate),
-                                  selectedImage: UIImage(named: "profile_selected")?.withRenderingMode(.alwaysTemplate))
         
-        let profileHeaderCellNib = UINib(nibName: "UserProfileHeaderCell", bundle: nil)
-        collectionView.register(profileHeaderCellNib,
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: headerId)
-        
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier )
+        configureTabBarItem()
+        configureLogoutButton()
+        registerCollectionViewCells()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,7 +63,7 @@ class UserProfileViewController: UICollectionViewController {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                      withReuseIdentifier: headerId,
                                                                      for: indexPath) as! UserProfileHeaderCell
-        header.usernameLabel.text = userInfo?.username
+        header.usernameLabel.text = userModel?.username
         if let data = imageData {
             header.profileImageView.image = UIImage(data: data)
         }
@@ -116,6 +109,53 @@ class UserProfileViewController: UICollectionViewController {
     }
     */
     
+    // MARK: - Private Methods
+    
+    private func downloadProfileImage(from urlString: String?) {
+        guard
+            let urlString = userModel?.profileImageUrl,
+            let url = URL(string: urlString) else { return }
+        downloadProfileImage?(url)
+    }
+    
+    private func configureLogoutButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "gear"),
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(handleLogout(_:)))
+        navigationItem.rightBarButtonItem?.tintColor = .black
+    }
+    
+    @objc private func handleLogout(_ sender: UIBarButtonItem) {
+        let actionSheet = UIAlertController(title: nil, message: "Are you sure?", preferredStyle: .actionSheet)
+        let logoutAction = UIAlertAction(title: "Log Out", style: .destructive) { [weak self] _ in
+            self?.logout?()
+        }
+        let cancleAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        actionSheet.addAction(logoutAction)
+        actionSheet.addAction(cancleAction)
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    private func setTitleOnNavigationBar() {
+        navigationItem.title = userModel?.username
+    }
+    
+    private func registerCollectionViewCells() {
+        let profileHeaderCellNib = UINib(nibName: "UserProfileHeaderCell", bundle: nil)
+        collectionView.register(profileHeaderCellNib,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: headerId)
+        
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+    }
+    
+    private func configureTabBarItem() {
+        tabBarItem = UITabBarItem(title: "Profile",
+                                  image: UIImage(named: "profile_unselected")?.withRenderingMode(.alwaysTemplate),
+                                  selectedImage: UIImage(named: "profile_selected")?.withRenderingMode(.alwaysTemplate))
+    }
+    
 }
 
 extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
@@ -138,6 +178,10 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension UserProfileViewController: UserProfileView {
+    func close() {
+        print("Logged out")
+    }
+    
     func displayProfileImage(_ imageData: Data) {
         DispatchQueue.main.async {
             self.imageData = imageData
@@ -146,7 +190,7 @@ extension UserProfileViewController: UserProfileView {
     }
     
     func displayUserInfo(_ userInfo: UserEntity) {
-        self.userInfo = userInfo
+        self.userModel = userInfo
         self.collectionView.reloadData()
     }
     

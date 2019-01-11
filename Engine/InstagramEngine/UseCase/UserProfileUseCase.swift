@@ -11,6 +11,7 @@ import Foundation
 public protocol UserProfileClient {
     func loadCurrentUserInfo(_ completion: @escaping (Result<UserEntity, UserProfileUseCase.Error>) -> Void)
     func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
+    func logout(_ completion: @escaping (Error?) -> Void)
 }
 
 public protocol UserProfileUseCaseOutput {
@@ -18,6 +19,8 @@ public protocol UserProfileUseCaseOutput {
     func loadUserFailed(_ error: UserProfileUseCase.Error)
     func downloadProfileImageSucceeded(_ imageData: Data)
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error)
+    func logoutSucceeded()
+    func logoutFailed(_ error: UserProfileUseCase.Error)
 }
 
 final public class UserProfileUseCase {
@@ -34,6 +37,7 @@ final public class UserProfileUseCase {
         case currentUserIDNotExist
         case currentUserNotExist
         case profileImageNotExist
+        case logoutError
     }
     
     public func loadProfile() {
@@ -55,6 +59,15 @@ final public class UserProfileUseCase {
             case .failure(let error):
                 self?.output.downloadProfileImageFailed(error)
             }
+        }
+    }
+    
+    public func logout() {
+        client.logout { [weak self] (error) in
+            if let _ = error {
+                self?.output.logoutFailed(.logoutError)
+            }
+            self?.output.logoutSucceeded()
         }
     }
 }

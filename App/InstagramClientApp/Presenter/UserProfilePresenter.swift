@@ -12,6 +12,7 @@ import Foundation
 protocol UserProfileView {
     func displayUserInfo(_ user: UserEntity)
     func displayProfileImage(_ imageData: Data)
+    func close()
     func displayError(_ errorMessage: String)
 }
 
@@ -36,6 +37,8 @@ final class UserProfilePresenter: UserProfileUseCaseOutput {
             errorMessage = "사용자 정보가 없습니다."
         case .profileImageNotExist:
             errorMessage = "프로필 이미지를 불러올 수 없습니다."
+        case .logoutError:
+            errorMessage = "로그아웃 도중 문제가 발생했습니다."
         }
         view.displayError(errorMessage)
     }
@@ -45,6 +48,14 @@ final class UserProfilePresenter: UserProfileUseCaseOutput {
     }
     
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error) {
+        view.displayError(error.localizedDescription)
+    }
+    
+    func logoutSucceeded() {
+        view.close()
+    }
+    
+    func logoutFailed(_ error: UserProfileUseCase.Error) {
         view.displayError(error.localizedDescription)
     }
 }
@@ -60,5 +71,9 @@ extension WeakRef: UserProfileView where T: UserProfileView {
     
     func displayProfileImage(_ imageData: Data) {
         object?.displayProfileImage(imageData)
+    }
+    
+    func close() {
+        object?.close()
     }
 }

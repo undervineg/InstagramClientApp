@@ -44,8 +44,8 @@ final class iOSViewControllerFactory: ViewControllerFactory {
     func registerViewController(router: RegisterRouter.Routes) -> UIViewController {
         let vc = RegisterUserViewController(router: router)
         let service = RegisterUserService(firebaseAuth: Auth.self,
-                                                firebaseDatabase: Database.self,
-                                                firebaseStorage: Storage.self)
+                                          firebaseDatabase: Database.self,
+                                          firebaseStorage: Storage.self)
         let presenter = RegisterUserPresenter(view: WeakRef(vc))
         let useCase = RegisterUserUseCase(client: service, output: presenter)
         
@@ -57,12 +57,15 @@ final class iOSViewControllerFactory: ViewControllerFactory {
     func userProfileViewController() -> UIViewController {
         let vc = UserProfileViewController()
         let service = UserProfileService(firebaseAuth: Auth.self,
-                                              firebaseDatabase: Database.self,
-                                              firebaseStorage: Storage.self)
+                                         firebaseDatabase: Database.self,
+                                         firebaseStorage: Storage.self,
+                                         networking: URLSession.shared)
         let presenter = UserProfilePresenter(view: WeakRef(vc))
         let useCase = UserProfileUseCase(client: service, output: presenter)
         
         vc.loadProfile = useCase.loadProfile
+        vc.downloadProfileImage = useCase.downloadProfileImage
+        vc.logout = useCase.logout
         
         return vc
     }
