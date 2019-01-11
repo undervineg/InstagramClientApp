@@ -25,6 +25,8 @@ class UserProfileViewController: UICollectionViewController {
         }
     }
     
+    private var imageData: Data?
+    
     convenience init() {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
@@ -62,7 +64,10 @@ class UserProfileViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                      withReuseIdentifier: headerId,
-                                                                     for: indexPath)
+                                                                     for: indexPath) as! UserProfileHeaderCell
+        if let data = imageData {
+            header.profileImageView.image = UIImage(data: data)
+        }
         return header
     }
     
@@ -116,11 +121,8 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
 extension UserProfileViewController: UserProfileView {
     func displayProfileImage(_ imageData: Data) {
         DispatchQueue.main.async {
-            let headerView = self.collectionView.supplementaryView(
-                forElementKind: UICollectionView.elementKindSectionHeader,
-                at: IndexPath(item: 0, section: 0)) as? UserProfileHeaderCell
-            
-            headerView?.profileImageView.image = UIImage(data: imageData)
+            self.imageData = imageData
+            self.collectionView.reloadData()
         }
     }
     
