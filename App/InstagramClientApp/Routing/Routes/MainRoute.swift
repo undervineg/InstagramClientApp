@@ -10,20 +10,31 @@ import UIKit
 
 protocol MainRoute {
     func openMainPage()
-    func prepareMainScreen() -> UIViewController
+    func openMainPageWithTransition()
+    func openMainPageAsRoot(with callback: @escaping (UIViewController) -> Void)
 }
 
 extension MainRoute where Self: Closable {
     func openMainPage() {
+        openMainPageWithTransition()
+    }
+    
+    func openMainPageWithTransition() {
         // Close until current page(MainTabBarVC) appear
         self.close(to: self as? UIViewController)
     }
     
-    func prepareMainScreen() -> UIViewController {
+    func openMainPageAsRoot(with callback: @escaping (UIViewController) -> Void) {
+        let mainVC = prepareMainScreen(callback)
+        callback(mainVC)
+    }
+    
+    private func prepareMainScreen(_ callback: @escaping (UIViewController) -> Void) -> UIViewController {
         let factory = iOSViewControllerFactory()
-        
-        let mainTabBarVC = factory.mainViewController()
-
+        let router = MainRouter()
+        router.openRegisterCallback = callback
+        let mainTabBarVC = factory.mainViewController(router: router)
+        router.viewControllerBehind = mainTabBarVC
         return mainTabBarVC
     }
 }

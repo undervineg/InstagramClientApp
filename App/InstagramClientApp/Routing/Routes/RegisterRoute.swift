@@ -12,7 +12,8 @@ protocol RegisterRoute {
     var registerTransition: Transition { get }
     
     func openRegisterPage()
-    func prepareRegisterScreen() -> UIViewController
+    func openRegisterPageWithTransition()
+    func openRegisterPageAsRoot(with callback: @escaping (UIViewController) -> Void)
 }
 
 extension RegisterRoute where Self: Routable {
@@ -21,13 +22,23 @@ extension RegisterRoute where Self: Routable {
     }
     
     func openRegisterPage() {
-        let registerVC = prepareRegisterScreen()
+        openRegisterPageWithTransition()
+    }
+    
+    func openRegisterPageWithTransition() {
+        let registerVC = prepareRegisterScreen(nil)
         self.open(registerVC, with: self.registerTransition)
     }
     
-    func prepareRegisterScreen() -> UIViewController {
+    func openRegisterPageAsRoot(with callback: @escaping (UIViewController) -> Void) {
+        let registerVC = prepareRegisterScreen(callback)
+        callback(registerVC)
+    }
+    
+    private func prepareRegisterScreen(_ callback: ((UIViewController) -> Void)?) -> UIViewController {
         let factory = iOSViewControllerFactory()
         let router = RegisterRouter()
+        router.openMainCallback = callback
         let vc = factory.registerViewController(router: router)
         router.viewControllerBehind = vc
         return vc
