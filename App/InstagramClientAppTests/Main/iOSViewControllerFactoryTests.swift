@@ -16,8 +16,7 @@ class iOSViewControllerFactoryTests: XCTestCase {
     
     func test_creates_splashVC() {
         let sut = iOSViewControllerFactory()
-        let window = UIWindow()
-        let router = SplashRouter(window: window)
+        let router = SplashRouter()
         
         let vc = sut.splashViewController(router: router)
         
@@ -44,7 +43,7 @@ class iOSViewControllerFactoryTests: XCTestCase {
     func test_creates_mainVC() {
         let sut = iOSViewControllerFactory()
         
-        let vc = sut.mainViewController()
+        let vc = sut.mainViewController(router: MainRouter())
         
         XCTAssert(vc is MainTabBarViewController)
     }
