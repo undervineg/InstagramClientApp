@@ -6,8 +6,18 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class MainRouter: BasicRouter, MainRouter.Routes {
     typealias Routes = RegisterRoute & LoginRoute
+    
+    var openRegisterCallback: ((UIViewController) -> Void)? = nil
+    
+    func openRegisterPage() {
+        if let callback = openRegisterCallback {
+            openRegisterPageAsRoot(with: callback)
+        } else {
+            openRegisterPageWithTransition()
+        }
+    }
 }

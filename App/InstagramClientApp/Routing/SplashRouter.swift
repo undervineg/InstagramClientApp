@@ -8,28 +8,19 @@
 
 import UIKit
 
-final class SplashRouter: BasicRouter, SplashRouter.Route {
-    typealias Route = MainRoute & RegisterRoute
+final class SplashRouter: BasicRouter, SplashRouter.Routes {
+    typealias Routes = MainRouter.Routes & RegisterRouter.Routes
     
-    private(set) var window: UIWindow?
-    
-    init(window: UIWindow) {
-        self.window = window
-    }
+    var openRegisterCallback: ((UIViewController) -> Void)? = nil
+    var openMainCallback: ((UIViewController) -> Void)? = nil
     
     func openMainPage() {
-        let mainVC = prepareMainScreen()
-        window?.rootViewController = mainVC
+        guard let callback = openMainCallback else { return }
+        openMainPageAsRoot(with: callback)
     }
     
     func openRegisterPage() {
-        let registerVC = prepareRegisterScreen()
-        window?.rootViewController = registerVC
-    }
-    
-    // MAKR: - Unused properties
-    
-    var registerTransition: Transition {
-        return PushTransition()
+        guard let callback = openRegisterCallback else { return }
+        openRegisterPageAsRoot(with: callback)
     }
 }

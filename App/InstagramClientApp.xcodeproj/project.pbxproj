@@ -32,6 +32,8 @@
 		0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0884511A21DA665A008B8121 /* AppDelegate.swift */; };
 		0884512221DA665C008B8121 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0884512121DA665C008B8121 /* Assets.xcassets */; };
 		0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0884512321DA665C008B8121 /* LaunchScreen.storyboard */; };
+		08BF0C4E21E840C3004CE846 /* SplashRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C4D21E840C3004CE846 /* SplashRouterTests.swift */; };
+		08BF0C5021E845DF004CE846 /* MainRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C4F21E845DF004CE846 /* MainRouterTests.swift */; };
 		08F9847921E4B1E100DE6E78 /* RegisterUserClientAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847821E4B1E100DE6E78 /* RegisterUserClientAdapter.swift */; };
 		08F9847D21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847C21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift */; };
 		08F9847F21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847E21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift */; };
@@ -116,6 +118,8 @@
 		0884512621DA665C008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0884512B21DA665C008B8121 /* InstagramClientAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstagramClientAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0884513121DA665C008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		08BF0C4D21E840C3004CE846 /* SplashRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashRouterTests.swift; sourceTree = "<group>"; };
+		08BF0C4F21E845DF004CE846 /* MainRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouterTests.swift; sourceTree = "<group>"; };
 		08F9847821E4B1E100DE6E78 /* RegisterUserClientAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserClientAdapter.swift; sourceTree = "<group>"; };
 		08F9847C21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthWrapper.swift; sourceTree = "<group>"; };
 		08F9847E21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseWrapper.swift; sourceTree = "<group>"; };
@@ -271,7 +275,9 @@
 			isa = PBXGroup;
 			children = (
 				086E6CA121DE92BF0094B808 /* BasicRouterTests.swift */,
+				08BF0C4D21E840C3004CE846 /* SplashRouterTests.swift */,
 				086E6CA621DEC1670094B808 /* RegisterRouterTests.swift */,
+				08BF0C4F21E845DF004CE846 /* MainRouterTests.swift */,
 			);
 			path = Routing;
 			sourceTree = "<group>";
@@ -658,6 +664,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08F9848F21E4D6EB00DE6E78 /* RegisterUserPresenterTests.swift in Sources */,
+				08BF0C4E21E840C3004CE846 /* SplashRouterTests.swift in Sources */,
 				08F9848821E4B8C900DE6E78 /* MockFirebase.swift in Sources */,
 				08F984A421E5196400DE6E78 /* StubAppDelegate.swift in Sources */,
 				08F984BA21E54C4D00DE6E78 /* UserProfileClientAdapterTests.swift in Sources */,
@@ -673,6 +680,7 @@
 				086E6CA921DF6A100094B808 /* StubTransition.swift in Sources */,
 				08F984AD21E5420A00DE6E78 /* MainTabBarVCTests.swift in Sources */,
 				08F984D821E696A300DE6E78 /* SplashVCTests.swift in Sources */,
+				08BF0C5021E845DF004CE846 /* MainRouterTests.swift in Sources */,
 				086E6C7C21DC6AC90094B808 /* RegisterUserClientAdapterTests.swift in Sources */,
 				08F9849921E4EDBA00DE6E78 /* AppDelegateTests.swift in Sources */,
 			);
