@@ -16,6 +16,7 @@ final class RegisterUserViewController: UIViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
     private var router: RegisterRouter.Routes?
     
@@ -63,6 +64,7 @@ final class RegisterUserViewController: UIViewController {
         let password = passwordTextField.text ?? ""
         let profileImageData = profileImageButton.imageView?.image?.jpegData(compressionQuality: 0.3)
         
+        indicatorView.startAnimating()
         registerCallback?(email, username, password, profileImageData!)
     }
     
@@ -91,7 +93,7 @@ extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigat
 
 extension RegisterUserViewController: RegisterUserView {
     func displayMain() {
-        // close current vc
+        indicatorView.stopAnimating()
         router?.openMainPage()
     }
     

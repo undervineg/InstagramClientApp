@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterUserViewController" customModule="InstagramClientApp" customModuleProvider="target">
             <connections>
                 <outlet property="emailTextField" destination="d4u-WA-Kzd" id="hBn-PS-kM2"/>
+                <outlet property="indicatorView" destination="72S-ff-RFy" id="gSM-wj-HmR"/>
                 <outlet property="passwordTextField" destination="ciu-Vk-1is" id="gJn-TG-3C7"/>
                 <outlet property="profileImageButton" destination="yHg-R9-K1J" id="a7P-8m-P6F"/>
                 <outlet property="signUpButton" destination="hNw-WI-nkt" id="EbI-jt-77O"/>
@@ -73,13 +74,18 @@
                         <constraint firstAttribute="height" constant="200" id="r2H-OL-HwN"/>
                     </constraints>
                 </stackView>
+                <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="72S-ff-RFy">
+                    <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="yHg-R9-K1J" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="40" id="2uX-r6-T7i"/>
                 <constraint firstItem="0SE-Ue-sz8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="668-mc-AMA"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0SE-Ue-sz8" secondAttribute="trailing" constant="40" id="TYh-Wz-ZLC"/>
+                <constraint firstItem="72S-ff-RFy" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="TnR-eR-1xw"/>
                 <constraint firstItem="0SE-Ue-sz8" firstAttribute="top" secondItem="yHg-R9-K1J" secondAttribute="bottom" constant="20" id="nFq-9s-eOc"/>
+                <constraint firstItem="72S-ff-RFy" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="nPw-77-Fvu"/>
                 <constraint firstItem="yHg-R9-K1J" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="yjf-YG-tpc"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
