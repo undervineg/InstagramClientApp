@@ -10,11 +10,14 @@ import Foundation
 
 public protocol UserProfileClient {
     func loadCurrentUserInfo(_ completion: @escaping (Result<UserEntity, UserProfileUseCase.Error>) -> Void)
+    func downloadProfileImage(from url: String, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
 }
 
 public protocol UserProfileUseCaseOutput {
     func loadUserSucceeded(_ user: UserEntity)
     func loadUserFailed(_ error: UserProfileUseCase.Error)
+    func downloadProfileImageSucceeded(_ imageData: Data)
+    func downloadProfileImageFailed(_ error: UserProfileUseCase.Error)
 }
 
 final public class UserProfileUseCase {
@@ -30,6 +33,7 @@ final public class UserProfileUseCase {
     public enum Error: Swift.Error {
         case currentUserIDNotExist
         case currentUserNotExist
+        case profileImageNotExist
     }
     
     public func loadProfile() {
@@ -39,6 +43,17 @@ final public class UserProfileUseCase {
                 self?.output.loadUserSucceeded(user)
             case .failure(let error):
                 self?.output.loadUserFailed(error)
+            }
+        }
+    }
+    
+    public func downloadProfileImage(from url: String) {
+        client.downloadProfileImage(from: url) { [weak self] (result) in
+            switch result {
+            case .success(let imageData):
+                self?.output.downloadProfileImageSucceeded(imageData)
+            case .failure(let error):
+                self?.output.downloadProfileImageFailed(error)
             }
         }
     }

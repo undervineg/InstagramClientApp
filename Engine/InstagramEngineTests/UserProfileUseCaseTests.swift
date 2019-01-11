@@ -31,8 +31,8 @@ class UserProfileUseCaseTests: XCTestCase {
                                email: "dummy2@naver.com",
                                username: "dummy2",
                                profileImageUrl: "http://b-url.com")
-        client.completeWithSuccess(user1, at: 0)
-        client.completeWithSuccess(user2, at: 1)
+        client.completeLoadUserInfoWithSuccess(user1, at: 0)
+        client.completeLoadUserInfoWithSuccess(user2, at: 1)
         
         XCTAssertEqual(output.capturedUser, [user1, user2])
     }
@@ -43,11 +43,48 @@ class UserProfileUseCaseTests: XCTestCase {
         sut.loadProfile()
         sut.loadProfile()
         
-        client.completeWithFailure(.currentUserNotExist, at: 0)
-        client.completeWithFailure(.currentUserIDNotExist, at: 1)
+        client.completeLoadUserInfoWithFailure(.currentUserNotExist, at: 0)
+        client.completeLoadUserInfoWithFailure(.currentUserIDNotExist, at: 1)
         
         XCTAssertEqual(output.capturedError, [.currentUserNotExist, .currentUserIDNotExist])
     }
+    
+    func test_downloadProfileImageTwice_sendImageDataToOutputTwice_onSuccess() {
+        let (sut, client, output) = makeSUT()
+        let user1 = UserEntity(id: "0",
+                               email: "dummy1@naver.com",
+                               username: "dummy1",
+                               profileImageUrl: "http://a-url.com")
+        let user2 = UserEntity(id: "1",
+                               email: "dummy2@naver.com",
+                               username: "dummy2",
+                               profileImageUrl: "http://b-url.com")
+        
+        sut.downloadProfileImage(from: user1.profileImageUrl)
+        sut.downloadProfileImage(from: user2.profileImageUrl)
+        
+        let data1 = Data(bytes: "http://a-url.com".utf8)
+        let data2 = Data(bytes: "http://b-url.com".utf8)
+        client.completeDownloadProfileImageWithSuccess(data1, at: 0)
+        client.completeDownloadProfileImageWithSuccess(data2, at: 1)
+        
+        XCTAssertEqual(output.capturedImageData, [data1, data2])
+    }
+    
+    func test_downloadProfileImage_sendErrorMessageToOutput_onFailure() {
+        let (sut, client, output) = makeSUT()
+        
+        let user1 = UserEntity(id: "0",
+                               email: "dummy1@naver.com",
+                               username: "dummy1",
+                               profileImageUrl: "http://a-url.com")
+        
+        sut.downloadProfileImage(from: user1.profileImageUrl)
+        client.completeDownloadProfileImageWithFailure(.profileImageNotExist)
+        
+        XCTAssertEqual(output.capturedError, [.profileImageNotExist])
+    }
+
     
     
     // MARK: - Helpers
@@ -60,26 +97,43 @@ class UserProfileUseCaseTests: XCTestCase {
     }
     
     private class UserProfileClientStub: UserProfileClient {
-        private var messages = [(Result<UserEntity, UserProfileUseCase.Error>) -> Void]()
+        
+        private var loadUserInfoMessages = [(Result<UserEntity, UserProfileUseCase.Error>) -> Void]()
+        private var downloadImageMessages = [(url: String, completion: (Result<Data, UserProfileUseCase.Error>) -> Void)]()
         
         var requestedCount = 0
         
         func loadCurrentUserInfo(_ completion: @escaping (Result<UserEntity, UserProfileUseCase.Error>) -> Void) {
             requestedCount += 1
-            messages.append(completion)
+            loadUserInfoMessages.append(completion)
         }
         
-        func completeWithSuccess(_ user: UserEntity, at index: Int = 0) {
-            messages[index](.success(user))
+        func downloadProfileImage(from url: String, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) {
+            downloadImageMessages.append((url, completion))
         }
         
-        func completeWithFailure(_ error: UserProfileUseCase.Error, at index: Int = 0) {
-            messages[index](.failure(error))
+        // Methods for test
+        
+        func completeLoadUserInfoWithSuccess(_ user: UserEntity, at index: Int = 0) {
+            loadUserInfoMessages[index](.success(user))
+        }
+        
+        func completeLoadUserInfoWithFailure(_ error: UserProfileUseCase.Error, at index: Int = 0) {
+            loadUserInfoMessages[index](.failure(error))
+        }
+        
+        func completeDownloadProfileImageWithSuccess(_ data: Data, at index: Int = 0) {
+            downloadImageMessages[index].completion(.success(data))
+        }
+        
+        func completeDownloadProfileImageWithFailure(_ error: UserProfileUseCase.Error, at index: Int = 0) {
+            downloadImageMessages[index].completion(.failure(error))
         }
     }
     
     private class UserProfileUseCaseOutputDummy: UserProfileUseCaseOutput {
         var capturedUser = [UserEntity]()
+        var capturedImageData = [Data]()
         var capturedError = [UserProfileUseCase.Error]()
         
         func loadUserSucceeded(_ user: UserEntity) {
@@ -87,6 +141,14 @@ class UserProfileUseCaseTests: XCTestCase {
         }
         
         func loadUserFailed(_ error: UserProfileUseCase.Error) {
+            capturedError.append(error)
+        }
+        
+        func downloadProfileImageSucceeded(_ imageData: Data) {
+            capturedImageData.append(imageData)
+        }
+        
+        func downloadProfileImageFailed(_ error: UserProfileUseCase.Error) {
             capturedError.append(error)
         }
     }

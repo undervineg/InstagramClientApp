@@ -2,46 +2,88 @@
 //  UserProfileViewController.swift
 //  InstagramClientApp
 //
-//  Created by 심승민 on 09/01/2019.
+//  Created by 심승민 on 11/01/2019.
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
 import UIKit
-import InstagramEngine
+
+private let reuseIdentifier = "Cell"
 
 class UserProfileViewController: UICollectionViewController {
-
-    var loadProfile: (() -> Void)?
-    
-    convenience init() {
-        let layout = UICollectionViewFlowLayout()
-        self.init(collectionViewLayout: layout)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        collectionView.backgroundColor = .white
-        tabBarItem = UITabBarItem(title: "Profile",
-                                  image: UIImage(named: "profile_unselected")?.withRenderingMode(.alwaysTemplate),
-                                  selectedImage: UIImage(named: "profile_selected")?.withRenderingMode(.alwaysTemplate))
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        loadProfile?()
-    }
-}
 
-extension UserProfileViewController: UserProfileView {
-    func displayTitle(_ title: String) {
-        navigationItem.title = title
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+
+        // Register cell classes
+        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+
+        // Do any additional setup after loading the view.
     }
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+    // MARK: UICollectionViewDataSource
+
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 0
+    }
+
+
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of items
+        return 0
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
     
-    func displayError(_ errorMessage: String) {
-        let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
+        // Configure the cell
+    
+        return cell
     }
+
+    // MARK: UICollectionViewDelegate
+
+    /*
+    // Uncomment this method to specify if the specified item should be highlighted during tracking
+    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    */
+
+    /*
+    // Uncomment this method to specify if the specified item should be selected
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    */
+
+    /*
+    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        return false
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+    
+    }
+    */
+    
 }
