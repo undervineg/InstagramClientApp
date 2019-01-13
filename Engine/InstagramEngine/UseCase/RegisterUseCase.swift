@@ -29,11 +29,8 @@ final public class RegisterUserUseCase {
     public enum Error: Swift.Error {
         case invalidName
         case invalidPassword
-        case userDisabled   // login
         case emailAlreadyInUse
         case invalidEmail
-        case wrongPassword  // login
-        case userNotFound   // login
         case accountExistsWithDifferentCredential
         case networkError
         case credentialAlreadyInUse

@@ -85,9 +85,6 @@ final class RegisterUserService: RegisterUserClient {
             switch authError {
             case .invalidEmail: return .invalidEmail
             case .emailAlreadyInUse: return .emailAlreadyInUse
-            case .userDisabled: return .userDisabled
-            case .wrongPassword: return .wrongPassword
-            case .userNotFound: return .userNotFound
             case .accountExistsWithDifferentCredential: return .accountExistsWithDifferentCredential
             case .networkError: return .networkError
             case .credentialAlreadyInUse: return .credentialAlreadyInUse
