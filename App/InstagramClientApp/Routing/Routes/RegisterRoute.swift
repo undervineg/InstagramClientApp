@@ -18,7 +18,7 @@ protocol RegisterRoute {
 
 extension RegisterRoute where Self: Routable {
     var registerTransition: Transition {
-        return ModalTransition()
+        return PushTransition()
     }
     
     func openRegisterPage() {
