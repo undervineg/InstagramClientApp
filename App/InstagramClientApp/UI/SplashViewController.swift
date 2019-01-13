@@ -14,9 +14,9 @@ class SplashViewController: UIViewController {
     
     var checkIfAuthenticated: (() -> Void)?
     
-    private var router: SplashRouter.Route?
+    private var router: SplashRouter.Routes?
     
-    convenience init(router: SplashRouter.Route) {
+    convenience init(router: SplashRouter.Routes) {
         self.init()
         self.router = router
     }
@@ -51,6 +51,6 @@ extension SplashViewController: SplashView {
     }
     
     func displayRegister() {
-        router?.openRegisterPage()
+        router?.openLoginPage()
     }
 }

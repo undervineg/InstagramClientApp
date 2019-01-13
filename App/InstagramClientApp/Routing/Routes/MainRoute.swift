@@ -32,7 +32,7 @@ extension MainRoute where Self: Closable {
     private func prepareMainScreen(_ callback: @escaping (UIViewController) -> Void) -> UIViewController {
         let factory = iOSViewControllerFactory()
         let router = MainRouter()
-        router.openRegisterCallback = callback
+        router.openLoginCallback = callback
         let mainTabBarVC = factory.mainViewController(router: router)
         router.viewControllerBehind = mainTabBarVC
         return mainTabBarVC

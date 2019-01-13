@@ -16,7 +16,7 @@
                 <outlet property="indicatorView" destination="72S-ff-RFy" id="gSM-wj-HmR"/>
                 <outlet property="passwordTextField" destination="ciu-Vk-1is" id="gJn-TG-3C7"/>
                 <outlet property="profileImageButton" destination="yHg-R9-K1J" id="a7P-8m-P6F"/>
-                <outlet property="signUpButton" destination="hNw-WI-nkt" id="EbI-jt-77O"/>
+                <outlet property="signUpButton" destination="hNw-WI-nkt" id="yK8-cJ-RsJ"/>
                 <outlet property="usernameTextField" destination="mAo-RT-lvu" id="Ggh-UZ-NEy"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -34,6 +34,9 @@
                     </constraints>
                     <color key="tintColor" red="0.48274293660000001" green="0.45095248290000001" blue="0.90606271400000005" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" image="plus_photo"/>
+                    <connections>
+                        <action selector="openImagePicker:" destination="-1" eventType="touchUpInside" id="ppf-9l-BhF"/>
+                    </connections>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0SE-Ue-sz8">
                     <rect key="frame" x="40" y="220" width="295" height="200"/>
@@ -43,18 +46,27 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="handleTextInputChange:" destination="-1" eventType="editingChanged" id="uCR-6M-6eJ"/>
+                            </connections>
                         </textField>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mAo-RT-lvu">
                             <rect key="frame" x="0.0" y="52.5" width="295" height="42.5"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="handleTextInputChange:" destination="-1" eventType="editingChanged" id="z7k-Mk-D1q"/>
+                            </connections>
                         </textField>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ciu-Vk-1is">
                             <rect key="frame" x="0.0" y="105" width="295" height="42.5"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            <connections>
+                                <action selector="handleTextInputChange:" destination="-1" eventType="editingChanged" id="ImR-rg-2TS"/>
+                            </connections>
                         </textField>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNw-WI-nkt">
                             <rect key="frame" x="0.0" y="157.5" width="295" height="42.5"/>
@@ -68,6 +80,9 @@
                                     <integer key="value" value="5"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="signUp:" destination="-1" eventType="touchUpInside" id="F0k-ln-cYc"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>
@@ -77,6 +92,14 @@
                 <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="72S-ff-RFy">
                     <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                 </activityIndicatorView>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9gK-J8-67g">
+                    <rect key="frame" x="164" y="617" width="46" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="routeToLoginPage:" destination="-1" eventType="touchUpInside" id="pzv-P6-LTc"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>

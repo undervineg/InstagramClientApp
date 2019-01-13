@@ -11,14 +11,14 @@ import UIKit
 final class MainRouter: BasicRouter, MainRouter.Routes {
     typealias Routes = RegisterRoute & LoginRoute
     
-    var openRegisterCallback: ((UIViewController) -> Void)? = nil
+    var openLoginCallback: ((UIViewController) -> Void)? = nil
     
-    func openRegisterPage() {
-        if let callback = openRegisterCallback {
-            openRegisterPageAsRoot(with: callback)
-            openRegisterCallback = nil
+    func openLoginPage() {
+        if let callback = openLoginCallback {
+            openLoginPageAsRoot(with: callback)
+            openLoginCallback = nil
         } else {
-            openRegisterPageWithTransition()
+            openLoginPageWithTransition()
         }
     }
 }

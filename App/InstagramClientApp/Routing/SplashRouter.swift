@@ -11,7 +11,7 @@ import UIKit
 final class SplashRouter: BasicRouter, SplashRouter.Routes {
     typealias Routes = MainRouter.Routes & RegisterRouter.Routes
     
-    var openRegisterCallback: ((UIViewController) -> Void)? = nil
+    var openLoginCallback: ((UIViewController) -> Void)? = nil
     var openMainCallback: ((UIViewController) -> Void)? = nil
     
     func openMainPage() {
@@ -19,8 +19,8 @@ final class SplashRouter: BasicRouter, SplashRouter.Routes {
         openMainPageAsRoot(with: callback)
     }
     
-    func openRegisterPage() {
-        guard let callback = openRegisterCallback else { return }
-        openRegisterPageAsRoot(with: callback)
+    func openLoginPage() {
+        guard let callback = openLoginCallback else { return }
+        openLoginPageAsRoot(with: callback)
     }
 }
