@@ -18,11 +18,11 @@ final class RegisterUserViewController: UIViewController {
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
-    private var router: RegisterRouter.Routes?
+    private var router: (RegisterRouter.Routes & Closable)?
     
     var register: ((String, String, String, Data) -> ())?
     
-    convenience init(router: RegisterRouter.Routes) {
+    convenience init(router: RegisterRouter.Routes & Closable) {
         self.init()
         self.router = router
     }
@@ -45,9 +45,44 @@ final class RegisterUserViewController: UIViewController {
     }
     
     @IBAction func routeToLoginPage(_ sender: UIButton) {
-        router?.openLoginPage()
+        if let navigation = navigationController, navigation.children.count > 1 {
+            router?.close(to: nil)
+        } else {
+            router?.openLoginPage()
+        }
+    }
+}
+
+extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        let editedImage = info[.editedImage] as? UIImage
+        profileImageButton.setImage(editedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        dismiss(animated: true, completion: nil)
     }
     
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+extension RegisterUserViewController: RegisterUserView {
+    func displayMain() {
+        indicatorView.stopAnimating()
+        router?.openMainPage()
+    }
+    
+    func display(_ errorMessage: String) {
+        let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        present(alert, animated: true) {
+            self.indicatorView.stopAnimating()
+        }
+    }
+}
+
+extension RegisterUserViewController {
     
     // MARK: - Private Methods
     
@@ -76,7 +111,7 @@ final class RegisterUserViewController: UIViewController {
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
         
-        router?.openImagePicker(imagePicker, with: nil)
+        present(imagePicker, animated: true, completion: nil)
     }
     
     private func makeButtonEnableAndColored() {
@@ -90,34 +125,5 @@ final class RegisterUserViewController: UIViewController {
         
         signUpButton.isEnabled = false
         signUpButton.backgroundColor = UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5)
-    }
-}
-
-extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        let editedImage = info[.editedImage] as? UIImage
-        profileImageButton.setImage(editedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
-        router?.closeImagePicker(picker)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        router?.closeImagePicker(picker)
-    }
-}
-
-extension RegisterUserViewController: RegisterUserView {
-    func displayMain() {
-        indicatorView.stopAnimating()
-        router?.openMainPage()
-    }
-    
-    func display(_ errorMessage: String) {
-        let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        present(alert, animated: true) {
-            self.indicatorView.stopAnimating()
-        }
     }
 }

@@ -9,13 +9,14 @@
 import UIKit
 
 final class RegisterRouter: BasicRouter, RegisterRouter.Routes {
-    typealias Routes = LoginRoute & ImagePickerRoute & MainRoute
+    typealias Routes = LoginRoute & MainRoute
     
     var openMainCallback: ((UIViewController) -> Void)? = nil
     
     func openMainPage() {
         if let callback = openMainCallback {
             openMainPageAsRoot(with: callback)
+            openMainCallback = nil
         } else {
             openMainPageWithTransition()
         }

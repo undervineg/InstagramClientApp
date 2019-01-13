@@ -26,21 +26,22 @@ extension RegisterRoute where Self: Routable {
     }
     
     func openRegisterPageWithTransition() {
-        let registerVC = prepareRegisterScreen(nil)
-        self.open(registerVC, with: self.registerTransition)
-    }
-    
-    func openRegisterPageAsRoot(with callback: @escaping (UIViewController) -> Void) {
-        let registerVC = prepareRegisterScreen(callback)
-        callback(registerVC)
-    }
-    
-    private func prepareRegisterScreen(_ callback: ((UIViewController) -> Void)?) -> UIViewController {
-        let factory = iOSViewControllerFactory()
         let router = RegisterRouter()
-        router.openMainCallback = callback
-        let vc = factory.registerViewController(router: router)
-        router.viewControllerBehind = vc
-        return vc
+        let registerModule = RegisterModule(router: router)
+        
+        let registerPage = (viewControllerBehind?.navigationController != nil) ?
+            registerModule.viewController : registerModule.withNavigation
+
+        router.openTransition = (viewControllerBehind?.navigationController != nil) ?
+            registerTransition : ModalTransition()
+        
+        open(registerPage, with: router.openTransition!)
+    }
+    
+    func openRegisterPageAsRoot(with openMainCallback: @escaping (UIViewController) -> Void) {
+        let router = RegisterRouter()
+        let registerModule = RegisterModule(router: router)
+        router.openMainCallback = openMainCallback
+        openMainCallback(registerModule.viewController)
     }
 }

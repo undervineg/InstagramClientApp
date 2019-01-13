@@ -9,10 +9,10 @@
 import UIKit
 
 final class SplashRouter: BasicRouter, SplashRouter.Routes {
-    typealias Routes = MainRouter.Routes & RegisterRouter.Routes
+    typealias Routes = RegisterRouter.Routes & MainRouter.Routes
     
-    var openLoginCallback: ((UIViewController) -> Void)? = nil
     var openMainCallback: ((UIViewController) -> Void)? = nil
+    var openLoginCallback: ((UIViewController) -> Void)? = nil
     
     func openMainPage() {
         guard let callback = openMainCallback else { return }

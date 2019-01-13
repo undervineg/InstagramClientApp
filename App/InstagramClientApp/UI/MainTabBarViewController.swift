@@ -10,12 +10,9 @@ import UIKit
 
 class MainTabBarViewController: UITabBarController {
     
-    private var router: MainRouter.Routes?
-    
-    convenience init(router: MainRouter.Routes, subViewControllers: [UIViewController]) {
+    convenience init(subViewControllers: [UIViewController]) {
         self.init()
         viewControllers = subViewControllers
-        self.router = router
     }
     
     override func viewDidLoad() {

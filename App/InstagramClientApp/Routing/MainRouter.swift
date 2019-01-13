@@ -13,7 +13,7 @@ final class MainRouter: BasicRouter, MainRouter.Routes {
     
     var openLoginCallback: ((UIViewController) -> Void)? = nil
     
-    func openLoginPage() {
+    func openLoginPage(with transition: Transition) {
         if let callback = openLoginCallback {
             openLoginPageAsRoot(with: callback)
             openLoginCallback = nil

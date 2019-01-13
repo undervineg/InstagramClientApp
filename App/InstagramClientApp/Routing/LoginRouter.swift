@@ -16,6 +16,7 @@ final class LoginRouter: BasicRouter, LoginRouter.Routes {
     func openMainPage() {
         if let callback = openMainCallback {
             openMainPageAsRoot(with: callback)
+            openMainCallback = nil
         } else {
             openMainPageWithTransition()
         }

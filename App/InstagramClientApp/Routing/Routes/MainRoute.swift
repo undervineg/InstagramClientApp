@@ -11,7 +11,7 @@ import UIKit
 protocol MainRoute {
     func openMainPage()
     func openMainPageWithTransition()
-    func openMainPageAsRoot(with callback: @escaping (UIViewController) -> Void)
+    func openMainPageAsRoot(with openLoginCallback: @escaping (UIViewController) -> Void)
 }
 
 extension MainRoute where Self: Closable {
@@ -20,21 +20,13 @@ extension MainRoute where Self: Closable {
     }
     
     func openMainPageWithTransition() {
-        // Close until current page(MainTabBarVC) appear
-        self.close(to: self as? UIViewController)
+        self.close(to: nil)
     }
     
-    func openMainPageAsRoot(with callback: @escaping (UIViewController) -> Void) {
-        let mainVC = prepareMainScreen(callback)
-        callback(mainVC)
-    }
-    
-    private func prepareMainScreen(_ callback: @escaping (UIViewController) -> Void) -> UIViewController {
-        let factory = iOSViewControllerFactory()
+    func openMainPageAsRoot(with openLoginCallback: @escaping (UIViewController) -> Void) {
         let router = MainRouter()
-        router.openLoginCallback = callback
-        let mainTabBarVC = factory.mainViewController(router: router)
-        router.viewControllerBehind = mainTabBarVC
-        return mainTabBarVC
+        let mainModule = MainModule(router: router)
+        router.openLoginCallback = openLoginCallback
+        openLoginCallback(mainModule.viewController)
     }
 }

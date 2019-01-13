@@ -26,21 +26,21 @@ extension LoginRoute where Self: Routable {
     }
     
     func openLoginPageWithTransition() {
-        let loginVC = prepareLoginScreen(nil)
-        open(loginVC, with: loginTransition)
+        let router = LoginRouter()
+        let loginModule = LoginModule(router: router, nil)
+        
+        let loginPage = (viewControllerBehind?.navigationController != nil) ?
+            loginModule.viewController : loginModule.withNavigation
+        router.openTransition = (viewControllerBehind?.navigationController != nil) ?
+            loginTransition : ModalTransition()
+        
+        open(loginPage, with: router.openTransition!)
     }
     
     func openLoginPageAsRoot(with callback: @escaping (UIViewController) -> Void) {
-        let loginVC = prepareLoginScreen(callback)
-        callback(loginVC)
-    }
-    
-    private func prepareLoginScreen(_ callback: ((UIViewController) -> Void)?) -> UIViewController {
-        let factory = iOSViewControllerFactory()
         let router = LoginRouter()
         router.openMainCallback = callback
-        let vc = factory.loginViewController(router: router)
-        router.viewControllerBehind = vc
-        return vc
+        let loginModule = LoginModule(router: router, callback)
+        callback(loginModule.withNavigation)
     }
 }

@@ -21,19 +21,18 @@ protocol Closable: class {
 class BasicRouter: Routable, Closable {
     weak var viewControllerBehind: UIViewController?
     
-    private var transition: Transition?
+    var openTransition: Transition?
     
     func open(_ viewController: UIViewController, with transition: Transition) {
-        self.transition = transition
         transition.viewControllerBehind = self.viewControllerBehind
         transition.open(viewController)
     }
     
     func close(to destination: UIViewController? = nil) {
         if let destinationVC = destination {
-            self.transition?.close(destinationVC)
+            openTransition?.close(destinationVC)
         } else {
-            self.transition?.close(nil)
+            openTransition?.close(nil)
         }
     }
 }
