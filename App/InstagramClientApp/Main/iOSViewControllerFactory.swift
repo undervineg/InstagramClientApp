@@ -14,7 +14,7 @@ protocol ViewControllerFactory {
     func splashViewController(router: SplashRouter.Routes) -> UIViewController
     func mainViewController(router: MainRouter.Routes) -> UIViewController
     func registerViewController(router: RegisterRouter.Routes) -> UIViewController
-    func userProfileViewController() -> UIViewController
+    func userProfileViewController(router: MainRouter.Routes) -> UIViewController
 }
 
 final class iOSViewControllerFactory: ViewControllerFactory {
@@ -31,14 +31,14 @@ final class iOSViewControllerFactory: ViewControllerFactory {
     }
     
     func mainViewController(router: MainRouter.Routes) -> UIViewController {
-        let profileVC = userProfileViewController()
+        let profileVC = self.userProfileViewController(router: router)
         let profileNavigation = UINavigationController(rootViewController: profileVC)
         
-        let mainTabBarVC = MainTabBarViewController(router: router, subViewControllers: [profileNavigation])
+        let vc = MainTabBarViewController(subViewControllers: [profileNavigation])
         
-        mainTabBarVC.selectedIndex = 0
+        vc.selectedIndex = 0
         
-        return mainTabBarVC
+        return vc
     }
     
     func registerViewController(router: RegisterRouter.Routes) -> UIViewController {
@@ -54,10 +54,8 @@ final class iOSViewControllerFactory: ViewControllerFactory {
         return vc
     }
     
-    func userProfileViewController() -> UIViewController {
-        let router = UserProfileRouter()
+    func userProfileViewController(router: MainRouter.Routes) -> UIViewController {
         let vc = UserProfileViewController(router: router)
-        router.viewControllerBehind = vc
         let service = UserProfileService(firebaseAuth: Auth.self,
                                          firebaseDatabase: Database.self,
                                          firebaseStorage: Storage.self,
@@ -69,6 +67,11 @@ final class iOSViewControllerFactory: ViewControllerFactory {
         vc.downloadProfileImage = useCase.downloadProfileImage
         vc.logout = useCase.logout
         
+        return vc
+    }
+    
+    func loginViewController() -> UIViewController {
+        let vc = LoginViewController()
         return vc
     }
 }

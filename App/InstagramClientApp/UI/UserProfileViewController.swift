@@ -18,7 +18,7 @@ class UserProfileViewController: UICollectionViewController {
     var downloadProfileImage: ((URL) -> Void)?
     var logout: (() -> Void)?
     
-    private var router: UserProfileRouter.Routes?
+    private var router: MainRouter.Routes?
     
     private var userModel: UserEntity?  = nil {
         didSet {
@@ -29,7 +29,7 @@ class UserProfileViewController: UICollectionViewController {
     
     private var imageData: Data?
     
-    convenience init(router: UserProfileRouter.Routes) {
+    convenience init(router: MainRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
         self.router = router

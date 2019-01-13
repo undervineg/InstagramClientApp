@@ -16,6 +16,7 @@ final class MainRouter: BasicRouter, MainRouter.Routes {
     func openRegisterPage() {
         if let callback = openRegisterCallback {
             openRegisterPageAsRoot(with: callback)
+            openRegisterCallback = nil
         } else {
             openRegisterPageWithTransition()
         }
