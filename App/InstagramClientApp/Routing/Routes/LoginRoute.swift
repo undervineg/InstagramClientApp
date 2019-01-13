@@ -11,7 +11,9 @@ import UIKit
 protocol LoginRoute {
     var loginTransition: Transition { get }
     
-    func openLoginPage(with transition: Transition?)
+    func openLoginPage()
+    func openLoginPageWithTransition()
+    func openLoginPageAsRoot(with callback: @escaping (UIViewController) -> Void)
 }
 
 extension LoginRoute where Self: Routable {
@@ -19,9 +21,26 @@ extension LoginRoute where Self: Routable {
         return PushTransition()
     }
     
-    func openLoginPage(with transition: Transition? = nil) {
-        let loginVC = LoginViewController()
-        let transition = (transition == nil) ? loginTransition : transition!
-        open(loginVC, with: transition)
+    func openLoginPage() {
+        openLoginPageWithTransition()
+    }
+    
+    func openLoginPageWithTransition() {
+        let loginVC = prepareLoginScreen(nil)
+        open(loginVC, with: loginTransition)
+    }
+    
+    func openLoginPageAsRoot(with callback: @escaping (UIViewController) -> Void) {
+        let loginVC = prepareLoginScreen(callback)
+        callback(loginVC)
+    }
+    
+    private func prepareLoginScreen(_ callback: ((UIViewController) -> Void)?) -> UIViewController {
+        let factory = iOSViewControllerFactory()
+        let router = LoginRouter()
+        router.openMainCallback = callback
+        let vc = factory.loginViewController(router: router)
+        router.viewControllerBehind = vc
+        return vc
     }
 }

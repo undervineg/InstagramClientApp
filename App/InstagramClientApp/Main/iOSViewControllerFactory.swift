@@ -14,6 +14,7 @@ protocol ViewControllerFactory {
     func splashViewController(router: SplashRouter.Routes) -> UIViewController
     func mainViewController(router: MainRouter.Routes) -> UIViewController
     func registerViewController(router: RegisterRouter.Routes) -> UIViewController
+    func loginViewController(router: LoginRouter.Routes) -> UIViewController
     func userProfileViewController(router: MainRouter.Routes) -> UIViewController
 }
 
@@ -49,7 +50,18 @@ final class iOSViewControllerFactory: ViewControllerFactory {
         let presenter = RegisterUserPresenter(view: WeakRef(vc))
         let useCase = RegisterUserUseCase(client: service, output: presenter)
         
-        vc.registerCallback = useCase.register
+        vc.register = useCase.register
+        
+        return vc
+    }
+    
+    func loginViewController(router: LoginRouter.Routes) -> UIViewController {
+        let vc = LoginViewController(router: router)
+        let service = LoginService(auth: Auth.self)
+        let output = LoginPresenter(view: vc)
+        let useCase = LoginUseCase(client: service, output: output)
+        
+        vc.login = useCase.login
         
         return vc
     }
@@ -67,11 +79,6 @@ final class iOSViewControllerFactory: ViewControllerFactory {
         vc.downloadProfileImage = useCase.downloadProfileImage
         vc.logout = useCase.logout
         
-        return vc
-    }
-    
-    func loginViewController() -> UIViewController {
-        let vc = LoginViewController()
         return vc
     }
 }

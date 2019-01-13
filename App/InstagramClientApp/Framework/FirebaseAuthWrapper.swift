@@ -14,6 +14,7 @@ protocol FirebaseAuthWrapper {
     static var currentUserId: String? { get }
     
     static func registerUser(email: String, password: String, completion: @escaping (Result<(id: String, email: String?), Error>) -> Void)
+    static func login(email: String, password: String, completion: @escaping (Error?) -> Void)
     static func logout(_ completion: (Error?) -> Void)
 }
 
@@ -35,6 +36,12 @@ extension Auth: FirebaseAuthWrapper {
                 let user = result.user
                 completion(.success((user.uid, user.email)))
             }
+        }
+    }
+    
+    static func login(email: String, password: String, completion: @escaping (Error?) -> Void) {
+        auth().signIn(withEmail: email, password: password) { (_, error) in
+            completion(error)
         }
     }
     
