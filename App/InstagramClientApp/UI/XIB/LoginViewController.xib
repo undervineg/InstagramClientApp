@@ -51,9 +51,11 @@
                         <action selector="login:" destination="-1" eventType="touchUpInside" id="Ffv-Pr-vNa"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Mx-jG-DMT">
-                    <rect key="frame" x="70" y="617" width="223" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Mx-jG-DMT">
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="ZTo-tf-hFm"/>
+                    </constraints>
                     <state key="normal" title="Don't have an account? Sign Up."/>
                     <connections>
                         <action selector="routeToSignUpPage:" destination="-1" eventType="touchUpInside" id="hE7-2K-BTP"/>
@@ -61,6 +63,11 @@
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="7Mx-jG-DMT" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="2qm-eE-pVq"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="7Mx-jG-DMT" secondAttribute="bottom" id="NWS-jn-xs4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7Mx-jG-DMT" secondAttribute="trailing" id="mhJ-aC-pdO"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
     </objects>
