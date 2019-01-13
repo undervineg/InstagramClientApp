@@ -18,6 +18,8 @@ class UserProfileViewController: UICollectionViewController {
     var downloadProfileImage: ((URL) -> Void)?
     var logout: (() -> Void)?
     
+    private var router: UserProfileRouter.Routes?
+    
     private var userModel: UserEntity?  = nil {
         didSet {
             setTitleOnNavigationBar()
@@ -27,9 +29,10 @@ class UserProfileViewController: UICollectionViewController {
     
     private var imageData: Data?
     
-    convenience init() {
+    convenience init(router: UserProfileRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
+        self.router = router
     }
     
     override func viewDidLoad() {
@@ -179,7 +182,7 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
 
 extension UserProfileViewController: UserProfileView {
     func close() {
-        print("Logged out")
+        router?.openLoginPage(with: ModalTransition())
     }
     
     func displayProfileImage(_ imageData: Data) {

@@ -55,7 +55,9 @@ final class iOSViewControllerFactory: ViewControllerFactory {
     }
     
     func userProfileViewController() -> UIViewController {
-        let vc = UserProfileViewController()
+        let router = UserProfileRouter()
+        let vc = UserProfileViewController(router: router)
+        router.viewControllerBehind = vc
         let service = UserProfileService(firebaseAuth: Auth.self,
                                          firebaseDatabase: Database.self,
                                          firebaseStorage: Storage.self,
