@@ -14,11 +14,11 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     
-    private var router: (LoginRouter.Routes & Closable)?
+    private var router: AuthRouter.Routes?
     
     var login: ((String, String) -> Void)?
     
-    convenience init(router: LoginRouter.Routes & Closable) {
+    convenience init(router: AuthRouter.Routes) {
         self.init()
         self.router = router
     }
@@ -43,11 +43,7 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func routeToSignUpPage(_ sender: UIButton) {
-        if let navigation = navigationController, navigation.children.count > 1 {
-            router?.close(to: nil)
-        } else {
-            router?.openRegisterPage()
-        }
+        router?.openRegisterPage()
     }
     
     // MARK: - Private Methods

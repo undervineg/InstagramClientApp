@@ -9,16 +9,5 @@
 import UIKit
 
 final class MainRouter: BasicRouter, MainRouter.Routes {
-    typealias Routes = RegisterRoute & LoginRoute
-    
-    var openLoginCallback: ((UIViewController) -> Void)? = nil
-    
-    func openLoginPage(with transition: Transition) {
-        if let callback = openLoginCallback {
-            openLoginPageAsRoot(with: callback)
-            openLoginCallback = nil
-        } else {
-            openLoginPageWithTransition()
-        }
-    }
+    typealias Routes = AuthRoute
 }

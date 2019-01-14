@@ -182,7 +182,7 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
 
 extension UserProfileViewController: UserProfileView {
     func close() {
-        router?.openLoginPage()
+        router?.openAuthPage(.login)
     }
     
     func displayProfileImage(_ imageData: Data) {

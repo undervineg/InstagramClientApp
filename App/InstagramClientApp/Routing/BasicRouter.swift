@@ -15,7 +15,8 @@ protocol Routable: class {
 }
 
 protocol Closable: class {
-    func close(to destination: UIViewController?)
+    func close()
+    func close(to destVC: UIViewController)
 }
 
 class BasicRouter: Routable, Closable {
@@ -28,11 +29,11 @@ class BasicRouter: Routable, Closable {
         transition.open(viewController)
     }
     
-    func close(to destination: UIViewController? = nil) {
-        if let destinationVC = destination {
-            openTransition?.close(destinationVC)
-        } else {
-            openTransition?.close(nil)
-        }
+    func close() {
+        openTransition?.close()
+    }
+    
+    func close(to destVC: UIViewController) {
+        openTransition?.close(to: destVC)
     }
 }

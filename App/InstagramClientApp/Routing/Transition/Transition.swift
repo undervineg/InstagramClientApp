@@ -12,5 +12,6 @@ protocol Transition: class {
     var viewControllerBehind: UIViewController? { get set }
     
     func open(_ viewController: UIViewController)
-    func close(_ destinationViewController: UIViewController?)
+    func close()
+    func close(to destVC: UIViewController)
 }

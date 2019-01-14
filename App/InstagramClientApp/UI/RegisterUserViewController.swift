@@ -18,11 +18,11 @@ final class RegisterUserViewController: UIViewController {
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
-    private var router: (RegisterRouter.Routes & Closable)?
+    private var router: RegisterRouter.Routes?
     
     var register: ((String, String, String, Data) -> ())?
     
-    convenience init(router: RegisterRouter.Routes & Closable) {
+    convenience init(router: RegisterRouter.Routes) {
         self.init()
         self.router = router
     }
@@ -45,11 +45,7 @@ final class RegisterUserViewController: UIViewController {
     }
     
     @IBAction func routeToLoginPage(_ sender: UIButton) {
-        if let navigation = navigationController, navigation.children.count > 1 {
-            router?.close(to: nil)
-        } else {
-            router?.openLoginPage()
-        }
+        router?.openLoginPage()
     }
 }
 

@@ -9,7 +9,6 @@
 import UIKit
 
 final class ModalTransition: Transition {
-    
     weak var viewControllerBehind: UIViewController?
     
     private let animated: Bool
@@ -24,7 +23,11 @@ final class ModalTransition: Transition {
         self.viewControllerBehind?.present(viewController, animated: animated, completion: completion)
     }
     
-    func close(_ destinationViewController: UIViewController? = nil) {
+    func close() {
         self.viewControllerBehind?.dismiss(animated: animated, completion: completion)
+    }
+    
+    func close(to destVC: UIViewController) {
+        
     }
 }

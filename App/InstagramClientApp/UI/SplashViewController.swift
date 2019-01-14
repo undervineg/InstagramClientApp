@@ -51,6 +51,7 @@ extension SplashViewController: SplashView {
     }
     
     func displayRegister() {
-        router?.openLoginPage()
+        router?.openAuthPage(.login)
+//        router?.openLoginPage()
     }
 }
