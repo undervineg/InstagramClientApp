@@ -104,74 +104,13 @@ class RegisterUserViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.signUpButton.isEnabled, false)
     }
     
-    func test_clickProfileImageButton_opensImagePicker() {
-        let (sut, router, _) = makeSUT()
-        
-        sut.profileImageButton.sendActions(for: .touchUpInside)
-        
-        XCTAssertEqual(router.imagePickerIsOpened, true)
-    }
-    
-    func test_whenPickImage_setsPickedImageIntoProfileButton() {
-        let (sut, _, _) = makeSUT()
-        let picker = UIImagePickerController()
-        let pickedImage = UIImage(named: "profile_selected")
-        let pickedMedia = [UIImagePickerController.InfoKey.editedImage: pickedImage]
-        
-        sut.imagePickerController(picker, didFinishPickingMediaWithInfo: pickedMedia)
-       
-        let renderedImage = sut.profileImageButton.image(for: .normal)
-        XCTAssertNotNil(renderedImage?.pngData())
-        XCTAssertEqual(renderedImage?.pngData(), pickedImage?.pngData())
-    }
-    
-    func test_afterImagePicked_closeImagePicker() {
-        let (sut, router, _) = makeSUT()
-        let picker = UIImagePickerController()
-        
-        sut.imagePickerController(picker, didFinishPickingMediaWithInfo: [:])
-        
-        XCTAssertEqual(router.imagePickerIsClosed, true)
-    }
-    
-    func test_setImageWithRenderingModeAlwaysOriginal() {
-        let (sut, _, _) = makeSUT()
-        let picker = UIImagePickerController()
-        let pickedImage = UIImage(named: "profile_selected")
-        let pickedMedia = [UIImagePickerController.InfoKey.editedImage: pickedImage]
-        
-        sut.imagePickerController(picker, didFinishPickingMediaWithInfo: pickedMedia)
-        
-        let renderedImage = sut.profileImageButton.image(for: .normal)
-        XCTAssertNotNil(renderedImage)
-        XCTAssertEqual(renderedImage?.renderingMode, UIImage.RenderingMode.alwaysOriginal)
-    }
-    
-    func test_cancelPickImage_closeImagePicker() {
-        let (sut, router, _) = makeSUT()
-        let picker = UIImagePickerController()
-        
-        sut.imagePickerControllerDidCancel(picker)
-        
-        XCTAssertEqual(router.imagePickerIsClosed, true)
-    }
-    
-//    func test() {
-//        let (sut, router, _) = makeSUT()
-//
-//        sut.displayMain()
-//
-//        XCTAssertEqual(router.mainPageIsOpened, true)
-//    }
-    
-    
     // MARK: - Helpers
     
     private func makeSUT() -> (sut: RegisterUserViewController, router: StubRegisterRouter, useCase: StubRegisterUseCase) {
         let router = StubRegisterRouter()
         let useCaseStub = StubRegisterUseCase()
         let sut = RegisterUserViewController(router: router)
-        sut.registerCallback = useCaseStub.register
+        sut.register = useCaseStub.register
         _ = sut.view
         return (sut, router, useCaseStub)
     }
@@ -184,35 +123,31 @@ class RegisterUserViewControllerTests: XCTestCase {
         }
     }
     
-    private class StubRegisterRouter: RegisterRouter.Routes {
-        var imagePickerIsOpened: Bool = false
-        var imagePickerIsClosed: Bool = false
+    private class StubRegisterRouter: AuthRouter.Routes, Closable {
         var loginPageIsOpened: Bool = false
-        var mainPageIsOpened: Bool = false
+        var registerPageIsOpened: Bool = false
+        var closed: Bool = false
         
         init() {}
         
-        var imagePickerTransition: Transition = ModalTransition()
         var loginTransition: Transition = PushTransition()
+        var registerTransition: Transition = PushTransition()
         
-        func openImagePicker(_ imagePicker: UIImagePickerController, with transition: Transition?) {
-            imagePickerIsOpened = true
-        }
         
-        func closeImagePicker(_ imagePicker: UIImagePickerController) {
-            imagePickerIsClosed = true
-        }
-        
-        func openLoginPage(with transition: Transition?) {
+        func openLoginPage() {
             loginPageIsOpened = true
         }
         
-        func openMainPage() {
-            mainPageIsOpened = true
+        func openRegisterPage() {
+            registerPageIsOpened = true
         }
         
-        func prepareMainScreen() -> UIViewController {
-            return UIViewController()
+        func close() {
+            closed = true
+        }
+        
+        func close(to destVC: UIViewController) {
+            closed = true
         }
     }
 }

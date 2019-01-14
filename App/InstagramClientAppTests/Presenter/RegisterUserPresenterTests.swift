@@ -16,21 +16,18 @@ class RegisterUserPresenterTests: XCTestCase {
         let view = RegisterUserViewStub()
         let presenter = RegisterUserPresenter(view: view)
         
-        let errors = [
-            RegisterUserUseCase.Error.accountExistsWithDifferentCredential,
-            .credentialAlreadyInUse,
-            .databaseUpdateError,
-            .emailAlreadyInUse,
-            .invalidEmail,
-            .invalidName,
-            .invalidPassword,
-            .networkError,
-            .storageUploadError,
-            .unknown,
-            .userDisabled,
-            .userNotFound,
-            .wrongPassword
-        ]
+        let errors: [RegisterUserUseCase.Error] =
+            [.accountExistsWithDifferentCredential,
+             .credentialAlreadyInUse,
+             .databaseUpdateError,
+             .emailAlreadyInUse,
+             .invalidEmail,
+             .invalidName,
+             .invalidPassword,
+             .networkError,
+             .storageUploadError,
+             .unknown
+            ]
         
         errors.forEach {
             presenter.registerFailed($0)

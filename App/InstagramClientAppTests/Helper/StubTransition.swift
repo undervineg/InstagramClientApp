@@ -21,15 +21,16 @@ final class StubTransition: Transition {
         }
     }
     
-    func close(_ destinationViewController: UIViewController? = nil) {
+    func close() {
         guard viewControllerBehind != nil else { return }
-        if let destVC = destinationViewController {
-            openedVC.reversed().forEach {
-                guard $0 != destVC else { return }
-                let removedVC = openedVC.removeLast()
-                closedVC.append(removedVC)
-            }
-        } else {
+        let removedVC = openedVC.removeLast()
+        closedVC.append(removedVC)
+    }
+    
+    func close(to destVC: UIViewController) {
+        guard viewControllerBehind != nil else { return }
+        openedVC.reversed().forEach {
+            guard $0 != destVC else { return }
             let removedVC = openedVC.removeLast()
             closedVC.append(removedVC)
         }

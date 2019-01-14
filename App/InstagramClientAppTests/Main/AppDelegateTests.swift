@@ -34,13 +34,10 @@ class AppDelegateTests: XCTestCase {
     }
     
     private func makeVC() -> UIViewController {
-        let factory = iOSViewControllerFactory()
-        let router = RegisterRouter()
-        let vc = factory.registerViewController(router: router)
-        router.viewControllerBehind = vc
-        vc.loadViewIfNeeded()
-        weakVC = vc
-        return vc
+        let module = SplashModule()
+        module.viewController.loadViewIfNeeded()
+        weakVC = module.viewController
+        return module.viewController
     }
     
     private func makeSUT(with root: UIViewController) -> StubAppDelegate {

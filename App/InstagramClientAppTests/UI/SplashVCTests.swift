@@ -30,7 +30,7 @@ class SplashViewControllerTests: XCTestCase {
         sut.displayMain()
         
         XCTAssertEqual(router.isMainOpened, true)
-        XCTAssertEqual(router.isRegisterOpened, false)
+        XCTAssertEqual(router.isAuthOpened, false)
     }
     
     func test_displayMainScreenIsCalled_routesRegisterPage() {
@@ -39,7 +39,7 @@ class SplashViewControllerTests: XCTestCase {
         sut.displayRegister()
         
         XCTAssertEqual(router.isMainOpened, false)
-        XCTAssertEqual(router.isRegisterOpened, true)
+        XCTAssertEqual(router.isAuthOpened, true)
     }
     
     
@@ -52,30 +52,41 @@ class SplashViewControllerTests: XCTestCase {
         return (sut, router)
     }
     
-    private class MockSplashRouter: SplashRouter.Route {
+    private class MockSplashRouter: SplashRouter.Routes {
         var isMainOpened = false
-        var isRegisterOpened = false
+        var isAuthOpened = false
+        
+        var mainTransition: Transition {
+            return ModalTransition()
+        }
+        
+        var authTransition: Transition {
+            return ModalTransition()
+        }
+        
+        
+        func openAuthPage(_ root: AuthModule.RootType) {
+            isAuthOpened = true
+        }
+        
+        func openAuthPage(_ root: AuthModule.RootType, with transition: Transition) {
+            isAuthOpened = true
+        }
+        
+        func openAuthPageAsWindowRoot(_ root: AuthModule.RootType, with openMainCallback: @escaping (UIViewController) -> Void) {
+            isAuthOpened = true
+        }
         
         func openMainPage() {
             isMainOpened = true
         }
         
-        func openRegisterPage() {
-            isRegisterOpened = true
+        func openMainPageAsWindowRoot(with openLoginCallback: @escaping (UIViewController) -> Void) {
+            isMainOpened = true
         }
         
-        // MARK: - Unused
-        
-        func prepareMainScreen() -> UIViewController {
-            return MainTabBarViewController()
-        }
-        
-        func prepareRegisterScreen() -> UIViewController {
-            return RegisterUserViewController()
-        }
-        
-        var registerTransition: Transition {
-            return PushTransition()
+        func openMainPage(with transition: Transition) {
+            isMainOpened = true
         }
     }
 

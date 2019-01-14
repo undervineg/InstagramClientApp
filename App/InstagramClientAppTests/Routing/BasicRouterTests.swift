@@ -80,7 +80,7 @@ class BasicRouterTests: XCTestCase {
         sut.open(closingVC1, with: stubTransition)
         sut.open(closingVC2, with: stubTransition)
         
-        sut.close(to: sut.viewControllerBehind)
+        sut.close(to: sut.viewControllerBehind ?? root)
         
         XCTAssertEqual(stubTransition.closedVC, [closingVC2, closingVC1])
         XCTAssertEqual(stubTransition.openedVC, [])

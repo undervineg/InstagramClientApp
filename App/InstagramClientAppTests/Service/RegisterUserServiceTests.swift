@@ -14,7 +14,7 @@ import Firebase
 /*
  * Role: Register user to firebase
  */
-class RegisterUserClientAdapterTests: XCTestCase {
+class RegisterUserServiceTests: XCTestCase {
     
     let testImageData = UIImage(named: "profile_selected")?.jpegData(compressionQuality: 0.3)
     
@@ -44,14 +44,12 @@ class RegisterUserClientAdapterTests: XCTestCase {
         firebase.completeWithRegisterFailure(errorCode: AuthErrorCode.networkError.rawValue)
         firebase.completeWithRegisterFailure(errorCode: AuthErrorCode.credentialAlreadyInUse.rawValue)
         
-        XCTAssertEqual(capturedError, [.invalidEmail,
-                                       .emailAlreadyInUse,
-                                       .userDisabled,
-                                       .wrongPassword,
-                                       .userNotFound,
-                                       .accountExistsWithDifferentCredential,
-                                       .networkError,
-                                       .credentialAlreadyInUse])
+        let errors: [RegisterUserUseCase.Error] = [.invalidEmail,
+                                                   .emailAlreadyInUse,
+                                                   .accountExistsWithDifferentCredential,
+                                                   .networkError,
+                                                   .credentialAlreadyInUse]
+        XCTAssertEqual(capturedError, errors)
     }
     
     func test_uploadProfileImageDataToFIRStorage_onRegisterSuccess() {

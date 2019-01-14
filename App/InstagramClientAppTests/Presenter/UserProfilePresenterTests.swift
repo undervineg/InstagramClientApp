@@ -56,6 +56,10 @@ class UserProfilePresenterTests: XCTestCase {
         func displayError(_ errorMessage: String) {
             stubbedErrorMessage.append(errorMessage)
         }
+        
+        func close() {
+            
+        }
     }
         
 }

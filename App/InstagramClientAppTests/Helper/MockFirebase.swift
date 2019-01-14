@@ -25,6 +25,14 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
         registerMessages.append((email, password, completion))
     }
     
+    static func login(email: String, password: String, completion: @escaping (Error?) -> Void) {
+        
+    }
+    
+    static func logout(_ completion: (Error?) -> Void) {
+        
+    }
+    
     static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
         imageUploadMessages.append((imageData, completion))
     }

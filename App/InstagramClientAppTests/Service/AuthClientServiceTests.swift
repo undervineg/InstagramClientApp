@@ -11,7 +11,7 @@ import InstagramEngine
 import Firebase
 @testable import InstagramClientApp
 
-class AuthClientAdapterTests: XCTestCase {
+class AuthServiceTests: XCTestCase {
 
     func test_isAuthenticated_succeeded() {
         let firebase = MockFirebase.self
