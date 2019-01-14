@@ -23,15 +23,21 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         let window = UIWindow(frame: UIScreen.main.bounds)
-        let factory = iOSViewControllerFactory()
-        let router = SplashRouter(window: window)
-        let splashVC = factory.splashViewController(router: router)
+        let splashModule = SplashModule()
+        splashModule.router.openLoginCallback = { mainVC in
+            window.rootViewController = mainVC
+        }
+        splashModule.router.openMainCallback = { loginVC in
+            window.rootViewController = loginVC
+        }
         
-        window.rootViewController = splashVC
+        window.rootViewController = splashModule.viewController
         window.backgroundColor = .white
         window.makeKeyAndVisible()
         
         self.window = window
+        
+        UITabBar.appearance().tintColor = .black
         
         return true
     }
