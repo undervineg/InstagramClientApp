@@ -12,7 +12,7 @@ import InstagramEngine
 private let headerId = "headerId"
 private let reuseIdentifier = "Cell"
 
-class UserProfileViewController: UICollectionViewController {
+final class UserProfileViewController: UICollectionViewController {
     
     var loadProfile: (() -> Void)?
     var downloadProfileImage: ((URL) -> Void)?

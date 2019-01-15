@@ -21,6 +21,8 @@
 		084FF5C621EC16F0000EA933 /* SplashRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5C521EC16F0000EA933 /* SplashRouterTests.swift */; };
 		084FF5D421ED75E3000EA933 /* LoginRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5D321ED75E3000EA933 /* LoginRoute.swift */; };
 		084FF5D621ED75F4000EA933 /* RegisterRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5D521ED75F4000EA933 /* RegisterRoute.swift */; };
+		084FF5DE21EDAAFD000EA933 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5DC21EDAAFD000EA933 /* HomeViewController.swift */; };
+		084FF5DF21EDAAFD000EA933 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 084FF5DD21EDAAFD000EA933 /* HomeViewController.xib */; };
 		0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */; };
 		0858766D21DB8C7600C32422 /* RegisterUserVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */; };
 		0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858767521DC5CC700C32422 /* RegisterUserViewController.swift */; };
@@ -112,6 +114,8 @@
 		084FF5C521EC16F0000EA933 /* SplashRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashRouterTests.swift; sourceTree = "<group>"; };
 		084FF5D321ED75E3000EA933 /* LoginRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRoute.swift; sourceTree = "<group>"; };
 		084FF5D521ED75F4000EA933 /* RegisterRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRoute.swift; sourceTree = "<group>"; };
+		084FF5DC21EDAAFD000EA933 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		084FF5DD21EDAAFD000EA933 /* HomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
 		0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserVCTests.swift; sourceTree = "<group>"; };
 		0858767521DC5CC700C32422 /* RegisterUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserViewController.swift; sourceTree = "<group>"; };
@@ -233,6 +237,7 @@
 				0858767621DC5CC700C32422 /* RegisterUserViewController.xib */,
 				08BF0C6D21E8BB27004CE846 /* LoginViewController.xib */,
 				08BF0C5621E854EB004CE846 /* UserProfileHeaderCell.xib */,
+				084FF5DD21EDAAFD000EA933 /* HomeViewController.xib */,
 			);
 			path = XIB;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 				0858767521DC5CC700C32422 /* RegisterUserViewController.swift */,
 				08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */,
 				08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */,
+				084FF5DC21EDAAFD000EA933 /* HomeViewController.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -540,6 +546,7 @@
 				08BF0C6F21E8BB27004CE846 /* LoginViewController.xib in Resources */,
 				08BF0C5821E854EB004CE846 /* UserProfileHeaderCell.xib in Resources */,
 				0858767821DC5CC700C32422 /* RegisterUserViewController.xib in Resources */,
+				084FF5DF21EDAAFD000EA933 /* HomeViewController.xib in Resources */,
 				0884512221DA665C008B8121 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -672,6 +679,7 @@
 				08BF0C5B21E85EDF004CE846 /* main.swift in Sources */,
 				0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */,
 				08F9847D21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift in Sources */,
+				084FF5DE21EDAAFD000EA933 /* HomeViewController.swift in Sources */,
 				08BF0C6E21E8BB27004CE846 /* LoginViewController.swift in Sources */,
 				08F984AB21E53D2E00DE6E78 /* MainRoute.swift in Sources */,
 				084FF5A621EB5856000EA933 /* LoginPresenter.swift in Sources */,

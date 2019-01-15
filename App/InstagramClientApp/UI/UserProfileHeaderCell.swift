@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserProfileHeaderCell: UICollectionViewCell {
+final class UserProfileHeaderCell: UICollectionViewCell {
 
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
