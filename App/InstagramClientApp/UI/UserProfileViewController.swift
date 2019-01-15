@@ -40,7 +40,6 @@ final class UserProfileViewController: UICollectionViewController {
 
         collectionView.backgroundColor = .white
         
-        configureTabBarItem()
         configureLogoutButton()
         registerCollectionViewCells()
     }
@@ -151,12 +150,6 @@ final class UserProfileViewController: UICollectionViewController {
                                 withReuseIdentifier: headerId)
         
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-    }
-    
-    private func configureTabBarItem() {
-        tabBarItem = UITabBarItem(title: "Profile",
-                                  image: UIImage(named: "profile_unselected")?.withRenderingMode(.alwaysTemplate),
-                                  selectedImage: UIImage(named: "profile_selected")?.withRenderingMode(.alwaysTemplate))
     }
     
 }

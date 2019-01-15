@@ -1,5 +1,5 @@
 //
-//  HomeViewController.swift
+//  SearchViewController.swift
 //  InstagramClientApp
 //
 //  Created by 심승민 on 15/01/2019.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-final class HomeViewController: UIViewController {
+class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         
     }
     

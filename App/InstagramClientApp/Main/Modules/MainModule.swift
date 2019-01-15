@@ -15,12 +15,31 @@ final class MainModule {
     init(router: MainRouter, _ openMainCallback: ((UIViewController) -> Void)? = nil) {
         self.router = router
         
-        let profileVC = UserProfileModule(router: router)
+        let homeVC = HomeModule().withNavigation
+        let searchVC = SearchModule().withNavigation
+        let plusVC = UIViewController()
+        let likeVC = UIViewController()
+        let profileVC = UserProfileModule(router: router).withNavigation
         
-        viewController = MainTabBarViewController(subViewControllers: [profileVC.withNavigation])
+        homeVC.configureTabBarItem(image: "home_unselected", selectedImage: "home_selected")
+        searchVC.configureTabBarItem(image: "search_unselected", selectedImage: "search_selected")
+        plusVC.configureTabBarItem(image: "plus_unselected", selectedImage: "plus_unselected")
+        likeVC.configureTabBarItem(image: "like_unselected", selectedImage: "like_selected")
+        profileVC.configureTabBarItem(image: "profile_unselected", selectedImage: "profile_selected")
         
+        let childVCs = [homeVC, searchVC, plusVC, likeVC, profileVC]
+        viewController = MainTabBarViewController(subViewControllers: childVCs)
         router.viewControllerBehind = viewController
-        
         viewController.selectedIndex = 0
+    }
+    
+    
+}
+
+extension UIViewController {
+    func configureTabBarItem(image: String, selectedImage: String) {
+        tabBarItem = UITabBarItem(title: nil,
+                                  image: UIImage(named: image)?.withRenderingMode(.alwaysTemplate),
+                                  selectedImage: UIImage(named: selectedImage)?.withRenderingMode(.alwaysTemplate))
     }
 }
