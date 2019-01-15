@@ -9,32 +9,9 @@
 import UIKit
 
 protocol MainRoute {
-    var mainTransition: Transition { get }
+    var mainTransitionType: TransitionType { get }
     
     func openMainPage()
-    func openMainPage(with transition: Transition)
-    func openMainPageAsWindowRoot(with openLoginCallback: @escaping (UIViewController) -> Void)
-}
-
-extension MainRoute where Self: Routable & Closable {
-    var mainTransition: Transition {
-        return ModalTransition()
-    }
-    
-    func openMainPage() {
-        openMainPage(with: mainTransition)
-    }
-    
-    func openMainPage(with transition: Transition) {
-        self.close()
-    }
-    
-    func openMainPageAsWindowRoot(with openLoginCallback: @escaping (UIViewController) -> Void) {
-        let router = MainRouter()
-        let mainModule = MainModule(router: router)
-        let transition = mainTransition
-        router.openTransition = transition
-        transition.viewControllerBehind = mainModule.viewController
-        openLoginCallback(mainModule.viewController)
-    }
+    func openMainPage(with transitionType: TransitionType)
+    func openMainPageAsRoot(_ callback: (UIViewController) -> Void)
 }

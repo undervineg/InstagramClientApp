@@ -18,11 +18,11 @@ final class RegisterUserViewController: UIViewController {
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
-    private var router: RegisterRouter.Routes?
+    private var router: AuthRouter.Routes?
     
     var register: ((String, String, String, Data) -> ())?
     
-    convenience init(router: RegisterRouter.Routes) {
+    convenience init(router: AuthRouter.Routes) {
         self.init()
         self.router = router
     }
@@ -111,7 +111,8 @@ extension RegisterUserViewController {
     }
     
     private func makeButtonEnableAndColored() {
-        signUpButton.backgroundColor = isAllTextFieldsValid() ? UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 1) : UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5)
+        let alpha: CGFloat = isAllTextFieldsValid() ? 1 : 0.5
+        signUpButton.backgroundColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: alpha)
         signUpButton.isEnabled = isAllTextFieldsValid()
     }
     
@@ -120,6 +121,8 @@ extension RegisterUserViewController {
         profileImageButton.layer.masksToBounds = true
         
         signUpButton.isEnabled = false
-        signUpButton.backgroundColor = UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5)
+        signUpButton.backgroundColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: 0.5)
+        
+        navigationController?.isNavigationBarHidden = true
     }
 }

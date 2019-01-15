@@ -19,7 +19,7 @@ final class AuthModule {
         case register
     }
     
-    init(rootType: RootType, _ openMainCallback: ((UIViewController) -> Void)? = nil) {
+    init(rootType: RootType) {
         router = AuthRouter()
         
         loginModule = LoginModule(router: router)

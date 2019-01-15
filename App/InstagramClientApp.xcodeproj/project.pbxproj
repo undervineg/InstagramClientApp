@@ -19,6 +19,8 @@
 		084FF5BE21EBD086000EA933 /* AuthRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5BD21EBD086000EA933 /* AuthRoute.swift */; };
 		084FF5C021EBD132000EA933 /* AuthModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5BF21EBD132000EA933 /* AuthModule.swift */; };
 		084FF5C621EC16F0000EA933 /* SplashRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5C521EC16F0000EA933 /* SplashRouterTests.swift */; };
+		084FF5D421ED75E3000EA933 /* LoginRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5D321ED75E3000EA933 /* LoginRoute.swift */; };
+		084FF5D621ED75F4000EA933 /* RegisterRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5D521ED75F4000EA933 /* RegisterRoute.swift */; };
 		0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */; };
 		0858766D21DB8C7600C32422 /* RegisterUserVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */; };
 		0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858767521DC5CC700C32422 /* RegisterUserViewController.swift */; };
@@ -108,6 +110,8 @@
 		084FF5BD21EBD086000EA933 /* AuthRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRoute.swift; sourceTree = "<group>"; };
 		084FF5BF21EBD132000EA933 /* AuthModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModule.swift; sourceTree = "<group>"; };
 		084FF5C521EC16F0000EA933 /* SplashRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashRouterTests.swift; sourceTree = "<group>"; };
+		084FF5D321ED75E3000EA933 /* LoginRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRoute.swift; sourceTree = "<group>"; };
+		084FF5D521ED75F4000EA933 /* RegisterRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRoute.swift; sourceTree = "<group>"; };
 		0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserVCTests.swift; sourceTree = "<group>"; };
 		0858767521DC5CC700C32422 /* RegisterUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserViewController.swift; sourceTree = "<group>"; };
@@ -190,6 +194,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		084FF5D721ED8893000EA933 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				084FF5AF21EB8A32000EA933 /* SplashModule.swift */,
+				084FF5B121EB8D57000EA933 /* MainModule.swift */,
+				084FF5BF21EBD132000EA933 /* AuthModule.swift */,
+				084FF5AD21EB87C9000EA933 /* LoginModule.swift */,
+				084FF5B321EB8EB7000EA933 /* RegisterModule.swift */,
+				084FF5B521EB8FD0000EA933 /* UserProfileModule.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
 		085EED1F21E6B82800A6D98E /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,12 +222,7 @@
 				08F984A121E5092300DE6E78 /* main.swift */,
 				0884511A21DA665A008B8121 /* AppDelegate.swift */,
 				08F9849621E4EBE500DE6E78 /* WeakRef.swift */,
-				084FF5AF21EB8A32000EA933 /* SplashModule.swift */,
-				084FF5B121EB8D57000EA933 /* MainModule.swift */,
-				084FF5BF21EBD132000EA933 /* AuthModule.swift */,
-				084FF5AD21EB87C9000EA933 /* LoginModule.swift */,
-				084FF5B321EB8EB7000EA933 /* RegisterModule.swift */,
-				084FF5B521EB8FD0000EA933 /* UserProfileModule.swift */,
+				084FF5D721ED8893000EA933 /* Modules */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -303,6 +315,8 @@
 			children = (
 				08F984AA21E53D2E00DE6E78 /* MainRoute.swift */,
 				084FF5BD21EBD086000EA933 /* AuthRoute.swift */,
+				084FF5D321ED75E3000EA933 /* LoginRoute.swift */,
+				084FF5D521ED75F4000EA933 /* RegisterRoute.swift */,
 			);
 			path = Routes;
 			sourceTree = "<group>";
@@ -669,6 +683,7 @@
 				08F984D621E6964600DE6E78 /* SplashViewController.swift in Sources */,
 				084FF5B221EB8D57000EA933 /* MainModule.swift in Sources */,
 				086E6CB021DF79070094B808 /* BasicRouter.swift in Sources */,
+				084FF5D621ED75F4000EA933 /* RegisterRoute.swift in Sources */,
 				08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseStorageWrapper.swift in Sources */,
 				086E6C9C21DE91ED0094B808 /* PushTransition.swift in Sources */,
@@ -676,6 +691,7 @@
 				08F9847F21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift in Sources */,
 				084FF5BC21EBD017000EA933 /* AuthRouter.swift in Sources */,
 				08F9848B21E4C0C000DE6E78 /* RegisterUserPresenter.swift in Sources */,
+				084FF5D421ED75E3000EA933 /* LoginRoute.swift in Sources */,
 				08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */,
 				08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */,
 				084FF5C021EBD132000EA933 /* AuthModule.swift in Sources */,

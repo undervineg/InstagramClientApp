@@ -28,6 +28,6 @@ final class ModalTransition: Transition {
     }
     
     func close(to destVC: UIViewController) {
-        
+        destVC.presentingViewController?.dismiss(animated: animated, completion: completion)
     }
 }

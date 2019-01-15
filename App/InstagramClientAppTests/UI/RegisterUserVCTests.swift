@@ -124,6 +124,9 @@ class RegisterUserViewControllerTests: XCTestCase {
     }
     
     private class StubRegisterRouter: AuthRouter.Routes, Closable {
+        var mainTransition: Transition = ModalTransition()
+        
+        var mainPageIsOpened: Bool = false
         var loginPageIsOpened: Bool = false
         var registerPageIsOpened: Bool = false
         var closed: Bool = false
@@ -133,6 +136,18 @@ class RegisterUserViewControllerTests: XCTestCase {
         var loginTransition: Transition = PushTransition()
         var registerTransition: Transition = PushTransition()
         
+        
+        func openMainPage() {
+            mainPageIsOpened = true
+        }
+        
+        func openMainPage(with transition: Transition) {
+            mainPageIsOpened = true
+        }
+        
+        func openMainPageAsWindowRoot(with openLoginCallback: @escaping (UIViewController) -> Void) {
+            mainPageIsOpened = true
+        }
         
         func openLoginPage() {
             loginPageIsOpened = true

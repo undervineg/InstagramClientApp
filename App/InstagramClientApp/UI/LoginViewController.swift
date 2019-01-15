@@ -25,12 +25,24 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        navigationController?.isNavigationBarHidden = true
+        
+        changeButtonColor(false)
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     @IBAction func handleTextInputChange(_ sender: UITextField) {
-        loginButton.backgroundColor = isAllTextFieldsValid() ? UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 1) : UIColor(red: 123/255, green: 115/255, blue: 231/255, alpha: 0.5)
-        loginButton.isEnabled = isAllTextFieldsValid()
+        changeButtonColor(isAllTextFieldsValid())
+    }
+    
+    private func changeButtonColor(_ isAllTextFieldsValid: Bool) {
+        let alpha: CGFloat = isAllTextFieldsValid ? 1 : 0.5
+        loginButton.backgroundColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: alpha)
+        loginButton.isEnabled = isAllTextFieldsValid
     }
     
     @IBAction func login(_ sender: UIButton) {

@@ -8,6 +8,18 @@
 
 import UIKit
 
+enum TransitionType {
+    case modal
+    case push
+    
+    var object: Transition {
+        switch self {
+        case .modal: return ModalTransition()
+        case .push: return PushTransition()
+        }
+    }
+}
+
 protocol Transition: class {
     var viewControllerBehind: UIViewController? { get set }
     

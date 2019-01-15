@@ -32,7 +32,7 @@
                         <constraint firstAttribute="width" constant="140" id="CQw-j8-3kC"/>
                         <constraint firstAttribute="height" constant="140" id="MK3-3A-U1U"/>
                     </constraints>
-                    <color key="tintColor" red="0.48274293660000001" green="0.45095248290000001" blue="0.90606271400000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" red="0.0" green="0.47058823529411764" blue="0.68627450980392157" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" image="plus_photo"/>
                     <connections>
                         <action selector="openImagePicker:" destination="-1" eventType="touchUpInside" id="ppf-9l-BhF"/>
@@ -70,7 +70,7 @@
                         </textField>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNw-WI-nkt">
                             <rect key="frame" x="0.0" y="157.5" width="295" height="42.5"/>
-                            <color key="backgroundColor" red="0.48274293664383561" green="0.45095248287671241" blue="0.90606271404109584" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.0" green="0.47058823529411764" blue="0.68627450980392157" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="Sign Up">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -92,10 +92,27 @@
                 <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="72S-ff-RFy">
                     <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                 </activityIndicatorView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9gK-J8-67g">
-                    <rect key="frame" x="164" y="617" width="46" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Button"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9gK-J8-67g">
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="Wyi-IR-mSD"/>
+                    </constraints>
+                    <state key="normal">
+                        <attributedString key="attributedTitle">
+                            <fragment content="Already have an account? ">
+                                <attributes>
+                                    <color key="NSColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <font key="NSFont" size="14" name=".SFNSText"/>
+                                </attributes>
+                            </fragment>
+                            <fragment content="Sign In">
+                                <attributes>
+                                    <color key="NSColor" red="0.27429258823394775" green="0.59291923046112061" blue="0.90200012922286987" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <font key="NSFont" size="14" name="Helvetica-Bold"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                    </state>
                     <connections>
                         <action selector="routeToLoginPage:" destination="-1" eventType="touchUpInside" id="pzv-P6-LTc"/>
                     </connections>
@@ -105,10 +122,13 @@
             <constraints>
                 <constraint firstItem="yHg-R9-K1J" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="40" id="2uX-r6-T7i"/>
                 <constraint firstItem="0SE-Ue-sz8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="668-mc-AMA"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="9gK-J8-67g" secondAttribute="bottom" id="Nh0-As-ck0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0SE-Ue-sz8" secondAttribute="trailing" constant="40" id="TYh-Wz-ZLC"/>
                 <constraint firstItem="72S-ff-RFy" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="TnR-eR-1xw"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9gK-J8-67g" secondAttribute="trailing" id="UMV-5Z-6dY"/>
                 <constraint firstItem="0SE-Ue-sz8" firstAttribute="top" secondItem="yHg-R9-K1J" secondAttribute="bottom" constant="20" id="nFq-9s-eOc"/>
                 <constraint firstItem="72S-ff-RFy" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="nPw-77-Fvu"/>
+                <constraint firstItem="9gK-J8-67g" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="suC-47-Tm2"/>
                 <constraint firstItem="yHg-R9-K1J" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="yjf-YG-tpc"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

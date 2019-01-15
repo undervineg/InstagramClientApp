@@ -13,8 +13,6 @@ class BasicRouterTests: XCTestCase {
     
     func test_open_theRightVC() {
         let (sut, stubTransition) = makeSUT()
-        let root = UIViewController()
-        sut.viewControllerBehind = root
         
         let openingVC = UIViewController()
         sut.open(openingVC, with: stubTransition)

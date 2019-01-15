@@ -12,10 +12,11 @@ final class MainModule {
     let router: MainRouter
     let viewController: MainTabBarViewController
     
-    init(router: MainRouter) {
+    init(router: MainRouter, _ openMainCallback: ((UIViewController) -> Void)? = nil) {
         self.router = router
         
         let profileVC = UserProfileModule(router: router)
+        
         viewController = MainTabBarViewController(subViewControllers: [profileVC.withNavigation])
         
         router.viewControllerBehind = viewController

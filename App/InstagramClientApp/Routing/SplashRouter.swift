@@ -14,14 +14,47 @@ final class SplashRouter: BasicRouter, SplashRouter.Routes {
     var openMainCallback: ((UIViewController) -> Void)? = nil
     var openLoginCallback: ((UIViewController) -> Void)? = nil
     
+    var mainTransitionType: TransitionType = .modal
+    var authTransition: TransitionType = .modal
+    
+    // MainRoute
+    
     func openMainPage() {
-        guard let callback = openMainCallback else { return }
-        openMainPageAsWindowRoot(with: callback)
+        guard let openMainCallback = openMainCallback else { return }
+        openMainPageAsRoot(openMainCallback)
     }
     
+    func openMainPage(with transitionType: TransitionType) {
+        //
+    }
+    
+    func openMainPageAsRoot(_ callback: (UIViewController) -> Void) {
+        let router = MainRouter()
+        let mainModule = MainModule(router: router)
+        let transition = mainTransitionType.object
+        router.openTransition = transition
+        transition.viewControllerBehind = mainModule.viewController
+        callback(mainModule.viewController)
+    }
+
+    
+    // AuthRoute
+    
     func openAuthPage(_ root: AuthModule.RootType) {
-        guard let callback = openLoginCallback else { return }
-        openMainPage()
-        openAuthPageAsWindowRoot(.login, with: callback)
+        guard let openLoginCallback = openLoginCallback else { return }
+        openAuthPageAsRoot(root, openLoginCallback)
+    }
+    
+    func openAuthPage(_ root: AuthModule.RootType, with transitionType: TransitionType) {
+        //
+    }
+    
+    func openAuthPageAsRoot(_ root: AuthModule.RootType, _ callback: (UIViewController) -> Void) {
+        let authModule = AuthModule(rootType: root)
+        let transition = authTransition.object
+        authModule.router.openMainCallback = self.openMainCallback
+        authModule.router.openTransition = transition
+        transition.viewControllerBehind = authModule.viewController
+        callback(authModule.viewController)
     }
 }
