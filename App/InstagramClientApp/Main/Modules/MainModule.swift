@@ -12,23 +12,23 @@ final class MainModule {
     let router: MainRouter
     let viewController: MainTabBarViewController
     
-    init(router: MainRouter, _ openMainCallback: ((UIViewController) -> Void)? = nil) {
-        self.router = router
+    init(_ openMainCallback: ((UIViewController) -> Void)? = nil) {
+        self.router = MainRouter()
         
         let homeVC = HomeModule().withNavigation
         let searchVC = SearchModule().withNavigation
-        let plusVC = UIViewController()
+        let photoVC = PhotoSelectorModule(router: router).viewController
         let likeVC = UIViewController()
         let profileVC = UserProfileModule(router: router).withNavigation
         
         homeVC.configureTabBarItem(image: "home_unselected", selectedImage: "home_selected")
         searchVC.configureTabBarItem(image: "search_unselected", selectedImage: "search_selected")
-        plusVC.configureTabBarItem(image: "plus_unselected", selectedImage: "plus_unselected")
+        photoVC.configureTabBarItem(image: "plus_unselected", selectedImage: "plus_unselected")
         likeVC.configureTabBarItem(image: "like_unselected", selectedImage: "like_selected")
         profileVC.configureTabBarItem(image: "profile_unselected", selectedImage: "profile_selected")
         
-        let childVCs = [homeVC, searchVC, plusVC, likeVC, profileVC]
-        viewController = MainTabBarViewController(subViewControllers: childVCs)
+        let childVCs = [homeVC, searchVC, photoVC, likeVC, profileVC]
+        viewController = MainTabBarViewController(router: router, subViewControllers: childVCs)
         viewController.updateInsets()
         router.viewControllerBehind = viewController
         viewController.selectedIndex = 0

@@ -29,10 +29,9 @@ final class SplashRouter: BasicRouter, SplashRouter.Routes {
     }
     
     func openMainPageAsRoot(_ callback: (UIViewController) -> Void) {
-        let router = MainRouter()
-        let mainModule = MainModule(router: router)
+        let mainModule = MainModule()
         let transition = mainTransitionType.object
-        router.openTransition = transition
+        mainModule.router.openTransition = transition
         transition.viewControllerBehind = mainModule.viewController
         callback(mainModule.viewController)
     }

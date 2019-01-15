@@ -10,9 +10,12 @@ import UIKit
 
 final class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
 
-    convenience init(subViewControllers: [UIViewController]) {
+    private var router: MainRouter.Routes?
+    
+    convenience init(router: MainRouter.Routes, subViewControllers: [UIViewController]) {
         self.init()
-        viewControllers = subViewControllers
+        self.router = router
+        self.viewControllers = subViewControllers
     }
     
     override func viewDidLoad() {
@@ -25,6 +28,7 @@ final class MainTabBarViewController: UITabBarController, UITabBarControllerDele
 
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if viewControllers?.firstIndex(of: viewController) == 2 {
+            router?.openPhotoSelectorPage()
             return false
         }
         return true

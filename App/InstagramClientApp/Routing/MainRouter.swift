@@ -9,9 +9,10 @@
 import UIKit
 
 final class MainRouter: BasicRouter, MainRouter.Routes {
-    typealias Routes = AuthRoute
+    typealias Routes = AuthRoute & PhotoSelectorRoute
     
     var authTransition: TransitionType = .modal
+    var photoSelectorTransition: TransitionType = .modal
     
     // AuthRoute
     
@@ -30,7 +31,13 @@ final class MainRouter: BasicRouter, MainRouter.Routes {
         let authModule = AuthModule(rootType: root)
         let transition = authTransition.object
         authModule.router.openTransition = transition
-        transition.viewControllerBehind = authModule.viewController
         callback(authModule.viewController)
+    }
+    
+    func openPhotoSelectorPage() {
+        let photoModule = PhotoSelectorModule(router: self)
+        let transition = photoSelectorTransition.object
+        photoModule.router.openTransition = transition
+        open(photoModule.viewController, with: transition)
     }
 }
