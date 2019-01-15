@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController" customModule="InstagramClientApp" customModuleProvider="target">
             <connections>
                 <outlet property="emailTextField" destination="hGb-TP-2G7" id="juJ-Na-hSe"/>
+                <outlet property="indicatorView" destination="9PQ-KA-607" id="RZO-Sv-BH4"/>
                 <outlet property="loginButton" destination="aPv-kZ-FCR" id="reo-Hw-N2b"/>
                 <outlet property="passwordTextField" destination="RJu-RZ-4AA" id="c8r-t2-3RJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -102,11 +103,16 @@
                         <constraint firstItem="4VV-IR-0ZO" firstAttribute="centerY" secondItem="WX1-6G-Vn5" secondAttribute="centerY" constant="5" id="hT0-vv-UYN"/>
                     </constraints>
                 </view>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9PQ-KA-607">
+                    <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="7Mx-jG-DMT" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="2qm-eE-pVq"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="e3u-WX-Mc8" secondAttribute="trailing" constant="40" id="3S3-F5-GIA"/>
+                <constraint firstItem="9PQ-KA-607" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="6TO-Jr-O3X"/>
+                <constraint firstItem="9PQ-KA-607" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="8KG-kJ-gcA"/>
                 <constraint firstItem="WX1-6G-Vn5" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="JlD-Eh-cj9"/>
                 <constraint firstItem="e3u-WX-Mc8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="Lnw-zT-mjD"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="7Mx-jG-DMT" secondAttribute="bottom" id="NWS-jn-xs4"/>

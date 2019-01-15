@@ -13,6 +13,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
     private var router: AuthRouter.Routes?
     
@@ -51,6 +52,7 @@ class LoginViewController: UIViewController {
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
+        indicatorView.startAnimating()
         login?(email, password)
     }
     
@@ -69,6 +71,7 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: LoginView {
     func displayMain() {
+        indicatorView.stopAnimating()
         router?.openMainPage()
     }
     
@@ -76,7 +79,7 @@ extension LoginViewController: LoginView {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         present(alert, animated: true) {
-            // stop indicatorView
+            self.indicatorView.stopAnimating()
         }
     }
 }
