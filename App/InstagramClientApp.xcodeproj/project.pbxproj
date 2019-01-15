@@ -34,6 +34,7 @@
 		084FF5F321EDD0B7000EA933 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5F221EDD0B7000EA933 /* PhotoService.swift */; };
 		084FF5F521EDD219000EA933 /* PhotoSelectorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5F421EDD219000EA933 /* PhotoSelectorPresenter.swift */; };
 		084FF5F921EDD3DF000EA933 /* ErrorPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5F821EDD3DF000EA933 /* ErrorPresentable.swift */; };
+		084FF5FB21EDDB20000EA933 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5FA21EDDB20000EA933 /* PhotoSelectorCell.swift */; };
 		0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */; };
 		0858766D21DB8C7600C32422 /* RegisterUserVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */; };
 		0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858767521DC5CC700C32422 /* RegisterUserViewController.swift */; };
@@ -138,6 +139,7 @@
 		084FF5F221EDD0B7000EA933 /* PhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
 		084FF5F421EDD219000EA933 /* PhotoSelectorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorPresenter.swift; sourceTree = "<group>"; };
 		084FF5F821EDD3DF000EA933 /* ErrorPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPresentable.swift; sourceTree = "<group>"; };
+		084FF5FA21EDDB20000EA933 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
 		0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserVCTests.swift; sourceTree = "<group>"; };
 		0858767521DC5CC700C32422 /* RegisterUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserViewController.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 				084FF5DC21EDAAFD000EA933 /* HomeViewController.swift */,
 				084FF5E021EDAC77000EA933 /* SearchViewController.swift */,
 				084FF5E821EDB61D000EA933 /* PhotoSelectorViewController.swift */,
+				084FF5FA21EDDB20000EA933 /* PhotoSelectorCell.swift */,
 				08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */,
 				08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */,
 			);
@@ -399,10 +402,10 @@
 				0884512621DA665C008B8121 /* Info.plist */,
 				085EED2021E6B86200A6D98E /* Main */,
 				086E6C9121DE869D0094B808 /* Routing */,
+				08F9848021E4B37B00DE6E78 /* Framework */,
 				086E6C7F21DD27840094B808 /* Service */,
 				08F9849121E4D71400DE6E78 /* Presenter */,
 				086E6CB921DF7CEE0094B808 /* UI */,
-				08F9848021E4B37B00DE6E78 /* Framework */,
 				086E6CA021DE92820094B808 /* Supporting Files */,
 			);
 			path = InstagramClientApp;
@@ -721,6 +724,7 @@
 				08BF0C6E21E8BB27004CE846 /* LoginViewController.swift in Sources */,
 				08F984AB21E53D2E00DE6E78 /* MainRoute.swift in Sources */,
 				084FF5A621EB5856000EA933 /* LoginPresenter.swift in Sources */,
+				084FF5FB21EDDB20000EA933 /* PhotoSelectorCell.swift in Sources */,
 				084FF5B021EB8A32000EA933 /* SplashModule.swift in Sources */,
 				08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */,
 				08F984D021E691B100DE6E78 /* SplashPresenter.swift in Sources */,

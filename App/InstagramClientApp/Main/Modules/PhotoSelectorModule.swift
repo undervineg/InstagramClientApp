@@ -7,10 +7,15 @@
 //
 
 import UIKit
+import Photos
+import InstagramEngine
 
 final class PhotoSelectorModule {
     let router: MainRouter
     let viewController: PhotoSelectorViewController
+    private let service: PhotoService
+    private let presenter: PhotoSelectorPresenter
+    private let useCase: LoadPhotoUseCase
     
     var withNavigation: UINavigationController {
         return UINavigationController(rootViewController: viewController)
@@ -19,5 +24,10 @@ final class PhotoSelectorModule {
     init(router: MainRouter) {
         self.router = router
         viewController = PhotoSelectorViewController(router: router)
+        service = PhotoService(photos: PHAsset.self)
+        presenter = PhotoSelectorPresenter(view: WeakRef(viewController))
+        useCase = LoadPhotoUseCase(client: service, output: presenter)
+        
+        viewController.fetchAllPhotos = useCase.fetchAllPhotos
     }
 }

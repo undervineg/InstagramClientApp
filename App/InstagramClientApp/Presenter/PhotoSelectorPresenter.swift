@@ -10,7 +10,7 @@ import Foundation
 import InstagramEngine
 
 protocol PhotoSelectorView: ErrorPresentable {
-    func displayAllPhotos(_ data: Data)
+    func displayAllPhotos(_ photoData: Data, _ isAllPhotosFetched: Bool)
 }
 
 final class PhotoSelectorPresenter: LoadPhotoUseCaseOutput {
@@ -21,8 +21,8 @@ final class PhotoSelectorPresenter: LoadPhotoUseCaseOutput {
         self.view = view
     }
     
-    func fetchAllPhotosSucceeded(_ photoData: Data) {
-        view.displayAllPhotos(photoData)
+    func fetchAllPhotosSucceeded(_ photoData: Data, _ isAllPhotosFetched: Bool) {
+        view.displayAllPhotos(photoData, isAllPhotosFetched)
     }
     
     func fetchAllPhotosFailed(_ error: LoadPhotoUseCase.Error) {
@@ -31,7 +31,7 @@ final class PhotoSelectorPresenter: LoadPhotoUseCaseOutput {
 }
 
 extension WeakRef: PhotoSelectorView where T: PhotoSelectorView {
-    func displayAllPhotos(_ data: Data) {
-        object?.displayAllPhotos(data)
+    func displayAllPhotos(_ photoData: Data, _ isAllPhotosFetched: Bool) {
+        object?.displayAllPhotos(photoData, isAllPhotosFetched)
     }
 }

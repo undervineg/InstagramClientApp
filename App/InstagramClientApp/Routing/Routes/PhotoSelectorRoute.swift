@@ -1,5 +1,5 @@
 //
-//  PlusPhotoRoute.swift
+//  PhotoSelectorRoute.swift
 //  InstagramClientApp
 //
 //  Created by 심승민 on 15/01/2019.

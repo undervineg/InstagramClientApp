@@ -16,7 +16,9 @@ final class PhotoSelectorViewController: UICollectionViewController {
 
     private var router: MainRouter.Routes?
     
-    var fetchPhotos: ((Int) -> Void)?
+    var fetchAllPhotos: ((Int, Bool) -> Void)?
+    
+    private var images: [UIImage] = []
     
     convenience init(router: MainRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
@@ -35,7 +37,7 @@ final class PhotoSelectorViewController: UICollectionViewController {
         
         configureNavigationBar()
         
-        self.collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellReuseId)
+        self.collectionView.register(PhotoSelectorCell.self, forCellWithReuseIdentifier: cellReuseId)
         self.collectionView.register(UICollectionViewCell.self,
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                      withReuseIdentifier: headerReuseId)
@@ -44,7 +46,7 @@ final class PhotoSelectorViewController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        fetchPhotos?(10)
+        fetchAllPhotos?(30, false)
     }
     
     private func configureNavigationBar() {
@@ -66,6 +68,8 @@ final class PhotoSelectorViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDataSource
 
+    // Header
+    
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let headerView = collectionView.dequeueReusableSupplementaryView(
             ofKind: UICollectionView.elementKindSectionHeader,
@@ -85,19 +89,23 @@ final class PhotoSelectorViewController: UICollectionViewController {
         return CGSize(width: width, height: width)
     }
     
+    // Cell
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return images.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseId, for: indexPath) as! PhotoSelectorCell
     
-        cell.backgroundColor = .blue
+        if images.count > 0 {
+            cell.imageView.image = images[indexPath.item]
+        }
     
         return cell
     }
@@ -123,8 +131,16 @@ extension PhotoSelectorViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension PhotoSelectorViewController: PhotoSelectorView {
-    func displayAllPhotos(_ data: Data) {
-        
+    func displayAllPhotos(_ photoData: Data, _ isAllPhotosFetched: Bool) {
+        DispatchQueue.main.async {
+            if let image = UIImage(data: photoData) {
+                self.images.append(image)
+            }
+            
+            if isAllPhotosFetched {
+                self.collectionView.reloadData()
+            }
+        }
     }
 
 }
