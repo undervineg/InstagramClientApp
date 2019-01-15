@@ -8,8 +8,7 @@
 
 import InstagramEngine
 
-protocol RegisterUserView {
-    func display(_ errorMessage: String)
+protocol RegisterUserView: ErrorPresentable {
     func displayMain()
 }
 
@@ -26,7 +25,7 @@ final class RegisterUserPresenter: RegisterUserUseCaseOutput {
     }
     
     func registerFailed(_ error: RegisterUserUseCase.Error) {
-        view.display(error.localizedDescription)
+        view.displayError(error.localizedDescription)
     }
     
 }
@@ -34,9 +33,5 @@ final class RegisterUserPresenter: RegisterUserUseCaseOutput {
 extension WeakRef: RegisterUserView where T: RegisterUserView {
     func displayMain() {
         object?.displayMain()
-    }
-    
-    func display(_ errorMessage: String) {
-        object?.display(errorMessage)
     }
 }

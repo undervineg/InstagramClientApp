@@ -8,9 +8,8 @@
 
 import InstagramEngine
 
-protocol LoginView {
+protocol LoginView: ErrorPresentable {
     func displayMain()
-    func displayError(_ message: String)
 }
 
 class LoginPresenter: LoginUseCaseOutput {
@@ -33,9 +32,5 @@ class LoginPresenter: LoginUseCaseOutput {
 extension WeakRef: LoginView where T: LoginView {
     func displayMain() {
         object?.displayMain()
-    }
-    
-    func displayError(_ message: String) {
-        object?.displayError(message)
     }
 }

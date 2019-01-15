@@ -9,11 +9,10 @@
 import InstagramEngine
 import Foundation
 
-protocol UserProfileView {
+protocol UserProfileView: ErrorPresentable {
     func displayUserInfo(_ user: UserEntity)
     func displayProfileImage(_ imageData: Data)
     func close()
-    func displayError(_ errorMessage: String)
 }
 
 final class UserProfilePresenter: UserProfileUseCaseOutput {
@@ -63,10 +62,6 @@ final class UserProfilePresenter: UserProfileUseCaseOutput {
 extension WeakRef: UserProfileView where T: UserProfileView {
     func displayUserInfo(_ user: UserEntity) {
         object?.displayUserInfo(user)
-    }
-    
-    func displayError(_ errorMessage: String) {
-        object?.displayError(errorMessage)
     }
     
     func displayProfileImage(_ imageData: Data) {

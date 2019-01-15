@@ -74,12 +74,5 @@ extension LoginViewController: LoginView {
         indicatorView.stopAnimating()
         router?.openMainPage()
     }
-    
-    func displayError(_ message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        present(alert, animated: true) {
-            self.indicatorView.stopAnimating()
-        }
-    }
+
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 private let cellReuseId = "Cell"
 private let headerReuseId = "Header"
@@ -14,6 +15,8 @@ private let headerReuseId = "Header"
 final class PhotoSelectorViewController: UICollectionViewController {
 
     private var router: MainRouter.Routes?
+    
+    var fetchPhotos: ((Int) -> Void)?
     
     convenience init(router: MainRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
@@ -36,6 +39,12 @@ final class PhotoSelectorViewController: UICollectionViewController {
         self.collectionView.register(UICollectionViewCell.self,
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                      withReuseIdentifier: headerReuseId)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        fetchPhotos?(10)
     }
     
     private func configureNavigationBar() {
@@ -111,4 +120,11 @@ extension PhotoSelectorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
+}
+
+extension PhotoSelectorViewController: PhotoSelectorView {
+    func displayAllPhotos(_ data: Data) {
+        
+    }
+
 }

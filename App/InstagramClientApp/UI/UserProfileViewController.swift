@@ -189,10 +189,5 @@ extension UserProfileViewController: UserProfileView {
         self.userModel = userInfo
         self.collectionView.reloadData()
     }
-    
-    func displayError(_ errorMessage: String) {
-        let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
+
 }

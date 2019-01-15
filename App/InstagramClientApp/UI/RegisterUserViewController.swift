@@ -68,14 +68,7 @@ extension RegisterUserViewController: RegisterUserView {
         indicatorView.stopAnimating()
         router?.openMainPage()
     }
-    
-    func display(_ errorMessage: String) {
-        let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        present(alert, animated: true) {
-            self.indicatorView.stopAnimating()
-        }
-    }
+
 }
 
 extension RegisterUserViewController {
