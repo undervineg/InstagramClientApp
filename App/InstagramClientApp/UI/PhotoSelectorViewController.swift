@@ -20,6 +20,10 @@ final class PhotoSelectorViewController: UICollectionViewController {
         self.router = router
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
