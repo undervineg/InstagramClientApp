@@ -29,11 +29,10 @@ final class MainModule {
         
         let childVCs = [homeVC, searchVC, plusVC, likeVC, profileVC]
         viewController = MainTabBarViewController(subViewControllers: childVCs)
+        viewController.updateInsets()
         router.viewControllerBehind = viewController
         viewController.selectedIndex = 0
     }
-    
-    
 }
 
 extension UIViewController {
@@ -41,5 +40,13 @@ extension UIViewController {
         tabBarItem = UITabBarItem(title: nil,
                                   image: UIImage(named: image)?.withRenderingMode(.alwaysTemplate),
                                   selectedImage: UIImage(named: selectedImage)?.withRenderingMode(.alwaysTemplate))
+    }
+}
+
+extension UITabBarController {
+    func updateInsets() {
+        tabBar.items?.forEach {
+            $0.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        }
     }
 }
