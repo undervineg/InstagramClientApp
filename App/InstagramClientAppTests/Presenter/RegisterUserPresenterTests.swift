@@ -16,21 +16,18 @@ class RegisterUserPresenterTests: XCTestCase {
         let view = RegisterUserViewStub()
         let presenter = RegisterUserPresenter(view: view)
         
-        let errors = [
-            RegisterUserUseCase.Error.accountExistsWithDifferentCredential,
-            .credentialAlreadyInUse,
-            .databaseUpdateError,
-            .emailAlreadyInUse,
-            .invalidEmail,
-            .invalidName,
-            .invalidPassword,
-            .networkError,
-            .storageUploadError,
-            .unknown,
-            .userDisabled,
-            .userNotFound,
-            .wrongPassword
-        ]
+        let errors: [RegisterUserUseCase.Error] =
+            [.accountExistsWithDifferentCredential,
+             .credentialAlreadyInUse,
+             .databaseUpdateError,
+             .emailAlreadyInUse,
+             .invalidEmail,
+             .invalidName,
+             .invalidPassword,
+             .networkError,
+             .storageUploadError,
+             .unknown
+            ]
         
         errors.forEach {
             presenter.registerFailed($0)
@@ -38,15 +35,29 @@ class RegisterUserPresenterTests: XCTestCase {
         
         XCTAssertEqual(view.stubbedErrorMessages, errors.map { $0.localizedDescription })
     }
+    
+    func test_displayMain_whenRegisterSucceeded() {
+        let view = RegisterUserViewStub()
+        let presenter = RegisterUserPresenter(view: view)
+        
+        presenter.registerSucceeded()
+        
+        XCTAssertEqual(view.didMoveMain, true)
+    }
 
     
     // MARK: - Helpers
     
     private class RegisterUserViewStub: RegisterUserView {
         var stubbedErrorMessages = [String]()
+        var didMoveMain = false
         
         func display(_ errorMessage: String) {
             stubbedErrorMessages.append(errorMessage)
+        }
+        
+        func displayMain() {
+            didMoveMain = true
         }
     }
 }

@@ -1,0 +1,46 @@
+//
+//  PushTransition.swift
+//  InstagramClientApp
+//
+//  Created by 심승민 on 04/01/2019.
+//  Copyright © 2019 심승민. All rights reserved.
+//
+
+import UIKit
+
+final class PushTransition: Transition {
+    
+    weak var viewControllerBehind: UIViewController?
+    
+    private let animated: Bool
+    private let completion: (() -> Void)?
+    
+    init(animated: Bool = true, completion: (() -> Void)? = nil) {
+        self.animated = animated
+        self.completion = completion
+    }
+    
+    func open(_ viewController: UIViewController) {
+        if let navigation = viewControllerBehind as? UINavigationController {
+            navigation.pushViewController(viewController, animated: animated)
+        } else {
+            viewControllerBehind?.navigationController?.pushViewController(viewController, animated: animated)
+        }
+    }
+    
+    func close() {
+        if let navigation = viewControllerBehind as? UINavigationController {
+            navigation.popViewController(animated: animated)
+        } else {
+            viewControllerBehind?.navigationController?.popViewController(animated: animated)
+        }
+    }
+    
+    func close(to destVC: UIViewController) {
+        if let navigation = viewControllerBehind as? UINavigationController {
+            navigation.popToViewController(destVC, animated: animated)
+        } else {
+            viewControllerBehind?.navigationController?.popToViewController(destVC, animated: animated)
+        }
+    }
+}
