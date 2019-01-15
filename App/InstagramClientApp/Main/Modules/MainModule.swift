@@ -17,7 +17,7 @@ final class MainModule {
         
         let homeVC = HomeModule().withNavigation
         let searchVC = SearchModule().withNavigation
-        let photoVC = PhotoSelectorModule(router: router).viewController
+        let photoVC = PhotoSelectorModule(router: router).withNavigation
         let likeVC = UIViewController()
         let profileVC = UserProfileModule(router: router).withNavigation
         

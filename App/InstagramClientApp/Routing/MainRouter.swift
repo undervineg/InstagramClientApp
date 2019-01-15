@@ -38,6 +38,6 @@ final class MainRouter: BasicRouter, MainRouter.Routes {
         let photoModule = PhotoSelectorModule(router: self)
         let transition = photoSelectorTransition.object
         photoModule.router.openTransition = transition
-        open(photoModule.viewController, with: transition)
+        open(photoModule.withNavigation, with: transition)
     }
 }

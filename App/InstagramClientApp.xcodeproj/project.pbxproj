@@ -222,8 +222,8 @@
 				084FF5B321EB8EB7000EA933 /* RegisterModule.swift */,
 				084FF5E421EDACF0000EA933 /* HomeModule.swift */,
 				084FF5E621EDAD26000EA933 /* SearchModule.swift */,
-				084FF5B521EB8FD0000EA933 /* UserProfileModule.swift */,
 				084FF5EC21EDB936000EA933 /* PhotoSelectorModule.swift */,
+				084FF5B521EB8FD0000EA933 /* UserProfileModule.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";

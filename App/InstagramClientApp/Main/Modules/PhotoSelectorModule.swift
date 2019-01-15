@@ -6,11 +6,15 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class PhotoSelectorModule {
     let router: MainRouter
     let viewController: PhotoSelectorViewController
+    
+    var withNavigation: UINavigationController {
+        return UINavigationController(rootViewController: viewController)
+    }
     
     init(router: MainRouter) {
         self.router = router
