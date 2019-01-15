@@ -25,7 +25,24 @@ final class PhotoSelectorViewController: UICollectionViewController {
         
         collectionView.backgroundColor = .yellow
         
+        setupNavigationButtons()
+        
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+    }
+    
+    private func setupNavigationButtons() {
+        let cancelItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancel(_:)))
+        let nextItem = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(next(_:)))
+        navigationItem.setLeftBarButton(cancelItem, animated: true)
+        navigationItem.setRightBarButton(nextItem, animated: true)
+    }
+    
+    @objc private func cancel(_ sender: UIBarButtonItem) {
+        router?.closePhotoSelectorPage()
+    }
+    
+    @objc private func next(_ sender: UIBarButtonItem) {
+        
     }
 
     // MARK: UICollectionViewDataSource

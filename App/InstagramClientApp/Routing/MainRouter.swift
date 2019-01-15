@@ -40,4 +40,8 @@ final class MainRouter: BasicRouter, MainRouter.Routes {
         photoModule.router.openTransition = transition
         open(photoModule.withNavigation, with: transition)
     }
+    
+    func closePhotoSelectorPage() {
+        close()
+    }
 }

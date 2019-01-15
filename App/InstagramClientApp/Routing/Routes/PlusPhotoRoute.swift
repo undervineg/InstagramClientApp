@@ -12,4 +12,5 @@ protocol PhotoSelectorRoute {
     var photoSelectorTransition: TransitionType { get }
     
     func openPhotoSelectorPage()
+    func closePhotoSelectorPage()
 }
