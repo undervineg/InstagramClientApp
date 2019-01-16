@@ -20,11 +20,11 @@ class UserProfileServiceTests: XCTestCase {
     
     func test_load_receivesTheRightUserInfo() {
         let (sut, firebase, _) = makeSUT()
-        let dummyUser = UserEntity(id: "0", email: "dummy@naver.com", username: "dummy", profileImageUrl: "http://a-url.com")
+        let dummyUser = User(id: "0", email: "dummy@naver.com", username: "dummy", profileImageUrl: "http://a-url.com")
         firebase.stubUser(dummyUser)
         firebase.currentUserId = dummyUser.id
         
-        var capturedUser = [UserEntity]()
+        var capturedUser = [User]()
         sut.loadCurrentUserInfo { (result) in
             if case let Result.success(user) = result {
                 capturedUser.append(user)

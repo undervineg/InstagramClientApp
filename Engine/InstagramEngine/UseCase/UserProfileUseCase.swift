@@ -9,13 +9,13 @@
 import Foundation
 
 public protocol UserProfileClient {
-    func loadCurrentUserInfo(_ completion: @escaping (Result<UserEntity, UserProfileUseCase.Error>) -> Void)
+    func loadCurrentUserInfo(_ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
     func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
     func logout(_ completion: @escaping (Error?) -> Void)
 }
 
 public protocol UserProfileUseCaseOutput {
-    func loadUserSucceeded(_ user: UserEntity)
+    func loadUserSucceeded(_ user: User)
     func loadUserFailed(_ error: UserProfileUseCase.Error)
     func downloadProfileImageSucceeded(_ imageData: Data)
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error)

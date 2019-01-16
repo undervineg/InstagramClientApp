@@ -48,7 +48,7 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
         updateUserInfoMessages.append((userInfo, completion))
     }
     
-    static func fetchUserInfo(_ userId: String, completion: @escaping (UserEntity?) -> Void) {
+    static func fetchUserInfo(_ userId: String, completion: @escaping (User?) -> Void) {
         loadUserInfoMessages.append((userId, completion))
     }
     
@@ -56,7 +56,7 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
     
     // MARK: - Properties for Mock
     
-    static var stubbedUser: [String: UserEntity] = [:]
+    static var stubbedUser: [String: User] = [:]
     
     static var registerMessages = [(email: String, pw: String, completed: (Result<(id: String, email: String?), Error>) -> Void)]()
     static var capturedEmail: [String] {
@@ -73,12 +73,12 @@ class MockFirebase: FirebaseAuthWrapper, FirebaseDatabaseWrapper, FirebaseStorag
         return updateUserInfoMessages.map { $0.userInfo }
     }
     
-    static var loadUserInfoMessages = [(userId: String, completion: (UserEntity?) -> Void)]()
+    static var loadUserInfoMessages = [(userId: String, completion: (User?) -> Void)]()
     
     
     // MARK: - Helper Methods for Mock
     
-    static func stubUser(_ user: UserEntity) {
+    static func stubUser(_ user: User) {
         stubbedUser.updateValue(user, forKey: user.id)
     }
     

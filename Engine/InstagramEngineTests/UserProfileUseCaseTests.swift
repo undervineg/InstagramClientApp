@@ -23,11 +23,11 @@ class UserProfileUseCaseTests: XCTestCase {
         sut.loadProfile()
         sut.loadProfile()
         
-        let user1 = UserEntity(id: "0",
+        let user1 = User(id: "0",
                                email: "dummy1@naver.com",
                                username: "dummy1",
                                profileImageUrl: "http://a-url.com")
-        let user2 = UserEntity(id: "1",
+        let user2 = User(id: "1",
                                email: "dummy2@naver.com",
                                username: "dummy2",
                                profileImageUrl: "http://b-url.com")
@@ -51,11 +51,11 @@ class UserProfileUseCaseTests: XCTestCase {
     
     func test_downloadProfileImageTwice_sendImageDataToOutputTwice_onSuccess() {
         let (sut, client, output) = makeSUT()
-        let user1 = UserEntity(id: "0",
+        let user1 = User(id: "0",
                                email: "dummy1@naver.com",
                                username: "dummy1",
                                profileImageUrl: "http://a-url.com")
-        let user2 = UserEntity(id: "1",
+        let user2 = User(id: "1",
                                email: "dummy2@naver.com",
                                username: "dummy2",
                                profileImageUrl: "http://b-url.com")
@@ -74,7 +74,7 @@ class UserProfileUseCaseTests: XCTestCase {
     func test_downloadProfileImage_sendErrorMessageToOutput_onFailure() {
         let (sut, client, output) = makeSUT()
         
-        let user1 = UserEntity(id: "0",
+        let user1 = User(id: "0",
                                email: "dummy1@naver.com",
                                username: "dummy1",
                                profileImageUrl: "http://a-url.com")
@@ -98,7 +98,7 @@ class UserProfileUseCaseTests: XCTestCase {
     
     private class UserProfileClientStub: UserProfileClient {
         
-        private var loadUserInfoMessages = [(Result<UserEntity, UserProfileUseCase.Error>) -> Void]()
+        private var loadUserInfoMessages = [(Result<User, UserProfileUseCase.Error>) -> Void]()
         private var downloadImageMessages = [(url: URL, completion: (Result<Data, UserProfileUseCase.Error>) -> Void)]()
         
         var requestedCount = 0
@@ -106,7 +106,7 @@ class UserProfileUseCaseTests: XCTestCase {
             return downloadImageMessages.map { $0.url }
         }
         
-        func loadCurrentUserInfo(_ completion: @escaping (Result<UserEntity, UserProfileUseCase.Error>) -> Void) {
+        func loadCurrentUserInfo(_ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void) {
             requestedCount += 1
             loadUserInfoMessages.append(completion)
         }
@@ -117,7 +117,7 @@ class UserProfileUseCaseTests: XCTestCase {
         
         // Methods for test
         
-        func completeLoadUserInfoWithSuccess(_ user: UserEntity, at index: Int = 0) {
+        func completeLoadUserInfoWithSuccess(_ user: User, at index: Int = 0) {
             loadUserInfoMessages[index](.success(user))
         }
         
@@ -135,11 +135,11 @@ class UserProfileUseCaseTests: XCTestCase {
     }
     
     private class UserProfileUseCaseOutputDummy: UserProfileUseCaseOutput {
-        var capturedUser = [UserEntity]()
+        var capturedUser = [User]()
         var capturedImageData = [Data]()
         var capturedError = [UserProfileUseCase.Error]()
         
-        func loadUserSucceeded(_ user: UserEntity) {
+        func loadUserSucceeded(_ user: User) {
             capturedUser.append(user)
         }
         

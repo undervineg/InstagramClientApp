@@ -22,7 +22,7 @@ final class UserProfileViewController: UICollectionViewController {
     private var router: UserProfileRouter.Routes?
     
     // MARK: Model
-    private var currentUser: UserEntity?  = nil {
+    private var currentUser: User?  = nil {
         didSet {
             setTitleOnNavigationBar()
             downloadProfileImage(from: currentUser?.profileImageUrl)
@@ -120,7 +120,7 @@ extension UserProfileViewController: UserProfileView {
         }
     }
     
-    func displayUserInfo(_ userInfo: UserEntity) {
+    func displayUserInfo(_ userInfo: User) {
         self.currentUser = userInfo
         self.collectionView.reloadData()
     }

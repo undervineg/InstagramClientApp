@@ -29,7 +29,7 @@ class UserProfileVCTests: XCTestCase {
     func test_displayTitle_setTitleOnNavigationBar() {
         let sut = UserProfileViewController()
         _ = sut.view
-        let user = UserEntity(id: "0",
+        let user = User(id: "0",
                               email: "dummy@naver.com",
                               username: "dummyUser",
                               profileImageUrl: "http://a-url.com")

@@ -1,5 +1,5 @@
 //
-//  UserEntity.swift
+//  User.swift
 //  InstagramEngine
 //
 //  Created by 심승민 on 01/01/2019.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct UserEntity: Equatable {
+public struct User: Equatable {
     public let id: String
     public let email: String
     public let username: String

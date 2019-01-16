@@ -26,7 +26,7 @@ final class UserProfileService: UserProfileClient {
         self.networking = networking
     }
     
-    func loadCurrentUserInfo(_ completion: @escaping (Result<UserEntity, UserProfileUseCase.Error>) -> Void) {
+    func loadCurrentUserInfo(_ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void) {
         guard let uid = auth.currentUserId else {
             completion(.failure(.currentUserIDNotExist))
             return

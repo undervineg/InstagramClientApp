@@ -15,7 +15,7 @@ class UserProfilePresenterTests: XCTestCase {
     func test_loadUserSucceeded_displayUsernameAsTitle() {
         let view = UserProfileViewStub()
         let sut = UserProfilePresenter(view: view)
-        let user = UserEntity(id: "0",
+        let user = User(id: "0",
                               email: "dummy@naver.com",
                               username: "dummy",
                               profileImageUrl: "http://a-url.com")
@@ -45,7 +45,7 @@ class UserProfilePresenterTests: XCTestCase {
         var stubbedImageData = [Data]()
         var stubbedErrorMessage = [String]()
         
-        func displayUserInfo(_ user: UserEntity) {
+        func displayUserInfo(_ user: User) {
             stubbedTitle.append(user.username)
         }
         
