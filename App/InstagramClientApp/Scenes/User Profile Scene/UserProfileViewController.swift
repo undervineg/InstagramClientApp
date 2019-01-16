@@ -110,7 +110,7 @@ extension UserProfileViewController: UserProfileView {
     
     // MARK: User Profile View
     func close() {
-        router?.openAuthPage(.login)
+        router?.openLoginPage()
     }
     
     func displayProfileImage(_ imageData: Data) {

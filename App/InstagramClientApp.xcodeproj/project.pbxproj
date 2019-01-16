@@ -15,9 +15,6 @@
 		084FF5B221EB8D57000EA933 /* MainModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5B121EB8D57000EA933 /* MainModule.swift */; };
 		084FF5B421EB8EB7000EA933 /* RegisterModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5B321EB8EB7000EA933 /* RegisterModule.swift */; };
 		084FF5B621EB8FD0000EA933 /* UserProfileModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5B521EB8FD0000EA933 /* UserProfileModule.swift */; };
-		084FF5BC21EBD017000EA933 /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5BB21EBD017000EA933 /* AuthRouter.swift */; };
-		084FF5BE21EBD086000EA933 /* AuthRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5BD21EBD086000EA933 /* AuthRoute.swift */; };
-		084FF5C021EBD132000EA933 /* AuthModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5BF21EBD132000EA933 /* AuthModule.swift */; };
 		084FF5C621EC16F0000EA933 /* SplashRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5C521EC16F0000EA933 /* SplashRouterTests.swift */; };
 		084FF5D421ED75E3000EA933 /* LoginRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5D321ED75E3000EA933 /* LoginRoute.swift */; };
 		084FF5D621ED75F4000EA933 /* RegisterRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5D521ED75F4000EA933 /* RegisterRoute.swift */; };
@@ -40,6 +37,9 @@
 		084FF60B21EEF582000EA933 /* UserProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF60A21EEF582000EA933 /* UserProfileRouter.swift */; };
 		084FF60D21EEF6B4000EA933 /* SharePhotoRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF60C21EEF6B4000EA933 /* SharePhotoRoute.swift */; };
 		084FF60F21EEF6F1000EA933 /* PhotoSelectorRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF60E21EEF6F1000EA933 /* PhotoSelectorRouter.swift */; };
+		084FF61621EF07D1000EA933 /* SharePhotoModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF61521EF07D1000EA933 /* SharePhotoModule.swift */; };
+		084FF61821EF16C8000EA933 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF61721EF16C8000EA933 /* LoginRouter.swift */; };
+		084FF61A21EF170B000EA933 /* RegisterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF61921EF170B000EA933 /* RegisterRouter.swift */; };
 		0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */; };
 		0858766D21DB8C7600C32422 /* RegisterUserVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */; };
 		0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858767521DC5CC700C32422 /* RegisterUserViewController.swift */; };
@@ -125,9 +125,6 @@
 		084FF5B121EB8D57000EA933 /* MainModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainModule.swift; sourceTree = "<group>"; };
 		084FF5B321EB8EB7000EA933 /* RegisterModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterModule.swift; sourceTree = "<group>"; };
 		084FF5B521EB8FD0000EA933 /* UserProfileModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModule.swift; sourceTree = "<group>"; };
-		084FF5BB21EBD017000EA933 /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
-		084FF5BD21EBD086000EA933 /* AuthRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRoute.swift; sourceTree = "<group>"; };
-		084FF5BF21EBD132000EA933 /* AuthModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModule.swift; sourceTree = "<group>"; };
 		084FF5C521EC16F0000EA933 /* SplashRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashRouterTests.swift; sourceTree = "<group>"; };
 		084FF5D321ED75E3000EA933 /* LoginRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRoute.swift; sourceTree = "<group>"; };
 		084FF5D521ED75F4000EA933 /* RegisterRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRoute.swift; sourceTree = "<group>"; };
@@ -150,6 +147,9 @@
 		084FF60A21EEF582000EA933 /* UserProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileRouter.swift; sourceTree = "<group>"; };
 		084FF60C21EEF6B4000EA933 /* SharePhotoRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoRoute.swift; sourceTree = "<group>"; };
 		084FF60E21EEF6F1000EA933 /* PhotoSelectorRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorRouter.swift; sourceTree = "<group>"; };
+		084FF61521EF07D1000EA933 /* SharePhotoModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoModule.swift; sourceTree = "<group>"; };
+		084FF61721EF16C8000EA933 /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
+		084FF61921EF170B000EA933 /* RegisterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRouter.swift; sourceTree = "<group>"; };
 		0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserVCTests.swift; sourceTree = "<group>"; };
 		0858767521DC5CC700C32422 /* RegisterUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserViewController.swift; sourceTree = "<group>"; };
@@ -254,23 +254,13 @@
 			path = "New Group";
 			sourceTree = "<group>";
 		};
-		084FF60021EEEF82000EA933 /* Auth Scene */ = {
-			isa = PBXGroup;
-			children = (
-				084FF60121EEEFC0000EA933 /* Login Scene */,
-				084FF60221EEEFCF000EA933 /* Register Scene */,
-				084FF5BB21EBD017000EA933 /* AuthRouter.swift */,
-				084FF5BF21EBD132000EA933 /* AuthModule.swift */,
-			);
-			path = "Auth Scene";
-			sourceTree = "<group>";
-		};
 		084FF60121EEEFC0000EA933 /* Login Scene */ = {
 			isa = PBXGroup;
 			children = (
 				084FF61221EEF812000EA933 /* xib */,
 				08BF0C6C21E8BB27004CE846 /* LoginViewController.swift */,
 				084FF5A521EB5856000EA933 /* LoginPresenter.swift */,
+				084FF61721EF16C8000EA933 /* LoginRouter.swift */,
 				084FF5AD21EB87C9000EA933 /* LoginModule.swift */,
 			);
 			path = "Login Scene";
@@ -282,6 +272,7 @@
 				084FF61321EEF819000EA933 /* xib */,
 				0858767521DC5CC700C32422 /* RegisterUserViewController.swift */,
 				08F9848A21E4C0C000DE6E78 /* RegisterUserPresenter.swift */,
+				084FF61921EF170B000EA933 /* RegisterRouter.swift */,
 				084FF5B321EB8EB7000EA933 /* RegisterModule.swift */,
 			);
 			path = "Register Scene";
@@ -323,7 +314,6 @@
 		084FF60621EEF096000EA933 /* Photo Selector Scene */ = {
 			isa = PBXGroup;
 			children = (
-				084FF60821EEF472000EA933 /* SharePhotoViewController.swift */,
 				084FF5FA21EDDB20000EA933 /* PhotoSelectorCell.swift */,
 				084FF5FC21EEC56E000EA933 /* PhotoSelectorHeader.swift */,
 				084FF5E821EDB61D000EA933 /* PhotoSelectorViewController.swift */,
@@ -337,11 +327,13 @@
 		084FF60721EEF0C9000EA933 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				084FF61421EF07BB000EA933 /* Share Photo Scene */,
 				084FF60621EEF096000EA933 /* Photo Selector Scene */,
 				084FF60521EEF073000EA933 /* Search Scene */,
 				084FF60421EEF05E000EA933 /* Home Scene */,
 				084FF60321EEF03B000EA933 /* User Profile Scene */,
-				084FF60021EEEF82000EA933 /* Auth Scene */,
+				084FF60121EEEFC0000EA933 /* Login Scene */,
+				084FF60221EEEFCF000EA933 /* Register Scene */,
 				084FF5FF21EEEF17000EA933 /* Main Scene */,
 				084FF5FE21EEEEEA000EA933 /* Splash Scene */,
 			);
@@ -370,6 +362,15 @@
 				0858767621DC5CC700C32422 /* RegisterUserViewController.xib */,
 			);
 			path = xib;
+			sourceTree = "<group>";
+		};
+		084FF61421EF07BB000EA933 /* Share Photo Scene */ = {
+			isa = PBXGroup;
+			children = (
+				084FF60821EEF472000EA933 /* SharePhotoViewController.swift */,
+				084FF61521EF07D1000EA933 /* SharePhotoModule.swift */,
+			);
+			path = "Share Photo Scene";
 			sourceTree = "<group>";
 		};
 		085EED1F21E6B82800A6D98E /* Main */ = {
@@ -458,7 +459,6 @@
 			isa = PBXGroup;
 			children = (
 				08F984AA21E53D2E00DE6E78 /* MainRoute.swift */,
-				084FF5BD21EBD086000EA933 /* AuthRoute.swift */,
 				084FF5D321ED75E3000EA933 /* LoginRoute.swift */,
 				084FF5D521ED75F4000EA933 /* RegisterRoute.swift */,
 				084FF5EA21EDB822000EA933 /* PhotoSelectorRoute.swift */,
@@ -796,17 +796,18 @@
 				086E6C9A21DE91D50094B808 /* ModalTransition.swift in Sources */,
 				08BF0C6821E8652F004CE846 /* UserProfileViewController.swift in Sources */,
 				084FF5AE21EB87C9000EA933 /* LoginModule.swift in Sources */,
+				084FF61A21EF170B000EA933 /* RegisterRouter.swift in Sources */,
 				084FF5E721EDAD26000EA933 /* SearchModule.swift in Sources */,
 				08F984C221E5E5F000DE6E78 /* MainRouter.swift in Sources */,
 				084FF60921EEF472000EA933 /* SharePhotoViewController.swift in Sources */,
 				08F984CA21E6878E00DE6E78 /* AuthService.swift in Sources */,
 				084FF5ED21EDB936000EA933 /* PhotoSelectorModule.swift in Sources */,
-				084FF5BE21EBD086000EA933 /* AuthRoute.swift in Sources */,
 				086E6C9821DE91C70094B808 /* Transition.swift in Sources */,
 				084FF5FD21EEC56E000EA933 /* PhotoSelectorHeader.swift in Sources */,
 				08F984A921E53CAD00DE6E78 /* MainTabBarViewController.swift in Sources */,
 				08BF0C5B21E85EDF004CE846 /* main.swift in Sources */,
 				0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */,
+				084FF61821EF16C8000EA933 /* LoginRouter.swift in Sources */,
 				084FF5E221EDAC77000EA933 /* SearchViewController.swift in Sources */,
 				08F9847D21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift in Sources */,
 				084FF5F121EDCB76000EA933 /* PhotosWrapper.swift in Sources */,
@@ -829,11 +830,11 @@
 				084FF5F321EDD0B7000EA933 /* PhotoService.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseStorageWrapper.swift in Sources */,
 				086E6C9C21DE91ED0094B808 /* PushTransition.swift in Sources */,
+				084FF61621EF07D1000EA933 /* SharePhotoModule.swift in Sources */,
 				084FF5A421EB54B7000EA933 /* LoginService.swift in Sources */,
 				084FF60F21EEF6F1000EA933 /* PhotoSelectorRouter.swift in Sources */,
 				08F9847F21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift in Sources */,
 				084FF5F921EDD3DF000EA933 /* ErrorPresentable.swift in Sources */,
-				084FF5BC21EBD017000EA933 /* AuthRouter.swift in Sources */,
 				084FF5E921EDB61D000EA933 /* PhotoSelectorViewController.swift in Sources */,
 				08F9848B21E4C0C000DE6E78 /* RegisterUserPresenter.swift in Sources */,
 				084FF60D21EEF6B4000EA933 /* SharePhotoRoute.swift in Sources */,
@@ -841,7 +842,6 @@
 				08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */,
 				084FF5EB21EDB822000EA933 /* PhotoSelectorRoute.swift in Sources */,
 				08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */,
-				084FF5C021EBD132000EA933 /* AuthModule.swift in Sources */,
 				084FF5F521EDD219000EA933 /* PhotoSelectorPresenter.swift in Sources */,
 				084FF5E521EDACF0000EA933 /* HomeModule.swift in Sources */,
 				08BF0C6B21E868E7004CE846 /* APIClient.swift in Sources */,

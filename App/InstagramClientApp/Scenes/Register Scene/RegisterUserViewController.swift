@@ -23,10 +23,10 @@ final class RegisterUserViewController: UIViewController {
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
     // MAKR: Router
-    private var router: AuthRouter.Routes?
+    private var router: RegisterRouter.Routes?
     
     // MARK: Initializer
-    convenience init(router: AuthRouter.Routes) {
+    convenience init(router: RegisterRouter.Routes) {
         self.init()
         self.router = router
     }

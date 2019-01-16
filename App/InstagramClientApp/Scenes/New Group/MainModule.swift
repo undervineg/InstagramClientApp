@@ -30,7 +30,9 @@ final class MainModule {
         let childVCs = [homeVC, searchVC, photoVC, likeVC, profileVC]
         viewController = MainTabBarViewController(router: router, subViewControllers: childVCs)
         viewController.updateInsets()
+        
         router.viewControllerBehind = viewController
+        
         viewController.selectedIndex = 0
     }
 }

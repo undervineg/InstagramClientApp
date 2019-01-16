@@ -22,10 +22,10 @@ final class LoginViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
     // MARK: Router
-    private var router: AuthRouter.Routes?
+    private var router: LoginRouter.Routes?
     
     // MARK: Initializer
-    convenience init(router: AuthRouter.Routes) {
+    convenience init(router: LoginRouter.Routes) {
         self.init()
         self.router = router
     }

@@ -9,26 +9,29 @@
 import UIKit
 
 final class UserProfileRouter: BasicRouter, UserProfileRouter.Routes {
-    typealias Routes = AuthRoute
+    typealias Routes = LoginRoute
     
-    var authTransition: TransitionType = .modal
+    var loginTransitionType: TransitionType = .modal
     
+    // LoginRoute
     
-    func openAuthPage(_ root: AuthModule.RootType) {
-        openAuthPage(root, with: authTransition)
+    func openLoginPage() {
+        openLoginPage(with: loginTransitionType)
     }
     
-    func openAuthPage(_ root: AuthModule.RootType, with transitionType: TransitionType) {
-        let authModule = AuthModule(rootType: root)
+    func openLoginPage(with transitionType: TransitionType) {
+        let loginModule = LoginModule()
         let transition = transitionType.object
-        authModule.router.openTransition = transition
-        open(authModule.viewController, with: transition)
+        loginModule.router.openTransition = transition
+        
+        open(loginModule.withNavigation, with: transition)
     }
     
-    func openAuthPageAsRoot(_ root: AuthModule.RootType, _ callback: (UIViewController) -> Void) {
-        let authModule = AuthModule(rootType: root)
-        let transition = authTransition.object
-        authModule.router.openTransition = transition
-        callback(authModule.viewController)
+    func openLoginPageAsRoot(_ callback: (UIViewController) -> Void) {
+        let loginModule = LoginModule()
+        let transition = loginTransitionType.object
+        loginModule.router.openTransition = transition
+        callback(loginModule.withNavigation)
     }
+
 }

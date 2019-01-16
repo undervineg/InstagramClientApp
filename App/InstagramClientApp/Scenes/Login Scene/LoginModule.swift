@@ -10,14 +10,18 @@ import FirebaseAuth
 import InstagramEngine
 
 final class LoginModule {
-    let router: AuthRouter
+    let router: LoginRouter
     let viewController: LoginViewController
     private let service: LoginService
     private let presenter: LoginPresenter
     private let useCase: LoginUseCase
     
-    init(router: AuthRouter) {
-        self.router = router
+    var withNavigation: UINavigationController {
+        return UINavigationController(rootViewController: viewController)
+    }
+    
+    init() {
+        self.router = LoginRouter()
         viewController = LoginViewController(router: router)
         service = LoginService(auth: Auth.self)
         presenter = LoginPresenter(view: viewController)

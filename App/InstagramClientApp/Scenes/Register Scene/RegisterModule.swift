@@ -10,14 +10,18 @@ import Firebase
 import InstagramEngine
 
 final class RegisterModule {
-    let router: AuthRouter
+    let router: RegisterRouter
     let viewController: RegisterUserViewController
     private let service: RegisterUserService
     private let presenter: RegisterUserPresenter
     private let useCase: RegisterUserUseCase
     
-    init(router: AuthRouter) {
-        self.router = router
+    var withNavigation: UINavigationController {
+        return UINavigationController(rootViewController: viewController)
+    }
+    
+    init() {
+        self.router = RegisterRouter()
         viewController = RegisterUserViewController(router: router)
         service = RegisterUserService(firebaseAuth: Auth.self,
                                       firebaseDatabase: Database.self,

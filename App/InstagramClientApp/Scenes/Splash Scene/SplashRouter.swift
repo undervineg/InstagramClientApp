@@ -9,15 +9,14 @@
 import UIKit
 
 final class SplashRouter: BasicRouter, SplashRouter.Routes {
-    typealias Routes = AuthRoute & MainRoute
+    typealias Routes = MainRoute & LoginRoute
     
     var openMainCallback: ((UIViewController) -> Void)? = nil
     var openLoginCallback: ((UIViewController) -> Void)? = nil
     
     var mainTransitionType: TransitionType = .modal
-    var authTransition: TransitionType = .modal
+    var loginTransitionType: TransitionType = .modal
     
-    // MainRoute
     
     func openMainPage() {
         guard let openMainCallback = openMainCallback else { return }
@@ -32,28 +31,25 @@ final class SplashRouter: BasicRouter, SplashRouter.Routes {
         let mainModule = MainModule()
         let transition = mainTransitionType.object
         mainModule.router.openTransition = transition
-        transition.viewControllerBehind = mainModule.viewController
         callback(mainModule.viewController)
     }
 
     
-    // AuthRoute
-    
-    func openAuthPage(_ root: AuthModule.RootType) {
+    func openLoginPage() {
         guard let openLoginCallback = openLoginCallback else { return }
-        openAuthPageAsRoot(root, openLoginCallback)
+        openLoginPageAsRoot(openLoginCallback)
     }
     
-    func openAuthPage(_ root: AuthModule.RootType, with transitionType: TransitionType) {
+    func openLoginPage(with transitionType: TransitionType) {
         //
     }
     
-    func openAuthPageAsRoot(_ root: AuthModule.RootType, _ callback: (UIViewController) -> Void) {
-        let authModule = AuthModule(rootType: root)
-        let transition = authTransition.object
-        authModule.router.openMainCallback = self.openMainCallback
-        authModule.router.openTransition = transition
-        transition.viewControllerBehind = authModule.viewController
-        callback(authModule.viewController)
+    func openLoginPageAsRoot(_ callback: (UIViewController) -> Void) {
+        let loginModule = LoginModule()
+        let transition = loginTransitionType.object
+        loginModule.router.openTransition = transition
+        loginModule.router.openMainCallback = openMainCallback
+        callback(loginModule.withNavigation)
     }
+
 }

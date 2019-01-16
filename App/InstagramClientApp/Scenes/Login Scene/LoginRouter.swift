@@ -1,20 +1,19 @@
 //
-//  AuthRouter.swift
+//  LoginRouter.swift
 //  InstagramClientApp
 //
-//  Created by 심승민 on 14/01/2019.
+//  Created by 심승민 on 16/01/2019.
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
 import UIKit
 
-final class AuthRouter: BasicRouter, AuthRouter.Routes {
-    typealias Routes = MainRoute & LoginRoute & RegisterRoute
+final class LoginRouter: BasicRouter, LoginRouter.Routes {
+    typealias Routes = MainRoute & RegisterRoute
     
     var openMainCallback: ((UIViewController) -> Void)? = nil
     
     var mainTransitionType: TransitionType = .modal
-    var loginTransition: TransitionType = .push
     var registerTransition: TransitionType = .push
     
     // MainRoute
@@ -42,33 +41,26 @@ final class AuthRouter: BasicRouter, AuthRouter.Routes {
         callback(mainModule.viewController)
     }
     
-    // LoginRoute
-    
-    func openLoginPage() {
-        if let navigation = self.viewControllerBehind, navigation.children.first is RegisterUserViewController {
-            let transition = loginTransition.object
-            let loginModule = LoginModule(router: self)
-            self.viewControllerBehind = navigation
-            self.openTransition = transition
-
-            open(loginModule.viewController, with: transition)
-        } else {
-            self.close()
-        }
-    }
-    
     // RegisterRoute
     
     func openRegisterPage() {
-        if let navigation = self.viewControllerBehind, navigation.children.first is LoginViewController {
-            let transition = registerTransition.object
-            let registerModule = RegisterModule(router: self)
-            self.viewControllerBehind = navigation
-            self.openTransition = transition
-
-            open(registerModule.viewController, with: transition)
-        } else {
+        if viewControllerBehind?.navigationController?.viewControllers.count ?? 0 > 1 {
             self.close()
+        } else {
+            openRegisterPage(with: registerTransition)
         }
+    }
+    
+    func openRegisterPage(with transitionType: TransitionType) {
+        let registerModule = RegisterModule()
+        let transition = transitionType.object
+        registerModule.router.openTransition = transition
+        registerModule.router.openMainCallback = openMainCallback
+        
+        open(registerModule.viewController, with: transition)
+    }
+    
+    func openRegisterPageAsRoot(_ callback: (UIViewController) -> Void) {
+        //
     }
 }
