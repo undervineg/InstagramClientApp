@@ -43,7 +43,7 @@ final class RegisterUserViewController: UIViewController {
     }
     
     @IBAction func handleTextInputChange(_ sender: UITextField) {
-        makeButtonEnableAndColored()
+        signUpButton.enableButtonWithColor(isAllTextFieldsValid())
     }
     
     @IBAction func signUp(_ sender: UIButton) {
@@ -83,11 +83,7 @@ extension RegisterUserViewController {
     
     // MARK: Private Methods
     private func isAllTextFieldsValid() -> Bool {
-        let isEmailValid = emailTextField.text?.count ?? 0 > 0
-        let isUsernameValid = usernameTextField.text?.count ?? 0 > 0
-        let isPasswordValid = passwordTextField.text?.count ?? 0 > 0
-        
-        return isEmailValid && isUsernameValid && isPasswordValid
+        return [emailTextField, usernameTextField, passwordTextField].isAllValid()
     }
     
     private func validateTextFieldsAndRegisterUser() {
@@ -110,19 +106,29 @@ extension RegisterUserViewController {
         present(imagePicker, animated: true, completion: nil)
     }
     
-    private func makeButtonEnableAndColored() {
-        let alpha: CGFloat = isAllTextFieldsValid() ? 1 : 0.5
-        signUpButton.backgroundColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: alpha)
-        signUpButton.isEnabled = isAllTextFieldsValid()
-    }
-    
     private func configureUIExtras() {
         profileImageButton.layer.cornerRadius = profileImageButton.frame.width/2
         profileImageButton.layer.masksToBounds = true
         
-        signUpButton.isEnabled = false
-        signUpButton.backgroundColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: 0.5)
+        signUpButton.layer.cornerRadius = 5
+        signUpButton.layer.masksToBounds = true
+        signUpButton.enableButtonWithColor(false)
         
         navigationController?.isNavigationBarHidden = true
+    }
+
+}
+
+extension UIButton {
+    func enableButtonWithColor(_ isAllTextFieldsValid: Bool) {
+        let alpha: CGFloat = isAllTextFieldsValid ? 1 : 0.5
+        self.backgroundColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: alpha)
+        self.isEnabled = isAllTextFieldsValid
+    }
+}
+
+extension Array where Element: UITextField {
+    func isAllValid() -> Bool {
+        return self.allSatisfy { $0.text?.count ?? 0 > 0 }
     }
 }

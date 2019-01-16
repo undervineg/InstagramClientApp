@@ -25,10 +25,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="e3u-WX-Mc8">
-                    <rect key="frame" x="40" y="190" width="295" height="140"/>
+                    <rect key="frame" x="40" y="190" width="295" height="150"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hGb-TP-2G7">
-                            <rect key="frame" x="0.0" y="0.0" width="295" height="40"/>
+                            <rect key="frame" x="0.0" y="0.0" width="295" height="43.5"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" textContentType="email"/>
@@ -37,7 +37,7 @@
                             </connections>
                         </textField>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RJu-RZ-4AA">
-                            <rect key="frame" x="0.0" y="50" width="295" height="40"/>
+                            <rect key="frame" x="0.0" y="53.5" width="295" height="43"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
@@ -46,7 +46,7 @@
                             </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aPv-kZ-FCR">
-                            <rect key="frame" x="0.0" y="100" width="295" height="40"/>
+                            <rect key="frame" x="0.0" y="106.5" width="295" height="43.5"/>
                             <color key="backgroundColor" red="0.066666666666666666" green="0.47058823529411764" blue="0.68627450980392157" alpha="1" colorSpace="calibratedRGB"/>
                             <state key="normal" title="Login">
                                 <color key="titleColor" red="1" green="0.98118547889999996" blue="0.98984114310000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -57,7 +57,7 @@
                         </button>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" constant="140" id="yDH-Wd-Sye"/>
+                        <constraint firstAttribute="height" constant="150" id="yDH-Wd-Sye"/>
                     </constraints>
                 </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Mx-jG-DMT">

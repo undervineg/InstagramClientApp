@@ -34,14 +34,12 @@ final class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.isNavigationBarHidden = true
-        
-        changeButtonColor(false)
+        configureUIExtras()
     }
     
     // MARK: Actions
     @IBAction func handleTextInputChange(_ sender: UITextField) {
-        changeButtonColor(isAllTextFieldsValid())
+        loginButton.enableButtonWithColor(isAllTextFieldsValid())
     }
     
     @IBAction func login(_ sender: UIButton) {
@@ -59,17 +57,16 @@ final class LoginViewController: UIViewController {
     }
     
     // MARK: Private Methods
-    private func changeButtonColor(_ isAllTextFieldsValid: Bool) {
-        let alpha: CGFloat = isAllTextFieldsValid ? 1 : 0.5
-        loginButton.backgroundColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: alpha)
-        loginButton.isEnabled = isAllTextFieldsValid
+    private func isAllTextFieldsValid() -> Bool {
+        return [emailTextField, passwordTextField].isAllValid()
     }
     
-    private func isAllTextFieldsValid() -> Bool {
-        let emailValid = emailTextField.text?.count ?? 0 > 0
-        let passwordValid = passwordTextField.text?.count ?? 0 > 0
+    private func configureUIExtras() {
+        navigationController?.isNavigationBarHidden = true
         
-        return emailValid && passwordValid
+        loginButton.layer.cornerRadius = 5
+        loginButton.layer.masksToBounds = true
+        loginButton.enableButtonWithColor(false)
     }
 }
 
