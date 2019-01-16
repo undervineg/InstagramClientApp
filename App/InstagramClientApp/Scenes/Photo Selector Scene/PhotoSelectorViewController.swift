@@ -46,10 +46,6 @@ final class PhotoSelectorViewController: UICollectionViewController {
         self.collectionView.register(PhotoSelectorHeader.self,
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                      withReuseIdentifier: headerReuseId)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
         fetchAllPhotos?(50, false)
     }
