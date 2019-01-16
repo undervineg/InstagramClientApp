@@ -62,7 +62,7 @@ class SharePhotoViewController: UIViewController {
         guard
             let image = shareImageView.image,
             let imageData = image.jpegData(compressionQuality: 0.5),
-            let caption = textView.text else { return }
+            let caption = textView.text, caption.count > 0 else { return }
         
         navigationItem.rightBarButtonItem?.isEnabled = false
         
