@@ -26,6 +26,13 @@ class SharePhotoViewController: UIViewController {
         return tv
     }()
     
+    let indicatorView: UIActivityIndicatorView = {
+        let iv = UIActivityIndicatorView()
+        iv.style = .gray
+        iv.hidesWhenStopped = true
+        return iv
+    }()
+    
     private var router: SharePhotoRouter.Routes?
     
     private var selectedImage: UIImage?
@@ -52,20 +59,25 @@ class SharePhotoViewController: UIViewController {
 
     // MARK: Actions
     @objc private func share(_ sender: UIBarButtonItem) {
-        guard let image = shareImageView.image,
+        guard
+            let image = shareImageView.image,
             let imageData = image.jpegData(compressionQuality: 0.5),
             let caption = textView.text else { return }
+        
         let post = Post(caption,
                         nil,
                         Float(image.size.width),
                         Float(image.size.height),
                         Date().timeIntervalSince1970)
+        
+        indicatorView.startAnimating()
         share?(imageData, post)
     }
 }
 
 extension SharePhotoViewController: SharePhotoView {
     func displayMain() {
+        indicatorView.stopAnimating()
         router?.openMainPage()
     }
 }
@@ -108,6 +120,13 @@ extension SharePhotoViewController {
             textView.leadingAnchor.constraint(equalTo: shareImageView.trailingAnchor, constant: 4),
             textView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             textView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        ])
+        
+        view.addSubview(indicatorView)
+        indicatorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            indicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            indicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 }
