@@ -10,7 +10,18 @@ import UIKit
 
 class SharePhotoViewController: UIViewController {
     
-    let shareImageView = UIImageView()
+    let shareImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        return iv
+    }()
+    
+    let textView: UITextView = {
+        let tv = UITextView()
+        tv.font = UIFont.systemFont(ofSize: 14)
+        return tv
+    }()
     
     private var selectedImage: UIImage?
     
@@ -61,8 +72,6 @@ extension SharePhotoViewController {
             containerView.heightAnchor.constraint(equalToConstant: 100)
         ])
 
-        shareImageView.contentMode = .scaleAspectFill
-        shareImageView.clipsToBounds = true
         containerView.addSubview(shareImageView)
         shareImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -70,6 +79,15 @@ extension SharePhotoViewController {
             shareImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
             shareImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
             shareImageView.widthAnchor.constraint(equalTo: shareImageView.heightAnchor)
+        ])
+        
+        containerView.addSubview(textView)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            textView.leadingAnchor.constraint(equalTo: shareImageView.trailingAnchor, constant: 4),
+            textView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            textView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ])
     }
 }
