@@ -98,7 +98,6 @@ final class PhotoSelectorViewController: UICollectionViewController {
         return 1
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
     }
@@ -119,7 +118,8 @@ final class PhotoSelectorViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedImage = images[indexPath.item]
         collectionView.reloadData()
-        collectionView.setContentOffset(CGPoint.zero, animated: true)
+        
+        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .bottom, animated: true)
     }
 }
 
