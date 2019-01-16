@@ -18,13 +18,7 @@ final class PhotoSelectorViewController: UICollectionViewController {
     
     var fetchAllPhotos: ((Int, Bool) -> Void)?
     
-    private var images: [UIImage] = [] {
-        didSet {
-            if images.count == 1 {
-                selectedImage = images.first
-            }
-        }
-    }
+    private var images: [UIImage] = []
     private var selectedImage: UIImage?
     
     convenience init(router: MainRouter.Routes) {
@@ -146,9 +140,11 @@ extension PhotoSelectorViewController: PhotoSelectorView {
     func displayAllPhotos(_ photoData: Data, _ isAllPhotosFetched: Bool) {
         DispatchQueue.main.async {
             if let image = UIImage(data: photoData) {
+                if self.selectedImage == nil {
+                    self.selectedImage = image
+                }
                 self.images.append(image)
             }
-            
             if isAllPhotosFetched {
                 self.collectionView.reloadData()
             }
