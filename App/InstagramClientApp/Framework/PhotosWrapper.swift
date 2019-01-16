@@ -19,16 +19,18 @@ extension PHAsset: PhotosWrapper {
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: isAscending)
         options.sortDescriptors = [sortDescriptor]
         
-        let allPhotos = fetchAssets(with: .image, options: options)
-        allPhotos.enumerateObjects { (asset, count, stop) in
-            let imageManager = PHImageManager.default()
-            let options = PHImageRequestOptions()
-            options.isSynchronous = true
-            
-            imageManager.requestImageData(for: asset, options: options, resultHandler: { (data, filename, orientation, info) in
-                let isAllPhotosFetched = (count == allPhotos.count - 1)
-                completion(data, isAllPhotosFetched)
-            })
+        DispatchQueue.global(qos: .background).async {
+            let allPhotos = fetchAssets(with: .image, options: options)
+            allPhotos.enumerateObjects { (asset, count, stop) in
+                let imageManager = PHImageManager.default()
+                let options = PHImageRequestOptions()
+                options.isSynchronous = true
+                
+                imageManager.requestImageData(for: asset, options: options, resultHandler: { (data, filename, orientation, info) in
+                    let isAllPhotosFetched = (count == allPhotos.count - 1)
+                    completion(data, isAllPhotosFetched)
+                })
+            }
         }
     }
 }
