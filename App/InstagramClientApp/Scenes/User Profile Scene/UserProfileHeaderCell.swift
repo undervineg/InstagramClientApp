@@ -36,8 +36,7 @@ extension UIView {
         return UINib(nibName: String(describing: self), bundle: nil)
     }
     
-    class func instanceFromNib() -> UIView? {
-        let nib = nibFromClassName()
-        return nib.instantiate(withOwner: nil, options: nil).first as? UIView
+    class func viewFromNib() -> UIView? {
+        return Bundle.main.loadNibNamed(String(describing: self), owner: self, options: nil)?.first as? UIView
     }
 }
