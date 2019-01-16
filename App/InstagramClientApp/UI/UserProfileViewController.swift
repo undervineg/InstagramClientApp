@@ -13,28 +13,32 @@ private let headerId = "headerId"
 private let reuseIdentifier = "Cell"
 
 final class UserProfileViewController: UICollectionViewController {
-    
+    // MARK: Commands
     var loadProfile: (() -> Void)?
     var downloadProfileImage: ((URL) -> Void)?
     var logout: (() -> Void)?
     
+    // MARK: Router
     private var router: MainRouter.Routes?
     
-    private var userModel: UserEntity?  = nil {
+    // MARK: Model
+    private var currentUser: UserEntity?  = nil {
         didSet {
             setTitleOnNavigationBar()
-            downloadProfileImage(from: userModel?.profileImageUrl)
+            downloadProfileImage(from: currentUser?.profileImageUrl)
         }
     }
     
-    private var imageData: Data?
+    private var profileImageData: Data?
     
+    // MARK: Initializer
     convenience init(router: MainRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
         self.router = router
     }
     
+    // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,7 +55,6 @@ final class UserProfileViewController: UICollectionViewController {
     }
 
     // MARK: UICollectionViewDataSource
-
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -65,8 +68,8 @@ final class UserProfileViewController: UICollectionViewController {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                      withReuseIdentifier: headerId,
                                                                      for: indexPath) as! UserProfileHeaderCell
-        header.usernameLabel.text = userModel?.username
-        if let data = imageData {
+        header.usernameLabel.text = currentUser?.username
+        if let data = profileImageData {
             header.profileImageView.image = UIImage(data: data)
         }
         return header
@@ -79,43 +82,56 @@ final class UserProfileViewController: UICollectionViewController {
         
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+}
+
+extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
+    
+    // MARK: Collection View Delegate Flow Layout
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 200)
     }
-    */
     
-    // MARK: - Private Methods
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let w = (view.frame.width - 2) / 3
+        return CGSize(width: w, height: w)
+    }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+}
+
+extension UserProfileViewController: UserProfileView {
+    
+    // MARK: User Profile View
+    func close() {
+        router?.openAuthPage(.login)
+    }
+    
+    func displayProfileImage(_ imageData: Data) {
+        DispatchQueue.main.async {
+            self.profileImageData = imageData
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func displayUserInfo(_ userInfo: UserEntity) {
+        self.currentUser = userInfo
+        self.collectionView.reloadData()
+    }
+}
+
+extension UserProfileViewController {
+    
+    // MARK: Private Methods
     private func downloadProfileImage(from urlString: String?) {
         guard
-            let urlString = userModel?.profileImageUrl,
+            let urlString = currentUser?.profileImageUrl,
             let url = URL(string: urlString) else { return }
         downloadProfileImage?(url)
     }
@@ -140,7 +156,7 @@ final class UserProfileViewController: UICollectionViewController {
     }
     
     private func setTitleOnNavigationBar() {
-        navigationItem.title = userModel?.username
+        navigationItem.title = currentUser?.username
     }
     
     private func registerCollectionViewCells() {
@@ -151,43 +167,4 @@ final class UserProfileViewController: UICollectionViewController {
         
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
-    
-}
-
-extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 200)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let w = (view.frame.width - 2) / 3
-        return CGSize(width: w, height: w)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
-    }
-}
-
-extension UserProfileViewController: UserProfileView {
-    func close() {
-        router?.openAuthPage(.login)
-    }
-    
-    func displayProfileImage(_ imageData: Data) {
-        DispatchQueue.main.async {
-            self.imageData = imageData
-            self.collectionView.reloadData()
-        }
-    }
-    
-    func displayUserInfo(_ userInfo: UserEntity) {
-        self.userModel = userInfo
-        self.collectionView.reloadData()
-    }
-
 }

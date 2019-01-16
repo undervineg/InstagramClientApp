@@ -8,16 +8,19 @@
 
 import UIKit
 
-final class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
+final class MainTabBarViewController: UITabBarController {
 
+    // MARK: Router
     private var router: MainRouter.Routes?
     
+    // MARK: Initializer
     convenience init(router: MainRouter.Routes, subViewControllers: [UIViewController]) {
         self.init()
         self.router = router
         self.viewControllers = subViewControllers
     }
     
+    // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,7 +28,11 @@ final class MainTabBarViewController: UITabBarController, UITabBarControllerDele
         
         tabBar.tintColor = .black
     }
+}
 
+extension MainTabBarViewController: UITabBarControllerDelegate {
+    
+    // MARK: Tab Bar Contoller Delegate
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if viewControllers?.firstIndex(of: viewController) == 2 {
             router?.openPhotoSelectorPage()

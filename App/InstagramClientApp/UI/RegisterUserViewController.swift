@@ -11,6 +11,10 @@ import InstagramEngine
 
 final class RegisterUserViewController: UIViewController {
     
+    // MARK: Commands
+    var register: ((String, String, String, Data) -> ())?
+    
+    // MARK: UI Properites
     @IBOutlet weak var profileImageButton: UIButton!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -18,20 +22,22 @@ final class RegisterUserViewController: UIViewController {
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
+    // MAKR: Router
     private var router: AuthRouter.Routes?
     
-    var register: ((String, String, String, Data) -> ())?
-    
+    // MARK: Initializer
     convenience init(router: AuthRouter.Routes) {
         self.init()
         self.router = router
     }
     
+    // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUIExtras()
     }
     
+    // MARK: Actions
     @IBAction func openImagePicker(_ sender: UIButton) {
         openEditableImagePicker()
     }
@@ -50,6 +56,7 @@ final class RegisterUserViewController: UIViewController {
 }
 
 extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    // MARK: Image Picker Delegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         let editedImage = info[.editedImage] as? UIImage
@@ -64,17 +71,17 @@ extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigat
 }
 
 extension RegisterUserViewController: RegisterUserView {
+    
+    // MARK: RegisterUserView
     func displayMain() {
         indicatorView.stopAnimating()
         router?.openMainPage()
     }
-
 }
 
 extension RegisterUserViewController {
     
-    // MARK: - Private Methods
-    
+    // MARK: Private Methods
     private func isAllTextFieldsValid() -> Bool {
         let isEmailValid = emailTextField.text?.count ?? 0 > 0
         let isUsernameValid = usernameTextField.text?.count ?? 0 > 0

@@ -10,20 +10,27 @@ import UIKit
 
 final class LoginViewController: UIViewController {
     
+    // MARK: Commands
+    var login: ((String, String) -> Void)?
+    
+    // MARK: UI Properties
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+    
+    // MARK: Router
     private var router: AuthRouter.Routes?
     
-    var login: ((String, String) -> Void)?
-    
+    // MARK: Initializer
     convenience init(router: AuthRouter.Routes) {
         self.init()
         self.router = router
     }
     
+    // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,18 +39,9 @@ final class LoginViewController: UIViewController {
         changeButtonColor(false)
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
+    // MARK: Actions
     @IBAction func handleTextInputChange(_ sender: UITextField) {
         changeButtonColor(isAllTextFieldsValid())
-    }
-    
-    private func changeButtonColor(_ isAllTextFieldsValid: Bool) {
-        let alpha: CGFloat = isAllTextFieldsValid ? 1 : 0.5
-        loginButton.backgroundColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: alpha)
-        loginButton.isEnabled = isAllTextFieldsValid
     }
     
     @IBAction func login(_ sender: UIButton) {
@@ -60,7 +58,13 @@ final class LoginViewController: UIViewController {
         router?.openRegisterPage()
     }
     
-    // MARK: - Private Methods
+    // MARK: Private Methods
+    private func changeButtonColor(_ isAllTextFieldsValid: Bool) {
+        let alpha: CGFloat = isAllTextFieldsValid ? 1 : 0.5
+        loginButton.backgroundColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: alpha)
+        loginButton.isEnabled = isAllTextFieldsValid
+    }
+    
     private func isAllTextFieldsValid() -> Bool {
         let emailValid = emailTextField.text?.count ?? 0 > 0
         let passwordValid = passwordTextField.text?.count ?? 0 > 0
@@ -70,9 +74,10 @@ final class LoginViewController: UIViewController {
 }
 
 extension LoginViewController: LoginView {
+    
+    // MARK: Login View
     func displayMain() {
         indicatorView.stopAnimating()
         router?.openMainPage()
     }
-
 }
