@@ -60,7 +60,8 @@ final class PhotoSelectorViewController: UICollectionViewController {
     }
     
     @objc private func next(_ sender: UIBarButtonItem) {
-        router?.openSharePhotoPage()
+        guard let selectedImage = selectedImage else { return }
+        router?.openSharePhotoPage(with: selectedImage)
     }
 
     // MARK: UICollectionViewDataSource

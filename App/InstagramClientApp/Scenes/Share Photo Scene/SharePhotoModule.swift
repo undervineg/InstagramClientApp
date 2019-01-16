@@ -6,12 +6,12 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class SharePhotoModule {
     let viewController: SharePhotoViewController
     
-    init() {
-        viewController = SharePhotoViewController()
+    init(_ selectedImage: UIImage) {
+        viewController = SharePhotoViewController(selectedImage)
     }
 }

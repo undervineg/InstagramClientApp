@@ -6,11 +6,11 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol SharePhotoRoute {
     var sharePhotoTransition: TransitionType { get }
     
-    func openSharePhotoPage()
+    func openSharePhotoPage(with selectedImage: UIImage)
     func closePhotoSelectorPage()
 }

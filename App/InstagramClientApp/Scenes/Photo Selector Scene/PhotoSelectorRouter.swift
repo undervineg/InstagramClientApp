@@ -6,15 +6,15 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class PhotoSelectorRouter: BasicRouter, PhotoSelectorRouter.Routes {
     typealias Routes = SharePhotoRoute
     
     var sharePhotoTransition: TransitionType = .push
     
-    func openSharePhotoPage() {
-        let sharePhotoModule = SharePhotoModule()
+    func openSharePhotoPage(with selectedImage: UIImage) {
+        let sharePhotoModule = SharePhotoModule(selectedImage)
         let transition = sharePhotoTransition.object
         open(sharePhotoModule.viewController, with: transition)
     }
