@@ -18,7 +18,14 @@ final class PhotoSelectorViewController: UICollectionViewController {
     
     var fetchAllPhotos: ((Int, Bool) -> Void)?
     
-    private var images: [UIImage] = []
+    private var images: [UIImage] = [] {
+        didSet {
+            if images.count == 1 {
+                selectedImage = images.first
+            }
+        }
+    }
+    private var selectedImage: UIImage?
     
     convenience init(router: MainRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
@@ -33,12 +40,12 @@ final class PhotoSelectorViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.backgroundColor = .yellow
+        collectionView.backgroundColor = .white
         
         configureNavigationBar()
         
         self.collectionView.register(PhotoSelectorCell.self, forCellWithReuseIdentifier: cellReuseId)
-        self.collectionView.register(UICollectionViewCell.self,
+        self.collectionView.register(PhotoSelectorCell.self,
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                      withReuseIdentifier: headerReuseId)
     }
@@ -46,7 +53,7 @@ final class PhotoSelectorViewController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        fetchAllPhotos?(30, false)
+        fetchAllPhotos?(50, false)
     }
     
     private func configureNavigationBar() {
@@ -75,8 +82,10 @@ final class PhotoSelectorViewController: UICollectionViewController {
             ofKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: headerReuseId,
             for: indexPath
-        )
-        headerView.backgroundColor = .red
+        ) as! PhotoSelectorCell
+        
+        headerView.imageView.image = selectedImage
+
         return headerView
     }
     
@@ -112,7 +121,10 @@ final class PhotoSelectorViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDelegate
 
-    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedImage = images[indexPath.item]
+        collectionView.reloadData()
+    }
 }
 
 extension PhotoSelectorViewController: UICollectionViewDelegateFlowLayout {
