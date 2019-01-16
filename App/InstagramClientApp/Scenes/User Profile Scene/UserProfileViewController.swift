@@ -160,7 +160,7 @@ extension UserProfileViewController {
     }
     
     private func registerCollectionViewCells() {
-        let profileHeaderCellNib = UINib(nibName: "UserProfileHeaderCell", bundle: nil)
+        let profileHeaderCellNib = UserProfileHeaderCell.nibFromClassName()
         collectionView.register(profileHeaderCellNib,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: headerId)

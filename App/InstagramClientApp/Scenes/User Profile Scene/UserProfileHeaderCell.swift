@@ -30,3 +30,14 @@ final class UserProfileHeaderCell: UICollectionViewCell {
         editProfileButton.layer.borderWidth = 1
     }
 }
+
+extension UIView {
+    class func nibFromClassName() -> UINib {
+        return UINib(nibName: String(describing: self), bundle: nil)
+    }
+    
+    class func instanceFromNib() -> UIView? {
+        let nib = nibFromClassName()
+        return nib.instantiate(withOwner: nil, options: nil).first as? UIView
+    }
+}

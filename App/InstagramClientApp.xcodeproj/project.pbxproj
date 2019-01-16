@@ -40,6 +40,8 @@
 		084FF61621EF07D1000EA933 /* SharePhotoModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF61521EF07D1000EA933 /* SharePhotoModule.swift */; };
 		084FF61821EF16C8000EA933 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF61721EF16C8000EA933 /* LoginRouter.swift */; };
 		084FF61A21EF170B000EA933 /* RegisterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF61921EF170B000EA933 /* RegisterRouter.swift */; };
+		084FF62021EF27AD000EA933 /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF61F21EF27AD000EA933 /* ShareView.swift */; };
+		084FF62221EF27B3000EA933 /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 084FF62121EF27B3000EA933 /* ShareView.xib */; };
 		0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */; };
 		0858766D21DB8C7600C32422 /* RegisterUserVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */; };
 		0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858767521DC5CC700C32422 /* RegisterUserViewController.swift */; };
@@ -150,6 +152,8 @@
 		084FF61521EF07D1000EA933 /* SharePhotoModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoModule.swift; sourceTree = "<group>"; };
 		084FF61721EF16C8000EA933 /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
 		084FF61921EF170B000EA933 /* RegisterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRouter.swift; sourceTree = "<group>"; };
+		084FF61F21EF27AD000EA933 /* ShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
+		084FF62121EF27B3000EA933 /* ShareView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareView.xib; sourceTree = "<group>"; };
 		0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserVCTests.swift; sourceTree = "<group>"; };
 		0858767521DC5CC700C32422 /* RegisterUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserViewController.swift; sourceTree = "<group>"; };
@@ -329,9 +333,9 @@
 			children = (
 				084FF60521EEF073000EA933 /* Search Scene */,
 				084FF60421EEF05E000EA933 /* Home Scene */,
-				084FF60321EEF03B000EA933 /* User Profile Scene */,
 				084FF61421EF07BB000EA933 /* Share Photo Scene */,
 				084FF60621EEF096000EA933 /* Photo Selector Scene */,
+				084FF60321EEF03B000EA933 /* User Profile Scene */,
 				084FF60221EEEFCF000EA933 /* Register Scene */,
 				084FF60121EEEFC0000EA933 /* Login Scene */,
 				084FF5FF21EEEF17000EA933 /* Main Scene */,
@@ -367,6 +371,8 @@
 		084FF61421EF07BB000EA933 /* Share Photo Scene */ = {
 			isa = PBXGroup;
 			children = (
+				084FF62121EF27B3000EA933 /* ShareView.xib */,
+				084FF61F21EF27AD000EA933 /* ShareView.swift */,
 				084FF60821EEF472000EA933 /* SharePhotoViewController.swift */,
 				084FF61521EF07D1000EA933 /* SharePhotoModule.swift */,
 			);
@@ -670,6 +676,7 @@
 				08BF0C6F21E8BB27004CE846 /* LoginViewController.xib in Resources */,
 				08BF0C5821E854EB004CE846 /* UserProfileHeaderCell.xib in Resources */,
 				0858767821DC5CC700C32422 /* RegisterUserViewController.xib in Resources */,
+				084FF62221EF27B3000EA933 /* ShareView.xib in Resources */,
 				084FF5DF21EDAAFD000EA933 /* HomeViewController.xib in Resources */,
 				084FF5E321EDAC77000EA933 /* SearchViewController.xib in Resources */,
 				0884512221DA665C008B8121 /* Assets.xcassets in Resources */,
@@ -817,6 +824,7 @@
 				084FF5A621EB5856000EA933 /* LoginPresenter.swift in Sources */,
 				084FF5FB21EDDB20000EA933 /* PhotoSelectorCell.swift in Sources */,
 				084FF5B021EB8A32000EA933 /* SplashModule.swift in Sources */,
+				084FF62021EF27AD000EA933 /* ShareView.swift in Sources */,
 				08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */,
 				08F984D021E691B100DE6E78 /* SplashPresenter.swift in Sources */,
 				084FF5B621EB8FD0000EA933 /* UserProfileModule.swift in Sources */,
