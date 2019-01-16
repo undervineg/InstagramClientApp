@@ -10,10 +10,6 @@ import Foundation
 
 protocol PhotoSelectorRoute {
     var photoSelectorTransition: TransitionType { get }
-    var sharePhotoTransition: TransitionType { get }
     
     func openPhotoSelectorPage()
-    func closePhotoSelectorPage()
-    func openSharePhotoPage()
-    func closeSharePhotoPage()
 }

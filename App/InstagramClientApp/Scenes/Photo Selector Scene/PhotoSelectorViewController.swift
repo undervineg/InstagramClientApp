@@ -18,7 +18,7 @@ final class PhotoSelectorViewController: UICollectionViewController {
     var fetchAllPhotos: ((Int, Bool) -> Void)?
     
     // MARK: Router
-    private var router: MainRouter.Routes?
+    private var router: PhotoSelectorRouter.Routes?
     
     // MARK: Models
     private var images: [UIImage] = []
@@ -28,7 +28,7 @@ final class PhotoSelectorViewController: UICollectionViewController {
     override var prefersStatusBarHidden: Bool { return true }
     
     // MARK: Initializer
-    convenience init(router: MainRouter.Routes) {
+    convenience init(router: PhotoSelectorRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
         self.router = router
@@ -52,6 +52,15 @@ final class PhotoSelectorViewController: UICollectionViewController {
         super.viewWillAppear(animated)
         
         fetchAllPhotos?(50, false)
+    }
+    
+    // MARK: Actions
+    @objc private func cancel(_ sender: UIBarButtonItem) {
+        router?.closePhotoSelectorPage()
+    }
+    
+    @objc private func next(_ sender: UIBarButtonItem) {
+        router?.openSharePhotoPage()
     }
 
     // MARK: UICollectionViewDataSource
@@ -150,13 +159,5 @@ extension PhotoSelectorViewController {
         let nextItem = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(next(_:)))
         navigationItem.setLeftBarButton(cancelItem, animated: true)
         navigationItem.setRightBarButton(nextItem, animated: true)
-    }
-    
-    @objc private func cancel(_ sender: UIBarButtonItem) {
-        router?.closePhotoSelectorPage()
-    }
-    
-    @objc private func next(_ sender: UIBarButtonItem) {
-        router?.openSharePhotoPage()
     }
 }

@@ -327,13 +327,13 @@
 		084FF60721EEF0C9000EA933 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				084FF61421EF07BB000EA933 /* Share Photo Scene */,
-				084FF60621EEF096000EA933 /* Photo Selector Scene */,
 				084FF60521EEF073000EA933 /* Search Scene */,
 				084FF60421EEF05E000EA933 /* Home Scene */,
 				084FF60321EEF03B000EA933 /* User Profile Scene */,
-				084FF60121EEEFC0000EA933 /* Login Scene */,
+				084FF61421EF07BB000EA933 /* Share Photo Scene */,
+				084FF60621EEF096000EA933 /* Photo Selector Scene */,
 				084FF60221EEEFCF000EA933 /* Register Scene */,
+				084FF60121EEEFC0000EA933 /* Login Scene */,
 				084FF5FF21EEEF17000EA933 /* Main Scene */,
 				084FF5FE21EEEEEA000EA933 /* Splash Scene */,
 			);
