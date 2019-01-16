@@ -7,11 +7,25 @@
 //
 
 import UIKit
+import Firebase
+import InstagramEngine
 
 final class SharePhotoModule {
+    let router: SharePhotoRouter
     let viewController: SharePhotoViewController
+    private let service: ShareService
+    private let presenter: SharePhotoPresenter
+    private let useCase: SharePhotoUseCase
     
     init(_ selectedImage: UIImage) {
-        viewController = SharePhotoViewController(selectedImage)
+        router = SharePhotoRouter()
+        viewController = SharePhotoViewController(router: router, selectedImage: selectedImage)
+        service = ShareService(storage: Storage.self, database: Database.self, auth: Auth.self)
+        presenter = SharePhotoPresenter(view: viewController)
+        useCase = SharePhotoUseCase(client: service, output: presenter)
+        
+        router.viewControllerBehind = viewController
+        
+        viewController.share = useCase.share
     }
 }

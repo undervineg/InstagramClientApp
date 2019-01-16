@@ -40,6 +40,9 @@
 		084FF61621EF07D1000EA933 /* SharePhotoModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF61521EF07D1000EA933 /* SharePhotoModule.swift */; };
 		084FF61821EF16C8000EA933 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF61721EF16C8000EA933 /* LoginRouter.swift */; };
 		084FF61A21EF170B000EA933 /* RegisterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF61921EF170B000EA933 /* RegisterRouter.swift */; };
+		084FF62621EF4787000EA933 /* ShareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF62521EF4787000EA933 /* ShareService.swift */; };
+		084FF62821EF4818000EA933 /* SharePhotoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF62721EF4818000EA933 /* SharePhotoPresenter.swift */; };
+		084FF62A21EF48F2000EA933 /* SharePhotoRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF62921EF48F2000EA933 /* SharePhotoRouter.swift */; };
 		0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */; };
 		0858766D21DB8C7600C32422 /* RegisterUserVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */; };
 		0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858767521DC5CC700C32422 /* RegisterUserViewController.swift */; };
@@ -150,6 +153,9 @@
 		084FF61521EF07D1000EA933 /* SharePhotoModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoModule.swift; sourceTree = "<group>"; };
 		084FF61721EF16C8000EA933 /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
 		084FF61921EF170B000EA933 /* RegisterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRouter.swift; sourceTree = "<group>"; };
+		084FF62521EF4787000EA933 /* ShareService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareService.swift; sourceTree = "<group>"; };
+		084FF62721EF4818000EA933 /* SharePhotoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoPresenter.swift; sourceTree = "<group>"; };
+		084FF62921EF48F2000EA933 /* SharePhotoRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoRouter.swift; sourceTree = "<group>"; };
 		0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserVCTests.swift; sourceTree = "<group>"; };
 		0858767521DC5CC700C32422 /* RegisterUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserViewController.swift; sourceTree = "<group>"; };
@@ -368,6 +374,8 @@
 			isa = PBXGroup;
 			children = (
 				084FF60821EEF472000EA933 /* SharePhotoViewController.swift */,
+				084FF62721EF4818000EA933 /* SharePhotoPresenter.swift */,
+				084FF62921EF48F2000EA933 /* SharePhotoRouter.swift */,
 				084FF61521EF07D1000EA933 /* SharePhotoModule.swift */,
 			);
 			path = "Share Photo Scene";
@@ -390,6 +398,7 @@
 				084FF5A321EB54B7000EA933 /* LoginService.swift */,
 				08F984B721E54B6C00DE6E78 /* UserProfileService.swift */,
 				084FF5F221EDD0B7000EA933 /* PhotoService.swift */,
+				084FF62521EF4787000EA933 /* ShareService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -826,6 +835,7 @@
 				086E6CB021DF79070094B808 /* BasicRouter.swift in Sources */,
 				084FF5D621ED75F4000EA933 /* RegisterRoute.swift in Sources */,
 				084FF60B21EEF582000EA933 /* UserProfileRouter.swift in Sources */,
+				084FF62621EF4787000EA933 /* ShareService.swift in Sources */,
 				08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */,
 				084FF5F321EDD0B7000EA933 /* PhotoService.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseStorageWrapper.swift in Sources */,
@@ -842,12 +852,14 @@
 				08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */,
 				084FF5EB21EDB822000EA933 /* PhotoSelectorRoute.swift in Sources */,
 				08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */,
+				084FF62821EF4818000EA933 /* SharePhotoPresenter.swift in Sources */,
 				084FF5F521EDD219000EA933 /* PhotoSelectorPresenter.swift in Sources */,
 				084FF5E521EDACF0000EA933 /* HomeModule.swift in Sources */,
 				08BF0C6B21E868E7004CE846 /* APIClient.swift in Sources */,
 				08F9847921E4B1E100DE6E78 /* RegisterUserService.swift in Sources */,
 				08F984B821E54B6C00DE6E78 /* UserProfileService.swift in Sources */,
 				0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */,
+				084FF62A21EF48F2000EA933 /* SharePhotoRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

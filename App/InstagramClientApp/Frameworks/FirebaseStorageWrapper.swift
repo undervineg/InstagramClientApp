@@ -11,20 +11,31 @@ import InstagramEngine
 
 protocol FirebaseStorageWrapper {
     static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void)
+    static func uploadShareImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void)
 }
 
 extension Storage: FirebaseStorageWrapper {
     private static let profileImagesRef = "profile_images"
+    private static let postImagesRef = "post_images"
     
     static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
+        uploadImageData(imageData, at: profileImagesRef, completion: completion)
+    }
+    
+    static func uploadShareImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
+        uploadImageData(imageData, at: postImagesRef, completion: completion)
+    }
+    
+    private static func uploadImageData(_ imageData: Data, at folderName: String?, completion: @escaping (Result<String, Error>) -> Void) {
         let filename = UUID().uuidString
-        let profileImageStorageRef = storage().reference().child(profileImagesRef).child(filename)
+        let storageRef = storage().reference()
+        let imageStorageRef = (folderName == nil) ? storageRef.child(filename) : storageRef.child(folderName!).child(filename)
         
-        profileImageStorageRef.putData(imageData, metadata: nil) { (metadata, error) in
+        imageStorageRef.putData(imageData, metadata: nil) { (metadata, error) in
             if let error = error {
                 completion(.failure(error))
             }
-            profileImageStorageRef.downloadURL(completion: { (url, error) in
+            imageStorageRef.downloadURL(completion: { (url, error) in
                 if let error = error {
                     completion(.failure(error))
                 }

@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import InstagramEngine
 
 class SharePhotoViewController: UIViewController {
+    
+    var share: ((Data, Post) -> Void)?
     
     let shareImageView: UIImageView = {
         let iv = UIImageView()
@@ -23,13 +26,16 @@ class SharePhotoViewController: UIViewController {
         return tv
     }()
     
+    private var router: SharePhotoRouter.Routes?
+    
     private var selectedImage: UIImage?
     
     // MARK: UI Properties
     override var prefersStatusBarHidden: Bool { return true }
     
-    convenience init(_ selectedImage: UIImage) {
+    convenience init(router: SharePhotoRouter.Routes, selectedImage: UIImage) {
         self.init()
+        self.router = router
         self.selectedImage = selectedImage
     }
     
@@ -46,7 +52,21 @@ class SharePhotoViewController: UIViewController {
 
     // MARK: Actions
     @objc private func share(_ sender: UIBarButtonItem) {
-        
+        guard let image = shareImageView.image,
+            let imageData = image.jpegData(compressionQuality: 0.5),
+            let caption = textView.text else { return }
+        let post = Post(caption,
+                        nil,
+                        Float(image.size.width),
+                        Float(image.size.height),
+                        Date().timeIntervalSince1970)
+        share?(imageData, post)
+    }
+}
+
+extension SharePhotoViewController: SharePhotoView {
+    func displayMain() {
+        router?.openMainPage()
     }
 }
 
