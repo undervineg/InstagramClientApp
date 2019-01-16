@@ -64,6 +64,8 @@ class SharePhotoViewController: UIViewController {
             let imageData = image.jpegData(compressionQuality: 0.5),
             let caption = textView.text else { return }
         
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
         let post = Post(caption,
                         nil,
                         Float(image.size.width),
@@ -79,6 +81,14 @@ extension SharePhotoViewController: SharePhotoView {
     func displayMain() {
         indicatorView.stopAnimating()
         router?.openMainPage()
+    }
+    
+    func displayError(_ errorMessage: String) {
+        let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
+            self?.navigationItem.rightBarButtonItem?.isEnabled = true
+        }))
+        present(alert, animated: true, completion: nil)
     }
 }
 
