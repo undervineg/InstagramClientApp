@@ -17,9 +17,9 @@ final class MainModule {
         
         let homeVC = HomeModule().withNavigation
         let searchVC = SearchModule().withNavigation
-        let photoVC = PhotoSelectorModule(router: router).withNavigation
+        let photoVC = PhotoSelectorModule().withNavigation
         let likeVC = UIViewController()
-        let profileVC = UserProfileModule(router: router).withNavigation
+        let profileVC = UserProfileModule().withNavigation
         
         homeVC.configureTabBarItem(image: "home_unselected", selectedImage: "home_selected")
         searchVC.configureTabBarItem(image: "search_unselected", selectedImage: "search_selected")

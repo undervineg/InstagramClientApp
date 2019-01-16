@@ -10,7 +10,7 @@ import Firebase
 import InstagramEngine
 
 final class UserProfileModule {
-    private let router: MainRouter
+    private let router: UserProfileRouter
     private let viewController: UserProfileViewController
     private let service: UserProfileService
     private let presenter: UserProfilePresenter
@@ -20,8 +20,8 @@ final class UserProfileModule {
         return UINavigationController(rootViewController: viewController)
     }
     
-    init(router: MainRouter) {
-        self.router = router
+    init() {
+        self.router = UserProfileRouter()
         viewController = UserProfileViewController(router: router)
         service = UserProfileService(firebaseAuth: Auth.self,
                                      firebaseDatabase: Database.self,
@@ -29,6 +29,8 @@ final class UserProfileModule {
                                      networking: URLSession.shared)
         presenter = UserProfilePresenter(view: WeakRef(viewController))
         useCase = UserProfileUseCase(client: service, output: presenter)
+        
+        router.viewControllerBehind = viewController
         
         viewController.loadProfile = useCase.loadProfile
         viewController.downloadProfileImage = useCase.downloadProfileImage

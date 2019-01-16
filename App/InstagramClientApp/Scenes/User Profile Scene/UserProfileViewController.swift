@@ -19,7 +19,7 @@ final class UserProfileViewController: UICollectionViewController {
     var logout: (() -> Void)?
     
     // MARK: Router
-    private var router: MainRouter.Routes?
+    private var router: UserProfileRouter.Routes?
     
     // MARK: Model
     private var currentUser: UserEntity?  = nil {
@@ -32,7 +32,7 @@ final class UserProfileViewController: UICollectionViewController {
     private var profileImageData: Data?
     
     // MARK: Initializer
-    convenience init(router: MainRouter.Routes) {
+    convenience init(router: UserProfileRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
         self.router = router
