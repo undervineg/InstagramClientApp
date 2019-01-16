@@ -13,6 +13,7 @@ final class MainRouter: BasicRouter, MainRouter.Routes {
     
     var authTransition: TransitionType = .modal
     var photoSelectorTransition: TransitionType = .modal
+    var sharePhotoTransition: TransitionType = .push
     
     // AuthRoute
     
@@ -34,6 +35,8 @@ final class MainRouter: BasicRouter, MainRouter.Routes {
         callback(authModule.viewController)
     }
     
+    // PhotoSelectorRoute
+    
     func openPhotoSelectorPage() {
         let photoModule = PhotoSelectorModule(router: self)
         let transition = photoSelectorTransition.object
@@ -43,5 +46,13 @@ final class MainRouter: BasicRouter, MainRouter.Routes {
     
     func closePhotoSelectorPage() {
         close()
+    }
+    
+    func openSharePhotoPage() {
+        
+    }
+    
+    func closeSharePhotoPage() {
+        
     }
 }
