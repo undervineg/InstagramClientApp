@@ -16,6 +16,8 @@ final class PhotoSelectorRouter: BasicRouter, PhotoSelectorRouter.Routes {
     func openSharePhotoPage(with selectedImage: UIImage) {
         let sharePhotoModule = SharePhotoModule(selectedImage)
         let transition = sharePhotoTransition.object
+        sharePhotoModule.router.openTransition = transition
+        
         open(sharePhotoModule.viewController, with: transition)
     }
     
