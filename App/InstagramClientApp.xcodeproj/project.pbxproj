@@ -35,6 +35,7 @@
 		084FF5F521EDD219000EA933 /* PhotoSelectorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5F421EDD219000EA933 /* PhotoSelectorPresenter.swift */; };
 		084FF5F921EDD3DF000EA933 /* ErrorPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5F821EDD3DF000EA933 /* ErrorPresentable.swift */; };
 		084FF5FB21EDDB20000EA933 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5FA21EDDB20000EA933 /* PhotoSelectorCell.swift */; };
+		084FF5FD21EEC56E000EA933 /* PhotoSelectorHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5FC21EEC56E000EA933 /* PhotoSelectorHeader.swift */; };
 		0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */; };
 		0858766D21DB8C7600C32422 /* RegisterUserVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */; };
 		0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858767521DC5CC700C32422 /* RegisterUserViewController.swift */; };
@@ -140,6 +141,7 @@
 		084FF5F421EDD219000EA933 /* PhotoSelectorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorPresenter.swift; sourceTree = "<group>"; };
 		084FF5F821EDD3DF000EA933 /* ErrorPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPresentable.swift; sourceTree = "<group>"; };
 		084FF5FA21EDDB20000EA933 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
+		084FF5FC21EEC56E000EA933 /* PhotoSelectorHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorHeader.swift; sourceTree = "<group>"; };
 		0858764C21DA6C4D00C32422 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserVCTests.swift; sourceTree = "<group>"; };
 		0858767521DC5CC700C32422 /* RegisterUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserViewController.swift; sourceTree = "<group>"; };
@@ -367,6 +369,7 @@
 				084FF5DC21EDAAFD000EA933 /* HomeViewController.swift */,
 				084FF5E021EDAC77000EA933 /* SearchViewController.swift */,
 				084FF5E821EDB61D000EA933 /* PhotoSelectorViewController.swift */,
+				084FF5FC21EEC56E000EA933 /* PhotoSelectorHeader.swift */,
 				084FF5FA21EDDB20000EA933 /* PhotoSelectorCell.swift */,
 				08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */,
 				08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */,
@@ -714,6 +717,7 @@
 				084FF5ED21EDB936000EA933 /* PhotoSelectorModule.swift in Sources */,
 				084FF5BE21EBD086000EA933 /* AuthRoute.swift in Sources */,
 				086E6C9821DE91C70094B808 /* Transition.swift in Sources */,
+				084FF5FD21EEC56E000EA933 /* PhotoSelectorHeader.swift in Sources */,
 				08F984A921E53CAD00DE6E78 /* MainTabBarViewController.swift in Sources */,
 				08BF0C5B21E85EDF004CE846 /* main.swift in Sources */,
 				0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */,

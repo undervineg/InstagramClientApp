@@ -39,7 +39,7 @@ final class PhotoSelectorViewController: UICollectionViewController {
         configureNavigationBar()
         
         self.collectionView.register(PhotoSelectorCell.self, forCellWithReuseIdentifier: cellReuseId)
-        self.collectionView.register(PhotoSelectorCell.self,
+        self.collectionView.register(PhotoSelectorHeader.self,
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                      withReuseIdentifier: headerReuseId)
     }
@@ -76,7 +76,7 @@ final class PhotoSelectorViewController: UICollectionViewController {
             ofKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: headerReuseId,
             for: indexPath
-        ) as! PhotoSelectorCell
+        ) as! PhotoSelectorHeader
         
         headerView.imageView.image = selectedImage
 
@@ -113,15 +113,19 @@ final class PhotoSelectorViewController: UICollectionViewController {
         return cell
     }
 
+    
     // MARK: UICollectionViewDelegate
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedImage = images[indexPath.item]
         collectionView.reloadData()
+        collectionView.setContentOffset(CGPoint.zero, animated: true)
     }
 }
 
 extension PhotoSelectorViewController: UICollectionViewDelegateFlowLayout {
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (view.frame.width - 3) / 4
         return CGSize(width: width, height: width)
