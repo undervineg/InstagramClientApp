@@ -32,7 +32,7 @@ final public class LoadPhotoUseCase {
         case networkError
     }
     
-    public func fetchAllPhotos(limit: Int, isAscending: Bool) {
+    public func loadAllPhotos(limit: Int, isAscending: Bool) {
         client.fetchAllPhotos(limit: limit, isAscending: isAscending) { (result) in
             switch result {
             case .success(let (data, isAllPhotosFetched)):

@@ -15,7 +15,7 @@ private let headerReuseId = "Header"
 final class PhotoSelectorViewController: UICollectionViewController {
     
     // MARK: Commands
-    var fetchAllPhotos: ((Int, Bool) -> Void)?
+    var loadAllPhotos: ((Int, Bool) -> Void)?
     
     // MARK: Router
     private var router: PhotoSelectorRouter.Routes?
@@ -47,7 +47,7 @@ final class PhotoSelectorViewController: UICollectionViewController {
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                      withReuseIdentifier: headerReuseId)
         
-        fetchAllPhotos?(50, false)
+        loadAllPhotos?(50, false)
     }
     
     // MARK: Actions

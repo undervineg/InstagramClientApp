@@ -30,6 +30,6 @@ final class PhotoSelectorModule {
         
         router.viewControllerBehind = viewController
         
-        viewController.fetchAllPhotos = useCase.fetchAllPhotos
+        viewController.loadAllPhotos = useCase.loadAllPhotos
     }
 }
