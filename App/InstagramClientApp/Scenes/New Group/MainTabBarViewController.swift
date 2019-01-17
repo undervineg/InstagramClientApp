@@ -14,10 +14,9 @@ final class MainTabBarViewController: UITabBarController {
     private var router: MainRouter.Routes?
     
     // MARK: Initializer
-    convenience init(router: MainRouter.Routes, subViewControllers: [UIViewController]) {
+    convenience init(router: MainRouter.Routes) {
         self.init()
         self.router = router
-        self.viewControllers = subViewControllers
     }
     
     // MARK: Life Cycle

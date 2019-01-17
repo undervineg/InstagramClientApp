@@ -24,8 +24,10 @@ final class LoginRouter: BasicRouter, LoginRouter.Routes {
     
     func openMainPage(with transitionType: TransitionType) {
         guard let callback = openMainCallback else {
+            let mainVC = viewControllerBehind?.presentingViewController as? MainTabBarViewController
             openTransition = mainTransitionType.object
-            openTransition?.viewControllerBehind = viewControllerBehind?.presentingViewController
+            openTransition?.viewControllerBehind = mainVC
+            mainVC?.setupChildViewControllers()
             self.close()
             return
         }

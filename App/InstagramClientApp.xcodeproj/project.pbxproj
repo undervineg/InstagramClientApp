@@ -62,6 +62,7 @@
 		0884512221DA665C008B8121 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0884512121DA665C008B8121 /* Assets.xcassets */; };
 		0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0884512321DA665C008B8121 /* LaunchScreen.storyboard */; };
 		0889079F21F05C500045B145 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0889079E21F05C500045B145 /* Reference.swift */; };
+		088907A221F074C80045B145 /* UserProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088907A121F074C80045B145 /* UserProfilePhotoCell.swift */; };
 		08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */; };
 		08BF0C5821E854EB004CE846 /* UserProfileHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08BF0C5621E854EB004CE846 /* UserProfileHeaderCell.xib */; };
 		08BF0C5B21E85EDF004CE846 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A121E5092300DE6E78 /* main.swift */; };
@@ -179,6 +180,7 @@
 		0884512B21DA665C008B8121 /* InstagramClientAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstagramClientAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0884513121DA665C008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0889079E21F05C500045B145 /* Reference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reference.swift; sourceTree = "<group>"; };
+		088907A121F074C80045B145 /* UserProfilePhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePhotoCell.swift; sourceTree = "<group>"; };
 		08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderCell.swift; sourceTree = "<group>"; };
 		08BF0C5621E854EB004CE846 /* UserProfileHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderCell.xib; sourceTree = "<group>"; };
 		08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				084FF61121EEF804000EA933 /* xib */,
+				088907A121F074C80045B145 /* UserProfilePhotoCell.swift */,
 				08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */,
 				08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */,
 				08F984B321E54A4700DE6E78 /* UserProfilePresenter.swift */,
@@ -528,10 +531,18 @@
 			path = InstagramClientAppTests;
 			sourceTree = "<group>";
 		};
-		08F9848021E4B37B00DE6E78 /* Frameworks */ = {
+		088907A021F05D3D0045B145 /* Types */ = {
 			isa = PBXGroup;
 			children = (
 				0889079E21F05C500045B145 /* Reference.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
+		08F9848021E4B37B00DE6E78 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				088907A021F05D3D0045B145 /* Types */,
 				08F9847C21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift */,
 				08F9847E21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift */,
 				086E6C7D21DD27380094B808 /* FirebaseStorageWrapper.swift */,
@@ -840,6 +851,7 @@
 				084FF60B21EEF582000EA933 /* UserProfileRouter.swift in Sources */,
 				084FF62621EF4787000EA933 /* ShareService.swift in Sources */,
 				08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */,
+				088907A221F074C80045B145 /* UserProfilePhotoCell.swift in Sources */,
 				084FF5F321EDD0B7000EA933 /* PhotoService.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseStorageWrapper.swift in Sources */,
 				0889079F21F05C500045B145 /* Reference.swift in Sources */,
