@@ -35,5 +35,7 @@ final class UserProfileModule {
         viewController.loadProfile = useCase.loadProfile
         viewController.downloadProfileImage = useCase.downloadProfileImage
         viewController.logout = useCase.logout
+        viewController.loadPosts = useCase.loadPosts
+        viewController.downloadPostImage = useCase.downloadPostImage
     }
 }

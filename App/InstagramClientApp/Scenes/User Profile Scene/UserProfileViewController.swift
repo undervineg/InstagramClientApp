@@ -10,26 +10,22 @@ import UIKit
 import InstagramEngine
 
 private let headerId = "headerId"
-private let reuseIdentifier = "Cell"
+private let cellId = "cellId"
 
 final class UserProfileViewController: UICollectionViewController {
     // MARK: Commands
     var loadProfile: (() -> Void)?
-    var downloadProfileImage: ((URL) -> Void)?
+    var loadPosts: (() -> Void)?
+    var downloadProfileImage: ((URL, @escaping (Data) -> Void) -> Void)?
+    var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var logout: (() -> Void)?
     
     // MARK: Router
     private var router: UserProfileRouter.Routes?
     
     // MARK: Model
-    private var currentUser: User?  = nil {
-        didSet {
-            setTitleOnNavigationBar()
-            downloadProfileImage(from: currentUser?.profileImageUrl)
-        }
-    }
-    
-    private var profileImageData: Data?
+    private var currentUser: User?
+    private var userPosts: [Post] = []
     
     // MARK: Initializer
     convenience init(router: UserProfileRouter.Routes) {
@@ -46,14 +42,23 @@ final class UserProfileViewController: UICollectionViewController {
         
         configureLogoutButton()
         registerCollectionViewCells()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
         loadProfile?()
+        loadPosts?()
     }
 
+    // MARK: Actions
+    @objc private func handleLogout(_ sender: UIBarButtonItem) {
+        let actionSheet = UIAlertController(title: nil, message: "Are you sure?", preferredStyle: .actionSheet)
+        let logoutAction = UIAlertAction(title: "Log Out", style: .destructive) { [weak self] _ in
+            self?.logout?()
+        }
+        let cancleAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        actionSheet.addAction(logoutAction)
+        actionSheet.addAction(cancleAction)
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
     // MARK: UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -61,7 +66,7 @@ final class UserProfileViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 7 
+        return userPosts.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -69,17 +74,31 @@ final class UserProfileViewController: UICollectionViewController {
                                                                      withReuseIdentifier: headerId,
                                                                      for: indexPath) as! UserProfileHeaderCell
         header.usernameLabel.text = currentUser?.username
-        if let data = profileImageData {
-            header.profileImageView.image = UIImage(data: data)
+        
+        if let urlString = currentUser?.profileImageUrl, let url = URL(string: urlString) {
+            downloadProfileImage?(url) { imageData in
+                DispatchQueue.main.async {
+                    header.profileImageView.image = UIImage(data: imageData)
+                }
+            }
         }
+        
         return header
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
-        cell.backgroundColor = .purple
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserProfilePhotoCell
         
+        if userPosts.count > 0 {
+            if let urlString = userPosts[indexPath.item].imageUrl, let url = URL(string: urlString) {
+                downloadPostImage?(url) { imageData in
+                    DispatchQueue.main.async {
+                        cell.imageView.image = UIImage(data: imageData)
+                    }
+                }
+            }
+        }
+
         return cell
     }
     
@@ -109,50 +128,31 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
 extension UserProfileViewController: UserProfileView {
     
     // MARK: User Profile View
-    func close() {
+    func onLogoutSucceeded() {
         router?.openLoginPage()
     }
     
-    func displayProfileImage(_ imageData: Data) {
-        DispatchQueue.main.async {
-            self.profileImageData = imageData
-            self.collectionView.reloadData()
-        }
+    func displayUserInfo(_ userInfo: User) {
+        currentUser = userInfo
+        setTitleOnNavigationBar()
+        collectionView.reloadData()
     }
     
-    func displayUserInfo(_ userInfo: User) {
-        self.currentUser = userInfo
-        self.collectionView.reloadData()
+    func displayPosts(_ posts: [Post]) {
+        userPosts = posts
+        collectionView.reloadData()
     }
 }
 
 extension UserProfileViewController {
     
     // MARK: Private Methods
-    private func downloadProfileImage(from urlString: String?) {
-        guard
-            let urlString = currentUser?.profileImageUrl,
-            let url = URL(string: urlString) else { return }
-        downloadProfileImage?(url)
-    }
-    
     private func configureLogoutButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "gear"),
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(handleLogout(_:)))
         navigationItem.rightBarButtonItem?.tintColor = .black
-    }
-    
-    @objc private func handleLogout(_ sender: UIBarButtonItem) {
-        let actionSheet = UIAlertController(title: nil, message: "Are you sure?", preferredStyle: .actionSheet)
-        let logoutAction = UIAlertAction(title: "Log Out", style: .destructive) { [weak self] _ in
-            self?.logout?()
-        }
-        let cancleAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        actionSheet.addAction(logoutAction)
-        actionSheet.addAction(cancleAction)
-        present(actionSheet, animated: true, completion: nil)
     }
     
     private func setTitleOnNavigationBar() {
@@ -165,6 +165,6 @@ extension UserProfileViewController {
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: headerId)
         
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: cellId)
     }
 }

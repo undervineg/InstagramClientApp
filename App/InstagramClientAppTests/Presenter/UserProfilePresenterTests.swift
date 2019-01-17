@@ -57,7 +57,7 @@ class UserProfilePresenterTests: XCTestCase {
             stubbedErrorMessage.append(errorMessage)
         }
         
-        func close() {
+        func logoutSucceeded() {
             
         }
     }

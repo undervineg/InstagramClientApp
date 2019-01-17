@@ -11,12 +11,11 @@ import Foundation
 
 protocol UserProfileView: ErrorPresentable {
     func displayUserInfo(_ user: User)
-    func displayProfileImage(_ imageData: Data)
-    func close()
+    func displayPosts(_ posts: [Post])
+    func onLogoutSucceeded()
 }
 
 final class UserProfilePresenter: UserProfileUseCaseOutput {
-    
     private let view: UserProfileView
     
     init(view: UserProfileView) {
@@ -28,22 +27,7 @@ final class UserProfilePresenter: UserProfileUseCaseOutput {
     }
     
     func loadUserFailed(_ error: UserProfileUseCase.Error) {
-        var errorMessage = ""
-        switch error {
-        case .currentUserIDNotExist:
-            errorMessage = "사용자 계정이 없습니다."
-        case .currentUserNotExist:
-            errorMessage = "사용자 정보가 없습니다."
-        case .profileImageNotExist:
-            errorMessage = "프로필 이미지를 불러올 수 없습니다."
-        case .logoutError:
-            errorMessage = "로그아웃 도중 문제가 발생했습니다."
-        }
-        view.displayError(errorMessage)
-    }
-    
-    func downloadProfileImageSucceeded(_ imageData: Data) {
-        view.displayProfileImage(imageData)
+        view.displayError(error.localizedDescription)
     }
     
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error) {
@@ -51,10 +35,22 @@ final class UserProfilePresenter: UserProfileUseCaseOutput {
     }
     
     func logoutSucceeded() {
-        view.close()
+        view.onLogoutSucceeded()
     }
     
     func logoutFailed(_ error: UserProfileUseCase.Error) {
+        view.displayError(error.localizedDescription)
+    }
+    
+    func loadPostsSucceeded(_ posts: [Post]) {
+        view.displayPosts(posts)
+    }
+    
+    func loadPostsFailed(_ error: UserProfileUseCase.Error) {
+        view.displayError(error.localizedDescription)
+    }
+    
+    func downloadPostImageFailed(_ error: UserProfileUseCase.Error) {
         view.displayError(error.localizedDescription)
     }
 }
@@ -64,11 +60,11 @@ extension WeakRef: UserProfileView where T: UserProfileView {
         object?.displayUserInfo(user)
     }
     
-    func displayProfileImage(_ imageData: Data) {
-        object?.displayProfileImage(imageData)
+    func displayPosts(_ posts: [Post]) {
+        object?.displayPosts(posts)
     }
     
-    func close() {
-        object?.close()
+    func onLogoutSucceeded() {
+        object?.onLogoutSucceeded()
     }
 }
