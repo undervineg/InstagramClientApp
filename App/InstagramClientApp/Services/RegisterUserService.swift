@@ -10,6 +10,18 @@ import FirebaseAuth
 import InstagramEngine
 
 final class RegisterUserService: RegisterUserClient {
+    
+    struct Keys {
+        static let profileImagesDir = "profile_images"
+        static let usersDir = "users"
+        
+        struct Profile {
+            static let email = "email"
+            static let username = "username"
+            static let image = "profileImageUrl"
+        }
+    }
+    
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let storage: FirebaseStorageWrapper.Type
@@ -54,15 +66,20 @@ final class RegisterUserService: RegisterUserClient {
     
     private func uploadProfileImage(_ profileImage: Data,
                                     _ completion: @escaping (Result<String, RegisterUserUseCase.Error>) -> Void) {
+        let filename = UUID().uuidString
+        let refs: [Reference] = [
+            .directory(Keys.profileImagesDir),
+            .directory(filename)
+        ]
         
-        storage.uploadProfileImageData(profileImage, completion: { (result) in
+        storage.uploadImage(profileImage, to: refs) { (result) in
             switch result {
             case .success(let url):
                 completion(.success(url))
             case .failure:
                 completion(.failure(.storageUploadError))
             }
-        })
+        }
     }
     
     private func saveUser(_ userId: String,
@@ -71,7 +88,13 @@ final class RegisterUserService: RegisterUserClient {
                           _ profileImageUrl: String,
                           _ completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
         
-        database.updateUser(userId: userId, email: email, username: username, profileImageUrl: profileImageUrl) { (error) in
+        let userInfo = [Keys.Profile.email: email,
+                        Keys.Profile.username: username,
+                        Keys.Profile.image: profileImageUrl]
+        
+        let refs: [Reference] = [.directory(Keys.usersDir), .directory(userId)]
+        
+        database.update(userInfo, to: refs) { (error) in
             if error != nil {
                 completion(.databaseUpdateError)
             } else {

@@ -10,6 +10,20 @@ import Foundation
 import InstagramEngine
 
 final class ShareService: SharePhotoClient {
+    
+    struct Keys {
+        static let postsDir = "posts"
+        static let postImagesDir = "post_images"
+        
+        struct Post {
+            static let caption = "caption"
+            static let image = "imageUrl"
+            static let imageWidth = "imageWidth"
+            static let imageHeight = "imageHeight"
+            static let creationDate = "creationDate"
+        }
+    }
+    
     private let storage: FirebaseStorageWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let auth: FirebaseAuthWrapper.Type
@@ -23,12 +37,32 @@ final class ShareService: SharePhotoClient {
     }
     
     func share(data: Data, post: Post, completion: @escaping (Error?) -> Void) {
-        storage.uploadShareImageData(data) { [weak self] (result) in
+        let filename = UUID().uuidString
+        let refs: [Reference] = [
+            .directory(Keys.postImagesDir),
+            .directory(filename)
+        ]
+        
+        storage.uploadImage(data, to: refs) { (result) in
             switch result {
             case .success(let url):
-                if let userId = self?.auth.currentUserId {
-                    let postWithUrl = Post(post.caption, url, post.imageWidth, post.imageHeight, post.creationDate)
-                    self?.database.savePost(userId: userId, post: postWithUrl, completion: completion)
+                if let userId = self.auth.currentUserId {
+                    
+                    let postValues = [
+                        Keys.Post.caption: post.caption,
+                        Keys.Post.image: url,
+                        Keys.Post.imageWidth: post.imageWidth,
+                        Keys.Post.imageHeight: post.imageHeight,
+                        Keys.Post.creationDate: post.creationDate
+                        ] as [String: Any]
+                    
+                    let refs: [Reference] = [
+                        .directory(Keys.postsDir),
+                        .directory(userId),
+                        .autoId
+                    ]
+                    
+                    self.database.update(postValues, to: refs, completion: completion)
                 }
             case .failure(let error):
                 completion(error)

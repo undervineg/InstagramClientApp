@@ -10,32 +10,18 @@ import FirebaseStorage
 import InstagramEngine
 
 protocol FirebaseStorageWrapper {
-    static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void)
-    static func uploadShareImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void)
+    static func uploadImage(_ imageData: Data, to refs: [Reference], completion: @escaping (Result<String, Error>) -> Void)
 }
 
 extension Storage: FirebaseStorageWrapper {
-    private static let profileImagesRef = "profile_images"
-    private static let postImagesRef = "post_images"
-    
-    static func uploadProfileImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
-        uploadImageData(imageData, at: profileImagesRef, completion: completion)
-    }
-    
-    static func uploadShareImageData(_ imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
-        uploadImageData(imageData, at: postImagesRef, completion: completion)
-    }
-    
-    private static func uploadImageData(_ imageData: Data, at folderName: String?, completion: @escaping (Result<String, Error>) -> Void) {
-        let filename = UUID().uuidString
-        let storageRef = storage().reference()
-        let imageStorageRef = (folderName == nil) ? storageRef.child(filename) : storageRef.child(folderName!).child(filename)
+    static func uploadImage(_ imageData: Data, to refs: [Reference], completion: @escaping (Result<String, Error>) -> Void) {
+        let ref = stoargeReference(from: refs)
         
-        imageStorageRef.putData(imageData, metadata: nil) { (metadata, error) in
+        ref?.putData(imageData, metadata: nil, completion: { (metadata, error) in
             if let error = error {
                 completion(.failure(error))
             }
-            imageStorageRef.downloadURL(completion: { (url, error) in
+            ref?.downloadURL(completion: { (url, error) in
                 if let error = error {
                     completion(.failure(error))
                 }
@@ -46,7 +32,23 @@ extension Storage: FirebaseStorageWrapper {
                 }
                 completion(.success(url.absoluteString))
             })
+        })
+    }
+}
+
+extension Storage {
+    // MARK: Private Methods
+    private static func stoargeReference(from childRefs: [Reference]) -> StorageReference? {
+        let rootRef = storage().reference()
+        return rootRef.reference(by: childRefs) as? StorageReference
+    }
+}
+
+extension StorageReference: FirebaseReferenceType {
+    func child(by reference: Reference) -> FirebaseReferenceType {
+        switch reference {
+        case .directory(let name): return self.child(name)
+        default: return self
         }
     }
-    
 }

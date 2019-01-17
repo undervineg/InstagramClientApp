@@ -11,6 +11,16 @@ import Foundation
 
 final class UserProfileService: UserProfileClient {
     
+    struct Keys {
+        static let usersDir = "users"
+        
+        struct Profile {
+            static let email = "email"
+            static let username = "username"
+            static let image = "profileImageUrl"
+        }
+    }
+    
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let storage: FirebaseStorageWrapper.Type
@@ -31,10 +41,21 @@ final class UserProfileService: UserProfileClient {
             completion(.failure(.currentUserIDNotExist))
             return
         }
-        database.fetchUserInfo(uid) { (userEntity) in
-            if let user = userEntity {
-                completion(.success(user))
-            } else {
+        
+        let refs: [Reference] = [.directory(Keys.usersDir), .directory(uid)]
+        
+        database.fetch(from: refs) { (result) in
+            switch result {
+            case .success(let values):
+                
+                let email = values[Keys.Profile.email] as? String ?? ""
+                let username = values[Keys.Profile.username] as? String ?? ""
+                let profileImageUrl = values[Keys.Profile.image] as? String ?? ""
+                
+                let userInfo = User(id: uid, email: email, username: username, profileImageUrl: profileImageUrl)
+                
+                completion(.success(userInfo))
+            case .failure:
                 completion(.failure(.currentUserNotExist))
             }
         }
@@ -53,5 +74,9 @@ final class UserProfileService: UserProfileClient {
     
     func logout(_ completion: @escaping (Error?) -> Void) {
          auth.logout(completion)
+    }
+    
+    func fetchPosts(_ completion: @escaping (Result<[Post], UserProfileUseCase.Error>) -> Void) {
+        
     }
 }
