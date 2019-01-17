@@ -9,10 +9,10 @@
 import UIKit
 import InstagramEngine
 
-class UserProfilePhotoCell: UICollectionViewCell {
+final class UserProfilePhotoCell: UICollectionViewCell {
     
-    let imageView: UIImageView = {
-        let iv = UIImageView()
+    let imageView: LodableImageView = {
+        let iv = LodableImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         return iv

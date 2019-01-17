@@ -75,12 +75,8 @@ final class UserProfileViewController: UICollectionViewController {
                                                                      for: indexPath) as! UserProfileHeaderCell
         header.usernameLabel.text = currentUser?.username
         
-        if let urlString = currentUser?.profileImageUrl, let url = URL(string: urlString) {
-            downloadProfileImage?(url) { imageData in
-                DispatchQueue.main.async {
-                    header.profileImageView.image = UIImage(data: imageData)
-                }
-            }
+        if let urlString = currentUser?.profileImageUrl {
+            header.profileImageView.loadImage(from: urlString, with: downloadProfileImage)
         }
         
         return header
@@ -90,12 +86,8 @@ final class UserProfileViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserProfilePhotoCell
         
         if userPosts.count > 0 {
-            if let urlString = userPosts[indexPath.item].imageUrl, let url = URL(string: urlString) {
-                downloadPostImage?(url) { imageData in
-                    DispatchQueue.main.async {
-                        cell.imageView.image = UIImage(data: imageData)
-                    }
-                }
+            if let urlString = userPosts[indexPath.item].imageUrl {
+                cell.imageView.loadImage(from: urlString, with: downloadPostImage)
             }
         }
 

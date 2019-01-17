@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BD5-E8-S5K">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BD5-E8-S5K" customClass="LodableImageView" customModule="InstagramClientApp" customModuleProvider="target">
                         <rect key="frame" x="12" y="12" width="80" height="80"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="80" id="QdM-mY-8OR"/>
@@ -206,7 +206,7 @@ Cg
                 <outlet property="gridButton" destination="zqE-9y-hiM" id="xzO-Bf-Dkb"/>
                 <outlet property="listButton" destination="Dl4-6t-HTF" id="DiV-DJ-wcU"/>
                 <outlet property="postLabel" destination="KK0-PL-V9k" id="IxK-Mt-riH"/>
-                <outlet property="profileImageView" destination="BD5-E8-S5K" id="fJk-DT-aIN"/>
+                <outlet property="profileImageView" destination="BD5-E8-S5K" id="PDP-ca-S6V"/>
                 <outlet property="usernameLabel" destination="qyk-bj-4Fb" id="ono-Pf-l8d"/>
             </connections>
             <point key="canvasLocation" x="285.60000000000002" y="116.49175412293854"/>
