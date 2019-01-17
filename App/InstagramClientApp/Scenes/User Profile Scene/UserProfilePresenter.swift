@@ -11,7 +11,7 @@ import Foundation
 
 protocol UserProfileView: ErrorPresentable {
     func displayUserInfo(_ user: User)
-    func displayPosts(_ posts: [Post])
+    func displayPost(_ post: Post)
     func onLogoutSucceeded()
 }
 
@@ -42,8 +42,8 @@ final class UserProfilePresenter: UserProfileUseCaseOutput {
         view.displayError(error.localizedDescription)
     }
     
-    func loadPostsSucceeded(_ posts: [Post]) {
-        view.displayPosts(posts)
+    func loadPostSucceeded(_ post: Post) {
+        view.displayPost(post)
     }
     
     func loadPostsFailed(_ error: UserProfileUseCase.Error) {
@@ -60,8 +60,8 @@ extension WeakRef: UserProfileView where T: UserProfileView {
         object?.displayUserInfo(user)
     }
     
-    func displayPosts(_ posts: [Post]) {
-        object?.displayPosts(posts)
+    func displayPost(_ post: Post) {
+        object?.displayPost(post)
     }
     
     func onLogoutSucceeded() {

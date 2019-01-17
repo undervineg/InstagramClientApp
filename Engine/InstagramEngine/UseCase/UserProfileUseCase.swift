@@ -12,7 +12,7 @@ public protocol UserProfileClient {
     func loadCurrentUserInfo(_ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
     func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
     func logout(_ completion: @escaping (Error?) -> Void)
-    func fetchPosts(_ completion: @escaping (Result<[Post], UserProfileUseCase.Error>) -> Void)
+    func fetchPost(_ completion: @escaping (Result<Post, UserProfileUseCase.Error>) -> Void)
     func downloadPostImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
 }
 
@@ -22,7 +22,7 @@ public protocol UserProfileUseCaseOutput {
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error)
     func logoutSucceeded()
     func logoutFailed(_ error: UserProfileUseCase.Error)
-    func loadPostsSucceeded(_ posts: [Post])
+    func loadPostSucceeded(_ posts: Post)
     func loadPostsFailed(_ error: UserProfileUseCase.Error)
     func downloadPostImageFailed(_ error: UserProfileUseCase.Error)
 }
@@ -95,10 +95,10 @@ final public class UserProfileUseCase {
     }
     
     public func loadPosts() {
-        client.fetchPosts { [weak self] (result) in
+        client.fetchPost { [weak self] (result) in
             switch result {
-            case .success(let posts):
-                self?.output.loadPostsSucceeded(posts)
+            case .success(let post):
+                self?.output.loadPostSucceeded(post)
             case .failure(let error):
                 self?.output.loadPostsFailed(error)
             }

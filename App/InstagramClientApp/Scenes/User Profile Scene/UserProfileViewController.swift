@@ -130,8 +130,8 @@ extension UserProfileViewController: UserProfileView {
         collectionView.reloadData()
     }
     
-    func displayPosts(_ posts: [Post]) {
-        userPosts = posts
+    func displayPost(_ post: Post) {
+        userPosts.insert(post, at: 0)
         collectionView.reloadData()
     }
 }
