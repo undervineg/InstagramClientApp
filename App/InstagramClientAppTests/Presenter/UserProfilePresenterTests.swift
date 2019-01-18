@@ -57,7 +57,11 @@ class UserProfilePresenterTests: XCTestCase {
             stubbedErrorMessage.append(errorMessage)
         }
         
-        func logoutSucceeded() {
+        func displayPosts(_ posts: [Post]) {
+            
+        }
+        
+        func onLogoutSucceeded() {
             
         }
     }
