@@ -14,8 +14,8 @@ enum TransitionType {
     
     var object: Transition {
         switch self {
-        case .modal: return ModalTransition()
-        case .push: return PushTransition()
+        case .modal: return ModalTransition(animated: true, completion: nil)
+        case .push: return PushTransition(animated: true, completion: nil)
         }
     }
 }

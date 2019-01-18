@@ -6,10 +6,12 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol RegisterRoute {
     var registerTransition: TransitionType { get }
     
     func openRegisterPage()
+    func openRegisterPage(with transitionType: TransitionType)
+    func openRegisterPageAsRoot(_ callback: (UIViewController) -> Void)
 }

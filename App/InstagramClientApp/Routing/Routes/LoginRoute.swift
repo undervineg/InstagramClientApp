@@ -6,10 +6,12 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol LoginRoute {
-    var loginTransition: TransitionType { get }
+    var loginTransitionType: TransitionType { get }
     
     func openLoginPage()
+    func openLoginPage(with transitionType: TransitionType)
+    func openLoginPageAsRoot(_ callback: (UIViewController) -> Void)
 }

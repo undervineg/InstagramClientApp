@@ -21,26 +21,14 @@ final class PushTransition: Transition {
     }
     
     func open(_ viewController: UIViewController) {
-        if let navigation = viewControllerBehind as? UINavigationController {
-            navigation.pushViewController(viewController, animated: animated)
-        } else {
-            viewControllerBehind?.navigationController?.pushViewController(viewController, animated: animated)
-        }
+        viewControllerBehind?.navigationController?.pushViewController(viewController, animated: animated)
     }
     
     func close() {
-        if let navigation = viewControllerBehind as? UINavigationController {
-            navigation.popViewController(animated: animated)
-        } else {
-            viewControllerBehind?.navigationController?.popViewController(animated: animated)
-        }
+        viewControllerBehind?.navigationController?.popViewController(animated: animated)
     }
     
     func close(to destVC: UIViewController) {
-        if let navigation = viewControllerBehind as? UINavigationController {
-            navigation.popToViewController(destVC, animated: animated)
-        } else {
-            viewControllerBehind?.navigationController?.popToViewController(destVC, animated: animated)
-        }
+        viewControllerBehind?.navigationController?.popToViewController(destVC, animated: animated)
     }
 }

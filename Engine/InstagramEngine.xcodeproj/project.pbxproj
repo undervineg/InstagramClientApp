@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		084FF5A221EB5359000EA933 /* LoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5A121EB5359000EA933 /* LoginUseCase.swift */; };
+		084FF5EF21EDC93F000EA933 /* LoadPhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5EE21EDC93F000EA933 /* LoadPhotoUseCase.swift */; };
+		084FF62421EF4644000EA933 /* SharePhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */; };
+		084FF62C21EF7CFB000EA933 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF62B21EF7CFB000EA933 /* Post.swift */; };
 		0858764F21DA70A700C32422 /* RegisterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858764E21DA70A700C32422 /* RegisterUseCase.swift */; };
-		0858765521DA73FA00C32422 /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858765421DA73FA00C32422 /* UserEntity.swift */; };
+		0858765521DA73FA00C32422 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858765421DA73FA00C32422 /* User.swift */; };
 		0858765A21DA74D000C32422 /* RegisterUserUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858765921DA74D000C32422 /* RegisterUserUseCaseTests.swift */; };
 		0884514E21DA6676008B8121 /* InstagramEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0884514421DA6676008B8121 /* InstagramEngine.framework */; };
 		08F9847521E17CF200DE6E78 /* UserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847421E17CF200DE6E78 /* UserProfileUseCase.swift */; };
@@ -31,8 +34,11 @@
 
 /* Begin PBXFileReference section */
 		084FF5A121EB5359000EA933 /* LoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUseCase.swift; sourceTree = "<group>"; };
+		084FF5EE21EDC93F000EA933 /* LoadPhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadPhotoUseCase.swift; sourceTree = "<group>"; };
+		084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoUseCase.swift; sourceTree = "<group>"; };
+		084FF62B21EF7CFB000EA933 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		0858764E21DA70A700C32422 /* RegisterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUseCase.swift; sourceTree = "<group>"; };
-		0858765421DA73FA00C32422 /* UserEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEntity.swift; sourceTree = "<group>"; };
+		0858765421DA73FA00C32422 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		0858765921DA74D000C32422 /* RegisterUserUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserUseCaseTests.swift; sourceTree = "<group>"; };
 		0884514421DA6676008B8121 /* InstagramEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = InstagramEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0884514821DA6676008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -67,7 +73,8 @@
 		0858765821DA741E00C32422 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				0858765421DA73FA00C32422 /* UserEntity.swift */,
+				0858765421DA73FA00C32422 /* User.swift */,
+				084FF62B21EF7CFB000EA933 /* Post.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -80,6 +87,8 @@
 				0858764E21DA70A700C32422 /* RegisterUseCase.swift */,
 				084FF5A121EB5359000EA933 /* LoginUseCase.swift */,
 				08F9847421E17CF200DE6E78 /* UserProfileUseCase.swift */,
+				084FF5EE21EDC93F000EA933 /* LoadPhotoUseCase.swift */,
+				084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -232,10 +241,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				084FF62421EF4644000EA933 /* SharePhotoUseCase.swift in Sources */,
 				08F9847521E17CF200DE6E78 /* UserProfileUseCase.swift in Sources */,
-				0858765521DA73FA00C32422 /* UserEntity.swift in Sources */,
+				084FF5EF21EDC93F000EA933 /* LoadPhotoUseCase.swift in Sources */,
+				0858765521DA73FA00C32422 /* User.swift in Sources */,
 				08F9848421E4B67500DE6E78 /* Result.swift in Sources */,
 				08F984C621E6816900DE6E78 /* AuthUseCase.swift in Sources */,
+				084FF62C21EF7CFB000EA933 /* Post.swift in Sources */,
 				0858764F21DA70A700C32422 /* RegisterUseCase.swift in Sources */,
 				084FF5A221EB5359000EA933 /* LoginUseCase.swift in Sources */,
 			);

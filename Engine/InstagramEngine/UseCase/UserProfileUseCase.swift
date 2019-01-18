@@ -9,18 +9,22 @@
 import Foundation
 
 public protocol UserProfileClient {
-    func loadCurrentUserInfo(_ completion: @escaping (Result<UserEntity, UserProfileUseCase.Error>) -> Void)
+    func loadCurrentUserInfo(_ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
     func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
     func logout(_ completion: @escaping (Error?) -> Void)
+    func fetchPost(_ completion: @escaping (Result<Post, UserProfileUseCase.Error>) -> Void)
+    func downloadPostImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
 }
 
 public protocol UserProfileUseCaseOutput {
-    func loadUserSucceeded(_ user: UserEntity)
+    func loadUserSucceeded(_ user: User)
     func loadUserFailed(_ error: UserProfileUseCase.Error)
-    func downloadProfileImageSucceeded(_ imageData: Data)
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error)
     func logoutSucceeded()
     func logoutFailed(_ error: UserProfileUseCase.Error)
+    func loadPostSucceeded(_ posts: Post)
+    func loadPostsFailed(_ error: UserProfileUseCase.Error)
+    func downloadPostImageFailed(_ error: UserProfileUseCase.Error)
 }
 
 final public class UserProfileUseCase {
@@ -38,6 +42,25 @@ final public class UserProfileUseCase {
         case currentUserNotExist
         case profileImageNotExist
         case logoutError
+        case postsNotExist
+        case postImageNotFound
+        
+        public var localizedDescription: String {
+            switch self {
+            case .currentUserIDNotExist:
+                return "사용자 계정이 없습니다."
+            case .currentUserNotExist:
+                return "사용자 정보가 없습니다."
+            case .profileImageNotExist:
+                return "프로필 이미지를 불러올 수 없습니다."
+            case .logoutError:
+                return "로그아웃 도중 문제가 발생했습니다."
+            case .postsNotExist:
+                return "사용자의 게시물이 존재하지 않습니다."
+            case .postImageNotFound:
+                return "일부 게시글의 이미지를 불러올 수 없습니다."
+            }
+        }
     }
     
     public func loadProfile() {
@@ -51,11 +74,11 @@ final public class UserProfileUseCase {
         }
     }
     
-    public func downloadProfileImage(from url: URL) {
+    public func downloadProfileImage(from url: URL, completion: @escaping (Data) -> Void) {
         client.downloadProfileImage(from: url) { [weak self] (result) in
             switch result {
             case .success(let data):
-                self?.output.downloadProfileImageSucceeded(data)
+                completion(data)
             case .failure(let error):
                 self?.output.downloadProfileImageFailed(error)
             }
@@ -68,6 +91,28 @@ final public class UserProfileUseCase {
                 self?.output.logoutFailed(.logoutError)
             }
             self?.output.logoutSucceeded()
+        }
+    }
+    
+    public func loadPosts() {
+        client.fetchPost { [weak self] (result) in
+            switch result {
+            case .success(let post):
+                self?.output.loadPostSucceeded(post)
+            case .failure(let error):
+                self?.output.loadPostsFailed(error)
+            }
+        }
+    }
+    
+    public func downloadPostImage(from url: URL, completion: @escaping (Data) -> Void) {
+        client.downloadPostImage(from: url) { [weak self] (result) in
+            switch result {
+            case .success(let data):
+                completion(data)
+            case .failure(let error):
+                self?.output.downloadPostImageFailed(error)
+            }
         }
     }
 }
