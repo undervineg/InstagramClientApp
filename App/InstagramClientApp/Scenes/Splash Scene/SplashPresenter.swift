@@ -10,7 +10,7 @@ import InstagramEngine
 
 protocol SplashView {
     func displayMain()
-    func displayRegister()
+    func displayLogin()
 }
 
 final class SplashPresenter: AuthUseCaseOutput {
@@ -26,7 +26,7 @@ final class SplashPresenter: AuthUseCaseOutput {
     }
     
     func authFailed() {
-        view.displayRegister()
+        view.displayLogin()
     }
 }
 
@@ -35,7 +35,7 @@ extension WeakRef: SplashView where T: SplashView {
         object?.displayMain()
     }
     
-    func displayRegister() {
-        object?.displayRegister()
+    func displayLogin() {
+        object?.displayLogin()
     }
 }
