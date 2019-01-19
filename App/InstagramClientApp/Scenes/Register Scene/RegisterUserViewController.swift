@@ -118,6 +118,9 @@ extension RegisterUserViewController {
         profileImageButton.layer.cornerRadius = profileImageButton.frame.width/2
         profileImageButton.layer.masksToBounds = true
         
+        profileImageButton.imageView?.contentMode = .scaleAspectFill
+        profileImageButton.imageView?.clipsToBounds = true
+        
         signUpButton.layer.cornerRadius = 5
         signUpButton.layer.masksToBounds = true
         signUpButton.enableButtonWithColor(false)
