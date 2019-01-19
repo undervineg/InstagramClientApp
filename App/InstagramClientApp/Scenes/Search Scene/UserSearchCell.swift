@@ -20,4 +20,9 @@ final class UserSearchCell: UICollectionViewCell {
         profileImageView.layer.masksToBounds = true
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+        usernameLabel.text = nil
+    }
 }

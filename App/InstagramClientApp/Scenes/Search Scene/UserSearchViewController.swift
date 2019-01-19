@@ -21,9 +21,12 @@ class UserSearchViewController: UICollectionViewController {
     private var users: [User] = []
     private var filteredUsers: [User] = []
     
-    convenience init() {
+    private var cacheManager: Cacheable?
+    
+    convenience init(cacheManager: Cacheable) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
+        self.cacheManager = cacheManager
     }
     
     override func viewDidLoad() {
@@ -62,6 +65,8 @@ class UserSearchViewController: UICollectionViewController {
         if users.count > 0 {
             let user = isFiltering() ? filteredUsers[indexPath.item] : users[indexPath.item]
             cell.usernameLabel.text = user.username
+            
+            cell.profileImageView.cacheManager = cacheManager
             cell.profileImageView.loadImage(from: user.profileImageUrl, using: downloadProfileImage)
         }
         

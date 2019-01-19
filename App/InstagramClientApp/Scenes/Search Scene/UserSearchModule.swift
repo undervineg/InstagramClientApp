@@ -21,7 +21,8 @@ final class UserSearchModule {
     }
     
     init() {
-        viewController = UserSearchViewController()
+        let cacheManager = CacheManager()
+        viewController = UserSearchViewController(cacheManager: cacheManager)
         service = UserProfileService(firebaseAuth: Auth.self,
                                      firebaseDatabase: Database.self,
                                      networking: URLSession.shared)

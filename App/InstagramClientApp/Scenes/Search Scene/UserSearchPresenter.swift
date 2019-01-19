@@ -27,6 +27,10 @@ final class UserSearchPresenter: SearchUseCaseOutput {
     func fetchAllUserFailed(_ error: Error) {
         view.displayError(error.localizedDescription)
     }
+    
+    func downloadProfileImageFailed(_ error: UserProfileUseCase.Error) {
+        view.displayError(error.localizedDescription)
+    }
 }
 
 extension WeakRef: SearchView where T: SearchView {
