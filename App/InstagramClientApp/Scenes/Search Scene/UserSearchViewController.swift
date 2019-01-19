@@ -16,6 +16,7 @@ class UserSearchViewController: UICollectionViewController {
     let searchController = UISearchController(searchResultsController: nil)
     
     var fetchAllUsers: (() -> Void)?
+    var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
     
     private var users: [User] = []
     
@@ -60,6 +61,7 @@ class UserSearchViewController: UICollectionViewController {
         if users.count > 0 {
             let user = users[indexPath.item]
             cell.usernameLabel.text = user.username
+            cell.profileImageView.loadImage(from: user.profileImageUrl, using: downloadProfileImage)
         }
         
         return cell

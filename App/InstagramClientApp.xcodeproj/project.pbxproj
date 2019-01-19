@@ -360,8 +360,8 @@
 		084FF60721EEF0C9000EA933 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				084FF60421EEF05E000EA933 /* Home Scene */,
 				084FF60521EEF073000EA933 /* Search Scene */,
+				084FF60421EEF05E000EA933 /* Home Scene */,
 				084FF61421EF07BB000EA933 /* Share Photo Scene */,
 				084FF60621EEF096000EA933 /* Photo Selector Scene */,
 				084FF60321EEF03B000EA933 /* User Profile Scene */,

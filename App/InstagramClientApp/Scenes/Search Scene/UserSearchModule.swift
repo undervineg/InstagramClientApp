@@ -29,5 +29,6 @@ final class UserSearchModule {
         useCase = SearchUseCase(client: service, output: presenter)
         
         viewController.fetchAllUsers = useCase.fetchAllUsers
+        viewController.downloadProfileImage = service.downloadProfileImage
     }
 }
