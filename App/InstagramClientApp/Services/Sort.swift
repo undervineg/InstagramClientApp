@@ -6,7 +6,7 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import InstagramEngine
 
 protocol HasKey {
     var key: String { get }
@@ -14,9 +14,4 @@ protocol HasKey {
 
 protocol Sortable {
     var sortBy: Sort { get }
-}
-
-enum Sort {
-    case ascending
-    case descending
 }

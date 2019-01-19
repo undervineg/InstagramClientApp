@@ -12,9 +12,11 @@ import InstagramEngine
 final class UserProfileModule {
     private let router: UserProfileRouter
     private let viewController: UserProfileViewController
-    private let service: UserProfileService
+    private let profileService: UserProfileService
+    private let postService: PostService
     private let presenter: UserProfilePresenter
-    private let useCase: UserProfileUseCase
+    private let profileUseCase: UserProfileUseCase
+    private let postUseCase: HomeFeedUseCase
     
     var withNavigation: UINavigationController {
         return UINavigationController(rootViewController: viewController)
@@ -23,19 +25,22 @@ final class UserProfileModule {
     init() {
         self.router = UserProfileRouter()
         viewController = UserProfileViewController(router: router)
-        service = UserProfileService(firebaseAuth: Auth.self,
+        profileService = UserProfileService(firebaseAuth: Auth.self,
                                      firebaseDatabase: Database.self,
-                                     firebaseStorage: Storage.self,
                                      networking: URLSession.shared)
+        postService = PostService(firebaseAuth: Auth.self,
+                                  firebaseDatabase: Database.self,
+                                  networking: URLSession.shared)
         presenter = UserProfilePresenter(view: WeakRef(viewController))
-        useCase = UserProfileUseCase(client: service, output: presenter)
+        profileUseCase = UserProfileUseCase(client: profileService, output: presenter)
+        postUseCase = HomeFeedUseCase(client: postService, output: presenter)
         
         router.viewControllerBehind = viewController
         
-        viewController.loadProfile = useCase.loadProfile
-        viewController.downloadProfileImage = useCase.downloadProfileImage
-        viewController.logout = useCase.logout
-        viewController.loadPosts = useCase.loadPosts
-        viewController.downloadPostImage = useCase.downloadPostImage
+        viewController.loadProfile = profileUseCase.loadProfile
+        viewController.downloadProfileImage = profileUseCase.downloadProfileImage
+        viewController.logout = profileUseCase.logout
+        viewController.loadPosts = postUseCase.loadPosts
+        viewController.downloadPostImage = postUseCase.downloadPostImage
     }
 }

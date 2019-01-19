@@ -18,8 +18,7 @@
 		084FF5C621EC16F0000EA933 /* SplashRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5C521EC16F0000EA933 /* SplashRouterTests.swift */; };
 		084FF5D421ED75E3000EA933 /* LoginRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5D321ED75E3000EA933 /* LoginRoute.swift */; };
 		084FF5D621ED75F4000EA933 /* RegisterRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5D521ED75F4000EA933 /* RegisterRoute.swift */; };
-		084FF5DE21EDAAFD000EA933 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5DC21EDAAFD000EA933 /* HomeViewController.swift */; };
-		084FF5DF21EDAAFD000EA933 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 084FF5DD21EDAAFD000EA933 /* HomeViewController.xib */; };
+		084FF5DE21EDAAFD000EA933 /* HomeFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5DC21EDAAFD000EA933 /* HomeFeedViewController.swift */; };
 		084FF5E221EDAC77000EA933 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5E021EDAC77000EA933 /* SearchViewController.swift */; };
 		084FF5E321EDAC77000EA933 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 084FF5E121EDAC77000EA933 /* SearchViewController.xib */; };
 		084FF5E521EDACF0000EA933 /* HomeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5E421EDACF0000EA933 /* HomeModule.swift */; };
@@ -47,6 +46,10 @@
 		0858766D21DB8C7600C32422 /* RegisterUserVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */; };
 		0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858767521DC5CC700C32422 /* RegisterUserViewController.swift */; };
 		0858767821DC5CC700C32422 /* RegisterUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0858767621DC5CC700C32422 /* RegisterUserViewController.xib */; };
+		085E525D21F176C60029C7BE /* HomeFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E525B21F176C60029C7BE /* HomeFeedCell.swift */; };
+		085E525E21F176C60029C7BE /* HomeFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 085E525C21F176C60029C7BE /* HomeFeedCell.xib */; };
+		085E526221F2F31B0029C7BE /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E526121F2F31B0029C7BE /* PostService.swift */; };
+		085E526521F2F8C70029C7BE /* HomeFeedPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E526421F2F8C70029C7BE /* HomeFeedPresenter.swift */; };
 		085EED2321E6D4BD00A6D98E /* UserProfileVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085EED2221E6D4BD00A6D98E /* UserProfileVCTests.swift */; };
 		086E6C7821DC68B20094B808 /* InstagramEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086E6C7721DC68B20094B808 /* InstagramEngine.framework */; };
 		086E6C7921DC68B20094B808 /* InstagramEngine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 086E6C7721DC68B20094B808 /* InstagramEngine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -135,8 +138,7 @@
 		084FF5C521EC16F0000EA933 /* SplashRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashRouterTests.swift; sourceTree = "<group>"; };
 		084FF5D321ED75E3000EA933 /* LoginRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRoute.swift; sourceTree = "<group>"; };
 		084FF5D521ED75F4000EA933 /* RegisterRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRoute.swift; sourceTree = "<group>"; };
-		084FF5DC21EDAAFD000EA933 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		084FF5DD21EDAAFD000EA933 /* HomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		084FF5DC21EDAAFD000EA933 /* HomeFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedViewController.swift; sourceTree = "<group>"; };
 		084FF5E021EDAC77000EA933 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		084FF5E121EDAC77000EA933 /* SearchViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
 		084FF5E421EDACF0000EA933 /* HomeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModule.swift; sourceTree = "<group>"; };
@@ -164,6 +166,10 @@
 		0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserVCTests.swift; sourceTree = "<group>"; };
 		0858767521DC5CC700C32422 /* RegisterUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserViewController.swift; sourceTree = "<group>"; };
 		0858767621DC5CC700C32422 /* RegisterUserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterUserViewController.xib; sourceTree = "<group>"; };
+		085E525B21F176C60029C7BE /* HomeFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedCell.swift; sourceTree = "<group>"; };
+		085E525C21F176C60029C7BE /* HomeFeedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeFeedCell.xib; sourceTree = "<group>"; };
+		085E526121F2F31B0029C7BE /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
+		085E526421F2F8C70029C7BE /* HomeFeedPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedPresenter.swift; sourceTree = "<group>"; };
 		085EED2221E6D4BD00A6D98E /* UserProfileVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileVCTests.swift; sourceTree = "<group>"; };
 		086E6C7721DC68B20094B808 /* InstagramEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = InstagramEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		086E6C7B21DC6AC90094B808 /* RegisterUserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserServiceTests.swift; sourceTree = "<group>"; };
@@ -302,7 +308,6 @@
 				08F984B321E54A4700DE6E78 /* UserProfilePresenter.swift */,
 				084FF60A21EEF582000EA933 /* UserProfileRouter.swift */,
 				084FF5B521EB8FD0000EA933 /* UserProfileModule.swift */,
-				08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */,
 			);
 			path = "User Profile Scene";
 			sourceTree = "<group>";
@@ -310,8 +315,10 @@
 		084FF60421EEF05E000EA933 /* Home Scene */ = {
 			isa = PBXGroup;
 			children = (
-				084FF5DC21EDAAFD000EA933 /* HomeViewController.swift */,
-				084FF5DD21EDAAFD000EA933 /* HomeViewController.xib */,
+				085E526321F2F85C0029C7BE /* xib */,
+				085E525B21F176C60029C7BE /* HomeFeedCell.swift */,
+				084FF5DC21EDAAFD000EA933 /* HomeFeedViewController.swift */,
+				085E526421F2F8C70029C7BE /* HomeFeedPresenter.swift */,
 				084FF5E421EDACF0000EA933 /* HomeModule.swift */,
 			);
 			path = "Home Scene";
@@ -343,8 +350,8 @@
 		084FF60721EEF0C9000EA933 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				084FF60521EEF073000EA933 /* Search Scene */,
 				084FF60421EEF05E000EA933 /* Home Scene */,
+				084FF60521EEF073000EA933 /* Search Scene */,
 				084FF61421EF07BB000EA933 /* Share Photo Scene */,
 				084FF60621EEF096000EA933 /* Photo Selector Scene */,
 				084FF60321EEF03B000EA933 /* User Profile Scene */,
@@ -391,6 +398,14 @@
 			path = "Share Photo Scene";
 			sourceTree = "<group>";
 		};
+		085E526321F2F85C0029C7BE /* xib */ = {
+			isa = PBXGroup;
+			children = (
+				085E525C21F176C60029C7BE /* HomeFeedCell.xib */,
+			);
+			path = xib;
+			sourceTree = "<group>";
+		};
 		085EED1F21E6B82800A6D98E /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -407,6 +422,7 @@
 				08F9847821E4B1E100DE6E78 /* RegisterUserService.swift */,
 				084FF5A321EB54B7000EA933 /* LoginService.swift */,
 				08F984B721E54B6C00DE6E78 /* UserProfileService.swift */,
+				085E526121F2F31B0029C7BE /* PostService.swift */,
 				084FF5F221EDD0B7000EA933 /* PhotoService.swift */,
 				084FF62521EF4787000EA933 /* ShareService.swift */,
 				08962F2221F0F5AE00A3C5D3 /* Sort.swift */,
@@ -581,8 +597,9 @@
 		08F9849121E4D71400DE6E78 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				08F9849621E4EBE500DE6E78 /* WeakRef.swift */,
+				08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */,
 				084FF5F821EDD3DF000EA933 /* ErrorPresentable.swift */,
+				08F9849621E4EBE500DE6E78 /* WeakRef.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -699,8 +716,8 @@
 				08BF0C6F21E8BB27004CE846 /* LoginViewController.xib in Resources */,
 				08BF0C5821E854EB004CE846 /* UserProfileHeaderCell.xib in Resources */,
 				0858767821DC5CC700C32422 /* RegisterUserViewController.xib in Resources */,
-				084FF5DF21EDAAFD000EA933 /* HomeViewController.xib in Resources */,
 				084FF5E321EDAC77000EA933 /* SearchViewController.xib in Resources */,
+				085E525E21F176C60029C7BE /* HomeFeedCell.xib in Resources */,
 				0884512221DA665C008B8121 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -837,10 +854,11 @@
 				08BF0C5B21E85EDF004CE846 /* main.swift in Sources */,
 				0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */,
 				084FF61821EF16C8000EA933 /* LoginRouter.swift in Sources */,
+				085E526521F2F8C70029C7BE /* HomeFeedPresenter.swift in Sources */,
 				084FF5E221EDAC77000EA933 /* SearchViewController.swift in Sources */,
 				08F9847D21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift in Sources */,
 				084FF5F121EDCB76000EA933 /* PhotosWrapper.swift in Sources */,
-				084FF5DE21EDAAFD000EA933 /* HomeViewController.swift in Sources */,
+				084FF5DE21EDAAFD000EA933 /* HomeFeedViewController.swift in Sources */,
 				08BF0C6E21E8BB27004CE846 /* LoginViewController.swift in Sources */,
 				08F984AB21E53D2E00DE6E78 /* MainRoute.swift in Sources */,
 				084FF5A621EB5856000EA933 /* LoginPresenter.swift in Sources */,
@@ -857,8 +875,10 @@
 				084FF60B21EEF582000EA933 /* UserProfileRouter.swift in Sources */,
 				08962F2321F0F5AE00A3C5D3 /* Sort.swift in Sources */,
 				084FF62621EF4787000EA933 /* ShareService.swift in Sources */,
+				085E526221F2F31B0029C7BE /* PostService.swift in Sources */,
 				08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */,
 				088907A221F074C80045B145 /* UserProfilePhotoCell.swift in Sources */,
+				085E525D21F176C60029C7BE /* HomeFeedCell.swift in Sources */,
 				084FF5F321EDD0B7000EA933 /* PhotoService.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseStorageWrapper.swift in Sources */,
 				0889079F21F05C500045B145 /* Reference.swift in Sources */,

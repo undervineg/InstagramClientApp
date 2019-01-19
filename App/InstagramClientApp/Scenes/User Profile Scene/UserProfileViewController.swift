@@ -15,7 +15,7 @@ private let cellId = "cellId"
 final class UserProfileViewController: UICollectionViewController {
     // MARK: Commands
     var loadProfile: (() -> Void)?
-    var loadPosts: (() -> Void)?
+    var loadPosts: ((HomeFeedUseCase.Order) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var logout: (() -> Void)?
@@ -44,7 +44,7 @@ final class UserProfileViewController: UICollectionViewController {
         registerCollectionViewCells()
         
         loadProfile?()
-        loadPosts?()
+        loadPosts?(.creationDate(.ascending))
     }
 
     // MARK: Actions
@@ -76,7 +76,7 @@ final class UserProfileViewController: UICollectionViewController {
         header.usernameLabel.text = currentUser?.username
         
         if let urlString = currentUser?.profileImageUrl {
-            header.profileImageView.loadImage(from: urlString, with: downloadProfileImage)
+            header.profileImageView.loadImage(from: urlString, using: downloadProfileImage)
         }
         
         return header
@@ -87,7 +87,7 @@ final class UserProfileViewController: UICollectionViewController {
         
         if userPosts.count > 0 {
             if let urlString = userPosts[indexPath.item].imageUrl {
-                cell.imageView.loadImage(from: urlString, with: downloadPostImage)
+                cell.imageView.loadImage(from: urlString, using: downloadPostImage)
             }
         }
 
@@ -117,7 +117,7 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension UserProfileViewController: UserProfileView {
+extension UserProfileViewController: UserProfileView, PostView {
     
     // MARK: User Profile View
     func onLogoutSucceeded() {

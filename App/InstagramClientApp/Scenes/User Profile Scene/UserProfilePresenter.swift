@@ -11,14 +11,17 @@ import Foundation
 
 protocol UserProfileView: ErrorPresentable {
     func displayUserInfo(_ user: User)
-    func displayPost(_ post: Post)
     func onLogoutSucceeded()
 }
 
-final class UserProfilePresenter: UserProfileUseCaseOutput {
-    private let view: UserProfileView
+protocol PostView: ErrorPresentable {
+    func displayPost(_ post: Post)
+}
+
+final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
+    private let view: UserProfileView & PostView
     
-    init(view: UserProfileView) {
+    init(view: UserProfileView & PostView) {
         self.view = view
     }
     
@@ -46,11 +49,11 @@ final class UserProfilePresenter: UserProfileUseCaseOutput {
         view.displayPost(post)
     }
     
-    func loadPostsFailed(_ error: UserProfileUseCase.Error) {
+    func loadPostsFailed(_ error: HomeFeedUseCase.Error) {
         view.displayError(error.localizedDescription)
     }
     
-    func downloadPostImageFailed(_ error: UserProfileUseCase.Error) {
+    func downloadPostImageFailed(_ error: HomeFeedUseCase.Error) {
         view.displayError(error.localizedDescription)
     }
 }
@@ -60,11 +63,13 @@ extension WeakRef: UserProfileView where T: UserProfileView {
         object?.displayUserInfo(user)
     }
     
-    func displayPost(_ post: Post) {
-        object?.displayPost(post)
-    }
-    
     func onLogoutSucceeded() {
         object?.onLogoutSucceeded()
+    }
+}
+
+extension WeakRef: PostView where T: PostView {
+    func displayPost(_ post: Post) {
+        object?.displayPost(post)
     }
 }
