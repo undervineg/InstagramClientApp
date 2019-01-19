@@ -9,13 +9,13 @@
 import UIKit
 
 final class SearchModule {
-    private let viewController: SearchViewController
+    private let viewController: UserSearchViewController
     
     var withNavigation: UINavigationController {
         return UINavigationController(rootViewController: viewController)
     }
     
     init() {
-        viewController = SearchViewController()
+        viewController = UserSearchViewController()
     }
 }
