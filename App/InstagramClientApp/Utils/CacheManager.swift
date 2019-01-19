@@ -9,6 +9,11 @@
 import Foundation
 import InstagramEngine
 
+protocol Cacheable {
+    func cache(_ data: Data, with key: String)
+    func getCachedData(key: String) -> Data?
+}
+
 final class CacheManager: Cacheable {
     private var dataCache = [String: Data]()
     
