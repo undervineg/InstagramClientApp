@@ -15,7 +15,7 @@ class UserSearchViewController: UICollectionViewController {
 
     let searchController = UISearchController(searchResultsController: nil)
     
-    var fetchAllUsers: (() -> Void)?
+    var fetchAllUsers: ((Bool) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
     
     private var users: [User] = []
@@ -45,7 +45,7 @@ class UserSearchViewController: UICollectionViewController {
         let nib = UserSearchCell.nibFromClassName()
         self.collectionView.register(nib, forCellWithReuseIdentifier: cellId)
         
-        fetchAllUsers?()
+        fetchAllUsers?(true)
     }
 
     // MARK: UICollectionViewDataSource

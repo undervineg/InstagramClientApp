@@ -65,13 +65,16 @@ final class UserProfileService: UserProfileClient {
         }
     }
     
-    func fetchAllUsers(_ completion: @escaping (Result<[User], Error>) -> Void) {
+    func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void) {
         let refs: [Reference] = [.directory(Keys.Database.usersDir)]
         
-        database.fetchAll(under: refs) { (result) in
+        database.fetchAll(under: refs) { [weak self] (result) in
             switch result {
             case .success(let values):
                 let users = values.compactMap({ (uid, uinfo) -> User? in
+                    if shouldOmitCurrentUser, uid == self?.auth.currentUserId {
+                        return nil
+                    }
                     guard let uinfo = uinfo as? [String: Any] else { return nil }
                     let email = uinfo[Keys.Database.Profile.email] as? String ?? ""
                     let username = uinfo[Keys.Database.Profile.username] as? String ?? ""

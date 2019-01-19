@@ -13,7 +13,7 @@ public protocol UserProfileClient {
     func loadUserInfo(of uid: String, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
     func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
     func logout(_ completion: @escaping (Error?) -> Void)
-    func fetchAllUsers(_ completion: @escaping (Result<[User], Error>) -> Void)
+    func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void)
 }
 
 public protocol UserProfileUseCaseOutput {

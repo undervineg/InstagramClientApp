@@ -22,8 +22,8 @@ final public class SearchUseCase {
         self.output = output
     }
     
-    public func fetchAllUsers() {
-        client.fetchAllUsers { [weak self] (result) in
+    public func fetchAllUsers(shouldOmitCurrentUser: Bool) {
+        client.fetchAllUsers(shouldOmitCurrentUser: shouldOmitCurrentUser) { [weak self] (result) in
             switch result {
             case .success(let users):
                 self?.output.fetchAllUserSucceeded(users)
