@@ -7,15 +7,28 @@
 //
 
 import UIKit
+import Firebase
+import InstagramEngine
 
 final class HomeModule {
-    private let viewController: HomeViewController
+    let viewController: HomeFeedViewController
+    private let service: PostService
+    private let presenter: HomeFeedPresenter
+    private let useCase: HomeFeedUseCase
     
     var withNavigation: UINavigationController {
         return UINavigationController(rootViewController: viewController)
     }
     
     init() {
-        viewController = HomeViewController()
+        viewController = HomeFeedViewController()
+        service = PostService(firebaseAuth: Auth.self,
+                              firebaseDatabase: Database.self,
+                              networking: URLSession.shared)
+        presenter = HomeFeedPresenter(view: viewController)
+        useCase = HomeFeedUseCase(client: service, output: presenter)
+        
+        viewController.loadAllPosts = useCase.loadAllPosts
+        viewController.downloadPostImage = useCase.downloadPostImage
     }
 }
