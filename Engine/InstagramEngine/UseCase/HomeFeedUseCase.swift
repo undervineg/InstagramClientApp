@@ -48,14 +48,14 @@ final public class HomeFeedUseCase {
     }
     
     public enum Error: Swift.Error {
-        case currentUserIDNotExist
+        case userIDNotExist
         case postsNotExist
         case postImageNotFound
         
         public var localizedDescription: String {
             switch self {
-            case .currentUserIDNotExist:
-                return "사용자 계정이 없습니다."
+            case .userIDNotExist:
+                return "일부 사용자 계정을 찾을 수 없습니다."
             case .postsNotExist:
                 return "사용자의 게시물이 존재하지 않습니다."
             case .postImageNotFound:
