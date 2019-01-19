@@ -57,6 +57,7 @@
             <size key="customSize" width="345" height="98"/>
             <connections>
                 <outlet property="profileImageView" destination="vUT-R4-fab" id="dcI-7x-6d4"/>
+                <outlet property="usernameLabel" destination="PBu-ck-Vv7" id="sew-AI-qOG"/>
             </connections>
             <point key="canvasLocation" x="373.60000000000002" y="174.51274362818592"/>
         </collectionViewCell>

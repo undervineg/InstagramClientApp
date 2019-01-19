@@ -11,6 +11,7 @@ import UIKit
 final class UserSearchCell: UICollectionViewCell {
 
     @IBOutlet weak var profileImageView: LoadableImageView!
+    @IBOutlet weak var usernameLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

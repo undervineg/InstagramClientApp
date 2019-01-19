@@ -39,7 +39,7 @@ extension UITabBarController {
     
     func setupChildViewControllers() {
         let homeVC = HomeModule().withNavigation
-        let searchVC = SearchModule().withNavigation
+        let searchVC = UserSearchModule().withNavigation
         let photoVC = PhotoSelectorModule().withNavigation
         let likeVC = UIViewController()
         let profileVC = UserProfileModule().withNavigation

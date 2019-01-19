@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import InstagramEngine
 
 private let cellId = "cellId"
 
 class UserSearchViewController: UICollectionViewController {
 
     let searchController = UISearchController(searchResultsController: nil)
+    
+    var fetchAllUsers: (() -> Void)?
+    
+    private var users: [User] = []
     
     convenience init() {
         let layout = UICollectionViewFlowLayout()
@@ -34,6 +39,8 @@ class UserSearchViewController: UICollectionViewController {
 
         let nib = UserSearchCell.nibFromClassName()
         self.collectionView.register(nib, forCellWithReuseIdentifier: cellId)
+        
+        fetchAllUsers?()
     }
 
     // MARK: UICollectionViewDataSource
@@ -44,12 +51,17 @@ class UserSearchViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return users.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserSearchCell
     
+        if users.count > 0 {
+            let user = users[indexPath.item]
+            cell.usernameLabel.text = user.username
+        }
+        
         return cell
     }
 
@@ -68,5 +80,12 @@ extension UserSearchViewController: UICollectionViewDelegateFlowLayout {
 extension UserSearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         
+    }
+}
+
+extension UserSearchViewController: SearchView {
+    func displayAllUsers(_ users: [User]) {
+        self.users = users
+        collectionView.reloadData()
     }
 }

@@ -20,7 +20,7 @@
 		084FF5D621ED75F4000EA933 /* RegisterRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5D521ED75F4000EA933 /* RegisterRoute.swift */; };
 		084FF5DE21EDAAFD000EA933 /* HomeFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5DC21EDAAFD000EA933 /* HomeFeedViewController.swift */; };
 		084FF5E521EDACF0000EA933 /* HomeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5E421EDACF0000EA933 /* HomeModule.swift */; };
-		084FF5E721EDAD26000EA933 /* SearchModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5E621EDAD26000EA933 /* SearchModule.swift */; };
+		084FF5E721EDAD26000EA933 /* UserSearchModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5E621EDAD26000EA933 /* UserSearchModule.swift */; };
 		084FF5E921EDB61D000EA933 /* PhotoSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5E821EDB61D000EA933 /* PhotoSelectorViewController.swift */; };
 		084FF5EB21EDB822000EA933 /* PhotoSelectorRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5EA21EDB822000EA933 /* PhotoSelectorRoute.swift */; };
 		084FF5ED21EDB936000EA933 /* PhotoSelectorModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5EC21EDB936000EA933 /* PhotoSelectorModule.swift */; };
@@ -53,6 +53,7 @@
 		085E526E21F396490029C7BE /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E526D21F396490029C7BE /* UserSearchViewController.swift */; };
 		085E527321F3A1030029C7BE /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E527121F3A1030029C7BE /* UserSearchCell.swift */; };
 		085E527421F3A1030029C7BE /* UserSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 085E527221F3A1030029C7BE /* UserSearchCell.xib */; };
+		085E527A21F3A82D0029C7BE /* UserSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E527921F3A82D0029C7BE /* UserSearchPresenter.swift */; };
 		085EED2321E6D4BD00A6D98E /* UserProfileVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085EED2221E6D4BD00A6D98E /* UserProfileVCTests.swift */; };
 		086E6C7821DC68B20094B808 /* InstagramEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086E6C7721DC68B20094B808 /* InstagramEngine.framework */; };
 		086E6C7921DC68B20094B808 /* InstagramEngine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 086E6C7721DC68B20094B808 /* InstagramEngine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -143,7 +144,7 @@
 		084FF5D521ED75F4000EA933 /* RegisterRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRoute.swift; sourceTree = "<group>"; };
 		084FF5DC21EDAAFD000EA933 /* HomeFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedViewController.swift; sourceTree = "<group>"; };
 		084FF5E421EDACF0000EA933 /* HomeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModule.swift; sourceTree = "<group>"; };
-		084FF5E621EDAD26000EA933 /* SearchModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModule.swift; sourceTree = "<group>"; };
+		084FF5E621EDAD26000EA933 /* UserSearchModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchModule.swift; sourceTree = "<group>"; };
 		084FF5E821EDB61D000EA933 /* PhotoSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorViewController.swift; sourceTree = "<group>"; };
 		084FF5EA21EDB822000EA933 /* PhotoSelectorRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorRoute.swift; sourceTree = "<group>"; };
 		084FF5EC21EDB936000EA933 /* PhotoSelectorModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorModule.swift; sourceTree = "<group>"; };
@@ -176,6 +177,7 @@
 		085E526D21F396490029C7BE /* UserSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchViewController.swift; sourceTree = "<group>"; };
 		085E527121F3A1030029C7BE /* UserSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 		085E527221F3A1030029C7BE /* UserSearchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserSearchCell.xib; sourceTree = "<group>"; };
+		085E527921F3A82D0029C7BE /* UserSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchPresenter.swift; sourceTree = "<group>"; };
 		085EED2221E6D4BD00A6D98E /* UserProfileVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileVCTests.swift; sourceTree = "<group>"; };
 		086E6C7721DC68B20094B808 /* InstagramEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = InstagramEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		086E6C7B21DC6AC90094B808 /* RegisterUserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserServiceTests.swift; sourceTree = "<group>"; };
@@ -336,7 +338,8 @@
 				085E527121F3A1030029C7BE /* UserSearchCell.swift */,
 				085E527221F3A1030029C7BE /* UserSearchCell.xib */,
 				085E526D21F396490029C7BE /* UserSearchViewController.swift */,
-				084FF5E621EDAD26000EA933 /* SearchModule.swift */,
+				085E527921F3A82D0029C7BE /* UserSearchPresenter.swift */,
+				084FF5E621EDAD26000EA933 /* UserSearchModule.swift */,
 			);
 			path = "Search Scene";
 			sourceTree = "<group>";
@@ -852,7 +855,7 @@
 				08BF0C6821E8652F004CE846 /* UserProfileViewController.swift in Sources */,
 				084FF5AE21EB87C9000EA933 /* LoginModule.swift in Sources */,
 				084FF61A21EF170B000EA933 /* RegisterRouter.swift in Sources */,
-				084FF5E721EDAD26000EA933 /* SearchModule.swift in Sources */,
+				084FF5E721EDAD26000EA933 /* UserSearchModule.swift in Sources */,
 				08F984C221E5E5F000DE6E78 /* MainRouter.swift in Sources */,
 				084FF60921EEF472000EA933 /* SharePhotoViewController.swift in Sources */,
 				08F984CA21E6878E00DE6E78 /* AuthService.swift in Sources */,
@@ -875,6 +878,7 @@
 				084FF5B021EB8A32000EA933 /* SplashModule.swift in Sources */,
 				08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */,
 				08F984D021E691B100DE6E78 /* SplashPresenter.swift in Sources */,
+				085E527A21F3A82D0029C7BE /* UserSearchPresenter.swift in Sources */,
 				084FF5B621EB8FD0000EA933 /* UserProfileModule.swift in Sources */,
 				085E526A21F35DC40029C7BE /* CacheManager.swift in Sources */,
 				084FF5B421EB8EB7000EA933 /* RegisterModule.swift in Sources */,

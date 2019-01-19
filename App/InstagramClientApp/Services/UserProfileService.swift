@@ -10,7 +10,6 @@ import InstagramEngine
 import Foundation
 
 final class UserProfileService: UserProfileClient {
-    
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let networking: APIClient
@@ -65,4 +64,26 @@ final class UserProfileService: UserProfileClient {
             }
         }
     }
+    
+    func fetchAllUsers(_ completion: @escaping (Result<[User], Error>) -> Void) {
+        let refs: [Reference] = [.directory(Keys.Database.usersDir)]
+        
+        database.fetchAll(under: refs) { (result) in
+            switch result {
+            case .success(let values):
+                let users = values.compactMap({ (uid, uinfo) -> User? in
+                    guard let uinfo = uinfo as? [String: Any] else { return nil }
+                    let email = uinfo[Keys.Database.Profile.email] as? String ?? ""
+                    let username = uinfo[Keys.Database.Profile.username] as? String ?? ""
+                    let profileImageUrl = uinfo[Keys.Database.Profile.image] as? String ?? ""
+
+                    return User(id: uid, email: email, username: username, profileImageUrl: profileImageUrl)
+                })
+                completion(.success(users))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
 }
