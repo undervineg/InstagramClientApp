@@ -35,7 +35,7 @@ final class PostService: LoadPostClient {
         fetchPost(of: uid, completion)
     }
     
-    func fetchPost(with order: HomeFeedUseCase.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
+    func fetchPost(with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
         guard let uid = auth.currentUserId else {
             completion(.failure(.userIDNotExist))
             return
@@ -57,7 +57,7 @@ final class PostService: LoadPostClient {
     
     
     // MARK: Private Methods
-    private func fetchPost(of uid: String, with order: HomeFeedUseCase.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
+    private func fetchPost(of uid: String, with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
         
         database.fetch(under: refs, orderBy: order) { [weak self] (result) in
@@ -103,7 +103,7 @@ final class PostService: LoadPostClient {
     }
 }
 
-extension HomeFeedUseCase.Order: HasKey, Sortable {
+extension Post.Order: HasKey, Sortable {
     var sortBy: Sort {
         switch self {
         case .creationDate(let sort): return sort

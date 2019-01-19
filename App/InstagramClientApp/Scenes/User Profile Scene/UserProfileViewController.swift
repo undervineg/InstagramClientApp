@@ -15,7 +15,7 @@ private let cellId = "cellId"
 final class UserProfileViewController: UICollectionViewController {
     // MARK: Commands
     var loadProfile: (() -> Void)?
-    var loadPosts: ((HomeFeedUseCase.Order) -> Void)?
+    var loadPosts: ((Post.Order) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var logout: (() -> Void)?

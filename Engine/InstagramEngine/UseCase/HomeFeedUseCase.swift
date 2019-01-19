@@ -10,7 +10,7 @@ import Foundation
 
 public protocol LoadPostClient {
     func fetchPost(_ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
-    func fetchPost(with order: HomeFeedUseCase.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
+    func fetchPost(with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
     func downloadPostImage(from url: URL, completion: @escaping (Result<Data, HomeFeedUseCase.Error>) -> Void)
 }
 
@@ -33,11 +33,6 @@ final public class HomeFeedUseCase {
     public init(client: LoadPostClient, output: LoadPostOutput) {
         self.client = client
         self.output = output
-    }
-    
-    public enum Order {
-        case creationDate(Sort)
-        case caption(Sort)
     }
     
     public enum Error: Swift.Error {
@@ -68,7 +63,7 @@ final public class HomeFeedUseCase {
         }
     }
     
-    public func loadPosts(orderBy order: Order) {
+    public func loadPosts(orderBy order: Post.Order) {
         client.fetchPost(with: order) { [weak self] (result) in
             switch result {
             case .success(let post):

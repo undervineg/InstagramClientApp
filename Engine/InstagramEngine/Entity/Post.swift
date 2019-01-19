@@ -24,4 +24,9 @@ public struct Post {
         self.imageHeight = imageHeight
         self.creationDate = creationDate
     }
+    
+    public enum Order {
+        case caption(Sort)
+        case creationDate(Sort)
+    }
 }

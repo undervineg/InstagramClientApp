@@ -34,6 +34,11 @@ final public class UserProfileUseCase {
         self.output = output
     }
     
+    public enum Order {
+        case username(Sort)
+        case caption(Sort)
+    }
+    
     public enum Error: Swift.Error {
         case currentUserIDNotExist
         case currentUserNotExist

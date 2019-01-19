@@ -20,4 +20,9 @@ public struct User: Equatable {
         self.username = username
         self.profileImageUrl = profileImageUrl
     }
+    
+    public enum Order {
+        case email(Sort)
+        case username(Sort)
+    }
 }
