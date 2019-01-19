@@ -14,6 +14,7 @@ final class UserProfileModule {
     private let viewController: UserProfileViewController
     private let profileService: UserProfileService
     private let postService: PostService
+    private let cacheManager: CacheManager
     private let presenter: UserProfilePresenter
     private let profileUseCase: UserProfileUseCase
     private let postUseCase: HomeFeedUseCase
@@ -31,9 +32,10 @@ final class UserProfileModule {
         postService = PostService(firebaseAuth: Auth.self,
                                   firebaseDatabase: Database.self,
                                   networking: URLSession.shared)
+        cacheManager = CacheManager()
         presenter = UserProfilePresenter(view: WeakRef(viewController))
         profileUseCase = UserProfileUseCase(client: profileService, output: presenter)
-        postUseCase = HomeFeedUseCase(client: postService, output: presenter)
+        postUseCase = HomeFeedUseCase(client: postService, output: presenter, cacheManager: cacheManager)
         
         router.viewControllerBehind = viewController
         

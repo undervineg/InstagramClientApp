@@ -8,6 +8,11 @@
 
 import Foundation
 
+public protocol Cacheable {
+    func cache(_ data: Data, with key: String)
+    func getCachedData(key: String) -> Data?
+}
+
 public protocol LoadPostClient {
     func fetchPost(_ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
     func fetchPost(with order: HomeFeedUseCase.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
@@ -31,14 +36,7 @@ final public class HomeFeedUseCase {
     private let output: LoadPostOutput
     private let cacheManager: Cacheable
     
-    public init(client: LoadPostClient, output: LoadPostOutput) {
-        self.client = client
-        self.output = output
-        self.cacheManager = CacheManager()
-    }
-    
-    // for test
-    init(client: LoadPostClient, output: LoadPostOutput, cacheManager: Cacheable) {
+    public init(client: LoadPostClient, output: LoadPostOutput, cacheManager: Cacheable) {
         self.client = client
         self.output = output
         self.cacheManager = cacheManager
