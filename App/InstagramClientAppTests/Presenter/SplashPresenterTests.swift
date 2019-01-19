@@ -42,7 +42,7 @@ class SplashPresenterTests: XCTestCase {
             isMainDisplayed = true
         }
         
-        func displayRegister() {
+        func displayLogin() {
             isRegisterDisplayed = true
         }
     }

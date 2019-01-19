@@ -36,7 +36,7 @@ class SplashViewControllerTests: XCTestCase {
     func test_displayMainScreenIsCalled_routesRegisterPage() {
         let (sut, router) = makeSUT()
         
-        sut.displayRegister()
+        sut.displayLogin()
         
         XCTAssertEqual(router.isMainOpened, false)
         XCTAssertEqual(router.isAuthOpened, true)
