@@ -62,7 +62,11 @@ final class HomeFeedViewController: UICollectionViewController {
 
 extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.height)
+        var height: CGFloat = 40 + 8 + 8 // username
+        height += view.frame.width       // image
+        height += 50                     // buttons
+        height += 60                    // caption
+        return CGSize(width: view.frame.width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
