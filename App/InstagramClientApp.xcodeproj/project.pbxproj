@@ -425,7 +425,6 @@
 				085E526121F2F31B0029C7BE /* PostService.swift */,
 				084FF5F221EDD0B7000EA933 /* PhotoService.swift */,
 				084FF62521EF4787000EA933 /* ShareService.swift */,
-				08962F2221F0F5AE00A3C5D3 /* Sort.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -597,6 +596,7 @@
 		08F9849121E4D71400DE6E78 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				08962F2221F0F5AE00A3C5D3 /* Sort.swift */,
 				08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */,
 				084FF5F821EDD3DF000EA933 /* ErrorPresentable.swift */,
 				08F9849621E4EBE500DE6E78 /* WeakRef.swift */,
