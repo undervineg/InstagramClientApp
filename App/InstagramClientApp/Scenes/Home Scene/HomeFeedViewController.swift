@@ -19,9 +19,12 @@ final class HomeFeedViewController: UICollectionViewController {
     
     private var posts: [Post] = []
     
-    convenience init() {
+    private var cacheManager: Cacheable?
+    
+    convenience init(cacheManager: Cacheable) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
+        self.cacheManager = cacheManager
     }
     
     override func viewDidLoad() {
@@ -54,9 +57,11 @@ final class HomeFeedViewController: UICollectionViewController {
             cell.usernameLabel.text = post.user.username
             
             let profileImageUrlString = post.user.profileImageUrl
+            cell.profileImageView.cacheManager = self.cacheManager
             cell.profileImageView.loadImage(from: profileImageUrlString, using: downloadProfileImage)
             
             let imageUrlString = post.imageUrl
+            cell.postImageView.cacheManager = self.cacheManager
             cell.postImageView.loadImage(from: imageUrlString, using: downloadPostImage)
             
             let datePassed = ""
@@ -75,7 +80,7 @@ extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
         var height: CGFloat = 40 + 8 + 8 // username
         height += view.frame.width       // image
         height += 50                     // buttons
-        height += 60                    // caption
+        height += 60                     // caption
         return CGSize(width: view.frame.width, height: height)
     }
     

@@ -34,12 +34,10 @@ final public class HomeFeedUseCase {
     
     private let client: LoadPostClient
     private let output: LoadPostOutput
-    private let cacheManager: Cacheable
     
-    public init(client: LoadPostClient, output: LoadPostOutput, cacheManager: Cacheable) {
+    public init(client: LoadPostClient, output: LoadPostOutput) {
         self.client = client
         self.output = output
-        self.cacheManager = cacheManager
     }
     
     public enum Order {
@@ -87,14 +85,9 @@ final public class HomeFeedUseCase {
     }
     
     public func downloadPostImage(from url: URL, completion: @escaping (Data) -> Void) {
-        if let cachedData = cacheManager.getCachedData(key: url.absoluteString) {
-            completion(cachedData)
-            return
-        }
         client.downloadPostImage(from: url) { [weak self] (result) in
             switch result {
             case .success(let data):
-                self?.cacheManager.cache(data, with: url.absoluteString)
                 completion(data)
             case .failure(let error):
                 self?.output.downloadPostImageFailed(error)

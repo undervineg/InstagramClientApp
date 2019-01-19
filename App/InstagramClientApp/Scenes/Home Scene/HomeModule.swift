@@ -14,7 +14,6 @@ final class HomeModule {
     let viewController: HomeFeedViewController
     private let service: PostService
     private let profileService: UserProfileService
-    private let cacheManager: CacheManager
     private let presenter: HomeFeedPresenter
     private let useCase: HomeFeedUseCase
     
@@ -23,7 +22,8 @@ final class HomeModule {
     }
     
     init() {
-        viewController = HomeFeedViewController()
+        let cacheManager = CacheManager()
+        viewController = HomeFeedViewController(cacheManager: cacheManager)
         profileService = UserProfileService(firebaseAuth: Auth.self,
                                             firebaseDatabase: Database.self,
                                             networking: URLSession.shared)
@@ -31,9 +31,8 @@ final class HomeModule {
                               firebaseDatabase: Database.self,
                               networking: URLSession.shared,
                               profileService: profileService)
-        cacheManager = CacheManager()
         presenter = HomeFeedPresenter(view: viewController)
-        useCase = HomeFeedUseCase(client: service, output: presenter, cacheManager: cacheManager)
+        useCase = HomeFeedUseCase(client: service, output: presenter)
         
         viewController.loadAllPosts = useCase.loadAllPosts
         viewController.downloadPostImage = useCase.downloadPostImage

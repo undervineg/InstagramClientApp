@@ -30,6 +30,12 @@ final class UserProfileHeaderCell: UICollectionViewCell {
         editProfileButton.layer.borderColor = UIColor.lightGray.cgColor
         editProfileButton.layer.borderWidth = 1
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+        usernameLabel.text = nil
+    }
 }
 
 extension UIView {

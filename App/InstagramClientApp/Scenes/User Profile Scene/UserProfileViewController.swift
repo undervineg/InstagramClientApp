@@ -27,11 +27,14 @@ final class UserProfileViewController: UICollectionViewController {
     private var currentUser: User?
     private var userPosts: [Post] = []
     
+    private var cacheManager: Cacheable?
+    
     // MARK: Initializer
-    convenience init(router: UserProfileRouter.Routes) {
+    convenience init(router: UserProfileRouter.Routes, cacheManager: Cacheable) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
         self.router = router
+        self.cacheManager = cacheManager
     }
     
     // MARK: Life Cycle
@@ -76,6 +79,7 @@ final class UserProfileViewController: UICollectionViewController {
         header.usernameLabel.text = currentUser?.username
         
         if let urlString = currentUser?.profileImageUrl {
+            header.profileImageView.cacheManager = self.cacheManager
             header.profileImageView.loadImage(from: urlString, using: downloadProfileImage)
         }
         
@@ -87,6 +91,7 @@ final class UserProfileViewController: UICollectionViewController {
         
         if userPosts.count > 0 {
             let urlString = userPosts[indexPath.item].imageUrl
+            cell.imageView.cacheManager = self.cacheManager
             cell.imageView.loadImage(from: urlString, using: downloadPostImage)
         }
 
