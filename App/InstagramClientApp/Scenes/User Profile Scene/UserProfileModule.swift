@@ -31,7 +31,8 @@ final class UserProfileModule {
                                      networking: URLSession.shared)
         postService = PostService(firebaseAuth: Auth.self,
                                   firebaseDatabase: Database.self,
-                                  networking: URLSession.shared)
+                                  networking: URLSession.shared,
+                                  profileService: profileService)
         cacheManager = CacheManager()
         presenter = UserProfilePresenter(view: WeakRef(viewController))
         profileUseCase = UserProfileUseCase(client: profileService, output: presenter)

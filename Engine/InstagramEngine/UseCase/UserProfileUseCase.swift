@@ -10,6 +10,7 @@ import Foundation
 
 public protocol UserProfileClient {
     func loadCurrentUserInfo(_ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
+    func loadUserInfo(of uid: String, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
     func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
     func logout(_ completion: @escaping (Error?) -> Void)
 }
