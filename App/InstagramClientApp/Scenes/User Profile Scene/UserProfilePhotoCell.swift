@@ -11,8 +11,8 @@ import InstagramEngine
 
 final class UserProfilePhotoCell: UICollectionViewCell {
     
-    let imageView: LodableImageView = {
-        let iv = LodableImageView()
+    let imageView: LoadableImageView = {
+        let iv = LoadableImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         return iv

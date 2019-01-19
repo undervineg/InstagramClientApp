@@ -11,7 +11,7 @@ import InstagramEngine
 
 final class UserProfileHeaderCell: UICollectionViewCell {
     
-    @IBOutlet weak var profileImageView: LodableImageView!
+    @IBOutlet weak var profileImageView: LoadableImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var postLabel: UILabel!
     @IBOutlet weak var followerLabel: UILabel!

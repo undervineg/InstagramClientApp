@@ -11,11 +11,11 @@ import UIKit
 protocol ImageLoadable: class {
     var lastUrlRequested: String? { get set }
     
-    func loadImage(from urlString: String, with downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?)
+    func loadImage(from urlString: String, using downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?)
 }
 
 extension ImageLoadable where Self: UIImageView {
-    func loadImage(from urlString: String, with downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?) {
+    func loadImage(from urlString: String, using downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?) {
         lastUrlRequested = urlString
         if let url = URL(string: urlString) {
             downloadPostImage?(url) { [weak self] imageData in
@@ -28,6 +28,6 @@ extension ImageLoadable where Self: UIImageView {
     }
 }
 
-final class LodableImageView: UIImageView, ImageLoadable {
+final class LoadableImageView: UIImageView, ImageLoadable {
     var lastUrlRequested: String?
 }
