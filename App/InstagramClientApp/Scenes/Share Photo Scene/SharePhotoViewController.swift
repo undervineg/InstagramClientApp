@@ -7,11 +7,10 @@
 //
 
 import UIKit
-import InstagramEngine
 
 class SharePhotoViewController: UIViewController {
     
-    var share: ((Data, Post) -> Void)?
+    var share: ((Data, String, Float, Float, Double) -> Void)?
     
     let shareImageView: UIImageView = {
         let iv = UIImageView()
@@ -66,14 +65,12 @@ class SharePhotoViewController: UIViewController {
         
         enableShareButton(false)
         
-        let post = Post(caption,
-                        nil,
-                        Float(image.size.width),
-                        Float(image.size.height),
-                        Date().timeIntervalSince1970)
+        let imageWidth = Float(image.size.width)
+        let imageHeight = Float(image.size.height)
+        let uploadDate = Date().timeIntervalSince1970
         
         indicatorView.startAnimating()
-        share?(imageData, post)
+        share?(imageData, caption, imageWidth, imageHeight, uploadDate)
     }
 }
 

@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol SharePhotoClient {
-    func share(data: Data, post: Post, completion: @escaping (Error?) -> Void)
+    func share(_ data: Data, _ caption: String, _ imageWidth: Float, _ imageHeight: Float, _ uploadDate: Double, completion: @escaping (Error?) -> Void)
 }
 
 public protocol SharePhotoUseCaseOutput {
@@ -26,8 +26,8 @@ final public class SharePhotoUseCase {
         self.output = output
     }
     
-    public func share(data: Data, post: Post) {
-        client.share(data: data, post: post) { [weak self] error in
+    public func share(_ data: Data, _ caption: String, _ imageWidth: Float, _ imageHeight: Float, _ uploadDate: Double) {
+        client.share(data, caption, imageWidth, imageHeight, uploadDate) { [weak self] (error) in
             if let error = error {
                 self?.output.shareFailed(error)
                 return
