@@ -19,6 +19,7 @@ class UserSearchViewController: UICollectionViewController {
     var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
     
     private var users: [User] = []
+    private var filteredUsers: [User] = []
     
     convenience init() {
         let layout = UICollectionViewFlowLayout()
@@ -52,14 +53,14 @@ class UserSearchViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return users.count
+        return isFiltering() ? filteredUsers.count : users.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserSearchCell
     
         if users.count > 0 {
-            let user = users[indexPath.item]
+            let user = isFiltering() ? filteredUsers[indexPath.item] : users[indexPath.item]
             cell.usernameLabel.text = user.username
             cell.profileImageView.loadImage(from: user.profileImageUrl, using: downloadProfileImage)
         }
@@ -81,7 +82,23 @@ extension UserSearchViewController: UICollectionViewDelegateFlowLayout {
 
 extension UserSearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        
+        guard let searchText = searchController.searchBar.text else { return }
+        filterContent(for: searchText)
+    }
+    
+    private func filterContent(for searchText: String) {
+        filteredUsers = users.filter { (user) -> Bool in
+            return user.username.lowercased().contains(searchText.lowercased())
+        }
+        collectionView.reloadData()
+    }
+    
+    private func isSearchBarEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    private func isFiltering() -> Bool {
+        return searchController.isActive && !isSearchBarEmpty()
     }
 }
 
