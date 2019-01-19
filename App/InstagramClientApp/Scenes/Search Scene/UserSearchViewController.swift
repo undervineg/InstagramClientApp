@@ -110,6 +110,9 @@ extension UserSearchViewController: UISearchResultsUpdating {
 extension UserSearchViewController: SearchView {
     func displayAllUsers(_ users: [User]) {
         self.users = users
+        self.users.sort { (u1, u2) -> Bool in
+            return u1.username.lowercased().compare(u2.username.lowercased()) == .orderedAscending
+        }
         collectionView.reloadData()
     }
 }
