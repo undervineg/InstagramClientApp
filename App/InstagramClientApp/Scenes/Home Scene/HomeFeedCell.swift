@@ -28,14 +28,16 @@ final class HomeFeedCell: UICollectionViewCell {
         
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
         profileImageView.layer.masksToBounds = true
-        
-        let attributedText = NSMutableAttributedString(string: "Username",
+    }
+    
+    func setAttributedCaptionLabel(username: String, caption: String, createdDate: String) {
+        let attributedText = NSMutableAttributedString(string: username,
                                                        attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: " Some caption text that will perhaps wrap onto the next line",
+        attributedText.append(NSAttributedString(string: " "+caption,
                                                  attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
         attributedText.append(NSAttributedString(string: "\n\n",
                                                  attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
-        attributedText.append(NSAttributedString(string: "1 week ago",
+        attributedText.append(NSAttributedString(string: createdDate,
                                                  attributes: [
                                                     NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
         

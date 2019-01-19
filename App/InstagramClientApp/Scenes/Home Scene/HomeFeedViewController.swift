@@ -58,13 +58,16 @@ final class HomeFeedViewController: UICollectionViewController {
             
             let imageUrlString = post.imageUrl
             cell.postImageView.loadImage(from: imageUrlString, using: downloadPostImage)
+            
+            let datePassed = ""
+            cell.setAttributedCaptionLabel(username: post.user.username,
+                                           caption: post.caption,
+                                           createdDate: datePassed)
         }
         
         return cell
     }
     
-    // Private Methods
-
 }
 
 extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
