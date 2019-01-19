@@ -86,9 +86,8 @@ final class UserProfileViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserProfilePhotoCell
         
         if userPosts.count > 0 {
-            if let urlString = userPosts[indexPath.item].imageUrl {
-                cell.imageView.loadImage(from: urlString, using: downloadPostImage)
-            }
+            let urlString = userPosts[indexPath.item].imageUrl
+            cell.imageView.loadImage(from: urlString, using: downloadPostImage)
         }
 
         return cell

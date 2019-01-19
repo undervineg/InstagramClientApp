@@ -9,13 +9,15 @@
 import Foundation
 
 public struct Post {
+    public let user: User
     public let caption: String
-    public let imageUrl: String?
+    public let imageUrl: String
     public let imageWidth: Float
     public let imageHeight: Float
     public let creationDate: Double
     
-    public init(_ caption: String, _ imageUrl: String?, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double) {
+    public init(_ user: User, _ caption: String, _ imageUrl: String, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double) {
+        self.user = user
         self.caption = caption
         self.imageUrl = imageUrl
         self.imageWidth = imageWidth
