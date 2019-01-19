@@ -15,6 +15,7 @@ final class HomeFeedViewController: UICollectionViewController {
 
     var loadAllPosts: (() -> Void)?
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
+    var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
     
     private var posts: [Post] = []
     
@@ -48,9 +49,15 @@ final class HomeFeedViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeFeedCell
         
         if posts.count > 0 {
-            if let imageUrlString = posts[indexPath.item].imageUrl {
-                cell.postImageView.loadImage(from: imageUrlString, using: downloadPostImage)
-            }
+            let post = posts[indexPath.item]
+            
+            cell.usernameLabel.text = post.user.username
+            
+            let profileImageUrlString = post.user.profileImageUrl
+            cell.profileImageView.loadImage(from: profileImageUrlString, using: downloadProfileImage)
+            
+            let imageUrlString = post.imageUrl
+            cell.postImageView.loadImage(from: imageUrlString, using: downloadPostImage)
         }
         
         return cell

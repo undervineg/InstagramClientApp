@@ -119,9 +119,11 @@
                 <outlet property="captionLabel" destination="WP9-fH-nyJ" id="r8f-5P-Mln"/>
                 <outlet property="commentButton" destination="V49-ng-zbv" id="9FY-9A-5xy"/>
                 <outlet property="likeButton" destination="8iI-iS-3gI" id="bci-GN-t9d"/>
+                <outlet property="optionsButton" destination="ICH-rb-ZMQ" id="3EY-g3-eXL"/>
                 <outlet property="postImageView" destination="ue5-H0-HMq" id="kfK-yQ-G23"/>
                 <outlet property="profileImageView" destination="ymp-MT-cTv" id="zi4-yC-3Ao"/>
                 <outlet property="sendMessageButton" destination="k4o-xg-A63" id="vjp-j7-Czw"/>
+                <outlet property="usernameLabel" destination="dHq-Yf-kmN" id="d7d-at-57S"/>
             </connections>
             <point key="canvasLocation" x="313.60000000000002" y="268.06596701649175"/>
         </collectionViewCell>

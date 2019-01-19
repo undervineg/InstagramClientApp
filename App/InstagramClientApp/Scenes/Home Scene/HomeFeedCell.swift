@@ -11,11 +11,16 @@ import UIKit
 final class HomeFeedCell: UICollectionViewCell {
     
     @IBOutlet weak var profileImageView: LoadableImageView!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var optionsButton: UIButton!
+    
     @IBOutlet weak var postImageView: LoadableImageView!
+    
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var sendMessageButton: UIButton!
     @IBOutlet weak var bookmarkButton: UIButton!
+    
     @IBOutlet weak var captionLabel: UILabel!
     
     override func awakeFromNib() {
