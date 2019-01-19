@@ -11,16 +11,6 @@ import Foundation
 
 final class UserProfileService: UserProfileClient {
     
-    struct Keys {
-        static let usersDir = "users"
-        
-        struct Profile {
-            static let email = "email"
-            static let username = "username"
-            static let image = "profileImageUrl"
-        }
-    }
-    
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let networking: APIClient
@@ -39,22 +29,7 @@ final class UserProfileService: UserProfileClient {
             return
         }
         
-        let refs: [Reference] = [.directory(Keys.usersDir), .directory(uid)]
-        
-        database.fetchAll(under: refs) { (result) in
-            switch result {
-            case .success(let values):
-                let email = values[Keys.Profile.email] as? String ?? ""
-                let username = values[Keys.Profile.username] as? String ?? ""
-                let profileImageUrl = values[Keys.Profile.image] as? String ?? ""
-                
-                let userInfo = User(id: uid, email: email, username: username, profileImageUrl: profileImageUrl)
-                
-                completion(.success(userInfo))
-            case .failure:
-                completion(.failure(.currentUserNotExist))
-            }
-        }
+        loadUserInfo(of: uid, completion)
     }
     
     func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) {
@@ -70,5 +45,24 @@ final class UserProfileService: UserProfileClient {
     
     func logout(_ completion: @escaping (Error?) -> Void) {
          auth.logout(completion)
+    }
+    
+    func loadUserInfo(of uid: String, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void) {
+        let refs: [Reference] = [.directory(Keys.Database.usersDir), .directory(uid)]
+        
+        database.fetchAll(under: refs) { (result) in
+            switch result {
+            case .success(let values):
+                let email = values[Keys.Database.Profile.email] as? String ?? ""
+                let username = values[Keys.Database.Profile.username] as? String ?? ""
+                let profileImageUrl = values[Keys.Database.Profile.image] as? String ?? ""
+                
+                let userInfo = User(id: uid, email: email, username: username, profileImageUrl: profileImageUrl)
+                
+                completion(.success(userInfo))
+            case .failure:
+                completion(.failure(.currentUserNotExist))
+            }
+        }
     }
 }

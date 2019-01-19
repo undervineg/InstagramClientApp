@@ -10,66 +10,55 @@ import Foundation
 import InstagramEngine
 
 final class PostService: LoadPostClient {
-
-    struct Keys {
-        static let postsDir = "posts"
-        
-        struct Post {
-            static let caption = "caption"
-            static let image = "imageUrl"
-            static let imageWidth = "imageWidth"
-            static let imageHeight = "imageHeight"
-            static let creationDate = "creationDate"
-        }
-    }
     
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let networking: APIClient
+    private let profileService: UserProfileService
     
     init(firebaseAuth: FirebaseAuthWrapper.Type,
          firebaseDatabase: FirebaseDatabaseWrapper.Type,
-         networking: APIClient) {
+         networking: APIClient,
+         profileService: UserProfileService) {
         self.auth = firebaseAuth
         self.database = firebaseDatabase
         self.networking = networking
+        self.profileService = profileService
     }
     
     func fetchPost(_ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
         guard let uid = auth.currentUserId else {
-            completion(.failure(.currentUserIDNotExist))
+            completion(.failure(.userIDNotExist))
             return
         }
         
-        let refs: [Reference] = [Reference.directory(Keys.postsDir), .directory(uid)]
+        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
         
-        database.fetchAll(under: refs) { (result) in
+        database.fetchAll(under: refs) { [weak self] (result) in
             switch result {
             case .success(let values):
                 values.forEach({ (key, value) in
                     guard let value = value as? [String: Any] else { return }
-                    let post = self.generatePost(value: value)
-                    completion(.success(post))
+                    self?.generatePost(of: uid, value: value, completion: completion)
                 })
-            default: break
+            default: return
             }
         }
     }
     
     func fetchPost(with order: HomeFeedUseCase.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
         guard let uid = auth.currentUserId else {
-            completion(.failure(.currentUserIDNotExist))
+            completion(.failure(.userIDNotExist))
             return
         }
         
-        let refs: [Reference] = [Reference.directory(Keys.postsDir), .directory(uid)]
+        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
         
-        database.fetch(under: refs, orderBy: order) { (result) in
+        database.fetch(under: refs, orderBy: order) { [weak self] (result) in
             switch result {
             case .success(let value):
-                let post = self.generatePost(value: value)
-                completion(.success(post))
-            default: break
+                self?.generatePost(of: uid, value: value, completion: completion)
+            default: return
             }
         }
     }
@@ -87,14 +76,22 @@ final class PostService: LoadPostClient {
     
     
     // MARK: Private Methods
-    private func generatePost(value: [String: Any]) -> Post {
-        let caption = value[Keys.Post.caption] as? String ?? ""
-        let imageUrl = value[Keys.Post.image] as? String ?? ""
-        let imageWidth = value[Keys.Post.imageWidth] as? Float ?? 0.0
-        let imageHeight = value[Keys.Post.imageHeight] as? Float ?? 0.0
-        let creationDate = value[Keys.Post.creationDate] as? Double ?? 0.0
-        
-        return Post(caption, imageUrl, imageWidth, imageHeight, creationDate)
+    private func generatePost(of uid: String, value: [String: Any], completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
+        profileService.loadUserInfo(of: uid) { (result) in
+            switch result {
+            case .success(let userInfo):
+                let caption = value[Keys.Database.Post.caption] as? String ?? ""
+                let imageUrl = value[Keys.Database.Post.image] as? String ?? ""
+                let imageWidth = value[Keys.Database.Post.imageWidth] as? Float ?? 0.0
+                let imageHeight = value[Keys.Database.Post.imageHeight] as? Float ?? 0.0
+                let creationDate = value[Keys.Database.Post.creationDate] as? Double ?? 0.0
+                
+                let post = Post(userInfo, caption, imageUrl, imageWidth, imageHeight, creationDate)
+                completion(.success(post))
+            case .failure:
+                completion(.failure(.userIDNotExist))
+            }
+        }
     }
 }
 
@@ -108,8 +105,8 @@ extension HomeFeedUseCase.Order: HasKey, Sortable {
     
     var key: String {
         switch self {
-        case .creationDate: return PostService.Keys.Post.creationDate
-        case .caption: return PostService.Keys.Post.caption
+        case .creationDate: return Keys.Database.Post.creationDate
+        case .caption: return Keys.Database.Post.caption
         }
     }
 }

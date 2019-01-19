@@ -11,17 +11,6 @@ import InstagramEngine
 
 final class RegisterUserService: RegisterUserClient {
     
-    struct Keys {
-        static let profileImagesDir = "profile_images"
-        static let usersDir = "users"
-        
-        struct Profile {
-            static let email = "email"
-            static let username = "username"
-            static let image = "profileImageUrl"
-        }
-    }
-    
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let storage: FirebaseStorageWrapper.Type
@@ -68,7 +57,7 @@ final class RegisterUserService: RegisterUserClient {
                                     _ completion: @escaping (Result<String, RegisterUserUseCase.Error>) -> Void) {
         let filename = UUID().uuidString
         let refs: [Reference] = [
-            .directory(Keys.profileImagesDir),
+            .directory(Keys.Storage.profileImagesDir),
             .directory(filename)
         ]
         
@@ -88,11 +77,11 @@ final class RegisterUserService: RegisterUserClient {
                           _ profileImageUrl: String,
                           _ completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
         
-        let userInfo = [Keys.Profile.email: email,
-                        Keys.Profile.username: username,
-                        Keys.Profile.image: profileImageUrl]
+        let userInfo = [Keys.Database.Profile.email: email,
+                        Keys.Database.Profile.username: username,
+                        Keys.Database.Profile.image: profileImageUrl]
         
-        let refs: [Reference] = [.directory(Keys.usersDir), .directory(userId)]
+        let refs: [Reference] = [.directory(Keys.Database.usersDir), .directory(userId)]
         
         database.update(userInfo, to: refs) { (error) in
             if error != nil {
