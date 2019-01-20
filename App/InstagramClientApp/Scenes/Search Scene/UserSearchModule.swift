@@ -11,6 +11,7 @@ import Firebase
 import InstagramEngine
 
 final class UserSearchModule {
+    let router: UserSearchRouter
     let viewController: UserSearchViewController
     private let service: UserProfileService
     private let presenter: UserSearchPresenter
@@ -21,13 +22,16 @@ final class UserSearchModule {
     }
     
     init() {
+        router = UserSearchRouter()
         let cacheManager = CacheManager()
-        viewController = UserSearchViewController(cacheManager: cacheManager)
+        viewController = UserSearchViewController(router: router, cacheManager: cacheManager)
         service = UserProfileService(firebaseAuth: Auth.self,
                                      firebaseDatabase: Database.self,
                                      networking: URLSession.shared)
         presenter = UserSearchPresenter(view: viewController)
         useCase = SearchUseCase(client: service, output: presenter)
+        
+        router.viewControllerBehind = viewController
         
         viewController.fetchAllUsers = useCase.fetchAllUsers
         viewController.downloadProfileImage = service.downloadProfileImage

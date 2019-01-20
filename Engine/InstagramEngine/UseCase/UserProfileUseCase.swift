@@ -59,14 +59,20 @@ final public class UserProfileUseCase {
         }
     }
     
-    public func loadProfile() {
-        client.loadCurrentUserInfo() { [weak self] result in
-            switch result {
-            case .success(let user):
-                self?.output.loadUserSucceeded(user)
-            case .failure(let error):
-                self?.output.loadUserFailed(error)
-            }
+    public func loadProfile(of uid: String?) {
+        if let uid = uid {
+            client.loadUserInfo(of: uid, handleLoadedResult)
+        } else {
+            client.loadCurrentUserInfo(handleLoadedResult)
+        }
+    }
+    
+    private func handleLoadedResult(_ result: Result<User, UserProfileUseCase.Error>) {
+        switch result {
+        case .success(let user):
+            output.loadUserSucceeded(user)
+        case .failure(let error):
+            output.loadUserFailed(error)
         }
     }
     

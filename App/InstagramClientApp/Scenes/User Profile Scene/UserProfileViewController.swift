@@ -13,9 +13,12 @@ private let headerId = "headerId"
 private let cellId = "cellId"
 
 final class UserProfileViewController: UICollectionViewController {
+    
+    var uid: String? = nil
+    
     // MARK: Commands
-    var loadProfile: (() -> Void)?
-    var loadPosts: ((Post.Order) -> Void)?
+    var loadProfile: ((String?) -> Void)?
+    var loadPosts: ((String?, Post.Order) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var logout: (() -> Void)?
@@ -24,7 +27,7 @@ final class UserProfileViewController: UICollectionViewController {
     private var router: UserProfileRouter.Routes?
     
     // MARK: Model
-    private var currentUser: User?
+    private var user: User?
     private var userPosts: [Post] = []
     
     private var cacheManager: Cacheable?
@@ -46,8 +49,7 @@ final class UserProfileViewController: UICollectionViewController {
         configureLogoutButton()
         registerCollectionViewCells()
         
-        loadProfile?()
-        loadPosts?(.creationDate(.ascending))
+        loadProfile?(uid)
     }
 
     // MARK: Actions
@@ -76,9 +78,9 @@ final class UserProfileViewController: UICollectionViewController {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                      withReuseIdentifier: headerId,
                                                                      for: indexPath) as! UserProfileHeaderCell
-        header.usernameLabel.text = currentUser?.username
+        header.usernameLabel.text = user?.username
         
-        if let urlString = currentUser?.profileImageUrl {
+        if let urlString = user?.profileImageUrl {
             header.profileImageView.cacheManager = self.cacheManager
             header.profileImageView.loadImage(from: urlString, using: downloadProfileImage)
         }
@@ -129,9 +131,11 @@ extension UserProfileViewController: UserProfileView, PostView {
     }
     
     func displayUserInfo(_ userInfo: User) {
-        currentUser = userInfo
+        user = userInfo
         setTitleOnNavigationBar()
         collectionView.reloadData()
+        
+        loadPosts?(uid, .creationDate(.ascending))
     }
     
     func displayPost(_ post: Post) {
@@ -152,7 +156,7 @@ extension UserProfileViewController {
     }
     
     private func setTitleOnNavigationBar() {
-        navigationItem.title = currentUser?.username
+        navigationItem.title = user?.username
     }
     
     private func registerCollectionViewCells() {

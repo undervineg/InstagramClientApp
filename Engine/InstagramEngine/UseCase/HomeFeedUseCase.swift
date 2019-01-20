@@ -9,8 +9,10 @@
 import Foundation
 
 public protocol LoadPostClient {
-    func fetchPost(_ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
-    func fetchPost(with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
+    func fetchCurrentUserPost(_ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
+    func fetchCurrentUserPost(with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
+    func fetchUserPost(of uid: String, with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
+    func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void)
     func downloadPostImage(from url: URL, completion: @escaping (Result<Data, HomeFeedUseCase.Error>) -> Void)
 }
 
@@ -53,7 +55,7 @@ final public class HomeFeedUseCase {
     }
     
     public func loadAllPosts() {
-        client.fetchPost { [weak self] (result) in
+        client.fetchCurrentUserPost { [weak self] (result) in
             switch result {
             case .success(let post):
                 self?.output.loadPostSucceeded(post)
@@ -63,14 +65,20 @@ final public class HomeFeedUseCase {
         }
     }
     
-    public func loadPosts(orderBy order: Post.Order) {
-        client.fetchPost(with: order) { [weak self] (result) in
-            switch result {
-            case .success(let post):
-                self?.output.loadPostSucceeded(post)
-            case .failure(let error):
-                self?.output.loadPostsFailed(error)
-            }
+    public func loadPosts(of uid: String?, orderBy order: Post.Order) {
+        if let uid = uid {
+            client.fetchUserPost(of: uid, handleLoadPostsResult)
+        } else {
+            client.fetchCurrentUserPost(with: order, handleLoadPostsResult)
+        }
+    }
+    
+    private func handleLoadPostsResult(_ result: Result<Post, HomeFeedUseCase.Error>) {
+        switch result {
+        case .success(let post):
+            output.loadPostSucceeded(post)
+        case .failure(let error):
+            output.loadPostsFailed(error)
         }
     }
     

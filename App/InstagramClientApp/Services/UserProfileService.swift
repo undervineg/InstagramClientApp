@@ -31,21 +31,6 @@ final class UserProfileService: UserProfileClient {
         loadUserInfo(of: uid, completion)
     }
     
-    func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) {
-        networking.get(from: url) { (result) in
-            switch result {
-            case .success(let data):
-                completion(.success(data))
-            case .failure:
-                completion(.failure(.profileImageNotExist))
-            }
-        }
-    }
-    
-    func logout(_ completion: @escaping (Error?) -> Void) {
-         auth.logout(completion)
-    }
-    
     func loadUserInfo(of uid: String, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void) {
         let refs: [Reference] = [.directory(Keys.Database.usersDir), .directory(uid)]
         
@@ -63,6 +48,21 @@ final class UserProfileService: UserProfileClient {
                 completion(.failure(.currentUserNotExist))
             }
         }
+    }
+    
+    func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) {
+        networking.get(from: url) { (result) in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure:
+                completion(.failure(.profileImageNotExist))
+            }
+        }
+    }
+    
+    func logout(_ completion: @escaping (Error?) -> Void) {
+         auth.logout(completion)
     }
     
     func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void) {

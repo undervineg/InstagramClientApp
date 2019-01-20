@@ -18,14 +18,17 @@ class UserSearchViewController: UICollectionViewController {
     var fetchAllUsers: ((Bool) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
     
+    private var router: UserSearchRouter?
+    
     private var users: [User] = []
     private var filteredUsers: [User] = []
     
     private var cacheManager: Cacheable?
     
-    convenience init(cacheManager: Cacheable) {
+    convenience init(router: UserSearchRouter, cacheManager: Cacheable) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
+        self.router = router
         self.cacheManager = cacheManager
     }
     
@@ -54,7 +57,6 @@ class UserSearchViewController: UICollectionViewController {
         return 1
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return isFiltering() ? filteredUsers.count : users.count
     }
@@ -71,6 +73,13 @@ class UserSearchViewController: UICollectionViewController {
         }
         
         return cell
+    }
+    
+    // MARK: UICollectionViewDelegate
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let user = isFiltering() ? filteredUsers[indexPath.item] : users[indexPath.item]
+        router?.openUserProfilePage(of: user.id)
     }
 
 }

@@ -10,8 +10,8 @@ import Firebase
 import InstagramEngine
 
 final class UserProfileModule {
-    private let router: UserProfileRouter
-    private let viewController: UserProfileViewController
+    let router: UserProfileRouter
+    let viewController: UserProfileViewController
     private let profileService: UserProfileService
     private let postService: PostService
     private let presenter: UserProfilePresenter
