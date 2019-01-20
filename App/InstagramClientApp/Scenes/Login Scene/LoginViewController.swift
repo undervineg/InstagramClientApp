@@ -56,6 +56,10 @@ final class LoginViewController: UIViewController {
         router?.openRegisterPage()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
     // MARK: Private Methods
     private func isAllTextFieldsValid() -> Bool {
         return [emailTextField, passwordTextField].isAllValid()

@@ -53,6 +53,10 @@ final class RegisterUserViewController: UIViewController {
     @IBAction func routeToLoginPage(_ sender: UIButton) {
         router?.openLoginPage()
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
 }
 
 extension RegisterUserViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
