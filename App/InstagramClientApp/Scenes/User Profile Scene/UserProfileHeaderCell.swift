@@ -16,10 +16,12 @@ final class UserProfileHeaderCell: UICollectionViewCell {
     @IBOutlet weak var postLabel: UILabel!
     @IBOutlet weak var followerLabel: UILabel!
     @IBOutlet weak var followingLabel: UILabel!
-    @IBOutlet weak var editProfileButton: UIButton!
+    @IBOutlet weak var editFollowButton: UIButton!
     @IBOutlet weak var gridButton: UIButton!
     @IBOutlet weak var listButton: UIButton!
     @IBOutlet weak var bookmarkButton: UIButton!
+    
+    private var editFollowButtonCallback: (() -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,14 +29,42 @@ final class UserProfileHeaderCell: UICollectionViewCell {
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
         profileImageView.clipsToBounds = true
         
-        editProfileButton.layer.borderColor = UIColor.lightGray.cgColor
-        editProfileButton.layer.borderWidth = 1
+        editFollowButton.layer.borderColor = UIColor.lightGray.cgColor
+        editFollowButton.layer.borderWidth = 1
+    }
+    
+    enum ButtonType {
+        typealias ButtonCallback = () -> Void
+        
+        case edit(ButtonCallback)
+        case follow(ButtonCallback)
+    }
+    
+    func toggleEditFollowButton(_ type: ButtonType) {
+        switch type {
+        case .edit(let callback):
+            editFollowButton.setTitle("Edit Profile", for: .normal)
+            editFollowButtonCallback = callback
+        case .follow(let callback):
+            editFollowButton.setTitle("Follow", for: .normal)
+            editFollowButtonCallback = callback
+        }
+        
+        editFollowButton.addTarget(self, action: #selector(handleEditFollowButton), for: .touchUpInside)
+    }
+    
+    @objc private func handleEditFollowButton(_ sender: UIButton) {
+        self.editFollowButtonCallback?()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         profileImageView.image = nil
         usernameLabel.text = nil
+        postLabel.text = nil
+        followerLabel.text = nil
+        followingLabel.text = nil
+        editFollowButtonCallback = nil
     }
     
     func setAttributedText(to label: UILabel, _ dataText: String, _ fixedText: String) {

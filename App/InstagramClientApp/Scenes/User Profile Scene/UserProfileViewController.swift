@@ -84,12 +84,20 @@ final class UserProfileViewController: UICollectionViewController {
         header.setAttributedText(to: header.followerLabel, "\(userPosts.count)", "followers")
         header.setAttributedText(to: header.followingLabel, "\(userPosts.count)", "following")
         
+        let buttonCallback = isCurrentUser ? { print("it's edit button") } : { print("it's follow button") }
+        let buttonType: UserProfileHeaderCell.ButtonType = isCurrentUser ? .edit(buttonCallback) : .follow(buttonCallback)
+        header.toggleEditFollowButton(buttonType)
+        
         if let urlString = user?.profileImageUrl {
             header.profileImageView.cacheManager = self.cacheManager
             header.profileImageView.loadImage(from: urlString, using: downloadProfileImage)
         }
         
         return header
+    }
+    
+    private var isCurrentUser: Bool {
+        return uid == nil
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
