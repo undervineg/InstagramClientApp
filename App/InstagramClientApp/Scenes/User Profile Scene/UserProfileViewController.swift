@@ -80,6 +80,10 @@ final class UserProfileViewController: UICollectionViewController {
                                                                      for: indexPath) as! UserProfileHeaderCell
         header.usernameLabel.text = user?.username
         
+        header.setAttributedText(to: header.postLabel, "\(userPosts.count)", "posts")
+        header.setAttributedText(to: header.followerLabel, "\(userPosts.count)", "followers")
+        header.setAttributedText(to: header.followingLabel, "\(userPosts.count)", "following")
+        
         if let urlString = user?.profileImageUrl {
             header.profileImageView.cacheManager = self.cacheManager
             header.profileImageView.loadImage(from: urlString, using: downloadProfileImage)

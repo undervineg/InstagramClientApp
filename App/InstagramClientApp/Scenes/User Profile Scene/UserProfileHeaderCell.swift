@@ -36,6 +36,18 @@ final class UserProfileHeaderCell: UICollectionViewCell {
         profileImageView.image = nil
         usernameLabel.text = nil
     }
+    
+    func setAttributedText(to label: UILabel, _ dataText: String, _ fixedText: String) {
+        let attributedText = NSMutableAttributedString(string: dataText,
+                                                       attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSAttributedString(string: "\n",
+                                                 attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
+        attributedText.append(NSAttributedString(string: fixedText,
+                                                 attributes: [
+                                                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        
+        label.attributedText = attributedText
+    }
 }
 
 extension UIView {
