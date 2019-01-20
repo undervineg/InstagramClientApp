@@ -196,7 +196,7 @@ Cg
             <size key="customSize" width="357" height="205"/>
             <connections>
                 <outlet property="bookmarkButton" destination="sda-xU-dzb" id="3oh-I3-PFg"/>
-                <outlet property="editFollowButton" destination="I72-9D-li3" id="xK4-F6-4Wg"/>
+                <outlet property="editProfileFollowButton" destination="I72-9D-li3" id="xK4-F6-4Wg"/>
                 <outlet property="followerLabel" destination="LEj-Dd-O3m" id="DAp-XA-pzC"/>
                 <outlet property="followingLabel" destination="Olq-Kt-Chj" id="0oA-yq-CEC"/>
                 <outlet property="gridButton" destination="zqE-9y-hiM" id="xzO-Bf-Dkb"/>

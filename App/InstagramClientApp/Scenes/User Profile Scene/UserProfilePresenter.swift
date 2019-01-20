@@ -12,6 +12,7 @@ import Foundation
 protocol UserProfileView: ErrorPresentable {
     func displayUserInfo(_ user: User)
     func onLogoutSucceeded()
+    func toggleFollowButton(_ isFollowing: Bool)
 }
 
 protocol PostView: ErrorPresentable {
@@ -56,9 +57,29 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
     func downloadPostImageFailed(_ error: HomeFeedUseCase.Error) {
         view.displayError(error.localizedDescription)
     }
+    
+    func followUserSucceeeded() {
+        view.toggleFollowButton(true)
+    }
+    
+    func followUserFailed(_ error: UserProfileUseCase.Error) {
+        view.displayError(error.localizedDescription)
+    }
+    
+    func checkIsFollowSucceeded(_ isFollowing: Bool) {
+        view.toggleFollowButton(isFollowing)
+    }
+    
+    func checkIsFollowFailed(_ error: Error) {
+        view.displayError(error.localizedDescription)
+    }
 }
 
 extension WeakRef: UserProfileView where T: UserProfileView {
+    func toggleFollowButton(_ isFollowing: Bool) {
+        object?.toggleFollowButton(isFollowing)
+    }
+    
     func displayUserInfo(_ user: User) {
         object?.displayUserInfo(user)
     }

@@ -16,12 +16,19 @@ final class UserProfileViewController: UICollectionViewController {
     
     var uid: String? = nil
     
+    private var isCurrentUser: Bool { return uid == nil }
+    private var isFollowing: Bool = false
+    
     // MARK: Commands
     var loadProfile: ((String?) -> Void)?
     var loadPosts: ((String?, Post.Order) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var logout: (() -> Void)?
+    var editProfile: (() -> Void)?
+    var follow: ((String) -> Void)?
+    var unfollow: (() -> Void)?
+    var checkIsFollowing: ((String) -> Void)?
     
     // MARK: Router
     private var router: UserProfileRouter.Routes?
@@ -50,6 +57,9 @@ final class UserProfileViewController: UICollectionViewController {
         registerCollectionViewCells()
         
         loadProfile?(uid)
+        if let uid = uid {
+            checkIsFollowing?(uid)
+        }
     }
 
     // MARK: Actions
@@ -69,7 +79,6 @@ final class UserProfileViewController: UICollectionViewController {
         return 1
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return userPosts.count
     }
@@ -84,9 +93,7 @@ final class UserProfileViewController: UICollectionViewController {
         header.setAttributedText(to: header.followerLabel, "\(userPosts.count)", "followers")
         header.setAttributedText(to: header.followingLabel, "\(userPosts.count)", "following")
         
-        let buttonCallback = isCurrentUser ? { print("it's edit button") } : { print("it's follow button") }
-        let buttonType: UserProfileHeaderCell.ButtonType = isCurrentUser ? .edit(buttonCallback) : .follow(buttonCallback)
-        header.toggleEditFollowButton(buttonType)
+        setEditProfileFollowButton(in: header)
         
         if let urlString = user?.profileImageUrl {
             header.profileImageView.cacheManager = self.cacheManager
@@ -96,8 +103,29 @@ final class UserProfileViewController: UICollectionViewController {
         return header
     }
     
-    private var isCurrentUser: Bool {
-        return uid == nil
+    private func setEditProfileFollowButton(in header: UserProfileHeaderCell) {
+        var buttonType: UserProfileHeaderCell.ButtonType = .edit
+        if isCurrentUser {
+            buttonType = .edit
+        } else if isFollowing {
+            buttonType = .unfollow
+        } else {
+            buttonType = .follow
+        }
+        
+        header.toggleEditFollowButton(buttonType)
+        
+        let buttonAction = isCurrentUser ? #selector(handleEditProfile(_:)) : #selector(handleFollow(_:))
+        header.editProfileFollowButton.addTarget(self, action: buttonAction, for: .touchUpInside)
+    }
+    
+    @objc private func handleEditProfile(_ sender: UIButton) {
+        editProfile?()
+    }
+    
+    @objc private func handleFollow(_ sender: UIButton) {
+        guard let uid = uid else { return }
+        follow?(uid)
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -136,7 +164,6 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension UserProfileViewController: UserProfileView, PostView {
-    
     // MARK: User Profile View
     func onLogoutSucceeded() {
         router?.openLoginPage()
@@ -150,6 +177,13 @@ extension UserProfileViewController: UserProfileView, PostView {
         loadPosts?(uid, .creationDate(.ascending))
     }
     
+    func toggleFollowButton(_ isFollowing: Bool) {
+        guard !isCurrentUser else { return }
+        self.isFollowing = isFollowing
+        collectionView.reloadData()
+    }
+    
+    // MARK: Post View
     func displayPost(_ post: Post) {
         userPosts.insert(post, at: 0)
         collectionView.reloadData()

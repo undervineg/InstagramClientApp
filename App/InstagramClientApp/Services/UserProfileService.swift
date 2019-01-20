@@ -34,7 +34,7 @@ final class UserProfileService: UserProfileClient {
     func loadUserInfo(of uid: String, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void) {
         let refs: [Reference] = [.directory(Keys.Database.usersDir), .directory(uid)]
         
-        database.fetchAll(under: refs) { (result) in
+        database.fetchAll(under: refs) { (result: Result<[String: Any], Error>) in
             switch result {
             case .success(let values):
                 let email = values[Keys.Database.Profile.email] as? String ?? ""
@@ -68,7 +68,7 @@ final class UserProfileService: UserProfileClient {
     func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void) {
         let refs: [Reference] = [.directory(Keys.Database.usersDir)]
         
-        database.fetchAll(under: refs) { [weak self] (result) in
+        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any], Error>) in
             switch result {
             case .success(let values):
                 let users = values.compactMap({ (uid, uinfo) -> User? in
@@ -89,4 +89,32 @@ final class UserProfileService: UserProfileClient {
         }
     }
     
+    func followUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void) {
+        guard let currentUserId = auth.currentUserId else { return }
+        let refs: [Reference] = [.directory(Keys.Database.followingDir), .directory(currentUserId)]
+        
+        let values = [uid: 1]
+        database.update(values, to: refs) { (error) in
+            if error != nil {
+                completion(.followError)
+                return
+            }
+            completion(nil)
+        }
+    }
+    
+    func checkIsFollowing(_ uid: String, _ completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let currentUserId = auth.currentUserId else { return }
+        let refs: [Reference] = [.directory(Keys.Database.followingDir), .directory(currentUserId), .directory(uid)]
+        
+        database.fetchAll(under: refs) { (result: Result<Int, Error>) in
+            switch result {
+            case .success(let count):
+                let isFollowing = (count > 0) ? true : false
+                completion(.success(isFollowing))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }

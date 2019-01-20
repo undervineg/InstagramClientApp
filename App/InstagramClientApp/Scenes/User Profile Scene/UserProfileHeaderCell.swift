@@ -16,12 +16,10 @@ final class UserProfileHeaderCell: UICollectionViewCell {
     @IBOutlet weak var postLabel: UILabel!
     @IBOutlet weak var followerLabel: UILabel!
     @IBOutlet weak var followingLabel: UILabel!
-    @IBOutlet weak var editFollowButton: UIButton!
+    @IBOutlet weak var editProfileFollowButton: UIButton!
     @IBOutlet weak var gridButton: UIButton!
     @IBOutlet weak var listButton: UIButton!
     @IBOutlet weak var bookmarkButton: UIButton!
-    
-    private var editFollowButtonCallback: (() -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,32 +27,42 @@ final class UserProfileHeaderCell: UICollectionViewCell {
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
         profileImageView.clipsToBounds = true
         
-        editFollowButton.layer.borderColor = UIColor.lightGray.cgColor
-        editFollowButton.layer.borderWidth = 1
+        editProfileFollowButton.layer.cornerRadius = 5
+        editProfileFollowButton.layer.masksToBounds = true
+        editProfileFollowButton.layer.borderColor = UIColor.lightGray.cgColor
+        editProfileFollowButton.layer.borderWidth = 1
     }
     
     enum ButtonType {
-        typealias ButtonCallback = () -> Void
+        case edit
+        case follow
+        case unfollow
         
-        case edit(ButtonCallback)
-        case follow(ButtonCallback)
+        var title: String {
+            switch self {
+            case .edit: return "Edit Profile"
+            case .follow: return "Follow"
+            case .unfollow: return "Unfollow"
+            }
+        }
     }
     
     func toggleEditFollowButton(_ type: ButtonType) {
         switch type {
-        case .edit(let callback):
-            editFollowButton.setTitle("Edit Profile", for: .normal)
-            editFollowButtonCallback = callback
-        case .follow(let callback):
-            editFollowButton.setTitle("Follow", for: .normal)
-            editFollowButtonCallback = callback
+        case .edit:
+            editProfileFollowButton.setTitle(type.title, for: .normal)
+            editProfileFollowButton.backgroundColor = .white
+            editProfileFollowButton.setTitleColor(.black, for: .normal)
+        case .follow:
+            editProfileFollowButton.setTitle(type.title, for: .normal)
+            editProfileFollowButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+            editProfileFollowButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
+            editProfileFollowButton.setTitleColor(.white, for: .normal)
+        case .unfollow:
+            editProfileFollowButton.setTitle(type.title, for: .normal)
+            editProfileFollowButton.backgroundColor = .white
+            editProfileFollowButton.setTitleColor(.black, for: .normal)
         }
-        
-        editFollowButton.addTarget(self, action: #selector(handleEditFollowButton), for: .touchUpInside)
-    }
-    
-    @objc private func handleEditFollowButton(_ sender: UIButton) {
-        self.editFollowButtonCallback?()
     }
     
     override func prepareForReuse() {
@@ -64,7 +72,6 @@ final class UserProfileHeaderCell: UICollectionViewCell {
         postLabel.text = nil
         followerLabel.text = nil
         followingLabel.text = nil
-        editFollowButtonCallback = nil
     }
     
     func setAttributedText(to label: UILabel, _ dataText: String, _ fixedText: String) {

@@ -45,7 +45,7 @@ final class PostService: LoadPostClient {
     func fetchUserPost(of uid: String, with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
         
-        database.fetch(under: refs, orderBy: order) { [weak self] (result) in
+        database.fetch(under: refs, orderBy: order) { [weak self] (result: Result<[String: Any], Error>) in
             switch result {
             case .success(let value):
                 self?.generatePost(of: uid, value: value, completion: completion)
@@ -57,7 +57,7 @@ final class PostService: LoadPostClient {
     func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
         
-        database.fetchAll(under: refs) { [weak self] (result) in
+        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any], Error>) in
             switch result {
             case .success(let values):
                 values.forEach({ (key, value) in

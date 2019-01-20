@@ -14,6 +14,8 @@ public protocol UserProfileClient {
     func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
     func logout(_ completion: @escaping (Error?) -> Void)
     func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void)
+    func followUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void)
+    func checkIsFollowing(_ uid: String, _ completion: @escaping (Result<Bool, Error>) -> Void)
 }
 
 public protocol UserProfileUseCaseOutput {
@@ -22,6 +24,10 @@ public protocol UserProfileUseCaseOutput {
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error)
     func logoutSucceeded()
     func logoutFailed(_ error: UserProfileUseCase.Error)
+    func followUserSucceeeded()
+    func followUserFailed(_ error: UserProfileUseCase.Error)
+    func checkIsFollowSucceeded(_ isFollowing: Bool)
+    func checkIsFollowFailed(_ error: Error)
 }
 
 final public class UserProfileUseCase {
@@ -44,6 +50,7 @@ final public class UserProfileUseCase {
         case currentUserNotExist
         case profileImageNotExist
         case logoutError
+        case followError
         
         public var localizedDescription: String {
             switch self {
@@ -55,6 +62,8 @@ final public class UserProfileUseCase {
                 return "프로필 이미지를 불러올 수 없습니다."
             case .logoutError:
                 return "로그아웃 도중 문제가 발생했습니다."
+            case .followError:
+                return "팔로우 도중 문제가 발생했습니다."
             }
         }
     }
@@ -93,6 +102,27 @@ final public class UserProfileUseCase {
                 self?.output.logoutFailed(.logoutError)
             }
             self?.output.logoutSucceeded()
+        }
+    }
+    
+    public func followUser(_ uid: String) {
+        client.followUser(uid) { [weak self] (error) in
+            if let error = error {
+                self?.output.followUserFailed(error)
+                return
+            }
+            self?.output.followUserSucceeeded()
+        }
+    }
+    
+    public func checkIsFollowing(_ uid: String) {
+        client.checkIsFollowing(uid) { [weak self] (result) in
+            switch result {
+            case .success(let isFollowing):
+                self?.output.checkIsFollowSucceeded(isFollowing)
+            case .failure(let error):
+                self?.output.checkIsFollowFailed(error)
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ struct Keys {
     struct Database {
         static let usersDir = "users"
         static let postsDir = "posts"
+        static let followingDir = "following"
         
         struct Profile {
             static let email = "email"
