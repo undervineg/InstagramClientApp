@@ -106,6 +106,7 @@
 		08FE157721F4574900A58355 /* UserSearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157621F4574800A58355 /* UserSearchRouter.swift */; };
 		08FE157A21F4579700A58355 /* UserProfileRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157921F4579700A58355 /* UserProfileRoute.swift */; };
 		08FE157C21F5D12D00A58355 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157B21F5D12D00A58355 /* Date+Extension.swift */; };
+		08FE157F21F6301D00A58355 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A121E5092300DE6E78 /* main.swift */; };
 		6EC36F26F45DA30F8999551A /* Pods_InstagramClientApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC38B69BF39580BCEE5A8073 /* Pods_InstagramClientApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -869,6 +870,7 @@
 			files = (
 				086E6C9A21DE91D50094B808 /* ModalTransition.swift in Sources */,
 				08BF0C6821E8652F004CE846 /* UserProfileViewController.swift in Sources */,
+				08FE157F21F6301D00A58355 /* main.swift in Sources */,
 				08FE157A21F4579700A58355 /* UserProfileRoute.swift in Sources */,
 				084FF5AE21EB87C9000EA933 /* LoginModule.swift in Sources */,
 				084FF61A21EF170B000EA933 /* RegisterRouter.swift in Sources */,
