@@ -190,7 +190,9 @@ extension UserProfileViewController: UserProfileView, PostView {
     // MARK: Post View
     func displayPost(_ post: Post) {
         userPosts.insert(post, at: 0)
-        collectionView.reloadData()
+        DispatchQueue.main.sync {
+            collectionView.insertItems(at: [IndexPath(item: 0, section: 0)])
+        }
     }
 }
 

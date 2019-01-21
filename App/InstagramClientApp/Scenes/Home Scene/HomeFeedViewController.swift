@@ -36,10 +36,16 @@ final class HomeFeedViewController: UICollectionViewController {
         
         let nib = HomeFeedCell.nibFromClassName()
         collectionView.register(nib, forCellWithReuseIdentifier: cellId)
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+        
+        loadAllPosts?()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        posts.removeAll()
         loadAllPosts?()
     }
     
@@ -93,12 +99,14 @@ extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
 
 extension HomeFeedViewController: PostView {
     func displayPost(_ post: Post) {
-        let index = (self.posts.count > 0) ?
-            self.posts.firstIndex { post.creationDate >= $0.creationDate } ?? self.posts.count : 0
-        self.posts.insert(post, at: index)
+        let index = (posts.count > 0) ?
+            posts.firstIndex { post.creationDate >= $0.creationDate } ?? posts.count : 0
         
-        DispatchQueue.main.sync {
-            self.collectionView.insertItems(at: [IndexPath(item: index, section: 0)])
+        posts.insert(post, at: index)
+        
+        DispatchQueue.main.async {
+            self.collectionView.refreshControl?.endRefreshing()
+            self.collectionView.reloadData()
         }
     }
 }

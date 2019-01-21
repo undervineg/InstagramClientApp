@@ -33,6 +33,8 @@ final public class HomeFeedUseCase {
     private let profileClient: UserProfileClient
     private let output: LoadPostOutput
     
+    private let serialQueue: DispatchQueue
+    
     public init(postClient: LoadPostClient, profileClient: UserProfileClient, output: LoadPostOutput) {
         self.postClient = postClient
         self.profileClient = profileClient
@@ -59,9 +61,6 @@ final public class HomeFeedUseCase {
             }
         }
     }
-    
-    private var loadedPosts: [Post] = []
-    private let serialQueue: DispatchQueue
     
     public func loadAllPosts() {
         profileClient.fetchFollowingListOfCurrentUser { [unowned self] (result) in

@@ -74,7 +74,6 @@
 		08962F2321F0F5AE00A3C5D3 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2221F0F5AE00A3C5D3 /* Sort.swift */; };
 		08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */; };
 		08BF0C5821E854EB004CE846 /* UserProfileHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08BF0C5621E854EB004CE846 /* UserProfileHeaderCell.xib */; };
-		08BF0C5B21E85EDF004CE846 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984A121E5092300DE6E78 /* main.swift */; };
 		08BF0C6821E8652F004CE846 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */; };
 		08BF0C6B21E868E7004CE846 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C6A21E868E7004CE846 /* APIClient.swift */; };
 		08BF0C6E21E8BB27004CE846 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C6C21E8BB27004CE846 /* LoginViewController.swift */; };
@@ -881,7 +880,6 @@
 				086E6C9821DE91C70094B808 /* Transition.swift in Sources */,
 				084FF5FD21EEC56E000EA933 /* PhotoSelectorHeader.swift in Sources */,
 				08F984A921E53CAD00DE6E78 /* MainTabBarViewController.swift in Sources */,
-				08BF0C5B21E85EDF004CE846 /* main.swift in Sources */,
 				0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */,
 				084FF61821EF16C8000EA933 /* LoginRouter.swift in Sources */,
 				085E526521F2F8C70029C7BE /* HomeFeedPresenter.swift in Sources */,
