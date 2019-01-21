@@ -47,7 +47,7 @@ final class UserProfileHeaderCell: UICollectionViewCell {
         }
     }
     
-    func toggleEditFollowButton(_ type: ButtonType) {
+    func configureEditFollowButton(_ type: ButtonType) {
         switch type {
         case .edit:
             editProfileFollowButton.setTitle(type.title, for: .normal)

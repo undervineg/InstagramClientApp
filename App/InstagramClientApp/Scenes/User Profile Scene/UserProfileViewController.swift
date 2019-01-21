@@ -114,7 +114,7 @@ final class UserProfileViewController: UICollectionViewController {
             buttonAction = #selector(handleFollow(_:))
         }
         
-        header.toggleEditFollowButton(buttonType)
+        header.configureEditFollowButton(buttonType)
         header.editProfileFollowButton.addTarget(self, action: buttonAction, for: .touchUpInside)
     }
     
