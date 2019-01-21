@@ -67,10 +67,9 @@ final class HomeFeedViewController: UICollectionViewController {
             cell.postImageView.cacheManager = self.cacheManager
             cell.postImageView.loadImage(from: imageUrlString, using: downloadPostImage)
             
-            let datePassed = post.creationDate.description
             cell.setAttributedCaptionLabel(username: post.user.username,
                                            caption: post.caption,
-                                           createdDate: datePassed)
+                                           createdDate: post.creationDate.timeAgoDisplay())
         }
         
         return cell
