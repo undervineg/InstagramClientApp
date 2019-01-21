@@ -42,6 +42,10 @@ final class HomeFeedViewController: UICollectionViewController {
         collectionView.refreshControl = refreshControl
         
         loadAllPosts?()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.shareNewFeed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.followNewUser, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.unfollowOldUser, object: nil)
     }
     
     @objc private func refresh(_ sender: UIRefreshControl) {

@@ -22,6 +22,7 @@
 		08F9848421E4B67500DE6E78 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848321E4B67500DE6E78 /* Result.swift */; };
 		08F984C621E6816900DE6E78 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C521E6816900DE6E78 /* AuthUseCase.swift */; };
 		08F984C821E6829000DE6E78 /* AuthUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C721E6829000DE6E78 /* AuthUseCaseTests.swift */; };
+		08FE157E21F6227C00A58355 /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157D21F6227C00A58355 /* NotificationName.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		08F9848321E4B67500DE6E78 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		08F984C521E6816900DE6E78 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
 		08F984C721E6829000DE6E78 /* AuthUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCaseTests.swift; sourceTree = "<group>"; };
+		08FE157D21F6227C00A58355 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				0884514821DA6676008B8121 /* Info.plist */,
+				08FE157D21F6227C00A58355 /* NotificationName.swift */,
 				0858765821DA741E00C32422 /* Entity */,
 				0858765B21DB7C7F00C32422 /* UseCase */,
 			);
@@ -248,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				084FF62421EF4644000EA933 /* SharePhotoUseCase.swift in Sources */,
+				08FE157E21F6227C00A58355 /* NotificationName.swift in Sources */,
 				08F9847521E17CF200DE6E78 /* UserProfileUseCase.swift in Sources */,
 				084FF5EF21EDC93F000EA933 /* LoadPhotoUseCase.swift in Sources */,
 				0858765521DA73FA00C32422 /* User.swift in Sources */,

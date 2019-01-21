@@ -33,6 +33,8 @@ final public class SharePhotoUseCase {
                 return
             }
             self?.output.shareSucceeded()
+            
+            NotificationCenter.default.post(name: NotificationName.shareNewFeed, object: nil)
         }
     }
 }

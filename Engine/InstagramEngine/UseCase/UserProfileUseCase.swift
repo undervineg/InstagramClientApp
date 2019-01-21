@@ -118,6 +118,7 @@ final public class UserProfileUseCase {
                 return
             }
             self?.output.followOrUnfollowUserSucceeeded(true)
+            NotificationCenter.default.post(name: NotificationName.followNewUser, object: nil)
         }
     }
     
@@ -128,6 +129,7 @@ final public class UserProfileUseCase {
                 return
             }
             self?.output.followOrUnfollowUserSucceeeded(false)
+            NotificationCenter.default.post(name: NotificationName.unfollowOldUser, object: nil)
         }
     }
     

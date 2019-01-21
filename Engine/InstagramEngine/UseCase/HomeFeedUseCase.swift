@@ -33,13 +33,10 @@ final public class HomeFeedUseCase {
     private let profileClient: UserProfileClient
     private let output: LoadPostOutput
     
-    private let serialQueue: DispatchQueue
-    
     public init(postClient: LoadPostClient, profileClient: UserProfileClient, output: LoadPostOutput) {
         self.postClient = postClient
         self.profileClient = profileClient
         self.output = output
-        self.serialQueue = DispatchQueue(label: "LoadPostsSerial", qos: .utility)
     }
     
     public enum Error: Swift.Error {
@@ -63,10 +60,10 @@ final public class HomeFeedUseCase {
     }
     
     public func loadAllPosts() {
+        postClient.fetchCurrentUserPost(self.handleLoadedPost)
         profileClient.fetchFollowingListOfCurrentUser { [unowned self] (result) in
             switch result {
             case .success(let followingUsers):
-                self.postClient.fetchCurrentUserPost(self.handleLoadedPost)
                 followingUsers.forEach { (uid) in
                     self.postClient.fetchUserPost(of: uid, self.handleLoadedPost)
                 }
@@ -84,17 +81,6 @@ final public class HomeFeedUseCase {
         }
     }
     
-    private func handleLoadedPost(_ result: Result<Post, HomeFeedUseCase.Error>) {
-        switch result {
-        case .success(let post):
-            serialQueue.async {
-                self.output.loadPostSucceeded(post)
-            }
-        case .failure(let error):
-            output.loadPostFailed(error)
-        }
-    }
-    
     public func downloadPostImage(from url: URL, completion: @escaping (Data) -> Void) {
         postClient.downloadPostImage(from: url) { [weak self] (result) in
             switch result {
@@ -103,6 +89,16 @@ final public class HomeFeedUseCase {
             case .failure(let error):
                 self?.output.downloadPostImageFailed(error)
             }
+        }
+    }
+    
+    // MARK: Private Methods
+    private func handleLoadedPost(_ result: Result<Post, HomeFeedUseCase.Error>) {
+        switch result {
+        case .success(let post):
+            self.output.loadPostSucceeded(post)
+        case .failure(let error):
+            output.loadPostFailed(error)
         }
     }
 }

@@ -106,6 +106,7 @@ final class UserProfileViewController: UICollectionViewController {
     private func setEditProfileFollowButton(in header: UserProfileHeaderCell) {
         var buttonType = UserProfileHeaderCell.ButtonType.edit
         var buttonAction = #selector(handleEditProfile(_:))
+        
         if !isCurrentUser && isFollowing {
             buttonType = .unfollow
             buttonAction = #selector(handleUnFollow(_:))
@@ -115,6 +116,7 @@ final class UserProfileViewController: UICollectionViewController {
         }
         
         header.configureEditFollowButton(buttonType)
+        header.editProfileFollowButton.removeTarget(nil, action: nil, for: .allTouchEvents)
         header.editProfileFollowButton.addTarget(self, action: buttonAction, for: .touchUpInside)
     }
     
@@ -190,8 +192,8 @@ extension UserProfileViewController: UserProfileView, PostView {
     // MARK: Post View
     func displayPost(_ post: Post) {
         userPosts.insert(post, at: 0)
-        DispatchQueue.main.sync {
-            collectionView.insertItems(at: [IndexPath(item: 0, section: 0)])
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
         }
     }
 }
