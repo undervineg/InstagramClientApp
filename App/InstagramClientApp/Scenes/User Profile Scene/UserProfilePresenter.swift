@@ -58,11 +58,11 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
         view.displayError(error.localizedDescription)
     }
     
-    func followUserSucceeeded() {
-        view.toggleFollowButton(true)
+    func followOrUnfollowUserSucceeeded(_ isFollowing: Bool) {
+        view.toggleFollowButton(isFollowing)
     }
     
-    func followUserFailed(_ error: UserProfileUseCase.Error) {
+    func followOrUnfollowUserFailed(_ error: UserProfileUseCase.Error) {
         view.displayError(error.localizedDescription)
     }
     

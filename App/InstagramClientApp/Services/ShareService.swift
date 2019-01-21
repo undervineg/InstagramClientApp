@@ -49,7 +49,7 @@ final class ShareService: SharePhotoClient {
                         .autoId
                     ]
                     
-                    self.database.update(postValues, to: refs, completion: completion)
+                    self.database.update(postValues, under: refs, completion: completion)
                 }
             case .failure(let error):
                 completion(error)

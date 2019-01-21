@@ -94,9 +94,22 @@ final class UserProfileService: UserProfileClient {
         let refs: [Reference] = [.directory(Keys.Database.followingDir), .directory(currentUserId)]
         
         let values = [uid: 1]
-        database.update(values, to: refs) { (error) in
+        database.update(values, under: refs) { (error) in
             if error != nil {
                 completion(.followError)
+                return
+            }
+            completion(nil)
+        }
+    }
+    
+    func unfollowUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void) {
+        guard let currentUserId = auth.currentUserId else { return }
+        let refs: [Reference] = [.directory(Keys.Database.followingDir), .directory(currentUserId), .directory(uid)]
+        
+        database.delete(from: refs) { (error) in
+            if error != nil {
+                completion(.unfollowError)
                 return
             }
             completion(nil)

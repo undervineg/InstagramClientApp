@@ -10,14 +10,15 @@ import FirebaseDatabase
 import InstagramEngine
 
 protocol FirebaseDatabaseWrapper {
-    static func update(_ values: [AnyHashable: Any], to refs: [Reference], completion: @escaping (Error?) -> Void)
+    static func update(_ values: [AnyHashable: Any], under refs: [Reference], completion: @escaping (Error?) -> Void)
     static func fetchAll<T>(under refs: [Reference], completion: @escaping (Result<T, Error>) -> Void)
     static func fetch<T>(under refs: [Reference], orderBy order: HasKey & Sortable, completion: @escaping (Result<T, Error>) -> Void)
+    static func delete(from refs: [Reference], completion: @escaping (Error?) -> Void)
 }
 
 extension Database: FirebaseDatabaseWrapper {
     
-    static func update(_ values: [AnyHashable: Any], to refs: [Reference], completion: @escaping (Error?) -> Void) {
+    static func update(_ values: [AnyHashable: Any], under refs: [Reference], completion: @escaping (Error?) -> Void) {
         guard let newRef = databaseReference(from: refs) else { return }
         newRef.updateChildValues(values) { (error, _) in completion(error) }
     }
@@ -43,6 +44,14 @@ extension Database: FirebaseDatabaseWrapper {
             completion(.success(value))
         }) { (error) in
             completion(.failure(error))
+        }
+    }
+    
+    static func delete(from refs: [Reference], completion: @escaping (Error?) -> Void) {
+        guard let newRef = databaseReference(from: refs) else { return }
+        
+        newRef.removeValue { (error, ref) in
+            completion(error)
         }
     }
 }

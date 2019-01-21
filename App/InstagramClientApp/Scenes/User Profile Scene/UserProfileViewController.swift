@@ -27,7 +27,7 @@ final class UserProfileViewController: UICollectionViewController {
     var logout: (() -> Void)?
     var editProfile: (() -> Void)?
     var follow: ((String) -> Void)?
-    var unfollow: (() -> Void)?
+    var unfollow: ((String) -> Void)?
     var checkIsFollowing: ((String) -> Void)?
     
     // MARK: Router
@@ -104,18 +104,17 @@ final class UserProfileViewController: UICollectionViewController {
     }
     
     private func setEditProfileFollowButton(in header: UserProfileHeaderCell) {
-        var buttonType: UserProfileHeaderCell.ButtonType = .edit
-        if isCurrentUser {
-            buttonType = .edit
-        } else if isFollowing {
+        var buttonType = UserProfileHeaderCell.ButtonType.edit
+        var buttonAction = #selector(handleEditProfile(_:))
+        if !isCurrentUser && isFollowing {
             buttonType = .unfollow
-        } else {
+            buttonAction = #selector(handleUnFollow(_:))
+        } else if !isCurrentUser && !isFollowing {
             buttonType = .follow
+            buttonAction = #selector(handleFollow(_:))
         }
         
         header.toggleEditFollowButton(buttonType)
-        
-        let buttonAction = isCurrentUser ? #selector(handleEditProfile(_:)) : #selector(handleFollow(_:))
         header.editProfileFollowButton.addTarget(self, action: buttonAction, for: .touchUpInside)
     }
     
@@ -126,6 +125,11 @@ final class UserProfileViewController: UICollectionViewController {
     @objc private func handleFollow(_ sender: UIButton) {
         guard let uid = uid else { return }
         follow?(uid)
+    }
+    
+    @objc private func handleUnFollow(_ sender: UIButton) {
+        guard let uid = uid else { return }
+        unfollow?(uid)
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

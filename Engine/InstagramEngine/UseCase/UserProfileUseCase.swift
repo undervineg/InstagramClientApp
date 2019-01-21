@@ -15,6 +15,7 @@ public protocol UserProfileClient {
     func logout(_ completion: @escaping (Error?) -> Void)
     func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void)
     func followUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void)
+    func unfollowUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void)
     func checkIsFollowing(_ uid: String, _ completion: @escaping (Result<Bool, Error>) -> Void)
 }
 
@@ -24,8 +25,8 @@ public protocol UserProfileUseCaseOutput {
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error)
     func logoutSucceeded()
     func logoutFailed(_ error: UserProfileUseCase.Error)
-    func followUserSucceeeded()
-    func followUserFailed(_ error: UserProfileUseCase.Error)
+    func followOrUnfollowUserSucceeeded(_ isFollowing: Bool)
+    func followOrUnfollowUserFailed(_ error: UserProfileUseCase.Error)
     func checkIsFollowSucceeded(_ isFollowing: Bool)
     func checkIsFollowFailed(_ error: Error)
 }
@@ -51,6 +52,7 @@ final public class UserProfileUseCase {
         case profileImageNotExist
         case logoutError
         case followError
+        case unfollowError
         
         public var localizedDescription: String {
             switch self {
@@ -64,6 +66,8 @@ final public class UserProfileUseCase {
                 return "로그아웃 도중 문제가 발생했습니다."
             case .followError:
                 return "팔로우 도중 문제가 발생했습니다."
+            case .unfollowError:
+                return "언팔로우 도중 문제가 발생했습니다."
             }
         }
     }
@@ -108,10 +112,20 @@ final public class UserProfileUseCase {
     public func followUser(_ uid: String) {
         client.followUser(uid) { [weak self] (error) in
             if let error = error {
-                self?.output.followUserFailed(error)
+                self?.output.followOrUnfollowUserFailed(error)
                 return
             }
-            self?.output.followUserSucceeeded()
+            self?.output.followOrUnfollowUserSucceeeded(true)
+        }
+    }
+    
+    public func unfollowUser(_ uid: String) {
+        client.unfollowUser(uid) { [weak self] (error) in
+            if let error = error {
+                self?.output.followOrUnfollowUserFailed(error)
+                return
+            }
+            self?.output.followOrUnfollowUserSucceeeded(false)
         }
     }
     

@@ -83,7 +83,7 @@ final class RegisterUserService: RegisterUserClient {
         
         let refs: [Reference] = [.directory(Keys.Database.usersDir), .directory(userId)]
         
-        database.update(userInfo, to: refs) { (error) in
+        database.update(userInfo, under: refs) { (error) in
             if error != nil {
                 completion(.databaseUpdateError)
             } else {

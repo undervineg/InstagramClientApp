@@ -45,6 +45,7 @@ final class UserProfileModule {
         viewController.loadPosts = postUseCase.loadPosts
         viewController.downloadPostImage = postUseCase.downloadPostImage
         viewController.follow = profileUseCase.followUser
+        viewController.unfollow = profileUseCase.unfollowUser
         viewController.checkIsFollowing = profileUseCase.checkIsFollowing
     }
 }
