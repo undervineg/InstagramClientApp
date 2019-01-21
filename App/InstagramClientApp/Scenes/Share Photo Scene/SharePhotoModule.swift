@@ -21,7 +21,7 @@ final class SharePhotoModule {
         router = SharePhotoRouter()
         viewController = SharePhotoViewController(router: router, selectedImage: selectedImage)
         service = ShareService(storage: Storage.self, database: Database.self, auth: Auth.self)
-        presenter = SharePhotoPresenter(view: viewController)
+        presenter = SharePhotoPresenter(view: WeakRef(viewController))
         useCase = SharePhotoUseCase(client: service, output: presenter)
         
         router.viewControllerBehind = viewController
