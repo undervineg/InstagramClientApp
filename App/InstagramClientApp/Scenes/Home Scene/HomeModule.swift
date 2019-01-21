@@ -31,7 +31,7 @@ final class HomeModule {
                               firebaseDatabase: Database.self,
                               networking: URLSession.shared,
                               profileService: profileService)
-        presenter = HomeFeedPresenter(view: viewController)
+        presenter = HomeFeedPresenter(view: WeakRef(viewController))
         useCase = HomeFeedUseCase(postClient: service, profileClient: profileService, output: presenter)
         
         viewController.loadAllPosts = useCase.loadAllPosts

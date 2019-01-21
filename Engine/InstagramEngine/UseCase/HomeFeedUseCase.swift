@@ -18,7 +18,7 @@ public protocol LoadPostClient {
 
 public protocol LoadPostOutput {
     func loadPostSucceeded(_ post: Post)
-    func loadPostsFailed(_ error: HomeFeedUseCase.Error)
+    func loadPostFailed(_ error: HomeFeedUseCase.Error)
     func downloadPostImageFailed(_ error: HomeFeedUseCase.Error)
 }
 
@@ -37,6 +37,7 @@ final public class HomeFeedUseCase {
         self.postClient = postClient
         self.profileClient = profileClient
         self.output = output
+        self.serialQueue = DispatchQueue(label: "LoadPostsSerial", qos: .utility)
     }
     
     public enum Error: Swift.Error {
@@ -59,43 +60,39 @@ final public class HomeFeedUseCase {
         }
     }
     
+    private var loadedPosts: [Post] = []
+    private let serialQueue: DispatchQueue
+    
     public func loadAllPosts() {
-        profileClient.fetchFollowingListOfCurrentUser { [weak self] (result) in
+        profileClient.fetchFollowingListOfCurrentUser { [unowned self] (result) in
             switch result {
             case .success(let followingUsers):
-                self?.postClient.fetchCurrentUserPost { self?.handleLoadedPostResult($0) }
+                self.postClient.fetchCurrentUserPost(self.handleLoadedPost)
                 followingUsers.forEach { (uid) in
-                    self?.postClient.fetchUserPost(of: uid) { self?.handleLoadedPostResult($0) }
+                    self.postClient.fetchUserPost(of: uid, self.handleLoadedPost)
                 }
             case .failure:
-                self?.output.loadPostsFailed(.fetchFollowingListError)
+                self.output.loadPostFailed(.fetchFollowingListError)
             }
-        }
-    }
-    
-    private func handleLoadedPostResult(_ result: Result<Post, HomeFeedUseCase.Error>) {
-        switch result {
-        case .success(let post):
-            output.loadPostSucceeded(post)
-        case .failure(let error):
-            output.loadPostsFailed(error)
         }
     }
     
     public func loadPosts(of uid: String?, orderBy order: Post.Order) {
         if let uid = uid {
-            postClient.fetchUserPost(of: uid, handleLoadPostsResult)
+            postClient.fetchUserPost(of: uid, handleLoadedPost)
         } else {
-            postClient.fetchCurrentUserPost(with: order, handleLoadPostsResult)
+            postClient.fetchCurrentUserPost(with: order, handleLoadedPost)
         }
     }
     
-    private func handleLoadPostsResult(_ result: Result<Post, HomeFeedUseCase.Error>) {
+    private func handleLoadedPost(_ result: Result<Post, HomeFeedUseCase.Error>) {
         switch result {
         case .success(let post):
-            output.loadPostSucceeded(post)
+            serialQueue.async {
+                self.output.loadPostSucceeded(post)
+            }
         case .failure(let error):
-            output.loadPostsFailed(error)
+            output.loadPostFailed(error)
         }
     }
     

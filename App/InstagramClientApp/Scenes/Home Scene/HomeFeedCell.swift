@@ -43,5 +43,13 @@ final class HomeFeedCell: UICollectionViewCell {
         
         captionLabel.attributedText = attributedText
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+        usernameLabel.text = nil
+        postImageView.image = nil
+        captionLabel.text = nil
+    }
 
 }

@@ -14,7 +14,7 @@ public struct Post {
     public let imageUrl: String
     public let imageWidth: Float
     public let imageHeight: Float
-    public let creationDate: Double
+    public let creationDate: Date
     
     public init(_ user: User, _ caption: String, _ imageUrl: String, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double) {
         self.user = user
@@ -22,7 +22,7 @@ public struct Post {
         self.imageUrl = imageUrl
         self.imageWidth = imageWidth
         self.imageHeight = imageHeight
-        self.creationDate = creationDate
+        self.creationDate = Date(timeIntervalSince1970: creationDate)
     }
     
     public enum Order {

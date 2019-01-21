@@ -36,7 +36,10 @@ final class HomeFeedViewController: UICollectionViewController {
         
         let nib = HomeFeedCell.nibFromClassName()
         collectionView.register(nib, forCellWithReuseIdentifier: cellId)
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadAllPosts?()
     }
     
@@ -64,7 +67,7 @@ final class HomeFeedViewController: UICollectionViewController {
             cell.postImageView.cacheManager = self.cacheManager
             cell.postImageView.loadImage(from: imageUrlString, using: downloadPostImage)
             
-            let datePassed = ""
+            let datePassed = post.creationDate.description
             cell.setAttributedCaptionLabel(username: post.user.username,
                                            caption: post.caption,
                                            createdDate: datePassed)
@@ -91,7 +94,12 @@ extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
 
 extension HomeFeedViewController: PostView {
     func displayPost(_ post: Post) {
-        posts.insert(post, at: 0)
-        collectionView.reloadData()
+        let index = (self.posts.count > 0) ?
+            self.posts.firstIndex { post.creationDate >= $0.creationDate } ?? self.posts.count : 0
+        self.posts.insert(post, at: index)
+        
+        DispatchQueue.main.sync {
+            self.collectionView.insertItems(at: [IndexPath(item: index, section: 0)])
+        }
     }
 }

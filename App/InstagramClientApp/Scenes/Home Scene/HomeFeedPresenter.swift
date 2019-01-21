@@ -8,6 +8,10 @@
 
 import InstagramEngine
 
+protocol PostView: ErrorPresentable {
+    func displayPost(_ post: Post)
+}
+
 final class HomeFeedPresenter: LoadPostOutput {
     private let view: PostView
     
@@ -19,7 +23,7 @@ final class HomeFeedPresenter: LoadPostOutput {
         view.displayPost(post)
     }
     
-    func loadPostsFailed(_ error: HomeFeedUseCase.Error) {
+    func loadPostFailed(_ error: HomeFeedUseCase.Error) {
         view.displayError(error.localizedDescription)
     }
     
@@ -28,16 +32,8 @@ final class HomeFeedPresenter: LoadPostOutput {
     }
 }
 
-extension WeakRef: LoadPostOutput where T: LoadPostOutput {
-    func loadPostSucceeded(_ post: Post) {
-        object?.loadPostSucceeded(post)
-    }
-    
-    func loadPostsFailed(_ error: HomeFeedUseCase.Error) {
-        object?.loadPostsFailed(error)
-    }
-    
-    func downloadPostImageFailed(_ error: HomeFeedUseCase.Error) {
-        object?.downloadPostImageFailed(error)
+extension WeakRef: PostView where T: PostView {
+    func displayPost(_ post: Post) {
+        object?.displayPost(post)
     }
 }

@@ -28,7 +28,7 @@ final class UserSearchModule {
         service = UserProfileService(firebaseAuth: Auth.self,
                                      firebaseDatabase: Database.self,
                                      networking: URLSession.shared)
-        presenter = UserSearchPresenter(view: viewController)
+        presenter = UserSearchPresenter(view: WeakRef(viewController))
         useCase = SearchUseCase(client: service, output: presenter)
         
         router.viewControllerBehind = viewController

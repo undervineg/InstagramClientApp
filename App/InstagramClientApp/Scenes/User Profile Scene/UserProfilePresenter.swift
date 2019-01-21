@@ -15,10 +15,6 @@ protocol UserProfileView: ErrorPresentable {
     func toggleFollowButton(_ isFollowing: Bool)
 }
 
-protocol PostView: ErrorPresentable {
-    func displayPost(_ post: Post)
-}
-
 final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
     private let view: UserProfileView & PostView
     
@@ -50,7 +46,7 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
         view.displayPost(post)
     }
     
-    func loadPostsFailed(_ error: HomeFeedUseCase.Error) {
+    func loadPostFailed(_ error: HomeFeedUseCase.Error) {
         view.displayError(error.localizedDescription)
     }
     
@@ -86,11 +82,5 @@ extension WeakRef: UserProfileView where T: UserProfileView {
     
     func onLogoutSucceeded() {
         object?.onLogoutSucceeded()
-    }
-}
-
-extension WeakRef: PostView where T: PostView {
-    func displayPost(_ post: Post) {
-        object?.displayPost(post)
     }
 }
