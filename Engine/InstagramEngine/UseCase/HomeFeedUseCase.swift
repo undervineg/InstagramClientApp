@@ -29,11 +29,13 @@ public enum Sort {
 
 final public class HomeFeedUseCase {
     
-    private let client: LoadPostClient
+    private let postClient: LoadPostClient
+    private let profileClient: UserProfileClient
     private let output: LoadPostOutput
     
-    public init(client: LoadPostClient, output: LoadPostOutput) {
-        self.client = client
+    public init(postClient: LoadPostClient, profileClient: UserProfileClient, output: LoadPostOutput) {
+        self.postClient = postClient
+        self.profileClient = profileClient
         self.output = output
     }
     
@@ -41,6 +43,7 @@ final public class HomeFeedUseCase {
         case userIDNotExist
         case postsNotExist
         case postImageNotFound
+        case fetchFollowingListError
         
         public var localizedDescription: String {
             switch self {
@@ -50,26 +53,40 @@ final public class HomeFeedUseCase {
                 return "사용자의 게시물이 존재하지 않습니다."
             case .postImageNotFound:
                 return "일부 게시글의 이미지를 불러올 수 없습니다."
+            case .fetchFollowingListError:
+                return "사용자의 팔로우 리스트를 불러오는 데 문제가 발생했습니다."
             }
         }
     }
     
     public func loadAllPosts() {
-        client.fetchCurrentUserPost { [weak self] (result) in
+        profileClient.fetchFollowingListOfCurrentUser { [weak self] (result) in
             switch result {
-            case .success(let post):
-                self?.output.loadPostSucceeded(post)
-            case .failure(let error):
-                self?.output.loadPostsFailed(error)
+            case .success(let followingUsers):
+                self?.postClient.fetchCurrentUserPost { self?.handleLoadedPostResult($0) }
+                followingUsers.forEach { (uid) in
+                    self?.postClient.fetchUserPost(of: uid) { self?.handleLoadedPostResult($0) }
+                }
+            case .failure:
+                self?.output.loadPostsFailed(.fetchFollowingListError)
             }
+        }
+    }
+    
+    private func handleLoadedPostResult(_ result: Result<Post, HomeFeedUseCase.Error>) {
+        switch result {
+        case .success(let post):
+            output.loadPostSucceeded(post)
+        case .failure(let error):
+            output.loadPostsFailed(error)
         }
     }
     
     public func loadPosts(of uid: String?, orderBy order: Post.Order) {
         if let uid = uid {
-            client.fetchUserPost(of: uid, handleLoadPostsResult)
+            postClient.fetchUserPost(of: uid, handleLoadPostsResult)
         } else {
-            client.fetchCurrentUserPost(with: order, handleLoadPostsResult)
+            postClient.fetchCurrentUserPost(with: order, handleLoadPostsResult)
         }
     }
     
@@ -83,7 +100,7 @@ final public class HomeFeedUseCase {
     }
     
     public func downloadPostImage(from url: URL, completion: @escaping (Data) -> Void) {
-        client.downloadPostImage(from: url) { [weak self] (result) in
+        postClient.downloadPostImage(from: url) { [weak self] (result) in
             switch result {
             case .success(let data):
                 completion(data)

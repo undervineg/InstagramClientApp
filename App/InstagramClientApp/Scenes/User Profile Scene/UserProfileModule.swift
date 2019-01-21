@@ -35,7 +35,7 @@ final class UserProfileModule {
                                   profileService: profileService)
         presenter = UserProfilePresenter(view: WeakRef(viewController))
         profileUseCase = UserProfileUseCase(client: profileService, output: presenter)
-        postUseCase = HomeFeedUseCase(client: postService, output: presenter)
+        postUseCase = HomeFeedUseCase(postClient: postService, profileClient: profileService, output: presenter)
         
         router.viewControllerBehind = viewController
         

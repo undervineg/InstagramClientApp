@@ -17,6 +17,8 @@ public protocol UserProfileClient {
     func followUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void)
     func unfollowUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void)
     func checkIsFollowing(_ uid: String, _ completion: @escaping (Result<Bool, Error>) -> Void)
+    func fetchFollowingListOfCurrentUser(_ completion: @escaping (Result<[String], Error>) -> Void)
+    func fetchFollowingList(of uid: String, _ completion: @escaping (Result<[String], Error>) -> Void)
 }
 
 public protocol UserProfileUseCaseOutput {

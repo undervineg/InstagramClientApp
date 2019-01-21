@@ -32,7 +32,7 @@ final class HomeModule {
                               networking: URLSession.shared,
                               profileService: profileService)
         presenter = HomeFeedPresenter(view: viewController)
-        useCase = HomeFeedUseCase(client: service, output: presenter)
+        useCase = HomeFeedUseCase(postClient: service, profileClient: profileService, output: presenter)
         
         viewController.loadAllPosts = useCase.loadAllPosts
         viewController.downloadPostImage = useCase.downloadPostImage

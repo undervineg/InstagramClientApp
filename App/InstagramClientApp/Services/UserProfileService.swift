@@ -130,4 +130,22 @@ final class UserProfileService: UserProfileClient {
             }
         }
     }
+    
+    func fetchFollowingListOfCurrentUser(_ completion: @escaping (Result<[String], Error>) -> Void) {
+        guard let currentUserId = auth.currentUserId else { return }
+        fetchFollowingList(of: currentUserId, completion)
+    }
+    
+    func fetchFollowingList(of uid: String, _ completion: @escaping (Result<[String], Error>) -> Void) {
+        let refs: [Reference] = [Reference.directory(Keys.Database.followingDir), .directory(uid)]
+        database.fetchAll(under: refs) { (result: Result<[String: Int], Error>) in
+            switch result {
+            case .success(let followingUserData):
+                let followingUidList = followingUserData.keys.compactMap { $0 }
+                completion(.success(followingUidList))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }
