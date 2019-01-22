@@ -23,7 +23,6 @@
                         <rect key="frame" x="0.0" y="56" width="376" height="376"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="ue5-H0-HMq" secondAttribute="height" multiplier="1:1" id="mon-vf-1Re"/>
-                            <constraint firstAttribute="width" constant="376" id="xOP-T3-w9u"/>
                         </constraints>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ymp-MT-cTv" customClass="LoadableImageView" customModule="InstagramClientApp" customModuleProvider="target">
@@ -93,6 +92,7 @@
                 <constraint firstItem="ue5-H0-HMq" firstAttribute="top" secondItem="ICH-rb-ZMQ" secondAttribute="bottom" id="5dH-Dn-mgC"/>
                 <constraint firstItem="ue5-H0-HMq" firstAttribute="top" secondItem="dHq-Yf-kmN" secondAttribute="bottom" id="LfB-g1-XzJ"/>
                 <constraint firstItem="ue5-H0-HMq" firstAttribute="top" secondItem="ymp-MT-cTv" secondAttribute="bottom" constant="8" id="PGn-zt-HKZ"/>
+                <constraint firstItem="ue5-H0-HMq" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="Vpf-xR-Fbt"/>
                 <constraint firstItem="dHq-Yf-kmN" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="XcA-dS-x3N"/>
                 <constraint firstAttribute="trailing" secondItem="rnW-IT-14e" secondAttribute="trailing" id="YSe-Zk-2ND"/>
                 <constraint firstItem="ICH-rb-ZMQ" firstAttribute="leading" secondItem="dHq-Yf-kmN" secondAttribute="trailing" id="bs9-vN-q2j"/>
