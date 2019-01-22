@@ -32,7 +32,7 @@ class BasicRouter: Routable, Closable {
     func close() {
         openTransition?.close()
     }
-    
+
     func close(to destVC: UIViewController) {
         openTransition?.close(to: destVC)
     }

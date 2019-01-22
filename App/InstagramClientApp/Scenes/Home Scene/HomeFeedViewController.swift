@@ -17,42 +17,29 @@ final class HomeFeedViewController: UICollectionViewController {
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
     
-    private var posts: [Post] = []
+    private var router: HomeFeedRouter.Routes?
     
+    private var posts: [Post] = []
     private var cacheManager: Cacheable?
     
-    convenience init(cacheManager: Cacheable) {
+    convenience init(router: HomeFeedRouter.Routes, cacheManager: Cacheable) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
+        self.router = router
         self.cacheManager = cacheManager
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.backgroundColor = .white
+        configureExtraUI()
         
-        navigationItem.titleView = UIImageView(image: UIImage(named: "logo2"))
+        setupNotificationsForReloadNewPosts()
         
-        let nib = HomeFeedCell.nibFromClassName()
-        collectionView.register(nib, forCellWithReuseIdentifier: cellId)
-        
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
-        collectionView.refreshControl = refreshControl
-        
-        loadAllPosts?()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.shareNewFeed, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.followNewUser, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.unfollowOldUser, object: nil)
-    }
-    
-    @objc private func refresh(_ sender: UIRefreshControl) {
-        posts.removeAll()
         loadAllPosts?()
     }
     
+    // MARK: UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -85,6 +72,40 @@ final class HomeFeedViewController: UICollectionViewController {
         return cell
     }
     
+    // MARK: Actions
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        posts.removeAll()
+        loadAllPosts?()
+    }
+    
+    @objc private func openCamera(_ sender: UIBarButtonItem) {
+        router?.openCamera()
+    }
+    
+    //MARK: Private Methods
+    private func setupNotificationsForReloadNewPosts() {
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.shareNewFeed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.followNewUser, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.unfollowOldUser, object: nil)
+    }
+    
+    private func configureExtraUI() {
+        collectionView.backgroundColor = .white
+        
+        navigationItem.titleView = UIImageView(image: UIImage(named: "logo2"))
+        
+        let nib = HomeFeedCell.nibFromClassName()
+        collectionView.register(nib, forCellWithReuseIdentifier: cellId)
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+        
+        let camera = UIBarButtonItem(image: UIImage(named: "camera3"), style: .plain, target: self, action: #selector(openCamera(_:)))
+        navigationItem.leftBarButtonItem = camera
+        navigationController?.navigationBar.tintColor = .black
+    }
+
 }
 
 extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {

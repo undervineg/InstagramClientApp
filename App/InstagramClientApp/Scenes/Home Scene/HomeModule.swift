@@ -12,6 +12,7 @@ import InstagramEngine
 
 final class HomeModule {
     let viewController: HomeFeedViewController
+    let router: HomeFeedRouter
     private let service: PostService
     private let profileService: UserProfileService
     private let presenter: HomeFeedPresenter
@@ -22,8 +23,9 @@ final class HomeModule {
     }
     
     init() {
+        router = HomeFeedRouter()
         let cacheManager = CacheManager()
-        viewController = HomeFeedViewController(cacheManager: cacheManager)
+        viewController = HomeFeedViewController(router: router, cacheManager: cacheManager)
         profileService = UserProfileService(firebaseAuth: Auth.self,
                                             firebaseDatabase: Database.self,
                                             networking: URLSession.shared)
@@ -37,5 +39,7 @@ final class HomeModule {
         viewController.loadAllPosts = useCase.loadAllPosts
         viewController.downloadPostImage = useCase.downloadPostImage
         viewController.downloadProfileImage = profileService.downloadProfileImage
+        
+        router.viewControllerBehind = viewController
     }
 }

@@ -68,8 +68,16 @@
 		0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0884511A21DA665A008B8121 /* AppDelegate.swift */; };
 		0884512221DA665C008B8121 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0884512121DA665C008B8121 /* Assets.xcassets */; };
 		0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0884512321DA665C008B8121 /* LaunchScreen.storyboard */; };
+		0887639421F6C44F00F8AE49 /* HomeFeedRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639321F6C44F00F8AE49 /* HomeFeedRouter.swift */; };
+		0887639621F6C47700F8AE49 /* CameraRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639521F6C47700F8AE49 /* CameraRoute.swift */; };
+		0887639921F6C5A400F8AE49 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639721F6C5A400F8AE49 /* CameraViewController.swift */; };
+		0887639A21F6C5A400F8AE49 /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0887639821F6C5A400F8AE49 /* CameraViewController.xib */; };
+		0887639D21F6C62900F8AE49 /* CameraModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639C21F6C62900F8AE49 /* CameraModule.swift */; };
+		0887639F21F6C6B600F8AE49 /* CameraRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639E21F6C6B600F8AE49 /* CameraRouter.swift */; };
 		0889079F21F05C500045B145 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0889079E21F05C500045B145 /* Reference.swift */; };
 		088907A221F074C80045B145 /* UserProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088907A121F074C80045B145 /* UserProfilePhotoCell.swift */; };
+		0891AE0721F6E6270002A7CB /* HomeFeedRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0621F6E6270002A7CB /* HomeFeedRoute.swift */; };
+		0891AE0921F6E6570002A7CB /* SettingsRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0821F6E6570002A7CB /* SettingsRoute.swift */; };
 		08962F2121F0EF3E00A3C5D3 /* LoadableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */; };
 		08962F2321F0F5AE00A3C5D3 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2221F0F5AE00A3C5D3 /* Sort.swift */; };
 		08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */; };
@@ -198,8 +206,16 @@
 		0884512621DA665C008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0884512B21DA665C008B8121 /* InstagramClientAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstagramClientAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0884513121DA665C008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0887639321F6C44F00F8AE49 /* HomeFeedRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedRouter.swift; sourceTree = "<group>"; };
+		0887639521F6C47700F8AE49 /* CameraRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRoute.swift; sourceTree = "<group>"; };
+		0887639721F6C5A400F8AE49 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		0887639821F6C5A400F8AE49 /* CameraViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
+		0887639C21F6C62900F8AE49 /* CameraModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModule.swift; sourceTree = "<group>"; };
+		0887639E21F6C6B600F8AE49 /* CameraRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRouter.swift; sourceTree = "<group>"; };
 		0889079E21F05C500045B145 /* Reference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reference.swift; sourceTree = "<group>"; };
 		088907A121F074C80045B145 /* UserProfilePhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePhotoCell.swift; sourceTree = "<group>"; };
+		0891AE0621F6E6270002A7CB /* HomeFeedRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedRoute.swift; sourceTree = "<group>"; };
+		0891AE0821F6E6570002A7CB /* SettingsRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoute.swift; sourceTree = "<group>"; };
 		08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableImageView.swift; sourceTree = "<group>"; };
 		08962F2221F0F5AE00A3C5D3 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderCell.swift; sourceTree = "<group>"; };
@@ -333,6 +349,7 @@
 				085E525B21F176C60029C7BE /* HomeFeedCell.swift */,
 				084FF5DC21EDAAFD000EA933 /* HomeFeedViewController.swift */,
 				085E526421F2F8C70029C7BE /* HomeFeedPresenter.swift */,
+				0887639321F6C44F00F8AE49 /* HomeFeedRouter.swift */,
 				084FF5E421EDACF0000EA933 /* HomeModule.swift */,
 			);
 			path = "Home Scene";
@@ -367,6 +384,7 @@
 		084FF60721EEF0C9000EA933 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				0887639B21F6C5A700F8AE49 /* Camera Scene */,
 				084FF60521EEF073000EA933 /* Search Scene */,
 				084FF60421EEF05E000EA933 /* Home Scene */,
 				084FF61421EF07BB000EA933 /* Share Photo Scene */,
@@ -516,6 +534,9 @@
 				084FF5EA21EDB822000EA933 /* PhotoSelectorRoute.swift */,
 				084FF60C21EEF6B4000EA933 /* SharePhotoRoute.swift */,
 				08FE157921F4579700A58355 /* UserProfileRoute.swift */,
+				0887639521F6C47700F8AE49 /* CameraRoute.swift */,
+				0891AE0621F6E6270002A7CB /* HomeFeedRoute.swift */,
+				0891AE0821F6E6570002A7CB /* SettingsRoute.swift */,
 			);
 			path = Routes;
 			sourceTree = "<group>";
@@ -570,12 +591,31 @@
 			path = InstagramClientAppTests;
 			sourceTree = "<group>";
 		};
+		0887639B21F6C5A700F8AE49 /* Camera Scene */ = {
+			isa = PBXGroup;
+			children = (
+				0891AE0A21F6FF4A0002A7CB /* xib */,
+				0887639721F6C5A400F8AE49 /* CameraViewController.swift */,
+				0887639E21F6C6B600F8AE49 /* CameraRouter.swift */,
+				0887639C21F6C62900F8AE49 /* CameraModule.swift */,
+			);
+			path = "Camera Scene";
+			sourceTree = "<group>";
+		};
 		088907A021F05D3D0045B145 /* Types */ = {
 			isa = PBXGroup;
 			children = (
 				0889079E21F05C500045B145 /* Reference.swift */,
 			);
 			path = Types;
+			sourceTree = "<group>";
+		};
+		0891AE0A21F6FF4A0002A7CB /* xib */ = {
+			isa = PBXGroup;
+			children = (
+				0887639821F6C5A400F8AE49 /* CameraViewController.xib */,
+			);
+			path = xib;
 			sourceTree = "<group>";
 		};
 		08F9848021E4B37B00DE6E78 /* Frameworks */ = {
@@ -740,6 +780,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0887639A21F6C5A400F8AE49 /* CameraViewController.xib in Resources */,
 				085E527421F3A1030029C7BE /* UserSearchCell.xib in Resources */,
 				0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */,
 				0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */,
@@ -878,6 +919,7 @@
 				08F984C221E5E5F000DE6E78 /* MainRouter.swift in Sources */,
 				084FF60921EEF472000EA933 /* SharePhotoViewController.swift in Sources */,
 				08F984CA21E6878E00DE6E78 /* AuthService.swift in Sources */,
+				0887639421F6C44F00F8AE49 /* HomeFeedRouter.swift in Sources */,
 				084FF5ED21EDB936000EA933 /* PhotoSelectorModule.swift in Sources */,
 				086E6C9821DE91C70094B808 /* Transition.swift in Sources */,
 				084FF5FD21EEC56E000EA933 /* PhotoSelectorHeader.swift in Sources */,
@@ -893,9 +935,11 @@
 				084FF5A621EB5856000EA933 /* LoginPresenter.swift in Sources */,
 				084FF5FB21EDDB20000EA933 /* PhotoSelectorCell.swift in Sources */,
 				085E526C21F368F70029C7BE /* Keys.swift in Sources */,
+				0887639621F6C47700F8AE49 /* CameraRoute.swift in Sources */,
 				084FF5B021EB8A32000EA933 /* SplashModule.swift in Sources */,
 				08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */,
 				08F984D021E691B100DE6E78 /* SplashPresenter.swift in Sources */,
+				0887639F21F6C6B600F8AE49 /* CameraRouter.swift in Sources */,
 				085E527A21F3A82D0029C7BE /* UserSearchPresenter.swift in Sources */,
 				084FF5B621EB8FD0000EA933 /* UserProfileModule.swift in Sources */,
 				08FE157721F4574900A58355 /* UserSearchRouter.swift in Sources */,
@@ -905,8 +949,10 @@
 				084FF5B221EB8D57000EA933 /* MainModule.swift in Sources */,
 				086E6CB021DF79070094B808 /* BasicRouter.swift in Sources */,
 				084FF5D621ED75F4000EA933 /* RegisterRoute.swift in Sources */,
+				0891AE0721F6E6270002A7CB /* HomeFeedRoute.swift in Sources */,
 				084FF60B21EEF582000EA933 /* UserProfileRouter.swift in Sources */,
 				08962F2321F0F5AE00A3C5D3 /* Sort.swift in Sources */,
+				0887639921F6C5A400F8AE49 /* CameraViewController.swift in Sources */,
 				084FF62621EF4787000EA933 /* ShareService.swift in Sources */,
 				085E526221F2F31B0029C7BE /* PostService.swift in Sources */,
 				08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */,
@@ -918,6 +964,7 @@
 				0889079F21F05C500045B145 /* Reference.swift in Sources */,
 				086E6C9C21DE91ED0094B808 /* PushTransition.swift in Sources */,
 				084FF61621EF07D1000EA933 /* SharePhotoModule.swift in Sources */,
+				0891AE0921F6E6570002A7CB /* SettingsRoute.swift in Sources */,
 				084FF5A421EB54B7000EA933 /* LoginService.swift in Sources */,
 				085E527321F3A1030029C7BE /* UserSearchCell.swift in Sources */,
 				084FF60F21EEF6F1000EA933 /* PhotoSelectorRouter.swift in Sources */,
@@ -929,6 +976,7 @@
 				084FF60D21EEF6B4000EA933 /* SharePhotoRoute.swift in Sources */,
 				084FF5D421ED75E3000EA933 /* LoginRoute.swift in Sources */,
 				08F9849721E4EBE500DE6E78 /* WeakRef.swift in Sources */,
+				0887639D21F6C62900F8AE49 /* CameraModule.swift in Sources */,
 				084FF5EB21EDB822000EA933 /* PhotoSelectorRoute.swift in Sources */,
 				08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */,
 				084FF62821EF4818000EA933 /* SharePhotoPresenter.swift in Sources */,
