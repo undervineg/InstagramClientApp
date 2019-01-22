@@ -8,10 +8,17 @@
 
 import UIKit
 import AVFoundation
+import InstagramEngine
 
 final class CameraViewController: UIViewController {
     // MARK: UI Properties
     private var previewLayer: AVCaptureVideoPreviewLayer?
+    private var photoCapturedView: PhotoCapturedView?
+    
+    private var isPhotoCapturedViewShowing: Bool {
+        get { return !(photoCapturedView?.isHidden ?? true) }
+        set(v) { photoCapturedView?.isHidden = !v }
+    }
     
     // MARK: Private Properties
     private var router: CameraRouter.Routes?
@@ -38,11 +45,24 @@ final class CameraViewController: UIViewController {
         }
         
         setupPreviewLayer()
+        setupPhotoCapturedView()
         
         self.captureSession.startRunning()
         self.isSessionRunning = true
-        
-        
+    }
+    
+    private func setupPhotoCapturedView() {
+        let photoCapturedView = PhotoCapturedView(frame: view.frame)
+        view.addSubview(photoCapturedView)
+        photoCapturedView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            photoCapturedView.topAnchor.constraint(equalTo: view.topAnchor),
+            photoCapturedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            photoCapturedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            photoCapturedView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        self.photoCapturedView = photoCapturedView
+        isPhotoCapturedViewShowing = false
     }
     
     // MARK: Actions
@@ -57,10 +77,24 @@ final class CameraViewController: UIViewController {
         guard let photoOutput = self.photoOutput else { return }
 
         let settings = AVCapturePhotoSettings()
+        guard let previewFormatType = settings.availablePreviewPhotoPixelFormatTypes.first else { return }
+        settings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewFormatType]
         let processor = CameraCaptureProcessor(photoOutput: photoOutput, settings: settings)
         self.capturedDelegate = processor
         
+        processor.finishProcessingPhotoCompletion = setCapturedImage
+        
         processor.capturePhoto()
+    }
+    
+    private func setCapturedImage(_ result: Result<Data, Error>) {
+        switch result {
+        case .success(let photoData):
+            isPhotoCapturedViewShowing = true
+            photoCapturedView?.capturedImageView.image = UIImage(data: photoData)
+        case .failure(let error):
+            print(error)
+        }
     }
     
     @IBAction func backButtonDidTap(_ sender: UIButton) {
@@ -129,11 +163,14 @@ extension CameraViewController: ErrorPresentable {
         case constructDeviceInputError
         case addDeviceInputError
         case addDeviceOutputError
+        case photoProcessingError
+        case photoDataNotExist
         
         var localizedDescription: String {
             var sessionErrorMessage = ""
             switch self {
             case .notAuthorized: return "카메라 접근 권한이 없습니다."
+            case .photoProcessingError, .photoDataNotExist: return "캡쳐 중 문제가 발생했습니다."
             case .deviceUnavailable: sessionErrorMessage = "Device unavailable"
             case .constructDeviceInputError: sessionErrorMessage = "Error occur constructing device input"
             case .addDeviceInputError: sessionErrorMessage = "Error occur adding device input"
@@ -155,30 +192,6 @@ extension CameraViewController: ErrorPresentable {
         })
         self.displayError(error.localizedDescription, with: [openConfigAction]) { _ in
             self.router?.openHomeFeedPage()
-        }
-    }
-}
-
-final class CameraCaptureProcessor: NSObject {
-    private var photoOutput: AVCapturePhotoOutput!
-    private(set) var settings: AVCapturePhotoSettings!
-    
-    convenience init(photoOutput: AVCapturePhotoOutput, settings: AVCapturePhotoSettings) {
-        self.init()
-        self.photoOutput = photoOutput
-        self.settings = settings
-    }
-    
-    func capturePhoto() {
-        photoOutput.capturePhoto(with: settings, delegate: self)
-    }
-}
-
-extension CameraCaptureProcessor: AVCapturePhotoCaptureDelegate {
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        if let error = error {
-            print(error)
-            return
         }
     }
 }

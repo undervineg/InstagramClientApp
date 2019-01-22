@@ -77,7 +77,10 @@
 		088907A221F074C80045B145 /* UserProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088907A121F074C80045B145 /* UserProfilePhotoCell.swift */; };
 		0891AE0721F6E6270002A7CB /* HomeFeedRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0621F6E6270002A7CB /* HomeFeedRoute.swift */; };
 		0891AE0921F6E6570002A7CB /* SettingsRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0821F6E6570002A7CB /* SettingsRoute.swift */; };
-		0891AE0B21F748610002A7CB /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0887639821F6C5A400F8AE49 /* CameraViewController.xib */; };
+		0891AE0D21F780ED0002A7CB /* CameraCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0C21F780ED0002A7CB /* CameraCaptureProcessor.swift */; };
+		0891AE1221F78D2E0002A7CB /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0887639821F6C5A400F8AE49 /* CameraViewController.xib */; };
+		0891AE1421F78DD30002A7CB /* PhotoCapturedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE1321F78DD30002A7CB /* PhotoCapturedView.swift */; };
+		0891AE1821F78ECB0002A7CB /* UIView+NibExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE1721F78ECB0002A7CB /* UIView+NibExtension.swift */; };
 		08962F2121F0EF3E00A3C5D3 /* LoadableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */; };
 		08962F2321F0F5AE00A3C5D3 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2221F0F5AE00A3C5D3 /* Sort.swift */; };
 		08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */; };
@@ -216,6 +219,9 @@
 		088907A121F074C80045B145 /* UserProfilePhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePhotoCell.swift; sourceTree = "<group>"; };
 		0891AE0621F6E6270002A7CB /* HomeFeedRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedRoute.swift; sourceTree = "<group>"; };
 		0891AE0821F6E6570002A7CB /* SettingsRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoute.swift; sourceTree = "<group>"; };
+		0891AE0C21F780ED0002A7CB /* CameraCaptureProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureProcessor.swift; sourceTree = "<group>"; };
+		0891AE1321F78DD30002A7CB /* PhotoCapturedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCapturedView.swift; sourceTree = "<group>"; };
+		0891AE1721F78ECB0002A7CB /* UIView+NibExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+NibExtension.swift"; sourceTree = "<group>"; };
 		08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableImageView.swift; sourceTree = "<group>"; };
 		08962F2221F0F5AE00A3C5D3 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderCell.swift; sourceTree = "<group>"; };
@@ -595,7 +601,9 @@
 			isa = PBXGroup;
 			children = (
 				0891AE0A21F6FF4A0002A7CB /* xib */,
+				0891AE1321F78DD30002A7CB /* PhotoCapturedView.swift */,
 				0887639721F6C5A400F8AE49 /* CameraViewController.swift */,
+				0891AE0C21F780ED0002A7CB /* CameraCaptureProcessor.swift */,
 				0887639E21F6C6B600F8AE49 /* CameraRouter.swift */,
 				0887639C21F6C62900F8AE49 /* CameraModule.swift */,
 			);
@@ -654,6 +662,7 @@
 		08F9849121E4D71400DE6E78 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				0891AE1721F78ECB0002A7CB /* UIView+NibExtension.swift */,
 				08FE157B21F5D12D00A58355 /* Date+Extension.swift */,
 				085E526921F35DC40029C7BE /* CacheManager.swift */,
 				08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */,
@@ -780,7 +789,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0891AE0B21F748610002A7CB /* CameraViewController.xib in Resources */,
 				085E527421F3A1030029C7BE /* UserSearchCell.xib in Resources */,
 				0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */,
 				0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */,
@@ -789,6 +797,7 @@
 				0858767821DC5CC700C32422 /* RegisterUserViewController.xib in Resources */,
 				085E525E21F176C60029C7BE /* HomeFeedCell.xib in Resources */,
 				0884512221DA665C008B8121 /* Assets.xcassets in Resources */,
+				0891AE1221F78D2E0002A7CB /* CameraViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -929,6 +938,7 @@
 				085E526521F2F8C70029C7BE /* HomeFeedPresenter.swift in Sources */,
 				08F9847D21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift in Sources */,
 				084FF5F121EDCB76000EA933 /* PhotosWrapper.swift in Sources */,
+				0891AE1421F78DD30002A7CB /* PhotoCapturedView.swift in Sources */,
 				084FF5DE21EDAAFD000EA933 /* HomeFeedViewController.swift in Sources */,
 				08BF0C6E21E8BB27004CE846 /* LoginViewController.swift in Sources */,
 				08F984AB21E53D2E00DE6E78 /* MainRoute.swift in Sources */,
@@ -938,6 +948,7 @@
 				0887639621F6C47700F8AE49 /* CameraRoute.swift in Sources */,
 				084FF5B021EB8A32000EA933 /* SplashModule.swift in Sources */,
 				08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */,
+				0891AE1821F78ECB0002A7CB /* UIView+NibExtension.swift in Sources */,
 				08F984D021E691B100DE6E78 /* SplashPresenter.swift in Sources */,
 				0887639F21F6C6B600F8AE49 /* CameraRouter.swift in Sources */,
 				085E527A21F3A82D0029C7BE /* UserSearchPresenter.swift in Sources */,
@@ -961,6 +972,7 @@
 				085E525D21F176C60029C7BE /* HomeFeedCell.swift in Sources */,
 				084FF5F321EDD0B7000EA933 /* PhotoService.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseStorageWrapper.swift in Sources */,
+				0891AE0D21F780ED0002A7CB /* CameraCaptureProcessor.swift in Sources */,
 				0889079F21F05C500045B145 /* Reference.swift in Sources */,
 				086E6C9C21DE91ED0094B808 /* PushTransition.swift in Sources */,
 				084FF61621EF07D1000EA933 /* SharePhotoModule.swift in Sources */,

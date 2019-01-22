@@ -87,12 +87,3 @@ final class UserProfileHeaderCell: UICollectionViewCell {
     }
 }
 
-extension UIView {
-    class func nibFromClassName() -> UINib {
-        return UINib(nibName: String(describing: self), bundle: nil)
-    }
-    
-    class func viewFromNib() -> UIView? {
-        return Bundle.main.loadNibNamed(String(describing: self), owner: self, options: nil)?.first as? UIView
-    }
-}
