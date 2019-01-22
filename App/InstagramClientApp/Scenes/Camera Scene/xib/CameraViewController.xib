@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CameraViewController" customModule="InstagramClientApp" customModuleProvider="target">
             <connections>
-                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="JNh-NC-VRp"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -28,7 +28,7 @@
                     </constraints>
                     <state key="normal" image="capture_photo"/>
                     <connections>
-                        <action selector="captureButtonDidTap:" destination="-1" eventType="touchUpInside" id="y8N-yx-gjb"/>
+                        <action selector="captureButtonDidTap:" destination="-1" eventType="touchUpInside" id="fmK-00-7kY"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SH3-hR-QOd">
@@ -39,7 +39,7 @@
                     </constraints>
                     <state key="normal" image="right_arrow_shadow"/>
                     <connections>
-                        <action selector="backButtonDidTap:" destination="-1" eventType="touchUpInside" id="0hx-eP-dZi"/>
+                        <action selector="backButtonDidTap:" destination="-1" eventType="touchUpInside" id="gc7-S1-gTh"/>
                     </connections>
                 </button>
             </subviews>

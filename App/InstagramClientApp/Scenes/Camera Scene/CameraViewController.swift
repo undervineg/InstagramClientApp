@@ -9,14 +9,16 @@
 import UIKit
 import AVFoundation
 
-class CameraViewController: UIViewController {
-    
+final class CameraViewController: UIViewController {
     // MARK: UI Properties
+    private var previewLayer: AVCaptureVideoPreviewLayer?
     
     // MARK: Private Properties
     private var router: CameraRouter.Routes?
-    private let sessionQueue = DispatchQueue(label: "com.instagramApp.cameraSessionQueue", qos: .userInitiated)
     private let captureSession: AVCaptureSession = AVCaptureSession()
+    private var isSessionRunning: Bool = false
+    private var photoOutput: AVCapturePhotoOutput?
+    private var capturedDelegate: CameraCaptureProcessor?
     
     // MARK: Init
     convenience init(router: CameraRouter.Routes) {
@@ -28,28 +30,37 @@ class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sessionQueue.async {
-            self.checkDeviceAuthorization {
-                self.displayAlertWithOpenSettings($0)
-            }
-            self.configureSession {
-                self.displayAlertAndClosePage($0)
-            }
+        self.checkDeviceAuthorization {
+            self.displayAlertWithOpenSettings($0)
+        }
+        self.configureSession {
+            self.displayAlertAndClosePage($0)
         }
         
         setupPreviewLayer()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        sessionQueue.async {
-            self.captureSession.startRunning()
-        }
+        
+        self.captureSession.startRunning()
+        self.isSessionRunning = true
+        
+        
     }
     
     // MARK: Actions
     @IBAction func captureButtonDidTap(_ sender: UIButton) {
+        guard isSessionRunning else { return }
         
+        if let previewLayerOrientation = previewLayer?.connection?.videoOrientation {
+            let photoOutputConnection = photoOutput?.connection(with: .video)
+            photoOutputConnection?.videoOrientation = previewLayerOrientation
+        }
+        
+        guard let photoOutput = self.photoOutput else { return }
+
+        let settings = AVCapturePhotoSettings()
+        let processor = CameraCaptureProcessor(photoOutput: photoOutput, settings: settings)
+        self.capturedDelegate = processor
+        
+        processor.capturePhoto()
     }
     
     @IBAction func backButtonDidTap(_ sender: UIButton) {
@@ -87,6 +98,7 @@ extension CameraViewController {
             return
         }
         captureSession.addOutput(output)
+        self.photoOutput = output
         
         captureSession.commitConfiguration()
     }
@@ -95,10 +107,8 @@ extension CameraViewController {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized: return
         case .notDetermined:
-            sessionQueue.suspend()
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 granted ? nil : completion(.notAuthorized)
-                self.sessionQueue.resume()
             }
         default: completion(.notAuthorized)
         }
@@ -108,6 +118,7 @@ extension CameraViewController {
         let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer.frame = view.frame
         view.layer.insertSublayer(previewLayer, at: 0)
+        self.previewLayer = previewLayer
     }
 }
 
@@ -144,6 +155,30 @@ extension CameraViewController: ErrorPresentable {
         })
         self.displayError(error.localizedDescription, with: [openConfigAction]) { _ in
             self.router?.openHomeFeedPage()
+        }
+    }
+}
+
+final class CameraCaptureProcessor: NSObject {
+    private var photoOutput: AVCapturePhotoOutput!
+    private(set) var settings: AVCapturePhotoSettings!
+    
+    convenience init(photoOutput: AVCapturePhotoOutput, settings: AVCapturePhotoSettings) {
+        self.init()
+        self.photoOutput = photoOutput
+        self.settings = settings
+    }
+    
+    func capturePhoto() {
+        photoOutput.capturePhoto(with: settings, delegate: self)
+    }
+}
+
+extension CameraCaptureProcessor: AVCapturePhotoCaptureDelegate {
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if let error = error {
+            print(error)
+            return
         }
     }
 }

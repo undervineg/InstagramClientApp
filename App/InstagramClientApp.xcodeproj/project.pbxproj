@@ -71,13 +71,13 @@
 		0887639421F6C44F00F8AE49 /* HomeFeedRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639321F6C44F00F8AE49 /* HomeFeedRouter.swift */; };
 		0887639621F6C47700F8AE49 /* CameraRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639521F6C47700F8AE49 /* CameraRoute.swift */; };
 		0887639921F6C5A400F8AE49 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639721F6C5A400F8AE49 /* CameraViewController.swift */; };
-		0887639A21F6C5A400F8AE49 /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0887639821F6C5A400F8AE49 /* CameraViewController.xib */; };
 		0887639D21F6C62900F8AE49 /* CameraModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639C21F6C62900F8AE49 /* CameraModule.swift */; };
 		0887639F21F6C6B600F8AE49 /* CameraRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639E21F6C6B600F8AE49 /* CameraRouter.swift */; };
 		0889079F21F05C500045B145 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0889079E21F05C500045B145 /* Reference.swift */; };
 		088907A221F074C80045B145 /* UserProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088907A121F074C80045B145 /* UserProfilePhotoCell.swift */; };
 		0891AE0721F6E6270002A7CB /* HomeFeedRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0621F6E6270002A7CB /* HomeFeedRoute.swift */; };
 		0891AE0921F6E6570002A7CB /* SettingsRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0821F6E6570002A7CB /* SettingsRoute.swift */; };
+		0891AE0B21F748610002A7CB /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0887639821F6C5A400F8AE49 /* CameraViewController.xib */; };
 		08962F2121F0EF3E00A3C5D3 /* LoadableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */; };
 		08962F2321F0F5AE00A3C5D3 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2221F0F5AE00A3C5D3 /* Sort.swift */; };
 		08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */; };
@@ -780,7 +780,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0887639A21F6C5A400F8AE49 /* CameraViewController.xib in Resources */,
+				0891AE0B21F748610002A7CB /* CameraViewController.xib in Resources */,
 				085E527421F3A1030029C7BE /* UserSearchCell.xib in Resources */,
 				0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */,
 				0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */,
