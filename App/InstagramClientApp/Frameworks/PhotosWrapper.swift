@@ -10,6 +10,7 @@ import Photos
 
 protocol PhotosWrapper {
     static func fetchAllPhotos(limit: Int, isAscending: Bool, _ completion: @escaping (Data?, Bool) -> Void)
+    static func savePhoto(data: Data, _ completion: @escaping (Error?) -> Void)
 }
 
 extension PHAsset: PhotosWrapper {
@@ -31,6 +32,15 @@ extension PHAsset: PhotosWrapper {
                     completion(data, isAllPhotosFetched)
                 })
             }
+        }
+    }
+    
+    static func savePhoto(data: Data, _ completion: @escaping (Error?) -> Void) {
+        PHPhotoLibrary.shared().performChanges({
+            guard let image = UIImage.init(data: data) else { return }
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }) { (success, error) in
+            completion(error)
         }
     }
 }

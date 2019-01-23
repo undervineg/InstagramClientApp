@@ -13,8 +13,7 @@ protocol PhotoSelectorView: ErrorPresentable {
     func displayAllPhotos(_ photoData: Data, _ isAllPhotosFetched: Bool)
 }
 
-final class PhotoSelectorPresenter: LoadPhotoUseCaseOutput {
-    
+final class PhotoSelectorPresenter: PhotoUseCaseOutput {
     private let view: PhotoSelectorView
     
     init(view: PhotoSelectorView) {
@@ -25,8 +24,16 @@ final class PhotoSelectorPresenter: LoadPhotoUseCaseOutput {
         view.displayAllPhotos(photoData, isAllPhotosFetched)
     }
     
-    func fetchAllPhotosFailed(_ error: LoadPhotoUseCase.Error) {
+    func fetchAllPhotosFailed(_ error: PhotoUseCase.Error) {
         view.displayError(error.localizedDescription)
+    }
+    
+    func savePhotoSucceeded() {
+        
+    }
+    
+    func savePhotoFailed(_ error: PhotoUseCase.Error) {
+        
     }
 }
 

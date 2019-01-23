@@ -15,7 +15,7 @@ final class PhotoSelectorModule {
     let viewController: PhotoSelectorViewController
     private let service: PhotoService
     private let presenter: PhotoSelectorPresenter
-    private let useCase: LoadPhotoUseCase
+    private let useCase: PhotoUseCase
     
     var withNavigation: UINavigationController {
         return UINavigationController(rootViewController: viewController)
@@ -26,7 +26,7 @@ final class PhotoSelectorModule {
         viewController = PhotoSelectorViewController(router: router)
         service = PhotoService(photos: PHAsset.self)
         presenter = PhotoSelectorPresenter(view: WeakRef(viewController))
-        useCase = LoadPhotoUseCase(client: service, output: presenter)
+        useCase = PhotoUseCase(client: service, output: presenter)
         
         router.viewControllerBehind = viewController
         

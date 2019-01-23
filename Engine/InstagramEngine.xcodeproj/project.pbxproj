@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		084FF5A221EB5359000EA933 /* LoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5A121EB5359000EA933 /* LoginUseCase.swift */; };
-		084FF5EF21EDC93F000EA933 /* LoadPhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5EE21EDC93F000EA933 /* LoadPhotoUseCase.swift */; };
+		084FF5EF21EDC93F000EA933 /* PhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5EE21EDC93F000EA933 /* PhotoUseCase.swift */; };
 		084FF62421EF4644000EA933 /* SharePhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */; };
 		084FF62C21EF7CFB000EA933 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF62B21EF7CFB000EA933 /* Post.swift */; };
 		0858764F21DA70A700C32422 /* RegisterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858764E21DA70A700C32422 /* RegisterUseCase.swift */; };
@@ -37,7 +37,7 @@
 
 /* Begin PBXFileReference section */
 		084FF5A121EB5359000EA933 /* LoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUseCase.swift; sourceTree = "<group>"; };
-		084FF5EE21EDC93F000EA933 /* LoadPhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadPhotoUseCase.swift; sourceTree = "<group>"; };
+		084FF5EE21EDC93F000EA933 /* PhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUseCase.swift; sourceTree = "<group>"; };
 		084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoUseCase.swift; sourceTree = "<group>"; };
 		084FF62B21EF7CFB000EA933 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		0858764E21DA70A700C32422 /* RegisterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUseCase.swift; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 				0858764E21DA70A700C32422 /* RegisterUseCase.swift */,
 				084FF5A121EB5359000EA933 /* LoginUseCase.swift */,
 				08F9847421E17CF200DE6E78 /* UserProfileUseCase.swift */,
-				084FF5EE21EDC93F000EA933 /* LoadPhotoUseCase.swift */,
+				084FF5EE21EDC93F000EA933 /* PhotoUseCase.swift */,
 				084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */,
 				085E525F21F2ED1E0029C7BE /* HomeFeedUseCase.swift */,
 				085E527521F3A5A70029C7BE /* SearchUseCase.swift */,
@@ -253,7 +253,7 @@
 				084FF62421EF4644000EA933 /* SharePhotoUseCase.swift in Sources */,
 				08FE157E21F6227C00A58355 /* NotificationName.swift in Sources */,
 				08F9847521E17CF200DE6E78 /* UserProfileUseCase.swift in Sources */,
-				084FF5EF21EDC93F000EA933 /* LoadPhotoUseCase.swift in Sources */,
+				084FF5EF21EDC93F000EA933 /* PhotoUseCase.swift in Sources */,
 				0858765521DA73FA00C32422 /* User.swift in Sources */,
 				085E526021F2ED1E0029C7BE /* HomeFeedUseCase.swift in Sources */,
 				08F9848421E4B67500DE6E78 /* Result.swift in Sources */,

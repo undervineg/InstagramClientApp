@@ -60,7 +60,7 @@ class SharePhotoViewController: UIViewController {
     @objc private func share(_ sender: UIBarButtonItem) {
         guard
             let image = shareImageView.image,
-            let imageData = image.jpegData(compressionQuality: 0.5),
+            let imageData = image.jpegData(compressionQuality: 0.3),
             let caption = textView.text, caption.count > 0 else { return }
         
         enableShareButton(false)

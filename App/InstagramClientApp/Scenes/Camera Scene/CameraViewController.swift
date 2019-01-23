@@ -11,14 +11,14 @@ import AVFoundation
 import InstagramEngine
 
 final class CameraViewController: UIViewController {
+    // MAKR: Commands
+    var saveCapturedPhoto: ((Data) -> Void)?
+    
     // MARK: UI Properties
     private var previewLayer: AVCaptureVideoPreviewLayer?
-    private var photoCapturedView: PhotoCapturedView?
+    private weak var photoCaptureView: PhotoCapturedView?
     
-    private var isPhotoCapturedViewShowing: Bool {
-        get { return !(photoCapturedView?.isHidden ?? true) }
-        set(v) { photoCapturedView?.isHidden = !v }
-    }
+    override var prefersStatusBarHidden: Bool { return true }
     
     // MARK: Private Properties
     private var router: CameraRouter.Routes?
@@ -45,24 +45,20 @@ final class CameraViewController: UIViewController {
         }
         
         setupPreviewLayer()
-        setupPhotoCapturedView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         self.captureSession.startRunning()
         self.isSessionRunning = true
     }
     
-    private func setupPhotoCapturedView() {
-        let photoCapturedView = PhotoCapturedView(frame: view.frame)
-        view.addSubview(photoCapturedView)
-        photoCapturedView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            photoCapturedView.topAnchor.constraint(equalTo: view.topAnchor),
-            photoCapturedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            photoCapturedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            photoCapturedView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        self.photoCapturedView = photoCapturedView
-        isPhotoCapturedViewShowing = false
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.captureSession.stopRunning()
+        self.isSessionRunning = false
     }
     
     // MARK: Actions
@@ -90,15 +86,37 @@ final class CameraViewController: UIViewController {
     private func setCapturedImage(_ result: Result<Data, Error>) {
         switch result {
         case .success(let photoData):
-            isPhotoCapturedViewShowing = true
-            photoCapturedView?.capturedImageView.image = UIImage(data: photoData)
+            guard let capturedImage = UIImage(data: photoData) else { return }
+            self.photoCaptureView = addPhotoCapturedView(with: capturedImage)
         case .failure(let error):
-            print(error)
+            displayError(error.localizedDescription)
         }
     }
     
     @IBAction func backButtonDidTap(_ sender: UIButton) {
         router?.openHomeFeedPage()
+    }
+}
+
+extension CameraViewController: PhotoUseCaseOutput {
+    func savePhotoSucceeded() {
+        DispatchQueue.main.async {
+            self.photoCaptureView?.showSaveSuccessLabel()
+        }
+    }
+    
+    func savePhotoFailed(_ error: PhotoUseCase.Error) {
+        DispatchQueue.main.async {
+            self.displayError(error.localizedDescription)
+        }
+    }
+    
+    func fetchAllPhotosSucceeded(_ photoData: Data, _ isAllPhotosFetched: Bool) {
+        //
+    }
+    
+    func fetchAllPhotosFailed(_ error: PhotoUseCase.Error) {
+        //
     }
 }
 
@@ -154,6 +172,23 @@ extension CameraViewController {
         view.layer.insertSublayer(previewLayer, at: 0)
         self.previewLayer = previewLayer
     }
+    
+    private func addPhotoCapturedView(with capturedImage: UIImage) -> PhotoCapturedView {
+        let photoCapturedView = PhotoCapturedView(frame: view.frame)
+        photoCapturedView.saveCapturedPhoto = self.saveCapturedPhoto
+        photoCapturedView.capturedImageView.image = capturedImage
+        
+        view.addSubview(photoCapturedView)
+        photoCapturedView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            photoCapturedView.topAnchor.constraint(equalTo: view.topAnchor),
+            photoCapturedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            photoCapturedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            photoCapturedView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        
+        return photoCapturedView
+    }
 }
 
 extension CameraViewController: ErrorPresentable {
@@ -193,5 +228,23 @@ extension CameraViewController: ErrorPresentable {
         self.displayError(error.localizedDescription, with: [openConfigAction]) { _ in
             self.router?.openHomeFeedPage()
         }
+    }
+}
+
+extension WeakRef: PhotoUseCaseOutput where T: PhotoUseCaseOutput {
+    func savePhotoSucceeded() {
+        object?.savePhotoSucceeded()
+    }
+    
+    func savePhotoFailed(_ error: PhotoUseCase.Error) {
+        object?.savePhotoFailed(error)
+    }
+    
+    func fetchAllPhotosSucceeded(_ photoData: Data, _ isAllPhotosFetched: Bool) {
+        object?.fetchAllPhotosSucceeded(photoData, isAllPhotosFetched)
+    }
+    
+    func fetchAllPhotosFailed(_ error: PhotoUseCase.Error) {
+        object?.fetchAllPhotosFailed(error)
     }
 }
