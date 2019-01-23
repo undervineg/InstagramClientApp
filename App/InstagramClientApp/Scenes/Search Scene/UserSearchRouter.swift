@@ -11,18 +11,18 @@ import InstagramEngine
 final class UserSearchRouter: BasicRouter, UserSearchRouter.Routes {
     typealias Routes = UserProfileRoute
     
-    var userProfileTransition: TransitionType = .push
+    var userProfileTransition: Transition = PushTransition()
     
     func openUserProfilePage(of uid: String) {
         openUserProfilePage(of: uid, with: userProfileTransition)
     }
     
-    func openUserProfilePage(of uid: String, with transition: TransitionType) {
+    func openUserProfilePage(of uid: String, with transition: Transition) {
         let userProfileModule = UserProfileModule()
-        userProfileModule.router.openTransition = transition.object
+        userProfileModule.router.openTransition = transition
         
         userProfileModule.viewController.uid = uid
         
-        open(userProfileModule.viewController, with: transition.object)
+        open(userProfileModule.viewController, with: transition)
     }
 }

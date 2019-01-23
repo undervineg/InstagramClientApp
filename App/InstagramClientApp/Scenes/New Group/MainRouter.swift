@@ -11,14 +11,13 @@ import UIKit
 final class MainRouter: BasicRouter, MainRouter.Routes {
     typealias Routes = PhotoSelectorRoute
     
-    var photoSelectorTransition: TransitionType = .modal
-    var sharePhotoTransition: TransitionType = .push
+    var photoSelectorTransition: Transition = ModalTransition()
+    var sharePhotoTransition: Transition = PushTransition()
     
     
     func openPhotoSelectorPage() {
         let photoModule = PhotoSelectorModule()
-        let transition = photoSelectorTransition.object
-        photoModule.router.openTransition = transition
-        open(photoModule.withNavigation, with: transition)
+        photoModule.router.openTransition = photoSelectorTransition
+        open(photoModule.withNavigation, with: photoSelectorTransition)
     }
 }

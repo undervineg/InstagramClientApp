@@ -9,8 +9,8 @@
 import Foundation
 
 protocol HomeFeedRoute {
-    var homeTransitionType: TransitionType { get }
+    var homeTransition: Transition { get }
     
     func openHomeFeedPage()
-    func openHomeFeedPage(with transitionType: TransitionType)
+    func openHomeFeedPage(with transition: Transition)
 }

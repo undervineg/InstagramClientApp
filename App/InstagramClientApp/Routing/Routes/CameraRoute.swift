@@ -9,8 +9,8 @@
 import Foundation
 
 protocol CameraRoute {
-    var cameraTransitionType: TransitionType { get }
+    var cameraTransitionType: Transition { get }
     
     func openCamera()
-    func openCamera(with transitionType: TransitionType)
+    func openCamera(with transition: Transition)
 }

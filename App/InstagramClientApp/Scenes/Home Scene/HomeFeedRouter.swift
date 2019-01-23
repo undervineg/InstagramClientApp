@@ -11,15 +11,14 @@ import Foundation
 final class HomeFeedRouter: BasicRouter, HomeFeedRouter.Routes {
     typealias Routes = CameraRoute
     
-    var cameraTransitionType: TransitionType = .modal
+    var cameraTransitionType: Transition = ModalTransition()
     
     func openCamera() {
         openCamera(with: cameraTransitionType)
     }
     
-    func openCamera(with transitionType: TransitionType) {
+    func openCamera(with transition: Transition) {
         let cameraModule = CameraModule()
-        let transition = transitionType.object
         cameraModule.router.openTransition = transition
         
         open(cameraModule.viewController, with: transition)

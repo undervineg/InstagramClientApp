@@ -11,14 +11,13 @@ import UIKit
 final class PhotoSelectorRouter: BasicRouter, PhotoSelectorRouter.Routes {
     typealias Routes = SharePhotoRoute
     
-    var sharePhotoTransition: TransitionType = .push
+    var sharePhotoTransition: Transition = PushTransition()
     
     func openSharePhotoPage(with selectedImage: UIImage) {
         let sharePhotoModule = SharePhotoModule(selectedImage)
-        let transition = sharePhotoTransition.object
-        sharePhotoModule.router.openTransition = transition
+        sharePhotoModule.router.openTransition = sharePhotoTransition
         
-        open(sharePhotoModule.viewController, with: transition)
+        open(sharePhotoModule.viewController, with: sharePhotoTransition)
     }
     
     func closePhotoSelectorPage() {

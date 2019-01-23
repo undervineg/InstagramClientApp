@@ -11,14 +11,14 @@ import UIKit
 final class CameraRouter: BasicRouter, CameraRouter.Routes {
     typealias Routes = HomeFeedRoute & SettingsRoute
     
-    var homeTransitionType: TransitionType = .modal
+    var homeTransition: Transition = ModalTransition()
     
     func openHomeFeedPage() {
-        openHomeFeedPage(with: homeTransitionType)
+        openHomeFeedPage(with: homeTransition)
     }
     
-    func openHomeFeedPage(with transitionType: TransitionType) {
-        openTransition = transitionType.object
+    func openHomeFeedPage(with transition: Transition) {
+        openTransition = transition
         openTransition?.viewControllerBehind = viewControllerBehind?.presentingViewController
         self.close()
     }

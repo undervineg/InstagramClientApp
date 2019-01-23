@@ -9,9 +9,9 @@
 import UIKit
 
 protocol RegisterRoute {
-    var registerTransition: TransitionType { get }
+    var registerTransition: Transition { get }
     
     func openRegisterPage()
-    func openRegisterPage(with transitionType: TransitionType)
+    func openRegisterPage(with transition: Transition)
     func openRegisterPageAsRoot(_ callback: (UIViewController) -> Void)
 }

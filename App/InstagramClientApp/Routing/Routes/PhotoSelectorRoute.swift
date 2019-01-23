@@ -9,7 +9,7 @@
 import Foundation
 
 protocol PhotoSelectorRoute {
-    var photoSelectorTransition: TransitionType { get }
+    var photoSelectorTransition: Transition { get }
     
     func openPhotoSelectorPage()
 }

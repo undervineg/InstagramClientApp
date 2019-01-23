@@ -11,17 +11,16 @@ import UIKit
 final class UserProfileRouter: BasicRouter, UserProfileRouter.Routes {
     typealias Routes = LoginRoute
     
-    var loginTransitionType: TransitionType = .modal
+    var loginTransition: Transition = ModalTransition()
     
     // LoginRoute
     
     func openLoginPage() {
-        openLoginPage(with: loginTransitionType)
+        openLoginPage(with: loginTransition)
     }
     
-    func openLoginPage(with transitionType: TransitionType) {
+    func openLoginPage(with transition: Transition) {
         let loginModule = LoginModule()
-        let transition = transitionType.object
         loginModule.router.openTransition = transition
         
         open(loginModule.withNavigation, with: transition)
@@ -29,8 +28,7 @@ final class UserProfileRouter: BasicRouter, UserProfileRouter.Routes {
     
     func openLoginPageAsRoot(_ callback: (UIViewController) -> Void) {
         let loginModule = LoginModule()
-        let transition = loginTransitionType.object
-        loginModule.router.openTransition = transition
+        loginModule.router.openTransition = loginTransition
         callback(loginModule.withNavigation)
     }
 

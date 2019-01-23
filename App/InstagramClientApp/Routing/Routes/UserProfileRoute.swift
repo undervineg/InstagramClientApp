@@ -9,8 +9,8 @@
 import InstagramEngine
 
 protocol UserProfileRoute {
-    var userProfileTransition: TransitionType { get }
+    var userProfileTransition: Transition { get }
     
     func openUserProfilePage(of uid: String)
-    func openUserProfilePage(of uid: String, with transition: TransitionType)
+    func openUserProfilePage(of uid: String, with transition: Transition)
 }

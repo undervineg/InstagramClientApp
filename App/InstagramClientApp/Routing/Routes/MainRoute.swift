@@ -9,9 +9,9 @@
 import UIKit
 
 protocol MainRoute {
-    var mainTransitionType: TransitionType { get }
+    var mainTransition: Transition { get }
     
     func openMainPage()
-    func openMainPage(with transitionType: TransitionType)
+    func openMainPage(with transition: Transition)
     func openMainPageAsRoot(_ callback: (UIViewController) -> Void)
 }

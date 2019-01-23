@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SharePhotoRoute {
-    var sharePhotoTransition: TransitionType { get }
+    var sharePhotoTransition: Transition { get }
     
     func openSharePhotoPage(with selectedImage: UIImage)
     func closePhotoSelectorPage()

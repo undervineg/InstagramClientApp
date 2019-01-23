@@ -9,9 +9,9 @@
 import UIKit
 
 protocol LoginRoute {
-    var loginTransitionType: TransitionType { get }
+    var loginTransition: Transition { get }
     
     func openLoginPage()
-    func openLoginPage(with transitionType: TransitionType)
+    func openLoginPage(with transition: Transition)
     func openLoginPageAsRoot(_ callback: (UIViewController) -> Void)
 }

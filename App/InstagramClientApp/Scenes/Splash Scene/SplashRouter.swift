@@ -14,8 +14,8 @@ final class SplashRouter: BasicRouter, SplashRouter.Routes {
     var openMainCallback: ((UIViewController) -> Void)? = nil
     var openLoginCallback: ((UIViewController) -> Void)? = nil
     
-    var mainTransitionType: TransitionType = .modal
-    var loginTransitionType: TransitionType = .modal
+    var mainTransition: Transition = ModalTransition()
+    var loginTransition: Transition = ModalTransition()
     
     
     func openMainPage() {
@@ -23,14 +23,13 @@ final class SplashRouter: BasicRouter, SplashRouter.Routes {
         openMainPageAsRoot(openMainCallback)
     }
     
-    func openMainPage(with transitionType: TransitionType) {
+    func openMainPage(with transition: Transition) {
         //
     }
     
     func openMainPageAsRoot(_ callback: (UIViewController) -> Void) {
         let mainModule = MainModule()
-        let transition = mainTransitionType.object
-        mainModule.router.openTransition = transition
+        mainModule.router.openTransition = mainTransition
         callback(mainModule.viewController)
     }
 
@@ -40,14 +39,13 @@ final class SplashRouter: BasicRouter, SplashRouter.Routes {
         openLoginPageAsRoot(openLoginCallback)
     }
     
-    func openLoginPage(with transitionType: TransitionType) {
+    func openLoginPage(with transition: Transition) {
         //
     }
     
     func openLoginPageAsRoot(_ callback: (UIViewController) -> Void) {
         let loginModule = LoginModule()
-        let transition = loginTransitionType.object
-        loginModule.router.openTransition = transition
+        loginModule.router.openTransition = loginTransition
         loginModule.router.openMainCallback = openMainCallback
         callback(loginModule.withNavigation)
     }

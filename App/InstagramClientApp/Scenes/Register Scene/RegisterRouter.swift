@@ -13,19 +13,19 @@ final class RegisterRouter: BasicRouter, RegisterRouter.Routes {
     
     var openMainCallback: ((UIViewController) -> Void)? = nil
     
-    var mainTransitionType: TransitionType = .modal
-    var loginTransitionType: TransitionType = .push
+    var mainTransition: Transition = ModalTransition()
+    var loginTransition: Transition = PushTransition()
     
     // MainRoute
     
     func openMainPage() {
-        openMainPage(with: mainTransitionType)
+        openMainPage(with: mainTransition)
     }
     
-    func openMainPage(with transitionType: TransitionType) {
+    func openMainPage(with transition: Transition) {
         guard let callback = openMainCallback else {
             let mainVC = viewControllerBehind?.presentingViewController as? MainTabBarViewController
-            openTransition = mainTransitionType.object
+            openTransition = mainTransition
             openTransition?.viewControllerBehind = mainVC
             mainVC?.setupChildViewControllers()
             self.close()
@@ -36,9 +36,8 @@ final class RegisterRouter: BasicRouter, RegisterRouter.Routes {
     
     func openMainPageAsRoot(_ callback: (UIViewController) -> Void) {
         let mainModule = MainModule()
-        let transition = mainTransitionType.object
-        mainModule.router.openTransition = transition
-        transition.viewControllerBehind = mainModule.viewController
+        mainModule.router.openTransition = mainTransition
+        mainTransition.viewControllerBehind = mainModule.viewController
         
         callback(mainModule.viewController)
     }
@@ -49,13 +48,12 @@ final class RegisterRouter: BasicRouter, RegisterRouter.Routes {
         if viewControllerBehind?.navigationController?.viewControllers.count ?? 0 > 1 {
             self.close()
         } else {
-            openLoginPage(with: loginTransitionType)
+            openLoginPage(with: loginTransition)
         }
     }
     
-    func openLoginPage(with transitionType: TransitionType) {
+    func openLoginPage(with transition: Transition) {
         let loginModule = LoginModule()
-        let transition = transitionType.object
         loginModule.router.openTransition = transition
         loginModule.router.openMainCallback = openMainCallback
         

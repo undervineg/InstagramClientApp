@@ -11,14 +11,14 @@ import UIKit
 final class SharePhotoRouter: BasicRouter, SharePhotoRouter.Routes {
     typealias Routes = MainRoute
     
-    var mainTransitionType: TransitionType = .modal
+    var mainTransition: Transition = ModalTransition()
     
     func openMainPage() {
-        openMainPage(with: mainTransitionType)
+        openMainPage(with: mainTransition)
     }
     
-    func openMainPage(with transitionType: TransitionType) {
-        openTransition = transitionType.object
+    func openMainPage(with transition: Transition) {
+        openTransition = transition
         openTransition?.viewControllerBehind = viewControllerBehind?.presentingViewController
         self.close()
     }
