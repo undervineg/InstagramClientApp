@@ -37,7 +37,7 @@ final class UserProfileModule {
         profileUseCase = UserProfileUseCase(client: profileService, output: presenter)
         postUseCase = HomeFeedUseCase(postClient: postService, profileClient: profileService, output: presenter)
         
-        router.viewControllerBehind = viewController
+        router.viewController = viewController
         
         viewController.loadProfile = profileUseCase.loadProfile
         viewController.downloadProfileImage = profileUseCase.downloadProfileImage

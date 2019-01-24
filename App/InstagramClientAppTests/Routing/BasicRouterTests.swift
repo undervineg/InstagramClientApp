@@ -23,7 +23,7 @@ class BasicRouterTests: XCTestCase {
     func test_openTwice_theRightVCsTwice() {
         let (sut, stubTransition) = makeSUT()
         let root = UIViewController()
-        sut.viewControllerBehind = root
+        sut.viewController = root
         
         let openingVC1 = UIViewController()
         let openingVC2 = UIViewController()
@@ -36,7 +36,7 @@ class BasicRouterTests: XCTestCase {
     func test_close_theRightVC() {
         let (sut, stubTransition) = makeSUT(isOpening: false)
         let root = UIViewController()
-        sut.viewControllerBehind = root
+        sut.viewController = root
         
         let closingVC = UIViewController()
         sut.open(closingVC, with: stubTransition)
@@ -52,7 +52,7 @@ class BasicRouterTests: XCTestCase {
     func test_closeTwice_theRightVCsTwice() {
         let (sut, stubTransition) = makeSUT(isOpening: false)
         let root = UIViewController()
-        sut.viewControllerBehind = root
+        sut.viewController = root
         
         let closingVC1 = UIViewController()
         let closingVC2 = UIViewController()
@@ -63,22 +63,6 @@ class BasicRouterTests: XCTestCase {
         
         sut.close()
         sut.close()
-        
-        XCTAssertEqual(stubTransition.closedVC, [closingVC2, closingVC1])
-        XCTAssertEqual(stubTransition.openedVC, [])
-    }
-    
-    func test_close_To_theRightVC() {
-        let (sut, stubTransition) = makeSUT(isOpening: true)
-        let root = UIViewController()
-        sut.viewControllerBehind = root
-        
-        let closingVC1 = UIViewController()
-        let closingVC2 = UIViewController()
-        sut.open(closingVC1, with: stubTransition)
-        sut.open(closingVC2, with: stubTransition)
-        
-        sut.close(to: sut.viewControllerBehind ?? root)
         
         XCTAssertEqual(stubTransition.closedVC, [closingVC2, closingVC1])
         XCTAssertEqual(stubTransition.openedVC, [])

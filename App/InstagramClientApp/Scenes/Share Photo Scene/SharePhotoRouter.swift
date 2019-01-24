@@ -19,7 +19,7 @@ final class SharePhotoRouter: BasicRouter, SharePhotoRouter.Routes {
     
     func openMainPage(with transition: Transition) {
         openTransition = transition
-        openTransition?.viewControllerBehind = viewControllerBehind?.presentingViewController
+        openTransition?.viewController = viewController?.presentingViewController
         self.close()
     }
     

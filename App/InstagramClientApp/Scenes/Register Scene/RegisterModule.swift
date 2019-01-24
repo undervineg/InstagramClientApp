@@ -29,7 +29,7 @@ final class RegisterModule {
         presenter = RegisterUserPresenter(view: WeakRef(viewController))
         useCase = RegisterUserUseCase(client: service, output: presenter)
         
-        router.viewControllerBehind = viewController
+        router.viewController = viewController
         
         viewController.register = useCase.register
     }

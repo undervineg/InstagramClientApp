@@ -9,9 +9,8 @@
 import UIKit
 
 protocol Transition: class {
-    var viewControllerBehind: UIViewController? { get set }
+    var viewController: UIViewController? { get set }
     
     func open(_ viewController: UIViewController)
-    func close()
-    func close(to destVC: UIViewController)
+    func close(_ viewController: UIViewController)
 }

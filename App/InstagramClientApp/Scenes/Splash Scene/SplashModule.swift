@@ -23,7 +23,7 @@ final class SplashModule {
         presenter = SplashPresenter(view: WeakRef(viewController))
         useCase = AuthUseCase(client: service, output: presenter)
         
-        router.viewControllerBehind = viewController
+        router.viewController = viewController
         
         viewController.checkIfAuthenticated = useCase.checkIfAuthenticated
     }

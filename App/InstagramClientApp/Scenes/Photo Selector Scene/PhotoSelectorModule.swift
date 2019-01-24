@@ -28,7 +28,7 @@ final class PhotoSelectorModule {
         presenter = PhotoSelectorPresenter(view: WeakRef(viewController))
         useCase = PhotoUseCase(client: service, output: presenter)
         
-        router.viewControllerBehind = viewController
+        router.viewController = viewController
         
         viewController.loadAllPhotos = useCase.loadAllPhotos
     }

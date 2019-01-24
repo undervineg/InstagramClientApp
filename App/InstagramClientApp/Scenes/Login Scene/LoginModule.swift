@@ -27,7 +27,7 @@ final class LoginModule {
         presenter = LoginPresenter(view: viewController)
         useCase = LoginUseCase(client: service, output: presenter)
         
-        router.viewControllerBehind = viewController
+        router.viewController = viewController
         
         viewController.login = useCase.login
     }

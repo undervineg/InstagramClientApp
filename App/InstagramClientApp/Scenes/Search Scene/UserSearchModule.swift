@@ -31,7 +31,7 @@ final class UserSearchModule {
         presenter = UserSearchPresenter(view: WeakRef(viewController))
         useCase = SearchUseCase(client: service, output: presenter)
         
-        router.viewControllerBehind = viewController
+        router.viewController = viewController
         
         viewController.fetchAllUsers = useCase.fetchAllUsers
         viewController.downloadProfileImage = service.downloadProfileImage

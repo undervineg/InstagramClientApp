@@ -9,31 +9,27 @@
 import UIKit
 
 protocol Routable: class {
-    var viewControllerBehind: UIViewController? { get }
+    var viewController: UIViewController? { get }
     
     func open(_ viewController: UIViewController, with transition: Transition)
 }
 
 protocol Closable: class {
     func close()
-    func close(to destVC: UIViewController)
 }
 
 class BasicRouter: Routable, Closable {
-    weak var viewControllerBehind: UIViewController?
+    weak var viewController: UIViewController?
     
     var openTransition: Transition?
     
     func open(_ viewController: UIViewController, with transition: Transition) {
-        transition.viewControllerBehind = self.viewControllerBehind
+        transition.viewController = self.viewController
         transition.open(viewController)
     }
     
     func close() {
-        openTransition?.close()
-    }
-
-    func close(to destVC: UIViewController) {
-        openTransition?.close(to: destVC)
+        guard let viewController = viewController else { return }
+        openTransition?.close(viewController)
     }
 }

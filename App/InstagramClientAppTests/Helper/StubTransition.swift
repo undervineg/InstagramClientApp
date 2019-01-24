@@ -10,29 +10,20 @@ import UIKit
 @testable import InstagramClientApp
 
 final class StubTransition: Transition {
-    var viewControllerBehind: UIViewController?
+    var viewController: UIViewController?
     
     var openedVC = [UIViewController]()
     var closedVC = [UIViewController]()
     
     func open(_ viewController: UIViewController) {
-        if viewControllerBehind != nil {
+        if self.viewController != nil {
             openedVC.append(viewController)
         }
     }
     
-    func close() {
-        guard viewControllerBehind != nil else { return }
+    func close(_ viewController: UIViewController) {
+        guard self.viewController != nil else { return }
         let removedVC = openedVC.removeLast()
         closedVC.append(removedVC)
-    }
-    
-    func close(to destVC: UIViewController) {
-        guard viewControllerBehind != nil else { return }
-        openedVC.reversed().forEach {
-            guard $0 != destVC else { return }
-            let removedVC = openedVC.removeLast()
-            closedVC.append(removedVC)
-        }
     }
 }

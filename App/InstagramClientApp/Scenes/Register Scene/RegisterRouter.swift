@@ -24,9 +24,9 @@ final class RegisterRouter: BasicRouter, RegisterRouter.Routes {
     
     func openMainPage(with transition: Transition) {
         guard let callback = openMainCallback else {
-            let mainVC = viewControllerBehind?.presentingViewController as? MainTabBarViewController
+            let mainVC = viewController?.presentingViewController as? MainTabBarViewController
             openTransition = mainTransition
-            openTransition?.viewControllerBehind = mainVC
+            openTransition?.viewController = mainVC
             mainVC?.setupChildViewControllers()
             self.close()
             return
@@ -37,7 +37,7 @@ final class RegisterRouter: BasicRouter, RegisterRouter.Routes {
     func openMainPageAsRoot(_ callback: (UIViewController) -> Void) {
         let mainModule = MainModule()
         mainModule.router.openTransition = mainTransition
-        mainTransition.viewControllerBehind = mainModule.viewController
+        mainTransition.viewController = mainModule.viewController
         
         callback(mainModule.viewController)
     }
@@ -45,7 +45,7 @@ final class RegisterRouter: BasicRouter, RegisterRouter.Routes {
     // LoginRoute
     
     func openLoginPage() {
-        if viewControllerBehind?.navigationController?.viewControllers.count ?? 0 > 1 {
+        if viewController?.navigationController?.viewControllers.count ?? 0 > 1 {
             self.close()
         } else {
             openLoginPage(with: loginTransition)

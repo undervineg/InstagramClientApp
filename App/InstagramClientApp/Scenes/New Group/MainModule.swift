@@ -15,7 +15,7 @@ final class MainModule {
     init(_ openMainCallback: ((UIViewController) -> Void)? = nil) {
         router = MainRouter()
         viewController = MainTabBarViewController(router: router)
-        router.viewControllerBehind = viewController
+        router.viewController = viewController
         
         viewController.setupChildViewControllers()
         viewController.selectedIndex = 0

@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		07BAE690061EAC0790E88566 /* Pods_InstagramClientAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6ECD4CBCB2C85A5DB236C52 /* Pods_InstagramClientAppTests.framework */; };
+		080C5A8621F858FD00AD8D7C /* SlideAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A8521F858FD00AD8D7C /* SlideAnimator.swift */; };
+		080C5A8821F8590D00AD8D7C /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A8721F8590D00AD8D7C /* Animator.swift */; };
+		080C5A8D21F95DCA00AD8D7C /* PhotoCapturedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080C5A8C21F95DCA00AD8D7C /* PhotoCapturedView.xib */; };
+		080C5A8F21F9974200AD8D7C /* XibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A8E21F9974200AD8D7C /* XibLoadable.swift */; };
+		080C5A9121F998E600AD8D7C /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A9021F998E600AD8D7C /* UILabel+Extension.swift */; };
 		084FF5A421EB54B7000EA933 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5A321EB54B7000EA933 /* LoginService.swift */; };
 		084FF5A621EB5856000EA933 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5A521EB5856000EA933 /* LoginPresenter.swift */; };
 		084FF5AE21EB87C9000EA933 /* LoginModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5AD21EB87C9000EA933 /* LoginModule.swift */; };
@@ -80,7 +85,7 @@
 		0891AE0D21F780ED0002A7CB /* CameraCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0C21F780ED0002A7CB /* CameraCaptureProcessor.swift */; };
 		0891AE1221F78D2E0002A7CB /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0887639821F6C5A400F8AE49 /* CameraViewController.xib */; };
 		0891AE1421F78DD30002A7CB /* PhotoCapturedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE1321F78DD30002A7CB /* PhotoCapturedView.swift */; };
-		0891AE1821F78ECB0002A7CB /* UIView+NibExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE1721F78ECB0002A7CB /* UIView+NibExtension.swift */; };
+		0891AE1821F78ECB0002A7CB /* UIView+XibExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE1721F78ECB0002A7CB /* UIView+XibExtension.swift */; };
 		08962F2121F0EF3E00A3C5D3 /* LoadableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */; };
 		08962F2321F0F5AE00A3C5D3 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2221F0F5AE00A3C5D3 /* Sort.swift */; };
 		08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */; };
@@ -146,6 +151,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		080C5A8521F858FD00AD8D7C /* SlideAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideAnimator.swift; sourceTree = "<group>"; };
+		080C5A8721F8590D00AD8D7C /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		080C5A8C21F95DCA00AD8D7C /* PhotoCapturedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoCapturedView.xib; sourceTree = "<group>"; };
+		080C5A8E21F9974200AD8D7C /* XibLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XibLoadable.swift; sourceTree = "<group>"; };
+		080C5A9021F998E600AD8D7C /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		084FF5A321EB54B7000EA933 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		084FF5A521EB5856000EA933 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 		084FF5AD21EB87C9000EA933 /* LoginModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModule.swift; sourceTree = "<group>"; };
@@ -221,7 +231,7 @@
 		0891AE0821F6E6570002A7CB /* SettingsRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoute.swift; sourceTree = "<group>"; };
 		0891AE0C21F780ED0002A7CB /* CameraCaptureProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureProcessor.swift; sourceTree = "<group>"; };
 		0891AE1321F78DD30002A7CB /* PhotoCapturedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCapturedView.swift; sourceTree = "<group>"; };
-		0891AE1721F78ECB0002A7CB /* UIView+NibExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+NibExtension.swift"; sourceTree = "<group>"; };
+		0891AE1721F78ECB0002A7CB /* UIView+XibExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+XibExtension.swift"; sourceTree = "<group>"; };
 		08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableImageView.swift; sourceTree = "<group>"; };
 		08962F2221F0F5AE00A3C5D3 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		08BF0C5521E854EB004CE846 /* UserProfileHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderCell.swift; sourceTree = "<group>"; };
@@ -288,6 +298,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		080C5A8921F8591400AD8D7C /* Animator */ = {
+			isa = PBXGroup;
+			children = (
+				080C5A8521F858FD00AD8D7C /* SlideAnimator.swift */,
+				080C5A8721F8590D00AD8D7C /* Animator.swift */,
+			);
+			path = Animator;
+			sourceTree = "<group>";
+		};
 		084FF5FE21EEEEEA000EA933 /* Splash Scene */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,6 +523,7 @@
 		086E6C9D21DE92400094B808 /* Transition */ = {
 			isa = PBXGroup;
 			children = (
+				080C5A8921F8591400AD8D7C /* Animator */,
 				086E6C9721DE91C70094B808 /* Transition.swift */,
 				086E6C9921DE91D50094B808 /* ModalTransition.swift */,
 				086E6C9B21DE91ED0094B808 /* PushTransition.swift */,
@@ -622,6 +642,7 @@
 			isa = PBXGroup;
 			children = (
 				0887639821F6C5A400F8AE49 /* CameraViewController.xib */,
+				080C5A8C21F95DCA00AD8D7C /* PhotoCapturedView.xib */,
 			);
 			path = xib;
 			sourceTree = "<group>";
@@ -662,7 +683,9 @@
 		08F9849121E4D71400DE6E78 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				0891AE1721F78ECB0002A7CB /* UIView+NibExtension.swift */,
+				080C5A9021F998E600AD8D7C /* UILabel+Extension.swift */,
+				080C5A8E21F9974200AD8D7C /* XibLoadable.swift */,
+				0891AE1721F78ECB0002A7CB /* UIView+XibExtension.swift */,
 				08FE157B21F5D12D00A58355 /* Date+Extension.swift */,
 				085E526921F35DC40029C7BE /* CacheManager.swift */,
 				08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */,
@@ -790,6 +813,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				085E527421F3A1030029C7BE /* UserSearchCell.xib in Resources */,
+				080C5A8D21F95DCA00AD8D7C /* PhotoCapturedView.xib in Resources */,
 				0884512521DA665C008B8121 /* LaunchScreen.storyboard in Resources */,
 				0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */,
 				08BF0C6F21E8BB27004CE846 /* LoginViewController.xib in Resources */,
@@ -930,6 +954,7 @@
 				08F984CA21E6878E00DE6E78 /* AuthService.swift in Sources */,
 				0887639421F6C44F00F8AE49 /* HomeFeedRouter.swift in Sources */,
 				084FF5ED21EDB936000EA933 /* PhotoSelectorModule.swift in Sources */,
+				080C5A8821F8590D00AD8D7C /* Animator.swift in Sources */,
 				086E6C9821DE91C70094B808 /* Transition.swift in Sources */,
 				084FF5FD21EEC56E000EA933 /* PhotoSelectorHeader.swift in Sources */,
 				08F984A921E53CAD00DE6E78 /* MainTabBarViewController.swift in Sources */,
@@ -948,7 +973,7 @@
 				0887639621F6C47700F8AE49 /* CameraRoute.swift in Sources */,
 				084FF5B021EB8A32000EA933 /* SplashModule.swift in Sources */,
 				08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */,
-				0891AE1821F78ECB0002A7CB /* UIView+NibExtension.swift in Sources */,
+				0891AE1821F78ECB0002A7CB /* UIView+XibExtension.swift in Sources */,
 				08F984D021E691B100DE6E78 /* SplashPresenter.swift in Sources */,
 				0887639F21F6C6B600F8AE49 /* CameraRouter.swift in Sources */,
 				085E527A21F3A82D0029C7BE /* UserSearchPresenter.swift in Sources */,
@@ -964,13 +989,16 @@
 				084FF60B21EEF582000EA933 /* UserProfileRouter.swift in Sources */,
 				08962F2321F0F5AE00A3C5D3 /* Sort.swift in Sources */,
 				0887639921F6C5A400F8AE49 /* CameraViewController.swift in Sources */,
+				080C5A8F21F9974200AD8D7C /* XibLoadable.swift in Sources */,
 				084FF62621EF4787000EA933 /* ShareService.swift in Sources */,
 				085E526221F2F31B0029C7BE /* PostService.swift in Sources */,
 				08BF0C5721E854EB004CE846 /* UserProfileHeaderCell.swift in Sources */,
 				088907A221F074C80045B145 /* UserProfilePhotoCell.swift in Sources */,
 				085E526E21F396490029C7BE /* UserSearchViewController.swift in Sources */,
 				085E525D21F176C60029C7BE /* HomeFeedCell.swift in Sources */,
+				080C5A9121F998E600AD8D7C /* UILabel+Extension.swift in Sources */,
 				084FF5F321EDD0B7000EA933 /* PhotoService.swift in Sources */,
+				080C5A8621F858FD00AD8D7C /* SlideAnimator.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseStorageWrapper.swift in Sources */,
 				0891AE0D21F780ED0002A7CB /* CameraCaptureProcessor.swift in Sources */,
 				0889079F21F05C500045B145 /* Reference.swift in Sources */,

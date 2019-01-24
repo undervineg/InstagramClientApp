@@ -10,25 +10,24 @@ import UIKit
 
 final class PushTransition: Transition {
     
-    weak var viewControllerBehind: UIViewController?
+    weak var viewController: UIViewController?
     
     private let animated: Bool
-    private let completion: (() -> Void)?
+    var completion: (() -> Void)?
     
-    init(animated: Bool = true, completion: (() -> Void)? = nil) {
+    init(animated: Bool = true) {
         self.animated = animated
-        self.completion = completion
     }
     
     func open(_ viewController: UIViewController) {
-        viewControllerBehind?.navigationController?.pushViewController(viewController, animated: animated)
+        self.viewController?.navigationController?.pushViewController(viewController, animated: animated)
     }
     
-    func close() {
-        viewControllerBehind?.navigationController?.popViewController(animated: animated)
+    func close(_ viewController: UIViewController) {
+        self.viewController?.navigationController?.popViewController(animated: animated)
     }
     
     func close(to destVC: UIViewController) {
-        viewControllerBehind?.navigationController?.popToViewController(destVC, animated: animated)
+        self.viewController?.navigationController?.popToViewController(destVC, animated: animated)
     }
 }
