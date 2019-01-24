@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhotoCapturedView" customModule="InstagramClientApp" customModuleProvider="target">
+            <connections>
+                <outlet property="capturedImageView" destination="ByK-Lv-JuU" id="D0T-sp-oeL"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="71H-KK-5xI"/>
+                <outlet property="saveSuccessLabel" destination="LMK-hi-QiV" id="YLi-Kz-kZz"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ByK-Lv-JuU">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z0P-ip-RJS">
+                    <rect key="frame" x="12" y="32" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="d4J-zX-vKz"/>
+                        <constraint firstAttribute="width" constant="50" id="tkY-pM-9TN"/>
+                    </constraints>
+                    <state key="normal" image="cancel_shadow"/>
+                    <connections>
+                        <action selector="handleCancel:" destination="-1" eventType="touchUpInside" id="8QZ-vA-YaZ"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q0N-03-yf9">
+                    <rect key="frame" x="24" y="593" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="B3V-6a-K34"/>
+                        <constraint firstAttribute="width" constant="50" id="bdK-d0-QMO"/>
+                    </constraints>
+                    <state key="normal" image="save_shadow"/>
+                    <connections>
+                        <action selector="handleSave:" destination="-1" eventType="touchUpInside" id="XEQ-9K-Avj"/>
+                    </connections>
+                </button>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Saved Successfully" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMK-hi-QiV">
+                    <rect key="frame" x="111.45881006864977" y="294.15789473684208" width="150" height="79.999999999999986"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.30423428867403313" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ByK-Lv-JuU" secondAttribute="trailing" id="A5b-7k-iyB"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ByK-Lv-JuU" secondAttribute="bottom" id="I3H-9P-fM0"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Q0N-03-yf9" secondAttribute="bottom" constant="24" id="Lcu-E7-oDF"/>
+                <constraint firstItem="ByK-Lv-JuU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="PTH-LP-dLn"/>
+                <constraint firstItem="Z0P-ip-RJS" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="WsT-Jy-Rgn"/>
+                <constraint firstItem="Z0P-ip-RJS" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="frE-pa-2ro"/>
+                <constraint firstItem="ByK-Lv-JuU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="jHn-v4-tnl"/>
+                <constraint firstItem="Q0N-03-yf9" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="24" id="pXu-ba-WIF"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="cancel_shadow" width="25" height="25"/>
+        <image name="save_shadow" width="45" height="53.5"/>
+    </resources>
+</document>
