@@ -54,21 +54,10 @@ final class HomeFeedViewController: UICollectionViewController {
         cell.delegate = self
         
         if posts.count > 0 {
-            let post = posts[indexPath.item]
+            cell.post = posts[indexPath.item]
             
-            cell.usernameLabel.text = post.user.username
-            
-            cell.profileImageUrlString = post.user.profileImageUrl
             cell.profileImageView.cacheManager = self.cacheManager
-//            cell.profileImageView.loadImage(from: profileImageUrlString, using: downloadProfileImage)
-            
-            cell.postImageUrlString = post.imageUrl
             cell.postImageView.cacheManager = self.cacheManager
-//            cell.postImageView.loadImage(from: imageUrlString, using: downloadPostImage)
-            
-            cell.setAttributedCaptionLabel(username: post.user.username,
-                                           caption: post.caption,
-                                           createdDate: post.creationDate.timeAgoDisplay())
         }
         
         return cell
@@ -84,31 +73,6 @@ final class HomeFeedViewController: UICollectionViewController {
         let slideTransition = ModalTransition(animator: SlideAnimator())
         router?.openCamera(with: slideTransition)
     }
-    
-    //MARK: Private Methods
-    private func setupNotificationsForReloadNewPosts() {
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.shareNewFeed, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.followNewUser, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.unfollowOldUser, object: nil)
-    }
-    
-    private func configureExtraUI() {
-        collectionView.backgroundColor = .white
-        
-        navigationItem.titleView = UIImageView(image: UIImage(named: "logo2"))
-        
-        let nib = FeedCell.nibFromClassName()
-        collectionView.register(nib, forCellWithReuseIdentifier: cellId)
-        
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
-        collectionView.refreshControl = refreshControl
-        
-        let camera = UIBarButtonItem(image: UIImage(named: "camera3"), style: .plain, target: self, action: #selector(openCamera(_:)))
-        navigationItem.leftBarButtonItem = camera
-        navigationController?.navigationBar.tintColor = .black
-    }
-
 }
 
 extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
@@ -157,8 +121,8 @@ extension HomeFeedViewController: FeedCellDelegate {
         
     }
     
-    func didTapCommentButton() {
-        router?.openCommentPage()
+    func didTapCommentsButton(_ post: Post) {
+        router?.openCommentsPage(currentPost: post)
     }
     
     func didTapSendMeesageButton() {
@@ -171,5 +135,31 @@ extension HomeFeedViewController: FeedCellDelegate {
     
     func didTapOptionButton() {
         
+    }
+}
+
+extension HomeFeedViewController {
+    //MARK: Private Methods
+    private func setupNotificationsForReloadNewPosts() {
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.shareNewFeed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.followNewUser, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.unfollowOldUser, object: nil)
+    }
+    
+    private func configureExtraUI() {
+        collectionView.backgroundColor = .white
+        
+        navigationItem.titleView = UIImageView(image: UIImage(named: "logo2"))
+        
+        let nib = FeedCell.nibFromClassName()
+        collectionView.register(nib, forCellWithReuseIdentifier: cellId)
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+        
+        let camera = UIBarButtonItem(image: UIImage(named: "camera3"), style: .plain, target: self, action: #selector(openCamera(_:)))
+        navigationItem.leftBarButtonItem = camera
+        navigationController?.navigationBar.tintColor = .black
     }
 }

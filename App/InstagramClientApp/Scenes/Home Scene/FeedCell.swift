@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import InstagramEngine
 
 protocol FeedCellDelegate {
     func didProfileImageUrlSet(_ loadableImageView: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void)
     func didPostImageUrlSet(_ loadableImageView: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void)
     
     func didTapLikeButton()
-    func didTapCommentButton()
+    func didTapCommentsButton(_ post: Post)
     func didTapSendMeesageButton()
     func didTapBookMarkButton()
     func didTapOptionButton()
@@ -22,8 +23,8 @@ protocol FeedCellDelegate {
 final class FeedCell: UICollectionViewCell {
     
     var delegate: FeedCellDelegate?
-    var profileImageUrlString: String?  { didSet { profileImageView.imageUrlString = profileImageUrlString } }
-    var postImageUrlString: String?  { didSet { postImageView.imageUrlString = postImageUrlString } }
+    var profileImageUrlString: String? { didSet { profileImageView.imageUrlString = profileImageUrlString } }
+    var post: Post? { didSet { setPostDataToSubviews() } }
     
     @IBOutlet weak var profileImageView: LoadableImageView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -54,7 +55,8 @@ final class FeedCell: UICollectionViewCell {
     }
     
     @IBAction func handleCommentButton(_ sender: UIButton) {
-        delegate?.didTapCommentButton()
+        guard let post = post else { return }
+        delegate?.didTapCommentsButton(post)
     }
     
     @IBAction func handleSendMessageButton(_ sender: UIButton) {
@@ -69,18 +71,16 @@ final class FeedCell: UICollectionViewCell {
         delegate?.didTapOptionButton()
     }
     
-    func setAttributedCaptionLabel(username: String, caption: String, createdDate: String) {
-        let attributedText = NSMutableAttributedString(string: username,
-                                                       attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: " "+caption,
-                                                 attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
-        attributedText.append(NSAttributedString(string: "\n\n",
-                                                 attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
-        attributedText.append(NSAttributedString(string: createdDate,
-                                                 attributes: [
-                                                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+    private func setPostDataToSubviews() {
+        guard let post = post else { return }
         
-        captionLabel.attributedText = attributedText
+        usernameLabel.text = post.user.username
+        
+        captionLabel.setCaptionText(username: post.user.username,
+                                    caption: post.caption,
+                                    createdDate: post.creationDate.timeAgoDisplay())
+        
+        postImageView.imageUrlString = post.imageUrl
     }
 }
 
@@ -89,7 +89,7 @@ extension FeedCell: LoadableImageViewDelegate {
         if loadableImageView == profileImageView {
             return profileImageUrlString
         } else if loadableImageView == postImageView {
-            return postImageUrlString
+            return post?.imageUrl
         }
         return nil
     }
@@ -100,5 +100,21 @@ extension FeedCell: LoadableImageViewDelegate {
         } else if loadableImageView == postImageView {
             delegate?.didPostImageUrlSet(self, url, completion)
         }
+    }
+}
+
+extension UILabel {
+    fileprivate func setCaptionText(username: String, caption: String, createdDate: String) {
+        let attributedText = NSMutableAttributedString(string: username,
+                                                       attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSAttributedString(string: " "+caption,
+                                                 attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
+        attributedText.append(NSAttributedString(string: "\n\n",
+                                                 attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
+        attributedText.append(NSAttributedString(string: createdDate,
+                                                 attributes: [
+                                                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        
+        self.attributedText = attributedText
     }
 }

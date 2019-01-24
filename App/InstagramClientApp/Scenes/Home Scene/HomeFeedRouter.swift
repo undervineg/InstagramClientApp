@@ -6,10 +6,10 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import InstagramEngine
 
 final class HomeFeedRouter: BasicRouter, HomeFeedRouter.Routes {
-    typealias Routes = CameraRoute & CommentRoute
+    typealias Routes = CameraRoute & CommentsRoute
     
     // MARK: Camera Route
     var cameraTransitionType: Transition = ModalTransition()
@@ -26,13 +26,15 @@ final class HomeFeedRouter: BasicRouter, HomeFeedRouter.Routes {
     }
     
     // MARK: Comment Route
-    var commentTransition: Transition = PushTransition()
+    var commentsTransition: Transition = PushTransition()
     
-    func openCommentPage() {
-        openCommentPage(with: commentTransition)
+    func openCommentsPage(currentPost: Post) {
+        openCommentsPage(currentPost: currentPost, with: commentsTransition)
     }
     
-    func openCommentPage(with transition: Transition) {
-        print(#function)
+    func openCommentsPage(currentPost: Post, with transition: Transition) {
+        let module = CommentsModule(post: currentPost)
+        
+        self.open(module.viewController, with: transition)
     }
 }
