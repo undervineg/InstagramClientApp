@@ -167,7 +167,7 @@ extension UserProfileHeader {
 }
 
 extension UILabel {
-    func setSummary(count: Int, fixedText: String) {
+    fileprivate func setSummary(count: Int, fixedText: String) {
         let attributedText = NSMutableAttributedString(string: "\(count)",
             attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
         attributedText.append(NSAttributedString(string: "\n",
