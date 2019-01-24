@@ -10,21 +10,19 @@ import UIKit
 import InstagramEngine
 
 protocol FeedCellDelegate {
-    func didProfileImageUrlSet(_ loadableImageView: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void)
-    func didPostImageUrlSet(_ loadableImageView: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void)
+    func didProfileImageUrlSet(_ cell: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void)
+    func didPostImageUrlSet(_ cell: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void)
     
-    func didTapLikeButton()
-    func didTapCommentsButton(_ post: Post)
-    func didTapSendMeesageButton()
-    func didTapBookMarkButton()
-    func didTapOptionButton()
+    func didTapLikeButton(_ cell: FeedCell)
+    func didTapCommentsButton(_ cell: FeedCell)
+    func didTapSendMeesageButton(_ cell: FeedCell)
+    func didTapBookMarkButton(_ cell: FeedCell)
+    func didTapOptionButton(_ cell: FeedCell)
 }
 
 final class FeedCell: UICollectionViewCell {
     
     var delegate: FeedCellDelegate?
-    var profileImageUrlString: String? { didSet { profileImageView.imageUrlString = profileImageUrlString } }
-    var post: Post? { didSet { setPostDataToSubviews() } }
     
     @IBOutlet weak var profileImageView: LoadableImageView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -51,49 +49,27 @@ final class FeedCell: UICollectionViewCell {
 
     // MARK: Actions
     @IBAction func handleLikeButton(_ sender: UIButton) {
-        delegate?.didTapLikeButton()
+        delegate?.didTapLikeButton(self)
     }
     
     @IBAction func handleCommentButton(_ sender: UIButton) {
-        guard let post = post else { return }
-        delegate?.didTapCommentsButton(post)
+        delegate?.didTapCommentsButton(self)
     }
     
     @IBAction func handleSendMessageButton(_ sender: UIButton) {
-        delegate?.didTapSendMeesageButton()
+        delegate?.didTapSendMeesageButton(self)
     }
     
     @IBAction func handleBookMarkButton(_ sender: UIButton) {
-        delegate?.didTapBookMarkButton()
+        delegate?.didTapBookMarkButton(self)
     }
     
     @IBAction func handleOptionButton(_ sender: UIButton) {
-        delegate?.didTapOptionButton()
-    }
-    
-    private func setPostDataToSubviews() {
-        guard let post = post else { return }
-        
-        usernameLabel.text = post.user.username
-        
-        captionLabel.setCaptionText(username: post.user.username,
-                                    caption: post.caption,
-                                    createdDate: post.creationDate.timeAgoDisplay())
-        
-        postImageView.imageUrlString = post.imageUrl
+        delegate?.didTapOptionButton(self)
     }
 }
 
 extension FeedCell: LoadableImageViewDelegate {
-    func imageUrlString(_ loadableImageView: LoadableImageView) -> String? {
-        if loadableImageView == profileImageView {
-            return profileImageUrlString
-        } else if loadableImageView == postImageView {
-            return post?.imageUrl
-        }
-        return nil
-    }
-    
     func requestImageDownload(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
         if loadableImageView == profileImageView {
             delegate?.didProfileImageUrlSet(self, url, completion)
@@ -104,7 +80,8 @@ extension FeedCell: LoadableImageViewDelegate {
 }
 
 extension UILabel {
-    fileprivate func setCaptionText(username: String, caption: String, createdDate: String) {
+    func setCaptionText(username: String?, caption: String?, createdDate: String?) {
+        guard let username = username, let caption = caption, let createdDate = createdDate else { return }
         let attributedText = NSMutableAttributedString(string: username,
                                                        attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
         attributedText.append(NSAttributedString(string: " "+caption,

@@ -51,14 +51,22 @@ final class HomeFeedViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FeedCell
         
-        cell.delegate = self
-        
         if posts.count > 0 {
-            cell.post = posts[indexPath.item]
+            let post = posts[indexPath.item]
+            cell.usernameLabel.text = post.user.username
             
-            cell.profileImageView.cacheManager = self.cacheManager
-            cell.postImageView.cacheManager = self.cacheManager
+            cell.captionLabel.setCaptionText(username: post.user.username,
+                                        caption: post.caption,
+                                        createdDate: post.creationDate.timeAgoDisplay())
+            
+            cell.postImageView.imageUrlString = post.imageUrl
+            cell.profileImageView.imageUrlString = post.user.profileImageUrl
         }
+        
+        cell.profileImageView.cacheManager = self.cacheManager
+        cell.postImageView.cacheManager = self.cacheManager
+        
+        cell.delegate = self
         
         return cell
     }
@@ -104,7 +112,28 @@ extension HomeFeedViewController: PostView {
 }
 
 extension HomeFeedViewController: FeedCellDelegate {
-    func didProfileImageUrlSet(_ loadableImageView: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
+    func didTapLikeButton(_ cell: FeedCell) {
+        
+    }
+    
+    func didTapCommentsButton(_ cell: FeedCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        router?.openCommentsPage(currentPost: posts[indexPath.item])
+    }
+    
+    func didTapSendMeesageButton(_ cell: FeedCell) {
+        
+    }
+    
+    func didTapBookMarkButton(_ cell: FeedCell) {
+        
+    }
+    
+    func didTapOptionButton(_ cell: FeedCell) {
+        
+    }
+    
+    func didProfileImageUrlSet(_ cell: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
         downloadProfileImage?(url) { (result) in
             switch result {
             case .success(let imageData) : completion(imageData)
@@ -113,28 +142,8 @@ extension HomeFeedViewController: FeedCellDelegate {
         }
     }
     
-    func didPostImageUrlSet(_ loadableImageView: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
+    func didPostImageUrlSet(_ cell: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
         downloadPostImage?(url, completion)
-    }
-    
-    func didTapLikeButton() {
-        
-    }
-    
-    func didTapCommentsButton(_ post: Post) {
-        router?.openCommentsPage(currentPost: post)
-    }
-    
-    func didTapSendMeesageButton() {
-        
-    }
-    
-    func didTapBookMarkButton() {
-        
-    }
-    
-    func didTapOptionButton() {
-        
     }
 }
 
