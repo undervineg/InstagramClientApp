@@ -19,7 +19,7 @@ final class CameraRouter: BasicRouter, CameraRouter.Routes {
     
     func openHomeFeedPage(with transition: Transition) {
         openTransition = transition
-        openTransition?.viewControllerBehind = viewControllerBehind?.presentingViewController
+        openTransition?.viewController = viewController?.presentingViewController
         self.close()
     }
 }

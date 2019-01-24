@@ -6,8 +6,8 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol Animator: UIViewControllerAnimatedTransitioning {
-    
+    var isPresenting: Bool { get set }
 }

@@ -79,7 +79,8 @@ final class HomeFeedViewController: UICollectionViewController {
     }
     
     @objc private func openCamera(_ sender: UIBarButtonItem) {
-        router?.openCamera()
+        let slideTransition = ModalTransition(animator: SlideAnimator())
+        router?.openCamera(with: slideTransition)
     }
     
     //MARK: Private Methods

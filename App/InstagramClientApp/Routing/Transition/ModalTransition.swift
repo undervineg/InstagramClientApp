@@ -8,26 +8,37 @@
 
 import UIKit
 
-final class ModalTransition: Transition {
-    weak var viewControllerBehind: UIViewController?
+final class ModalTransition: NSObject, Transition {
+    weak var viewController: UIViewController?
     
+    private var animator: Animator?
     private let animated: Bool
-    private let completion: (() -> Void)?
+    var completion: (() -> Void)?
     
-    init(animated: Bool = true, completion: (() -> Void)? = nil) {
+    init(animated: Bool = true, animator: Animator? = nil) {
         self.animated = animated
-        self.completion = completion
+        self.animator = animator
     }
     
     func open(_ viewController: UIViewController) {
-        self.viewControllerBehind?.present(viewController, animated: animated, completion: completion)
+        viewController.transitioningDelegate = self
+        self.viewController?.present(viewController, animated: animated, completion: completion)
     }
     
-    func close() {
-        self.viewControllerBehind?.dismiss(animated: animated, completion: completion)
+    func close(_ viewController: UIViewController) {
+        viewController.transitioningDelegate = self
+        viewController.dismiss(animated: animated, completion: completion)
+    }
+}
+
+extension ModalTransition: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        animator?.isPresenting = false
+        return animator
     }
     
-    func close(to destVC: UIViewController) {
-        destVC.presentingViewController?.dismiss(animated: animated, completion: completion)
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        animator?.isPresenting = true
+        return animator
     }
 }

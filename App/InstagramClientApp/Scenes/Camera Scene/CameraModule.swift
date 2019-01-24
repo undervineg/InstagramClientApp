@@ -23,6 +23,6 @@ final class CameraModule {
         
         viewController.saveCapturedPhoto = useCase.savePhoto
         
-        router.viewControllerBehind = viewController
+        router.viewController = viewController
     }
 }

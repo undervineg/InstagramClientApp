@@ -18,8 +18,6 @@ final class CameraViewController: UIViewController {
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private weak var photoCaptureView: PhotoCapturedView?
     
-    override var prefersStatusBarHidden: Bool { return true }
-    
     // MARK: Private Properties
     private var router: CameraRouter.Routes?
     private let captureSession: AVCaptureSession = AVCaptureSession()
@@ -94,7 +92,8 @@ final class CameraViewController: UIViewController {
     }
     
     @IBAction func backButtonDidTap(_ sender: UIButton) {
-        router?.openHomeFeedPage()
+        let slideTransition = ModalTransition(animator: SlideAnimator())
+        router?.openHomeFeedPage(with: slideTransition)
     }
 }
 
