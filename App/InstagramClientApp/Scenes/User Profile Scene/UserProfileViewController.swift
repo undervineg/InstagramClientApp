@@ -53,10 +53,14 @@ final class UserProfileViewController: UICollectionViewController {
 
         collectionView.backgroundColor = .white
         
-        configureLogoutButton()
         registerCollectionViewCells()
         
+        if isCurrentUser {
+            configureLogoutButton()
+        }
+        
         loadProfile?(uid)
+        
         if let uid = uid {
             checkIsFollowing?(uid)
         }
@@ -84,63 +88,25 @@ final class UserProfileViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                      withReuseIdentifier: headerId,
-                                                                     for: indexPath) as! UserProfileHeaderCell
-        header.usernameLabel.text = user?.username
+                                                                     for: indexPath) as! UserProfileHeader
+        headerView.dataSource = self
+        headerView.delegate = self
         
-        header.setAttributedText(to: header.postLabel, "\(userPosts.count)", "posts")
-        header.setAttributedText(to: header.followerLabel, "\(userPosts.count)", "followers")
-        header.setAttributedText(to: header.followingLabel, "\(userPosts.count)", "following")
+        headerView.profileImageView.cacheManager = self.cacheManager
         
-        setEditProfileFollowButton(in: header)
-        
-        if let urlString = user?.profileImageUrl {
-            header.profileImageView.cacheManager = self.cacheManager
-            header.profileImageView.loadImage(from: urlString, using: downloadProfileImage)
-        }
-        
-        return header
-    }
-    
-    private func setEditProfileFollowButton(in header: UserProfileHeaderCell) {
-        var buttonType = UserProfileHeaderCell.ButtonType.edit
-        var buttonAction = #selector(handleEditProfile(_:))
-        
-        if !isCurrentUser && isFollowing {
-            buttonType = .unfollow
-            buttonAction = #selector(handleUnFollow(_:))
-        } else if !isCurrentUser && !isFollowing {
-            buttonType = .follow
-            buttonAction = #selector(handleFollow(_:))
-        }
-        
-        header.configureEditFollowButton(buttonType)
-        header.editProfileFollowButton.removeTarget(nil, action: nil, for: .allTouchEvents)
-        header.editProfileFollowButton.addTarget(self, action: buttonAction, for: .touchUpInside)
-    }
-    
-    @objc private func handleEditProfile(_ sender: UIButton) {
-        editProfile?()
-    }
-    
-    @objc private func handleFollow(_ sender: UIButton) {
-        guard let uid = uid else { return }
-        follow?(uid)
-    }
-    
-    @objc private func handleUnFollow(_ sender: UIButton) {
-        guard let uid = uid else { return }
-        unfollow?(uid)
+        return headerView
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserProfilePhotoCell
         
+        cell.delegate = self
+        
         if userPosts.count > 0 {
-            let urlString = userPosts[indexPath.item].imageUrl
+            cell.postImageUrl = userPosts[indexPath.item].imageUrl
             cell.imageView.cacheManager = self.cacheManager
-            cell.imageView.loadImage(from: urlString, using: downloadPostImage)
         }
 
         return cell
@@ -198,8 +164,63 @@ extension UserProfileViewController: UserProfileView, PostView {
     }
 }
 
-extension UserProfileViewController {
+extension UserProfileViewController: UserProfilePhotoCellDelegate {
+    func didImageUrlSet(_ userProfileHeaderCell: UserProfilePhotoCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
+        downloadPostImage?(url, completion)
+    }
+}
+
+extension UserProfileViewController: UserProfileHeaderDelegate {
+    func didProfileUrlSet(_ userProfileHeaderCell: UserProfileHeader, _ url: URL, _ completion: @escaping (Data) -> Void) {
+        downloadProfileImage?(url, completion)
+    }
     
+    func didTapEditProfileButton(_ userProfileHeaderCell: UserProfileHeader) {
+        editProfile?()
+    }
+    
+    func didTapFollowButton(_ userProfileHeaderCell: UserProfileHeader) {
+        guard let uid = uid else { return }
+        follow?(uid)
+    }
+    
+    func didTapUnfollowButton(_ userProfileHeaderCell: UserProfileHeader) {
+        guard let uid = uid else { return }
+        unfollow?(uid)
+    }
+}
+
+extension UserProfileViewController: UserProfileHeaderDataSource {
+    func username(_ userProfileHeaderCell: UserProfileHeader) -> String? {
+        return user?.username
+    }
+    
+    func userProfileUrl(_ userProfileHeaderCell: UserProfileHeader) -> String? {
+        return user?.profileImageUrl
+    }
+    
+    func summaryCounts(_ userProfileHeaderCell: UserProfileHeader, _ labelType: UserProfileHeader.SummaryLabelType) -> Int {
+        switch labelType {
+        case .posts: return userPosts.count
+        case .followers: return 0
+        case .followings: return 0
+        }
+    }
+    
+    func editProfileButtonType(_ userProfileHeaderCell: UserProfileHeader) -> UserProfileHeader.ButtonType {
+        var buttonType = UserProfileHeader.ButtonType.edit
+        
+        if !isCurrentUser && isFollowing {
+            buttonType = .unfollow
+        } else if !isCurrentUser && !isFollowing {
+            buttonType = .follow
+        }
+        
+        return buttonType
+    }
+}
+
+extension UserProfileViewController {
     // MARK: Private Methods
     private func configureLogoutButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "gear"),
@@ -214,7 +235,7 @@ extension UserProfileViewController {
     }
     
     private func registerCollectionViewCells() {
-        let profileHeaderCellNib = UserProfileHeaderCell.nibFromClassName()
+        let profileHeaderCellNib = UserProfileHeader.nibFromClassName()
         collectionView.register(profileHeaderCellNib,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: headerId)

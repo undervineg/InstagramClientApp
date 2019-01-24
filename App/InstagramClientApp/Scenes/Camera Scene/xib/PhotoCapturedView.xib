@@ -33,7 +33,7 @@
                     </constraints>
                     <state key="normal" image="cancel_shadow"/>
                     <connections>
-                        <action selector="handleCancel:" destination="-1" eventType="touchUpInside" id="8QZ-vA-YaZ"/>
+                        <action selector="didTapCancelButton:" destination="-1" eventType="touchUpInside" id="8QZ-vA-YaZ"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q0N-03-yf9">
@@ -44,7 +44,7 @@
                     </constraints>
                     <state key="normal" image="save_shadow"/>
                     <connections>
-                        <action selector="handleSave:" destination="-1" eventType="touchUpInside" id="XEQ-9K-Avj"/>
+                        <action selector="didTapSaveButton:" destination="-1" eventType="touchUpInside" id="XEQ-9K-Avj"/>
                     </connections>
                 </button>
                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Saved Successfully" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMK-hi-QiV">

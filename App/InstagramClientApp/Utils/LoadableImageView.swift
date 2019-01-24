@@ -9,55 +9,39 @@
 import UIKit
 import InstagramEngine
 
-protocol ImageLoadable: class {
-    var cacheManager: Cacheable? { get set }
-    var lastUrlRequested: String? { get set }
-    
-    func loadImage(from urlString: String, using callback: ((URL, @escaping (Data) -> Void) -> Void)?)
-    func loadImage(from urlString: String, using callback: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?)
+protocol LoadableImageViewDelegate {
+    func requestImageDownload(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void)
 }
 
-extension ImageLoadable where Self: UIImageView {
-    func loadImage(from urlString: String, using callback: ((URL, @escaping (Data) -> Void) -> Void)?) {
-        lastUrlRequested = urlString
-        if let url = URL(string: urlString) {
-            if let cachedImageData = cacheManager?.getCachedData(key: url.absoluteString) {
-                image = UIImage(data: cachedImageData)
-                return
-            }
-            callback?(url) { [weak self] imageData in
-                guard url.absoluteString == self?.lastUrlRequested else { return }
-                DispatchQueue.main.async {
-                    self?.cacheManager?.cache(imageData, with: url.absoluteString)
-                    self?.image = UIImage(data: imageData)
-                }
-            }
-        }
-    }
-    
-    func loadImage(from urlString: String, using callback: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?) {
-        lastUrlRequested = urlString
-        if let url = URL(string: urlString) {
-            if let cachedImageData = cacheManager?.getCachedData(key: url.absoluteString) {
-                image = UIImage(data: cachedImageData)
-                return
-            }
-            callback?(url) { [weak self] result in
-                guard url.absoluteString == self?.lastUrlRequested else { return }
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let imageData):
-                        self?.cacheManager?.cache(imageData, with: url.absoluteString)
-                        self?.image = UIImage(data: imageData)
-                    default: return
-                    }
-                }
-            }
-        }
-    }
-}
-
-final class LoadableImageView: UIImageView, ImageLoadable {
+final class LoadableImageView: UIImageView {
     var cacheManager: Cacheable?
-    var lastUrlRequested: String?
+    var delegate: LoadableImageViewDelegate?
+    
+    var imageUrlString: String? { didSet { handleImageUrl() } }
+    private var lastUrlRequested: String?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    private func handleImageUrl() {
+        guard let urlString = imageUrlString, let url = URL(string: urlString) else { return }
+        
+        lastUrlRequested = urlString
+        if let cachedImageData = cacheManager?.getCachedData(key: url.absoluteString) {
+            image = UIImage(data: cachedImageData)
+            return
+        }
+        delegate?.requestImageDownload(self, url) { [weak self] (imageData) in
+            guard url.absoluteString == self?.lastUrlRequested else { return }
+            DispatchQueue.main.async {
+                self?.cacheManager?.cache(imageData, with: url.absoluteString)
+                self?.image = UIImage(data: imageData)
+            }
+        }
+    }
 }

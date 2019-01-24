@@ -8,7 +8,9 @@
 
 import UIKit
 
-final class HomeFeedCell: UICollectionViewCell {
+final class FeedCell: UICollectionViewCell {
+    
+    var addComment: (() -> Void)?
     
     @IBOutlet weak var profileImageView: LoadableImageView!
     @IBOutlet weak var usernameLabel: UILabel!

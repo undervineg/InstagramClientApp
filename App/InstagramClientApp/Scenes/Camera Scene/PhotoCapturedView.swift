@@ -34,11 +34,11 @@ final class PhotoCapturedView: UIView, XibLoadable {
     }
     
     // MARK: Actions
-    @IBAction func handleCancel(_ sender: UIButton) {
+    @IBAction func didTapCancelButton(_ sender: UIButton) {
         removeFromSuperview()
     }
     
-    @IBAction func handleSave(_ sender: UIButton) {
+    @IBAction func didTapSaveButton(_ sender: UIButton) {
         guard let capturedData = capturedImageView.image?.jpegData(compressionQuality: 0.3) else { return }
         saveCapturedPhoto?(capturedData)
     }

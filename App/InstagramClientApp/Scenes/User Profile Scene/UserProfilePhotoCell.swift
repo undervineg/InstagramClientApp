@@ -9,10 +9,17 @@
 import UIKit
 import InstagramEngine
 
+protocol UserProfilePhotoCellDelegate {
+    func didImageUrlSet(_ userProfileHeaderCell: UserProfilePhotoCell, _ url: URL, _ completion: @escaping (Data) -> Void)
+}
+
 final class UserProfilePhotoCell: UICollectionViewCell {
     
+    var delegate: UserProfilePhotoCellDelegate?
+    var postImageUrl: String? { didSet { imageView.imageUrlString = postImageUrl } }
+    
     let imageView: LoadableImageView = {
-        let iv = LoadableImageView()
+        let iv = LoadableImageView(frame: .zero)
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         return iv
@@ -29,6 +36,8 @@ final class UserProfilePhotoCell: UICollectionViewCell {
             imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
+        
+        imageView.delegate = self
     }
     
     override func prepareForReuse() {
@@ -38,5 +47,11 @@ final class UserProfilePhotoCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+}
+
+extension UserProfilePhotoCell: LoadableImageViewDelegate {
+    func requestImageDownload(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
+        delegate?.didImageUrlSet(self, url, completion)
     }
 }

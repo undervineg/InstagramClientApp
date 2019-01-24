@@ -64,12 +64,14 @@ class UserSearchViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserSearchCell
     
+        cell.delegate = self
+        
         if users.count > 0 {
             let user = isFiltering() ? filteredUsers[indexPath.item] : users[indexPath.item]
             cell.usernameLabel.text = user.username
             
+            cell.profileImageUrlString = user.profileImageUrl
             cell.profileImageView.cacheManager = cacheManager
-            cell.profileImageView.loadImage(from: user.profileImageUrl, using: downloadProfileImage)
         }
         
         return cell
@@ -82,6 +84,17 @@ class UserSearchViewController: UICollectionViewController {
         router?.openUserProfilePage(of: user.id)
     }
 
+}
+
+extension UserSearchViewController: UserSearchCellDelegate {
+    func didProfileUrlSet(_ userSearchCell: UserSearchCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
+        downloadProfileImage?(url) { (result) in
+            switch result {
+            case .success(let imageData) : completion(imageData)
+            default: return
+            }
+        }
+    }
 }
 
 extension UserSearchViewController: UICollectionViewDelegateFlowLayout {

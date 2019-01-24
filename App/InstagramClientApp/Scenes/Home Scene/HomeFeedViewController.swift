@@ -49,20 +49,22 @@ final class HomeFeedViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeFeedCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FeedCell
+        
+        cell.delegate = self
         
         if posts.count > 0 {
             let post = posts[indexPath.item]
             
             cell.usernameLabel.text = post.user.username
             
-            let profileImageUrlString = post.user.profileImageUrl
+            cell.profileImageUrlString = post.user.profileImageUrl
             cell.profileImageView.cacheManager = self.cacheManager
-            cell.profileImageView.loadImage(from: profileImageUrlString, using: downloadProfileImage)
+//            cell.profileImageView.loadImage(from: profileImageUrlString, using: downloadProfileImage)
             
-            let imageUrlString = post.imageUrl
+            cell.postImageUrlString = post.imageUrl
             cell.postImageView.cacheManager = self.cacheManager
-            cell.postImageView.loadImage(from: imageUrlString, using: downloadPostImage)
+//            cell.postImageView.loadImage(from: imageUrlString, using: downloadPostImage)
             
             cell.setAttributedCaptionLabel(username: post.user.username,
                                            caption: post.caption,
@@ -95,7 +97,7 @@ final class HomeFeedViewController: UICollectionViewController {
         
         navigationItem.titleView = UIImageView(image: UIImage(named: "logo2"))
         
-        let nib = HomeFeedCell.nibFromClassName()
+        let nib = FeedCell.nibFromClassName()
         collectionView.register(nib, forCellWithReuseIdentifier: cellId)
         
         let refreshControl = UIRefreshControl()
@@ -134,5 +136,40 @@ extension HomeFeedViewController: PostView {
             self.collectionView.refreshControl?.endRefreshing()
             self.collectionView.reloadData()
         }
+    }
+}
+
+extension HomeFeedViewController: FeedCellDelegate {
+    func didProfileImageUrlSet(_ loadableImageView: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
+        downloadProfileImage?(url) { (result) in
+            switch result {
+            case .success(let imageData) : completion(imageData)
+            default: return
+            }
+        }
+    }
+    
+    func didPostImageUrlSet(_ loadableImageView: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
+        downloadPostImage?(url, completion)
+    }
+    
+    func didTapLikeButton() {
+        
+    }
+    
+    func didTapCommentButton() {
+        router?.openCommentPage()
+    }
+    
+    func didTapSendMeesageButton() {
+        
+    }
+    
+    func didTapBookMarkButton() {
+        
+    }
+    
+    func didTapOptionButton() {
+        
     }
 }

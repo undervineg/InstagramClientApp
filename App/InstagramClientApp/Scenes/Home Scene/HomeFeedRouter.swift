@@ -9,8 +9,9 @@
 import Foundation
 
 final class HomeFeedRouter: BasicRouter, HomeFeedRouter.Routes {
-    typealias Routes = CameraRoute
+    typealias Routes = CameraRoute & CommentRoute
     
+    // MARK: Camera Route
     var cameraTransitionType: Transition = ModalTransition()
     
     func openCamera() {
@@ -22,5 +23,16 @@ final class HomeFeedRouter: BasicRouter, HomeFeedRouter.Routes {
         cameraModule.router.openTransition = transition
         
         open(cameraModule.viewController, with: transition)
+    }
+    
+    // MARK: Comment Route
+    var commentTransition: Transition = PushTransition()
+    
+    func openCommentPage() {
+        openCommentPage(with: commentTransition)
+    }
+    
+    func openCommentPage(with transition: Transition) {
+        print(#function)
     }
 }
