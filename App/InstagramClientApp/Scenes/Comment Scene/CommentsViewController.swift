@@ -142,7 +142,26 @@ extension CommentsViewController: CommentsCellDelegate {
 
 extension CommentsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 50)
+        let height = generateAutoSizingHeight(at: indexPath)
+        return CGSize(width: view.frame.width, height: height)
+    }
+    
+    private func generateAutoSizingHeight(at indexPath: IndexPath) -> CGFloat {
+        let dummyCell = makeDummyCell(at: indexPath)
+        dummyCell.layoutIfNeeded()
+        
+        let optimalSize = dummyCell.systemLayoutSizeFitting(dummyCell.frame.size)
+        let profileImageHeight: CGFloat = 40 + 8 + 8
+        return max(profileImageHeight, optimalSize.height)
+    }
+    
+    private func makeDummyCell(at indexPath: IndexPath) -> CommentsCell {
+        guard let dummyCell = CommentsCell.viewFromNibFile() as? CommentsCell else {
+            fatalError("Casting Error at: \(#function)")
+        }
+        let comment = commentsForPost[indexPath.item]
+        dummyCell.textLabel.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
+        return dummyCell
     }
 }
 

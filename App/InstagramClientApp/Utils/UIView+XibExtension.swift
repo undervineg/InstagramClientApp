@@ -9,7 +9,19 @@
 import UIKit
 
 extension UIView {
+    class var classname: String {
+        return String(describing: self)
+    }
+    
     class func nibFromClassName() -> UINib {
-        return UINib(nibName: String(describing: self), bundle: nil)
+        return UINib(nibName: classname, bundle: nil)
+    }
+    
+    class func viewFromNibFile() -> UIView {
+        let nib = nibFromClassName()
+        guard let view = nib.instantiate(withOwner: classname.self).first as? UIView else {
+            fatalError("\(#function): No top level objects in nib")
+        }
+        return view
     }
 }
