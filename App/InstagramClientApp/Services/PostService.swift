@@ -34,6 +34,21 @@ final class PostService: LoadPostClient {
         fetchUserPost(of: currentUserId, completion)
     }
     
+    func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
+        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
+        
+        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any], Error>) in
+            switch result {
+            case .success(let values):
+                values.forEach({ (key, value) in
+                    guard let value = value as? [String: Any] else { return }
+                    self?.generatePost(of: uid, postId: key, value: value, completion: completion)
+                })
+            default: return
+            }
+        }
+    }
+    
     func fetchCurrentUserPost(with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
         guard let currentUserId = auth.currentUserId else {
             completion(.failure(.userIDNotExist))
@@ -45,25 +60,10 @@ final class PostService: LoadPostClient {
     func fetchUserPost(of uid: String, with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
         
-        database.fetch(under: refs, orderBy: order) { [weak self] (result: Result<[String: Any], Error>) in
+        database.fetch(under: refs, orderBy: order) { [weak self] (result: Result<(String, [String: Any]), Error>) in
             switch result {
-            case .success(let value):
-                self?.generatePost(of: uid, value: value, completion: completion)
-            default: return
-            }
-        }
-    }
-    
-    func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
-        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
-        
-        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any], Error>) in
-            switch result {
-            case .success(let values):
-                values.forEach({ (key, value) in
-                    guard let value = value as? [String: Any] else { return }
-                    self?.generatePost(of: uid, value: value, completion: completion)
-                })
+            case .success(let (postId, postValues)):
+                self?.generatePost(of: uid, postId: postId, value: postValues, completion: completion)
             default: return
             }
         }
@@ -82,8 +82,7 @@ final class PostService: LoadPostClient {
     
     
     // MARK: Private Methods
-    
-    private func generatePost(of uid: String, value: [String: Any], completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
+    private func generatePost(of uid: String, postId: String, value: [String: Any], completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
         profileService.loadUserInfo(of: uid) { (result) in
             switch result {
             case .success(let userInfo):
@@ -93,7 +92,7 @@ final class PostService: LoadPostClient {
                 let imageHeight = value[Keys.Database.Post.imageHeight] as? Float ?? 0.0
                 let creationDate = value[Keys.Database.Post.creationDate] as? Double ?? 0.0
                 
-                let post = Post(userInfo, caption, imageUrl, imageWidth, imageHeight, creationDate)
+                let post = Post(postId, userInfo, caption, imageUrl, imageWidth, imageHeight, creationDate)
                 completion(.success(post))
             case .failure:
                 completion(.failure(.userIDNotExist))

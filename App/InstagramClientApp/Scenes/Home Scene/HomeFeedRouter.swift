@@ -28,12 +28,12 @@ final class HomeFeedRouter: BasicRouter, HomeFeedRouter.Routes {
     // MARK: Comment Route
     var commentsTransition: Transition = PushTransition()
     
-    func openCommentsPage(currentPost: Post) {
-        openCommentsPage(currentPost: currentPost, with: commentsTransition)
+    func openCommentsPage(postId: String) {
+        openCommentsPage(postId: postId, with: commentsTransition)
     }
     
-    func openCommentsPage(currentPost: Post, with transition: Transition) {
-        let module = CommentsModule(post: currentPost)
+    func openCommentsPage(postId: String, with transition: Transition) {
+        let module = CommentsModule(postId: postId)
         
         self.open(module.viewController, with: transition)
     }

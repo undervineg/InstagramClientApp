@@ -13,6 +13,7 @@ struct Keys {
         static let usersDir = "users"
         static let postsDir = "posts"
         static let followingDir = "following"
+        static let commentsDir = "comments"
         
         struct Profile {
             static let email = "email"
@@ -26,6 +27,12 @@ struct Keys {
             static let image = "imageUrl"
             static let imageWidth = "imageWidth"
             static let imageHeight = "imageHeight"
+            static let creationDate = "creationDate"
+        }
+        
+        struct Comment {
+            static let uid = "userId"
+            static let text = "text"
             static let creationDate = "creationDate"
         }
     }

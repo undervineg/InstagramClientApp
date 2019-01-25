@@ -11,43 +11,62 @@ import InstagramEngine
 
 private let cellId = "Cell"
 
-class CommentsViewController: UICollectionViewController {
+final class CommentsViewController: UICollectionViewController {
+    // MARK: Commands
+    var submitComment: ((String, Double, String) -> Void)?
+    var loadCommentsForPost: ((String, Comment.Order) -> Void)?
     
-    var submit: ((String) -> Void)?
+    // MARK: UI Properties
+    let commentTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Enter Comment"
+        return tf
+    }()
     
-    private lazy var keyboardContainerView: UIView = {
+    private(set) lazy var commentSubmitButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("Submit", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        btn.addTarget(self, action: #selector(handleSubmit(_:)), for: .touchUpInside)
+        return btn
+    }()
+    
+    private(set) lazy var keyboardContainerView: UIView = {
         let containerView = UIView()
         containerView.frame = CGRect(x: 0, y: 0, width: 0, height: 50)
         containerView.backgroundColor = .white
-        let submitButton = configureSubmitButton(inside: containerView)
-        configureTextField(inside: containerView, leftOf: submitButton)
+        containerView.addButton(commentSubmitButton)
+        containerView.addTextField(commentTextField, nextTo: commentSubmitButton)
         return containerView
     }()
     
-    private var currentPost: Post?
-
-    override var inputAccessoryView: UIView? {
-        return keyboardContainerView
-    }
+    override var inputAccessoryView: UIView? { return keyboardContainerView }
+    override var canBecomeFirstResponder: Bool { return true }
     
-    override var canBecomeFirstResponder: Bool {
-        return true
-    }
+    // MARK: Models
+    private var currentPostId: String?
+    private var commentsForPost: [Comment] = []
     
-    convenience init(currentPost: Post) {
+    // MARK: Initializer
+    convenience init(currentPostId: String) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
-        self.currentPost = currentPost
+        self.currentPostId = currentPostId
     }
     
+    // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        collectionView.backgroundColor = .white
-        
         navigationItem.title = "Comments"
         
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.backgroundColor = .white
+        collectionView.register(CommentsCell.nibFromClassName(), forCellWithReuseIdentifier: cellId)
+        collectionView.keyboardDismissMode = .onDrag
+        
+        if let postId = currentPostId {
+            loadCommentsForPost?(postId, .creationDate(.ascending))
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,68 +78,75 @@ class CommentsViewController: UICollectionViewController {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-    
-        
-    
-        return cell
-    }
     
     // MARK: Actions
     @objc private func handleSubmit(_ sender: UIButton) {
-        submit?("example comment")
+        guard let currentPostId = currentPostId else { return }
+        guard let commentText = commentTextField.text, commentText.count > 0 else { return }
+        
+        let submitDate = Date().timeIntervalSince1970
+        submitComment?(commentText, submitDate, currentPostId)
+        
+        commentTextField.text = ""
+        commentTextField.resignFirstResponder()
+    }
+}
+
+extension CommentsViewController: CommentsView {
+    func displayComment(_ comment: Comment) {
+        commentsForPost.append(comment)
+        collectionView.reloadData()
+    }
+}
+
+extension CommentsViewController {
+    // MARK: UICollectionViewDataSource
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return commentsForPost.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CommentsCell
+        
+        if commentsForPost.count > 0 {
+            let comment = commentsForPost[indexPath.item]
+            cell.textLabel.text = comment.text
+        }
+        
+        return cell
     }
 }
 
 extension CommentsViewController: UICollectionViewDelegateFlowLayout {
-    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 50)
+    }
 }
 
-extension CommentsViewController {
-    // MARK: Private Methods
-    @discardableResult
-    private func configureSubmitButton(inside containerView: UIView) -> UIButton {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Submit", for: .normal)
-        btn.setTitleColor(.black, for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        containerView.addSubview(btn)
+extension UIView {
+    fileprivate func addButton(_ btn: UIButton) {
+        addSubview(btn)
         btn.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            btn.topAnchor.constraint(equalTo: containerView.topAnchor),
-            btn.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            btn.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
+            btn.topAnchor.constraint(equalTo: topAnchor),
+            btn.bottomAnchor.constraint(equalTo: bottomAnchor),
+            btn.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             btn.widthAnchor.constraint(equalToConstant: 50)
         ])
-        btn.addTarget(self, action: #selector(handleSubmit(_:)), for: .touchUpInside)
-        return btn
     }
     
-    @discardableResult
-    private func configureTextField(inside containerView: UIView, leftOf submitButton: UIButton) -> UITextField {
-        let tf = UITextField()
-        tf.placeholder = "Enter Comment"
-        containerView.addSubview(tf)
+    fileprivate func addTextField(_ tf: UITextField, nextTo btn: UIButton) {
+        addSubview(tf)
         tf.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tf.topAnchor.constraint(equalTo: containerView.topAnchor),
-            tf.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            tf.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            tf.trailingAnchor.constraint(equalTo: submitButton.leadingAnchor)
+            tf.topAnchor.constraint(equalTo: topAnchor),
+            tf.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            tf.bottomAnchor.constraint(equalTo: bottomAnchor),
+            tf.trailingAnchor.constraint(equalTo: btn.leadingAnchor)
         ])
-        return tf
     }
 }

@@ -11,6 +11,6 @@ import InstagramEngine
 protocol CommentsRoute {
     var commentsTransition: Transition { get }
     
-    func openCommentsPage(currentPost: Post)
-    func openCommentsPage(currentPost: Post, with transition: Transition)
+    func openCommentsPage(postId: String)
+    func openCommentsPage(postId: String, with transition: Transition)
 }

@@ -118,7 +118,7 @@ extension HomeFeedViewController: FeedCellDelegate {
     
     func didTapCommentsButton(_ cell: FeedCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        router?.openCommentsPage(currentPost: posts[indexPath.item])
+        router?.openCommentsPage(postId: posts[indexPath.item].id)
     }
     
     func didTapSendMeesageButton(_ cell: FeedCell) {

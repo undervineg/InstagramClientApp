@@ -12,7 +12,7 @@ import InstagramEngine
 protocol FirebaseDatabaseWrapper {
     static func update(_ values: [AnyHashable: Any], under refs: [Reference], completion: @escaping (Error?) -> Void)
     static func fetchAll<T>(under refs: [Reference], completion: @escaping (Result<T, Error>) -> Void)
-    static func fetch<T>(under refs: [Reference], orderBy order: HasKey & Sortable, completion: @escaping (Result<T, Error>) -> Void)
+    static func fetch<T>(under refs: [Reference], orderBy order: HasKey & Sortable, completion: @escaping (Result<(String, T), Error>) -> Void)
     static func delete(from refs: [Reference], completion: @escaping (Error?) -> Void)
 }
 
@@ -35,13 +35,13 @@ extension Database: FirebaseDatabaseWrapper {
         }
     }
     
-    static func fetch<T>(under refs: [Reference], orderBy order: HasKey & Sortable, completion: @escaping (Result<T, Error>) -> Void) {
+    static func fetch<T>(under refs: [Reference], orderBy order: HasKey & Sortable, completion: @escaping (Result<(String, T), Error>) -> Void) {
         guard let newRef = databaseReference(from: refs) else { return }
         
         // Fetch 1 by 1
         newRef.queryOrdered(byChild: order.key).observe(.childAdded, with: { (snapshot) in
             guard let value = snapshot.value as? T else { return }
-            completion(.success(value))
+            completion(.success((snapshot.key, value)))
         }) { (error) in
             completion(.failure(error))
         }

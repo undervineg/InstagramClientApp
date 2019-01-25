@@ -9,6 +9,7 @@
 import Foundation
 
 public struct Post {
+    public let id: String
     public let user: User
     public let caption: String
     public let imageUrl: String
@@ -16,7 +17,8 @@ public struct Post {
     public let imageHeight: Float
     public let creationDate: Date
     
-    public init(_ user: User, _ caption: String, _ imageUrl: String, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double) {
+    public init(_ id: String, _ user: User, _ caption: String, _ imageUrl: String, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double) {
+        self.id = id
         self.user = user
         self.caption = caption
         self.imageUrl = imageUrl
