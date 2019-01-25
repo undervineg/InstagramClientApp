@@ -16,6 +16,8 @@
 		080C5A9721F9A38800AD8D7C /* CommentsRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A9621F9A38800AD8D7C /* CommentsRoute.swift */; };
 		080C5A9C21FA17B300AD8D7C /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A9B21FA17B300AD8D7C /* CommentsViewController.swift */; };
 		080C5A9E21FA1EC400AD8D7C /* CommentsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A9D21FA1EC400AD8D7C /* CommentsModule.swift */; };
+		080C5AA321FAA6CB00AD8D7C /* CommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */; };
+		080C5AA421FAA6CB00AD8D7C /* CommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080C5AA221FAA6CB00AD8D7C /* CommentsCell.xib */; };
 		084FF5A421EB54B7000EA933 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5A321EB54B7000EA933 /* LoginService.swift */; };
 		084FF5A621EB5856000EA933 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5A521EB5856000EA933 /* LoginPresenter.swift */; };
 		084FF5AE21EB87C9000EA933 /* LoginModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5AD21EB87C9000EA933 /* LoginModule.swift */; };
@@ -162,6 +164,8 @@
 		080C5A9621F9A38800AD8D7C /* CommentsRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsRoute.swift; sourceTree = "<group>"; };
 		080C5A9B21FA17B300AD8D7C /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		080C5A9D21FA1EC400AD8D7C /* CommentsModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsModule.swift; sourceTree = "<group>"; };
+		080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCell.swift; sourceTree = "<group>"; };
+		080C5AA221FAA6CB00AD8D7C /* CommentsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsCell.xib; sourceTree = "<group>"; };
 		084FF5A321EB54B7000EA933 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		084FF5A521EB5856000EA933 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 		084FF5AD21EB87C9000EA933 /* LoginModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModule.swift; sourceTree = "<group>"; };
@@ -316,6 +320,8 @@
 		080C5A9A21FA12E500AD8D7C /* Comment Scene */ = {
 			isa = PBXGroup;
 			children = (
+				080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */,
+				080C5AA221FAA6CB00AD8D7C /* CommentsCell.xib */,
 				080C5A9B21FA17B300AD8D7C /* CommentsViewController.swift */,
 				080C5A9D21FA1EC400AD8D7C /* CommentsModule.swift */,
 			);
@@ -835,6 +841,7 @@
 				0858764D21DA6C4D00C32422 /* GoogleService-Info.plist in Resources */,
 				08BF0C6F21E8BB27004CE846 /* LoginViewController.xib in Resources */,
 				08BF0C5821E854EB004CE846 /* UserProfileHeader.xib in Resources */,
+				080C5AA421FAA6CB00AD8D7C /* CommentsCell.xib in Resources */,
 				0858767821DC5CC700C32422 /* RegisterUserViewController.xib in Resources */,
 				085E525E21F176C60029C7BE /* FeedCell.xib in Resources */,
 				0884512221DA665C008B8121 /* Assets.xcassets in Resources */,
@@ -960,6 +967,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				086E6C9A21DE91D50094B808 /* ModalTransition.swift in Sources */,
+				080C5AA321FAA6CB00AD8D7C /* CommentsCell.swift in Sources */,
 				08BF0C6821E8652F004CE846 /* UserProfileViewController.swift in Sources */,
 				08FE157F21F6301D00A58355 /* main.swift in Sources */,
 				08FE157A21F4579700A58355 /* UserProfileRoute.swift in Sources */,
