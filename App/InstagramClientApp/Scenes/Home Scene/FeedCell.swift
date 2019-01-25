@@ -70,7 +70,7 @@ final class FeedCell: UICollectionViewCell {
 }
 
 extension FeedCell: LoadableImageViewDelegate {
-    func requestImageDownload(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
+    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
         if loadableImageView == profileImageView {
             delegate?.didProfileImageUrlSet(self, url, completion)
         } else if loadableImageView == postImageView {

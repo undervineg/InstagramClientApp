@@ -37,7 +37,7 @@ final class UserSearchCell: UICollectionViewCell {
 }
 
 extension UserSearchCell: LoadableImageViewDelegate {
-    func requestImageDownload(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
+    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
         delegate?.didProfileUrlSet(self, url, completion)
     }
 }

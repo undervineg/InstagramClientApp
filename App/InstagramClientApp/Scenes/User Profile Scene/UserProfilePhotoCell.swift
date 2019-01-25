@@ -51,7 +51,7 @@ final class UserProfilePhotoCell: UICollectionViewCell {
 }
 
 extension UserProfilePhotoCell: LoadableImageViewDelegate {
-    func requestImageDownload(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
+    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
         delegate?.didImageUrlSet(self, url, completion)
     }
 }

@@ -8,11 +8,49 @@
 
 import UIKit
 
+protocol CommentsCellDelegate {
+    func didProfileImageUrlSet(_ cell: CommentsCell, _ url: URL, _ completion: @escaping (Data) -> Void)
+}
+
 final class CommentsCell: UICollectionViewCell {
+    @IBOutlet weak var profileImageView: LoadableImageView!
     @IBOutlet weak var textLabel: UILabel!
+    
+    var delegate: CommentsCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+        
+        profileImageView.delegate = self
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+        textLabel.text = nil
+    }
+}
 
+extension CommentsCell: LoadableImageViewDelegate {
+    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
+        delegate?.didProfileImageUrlSet(self, url, completion)
+    }
+}
+
+extension UILabel {
+    func setCommentText(username: String, text: String, createdDate: String) {
+        let attributedText = NSMutableAttributedString(string: username,
+                                                       attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSAttributedString(string: " "+text,
+                                                 attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
+        attributedText.append(NSAttributedString(string: "\n\n",
+                                                 attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
+        attributedText.append(NSAttributedString(string: createdDate,
+                                                 attributes: [
+                                                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        
+        self.attributedText = attributedText
+    }
 }

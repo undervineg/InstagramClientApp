@@ -18,7 +18,8 @@ final class CommentsModule {
     private let useCase: CommentsUseCase
     
     init(postId: String) {
-        viewController = CommentsViewController(currentPostId: postId)
+        let cacheManager = CacheManager()
+        viewController = CommentsViewController(currentPostId: postId, cacheManager: cacheManager)
         presenter = CommentsPresenter(view: WeakRef(viewController))
         profileService = UserProfileService(firebaseAuth: Auth.self,
                                             firebaseDatabase: Database.self,
@@ -28,5 +29,6 @@ final class CommentsModule {
         
         viewController.submitComment = useCase.saveComment
         viewController.loadCommentsForPost = useCase.loadComments
+        viewController.downloadProfileImage = profileService.downloadProfileImage
     }
 }

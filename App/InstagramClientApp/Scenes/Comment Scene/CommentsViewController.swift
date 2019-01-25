@@ -15,6 +15,7 @@ final class CommentsViewController: UICollectionViewController {
     // MARK: Commands
     var submitComment: ((String, Double, String) -> Void)?
     var loadCommentsForPost: ((String, Comment.Order) -> Void)?
+    var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
     
     // MARK: UI Properties
     let commentTextField: UITextField = {
@@ -48,11 +49,14 @@ final class CommentsViewController: UICollectionViewController {
     private var currentPostId: String?
     private var commentsForPost: [Comment] = []
     
+    private var cacheManager: Cacheable?
+    
     // MARK: Initializer
-    convenience init(currentPostId: String) {
+    convenience init(currentPostId: String, cacheManager: Cacheable) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
         self.currentPostId = currentPostId
+        self.cacheManager = cacheManager
     }
     
     // MARK: Life Cycle
@@ -112,12 +116,27 @@ extension CommentsViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CommentsCell
         
+        cell.delegate = self
+        cell.profileImageView.cacheManager = self.cacheManager
+        
         if commentsForPost.count > 0 {
             let comment = commentsForPost[indexPath.item]
-            cell.textLabel.text = comment.text
+            cell.profileImageView.imageUrlString = comment.user.profileImageUrl
+            cell.textLabel.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
         }
         
         return cell
+    }
+}
+
+extension CommentsViewController: CommentsCellDelegate {
+    func didProfileImageUrlSet(_ cell: CommentsCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
+        downloadProfileImage?(url) { (result) in
+            switch result {
+            case .success(let imageData): completion(imageData)
+            default: return
+            }
+        }
     }
 }
 

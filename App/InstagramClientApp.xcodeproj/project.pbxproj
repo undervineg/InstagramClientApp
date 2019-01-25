@@ -324,8 +324,8 @@
 		080C5A9A21FA12E500AD8D7C /* Comment Scene */ = {
 			isa = PBXGroup;
 			children = (
-				080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */,
 				080C5AA221FAA6CB00AD8D7C /* CommentsCell.xib */,
+				080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */,
 				080C5A9B21FA17B300AD8D7C /* CommentsViewController.swift */,
 				080C5AAE21FAD67900AD8D7C /* CommentsPresenter.swift */,
 				080C5A9D21FA1EC400AD8D7C /* CommentsModule.swift */,

@@ -10,7 +10,7 @@ import UIKit
 import InstagramEngine
 
 protocol LoadableImageViewDelegate {
-    func requestImageDownload(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void)
+    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void)
 }
 
 final class LoadableImageView: UIImageView {
@@ -36,7 +36,7 @@ final class LoadableImageView: UIImageView {
             image = UIImage(data: cachedImageData)
             return
         }
-        delegate?.requestImageDownload(self, url) { [weak self] (imageData) in
+        delegate?.didImageUrlSet(self, url) { [weak self] (imageData) in
             guard url.absoluteString == self?.lastUrlRequested else { return }
             DispatchQueue.main.async {
                 self?.cacheManager?.cache(imageData, with: url.absoluteString)
