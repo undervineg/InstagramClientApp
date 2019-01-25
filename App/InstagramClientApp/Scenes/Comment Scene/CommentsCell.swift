@@ -14,22 +14,21 @@ protocol CommentsCellDelegate {
 
 final class CommentsCell: UICollectionViewCell {
     @IBOutlet weak var profileImageView: LoadableImageView!
-    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var textView: UITextView!
     
     var delegate: CommentsCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
-        
         profileImageView.delegate = self
+        textView.isScrollEnabled = false
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         profileImageView.image = nil
-        textLabel.text = nil
+        textView.text = nil
     }
 }
 
@@ -39,7 +38,7 @@ extension CommentsCell: LoadableImageViewDelegate {
     }
 }
 
-extension UILabel {
+extension UITextView {
     func setCommentText(username: String, text: String, createdDate: String) {
         let attributedText = NSMutableAttributedString(string: username,
                                                        attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])

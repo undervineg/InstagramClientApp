@@ -39,6 +39,7 @@ final class CommentsViewController: UICollectionViewController {
         containerView.backgroundColor = .white
         containerView.addButton(commentSubmitButton)
         containerView.addTextField(commentTextField, nextTo: commentSubmitButton)
+        containerView.addLineSeparatorView()
         return containerView
     }()
     
@@ -66,7 +67,8 @@ final class CommentsViewController: UICollectionViewController {
         
         collectionView.backgroundColor = .white
         collectionView.register(CommentsCell.nibFromClassName(), forCellWithReuseIdentifier: cellId)
-        collectionView.keyboardDismissMode = .onDrag
+        collectionView.alwaysBounceVertical = true
+        collectionView.keyboardDismissMode = .interactive
         
         if let postId = currentPostId {
             loadCommentsForPost?(postId, .creationDate(.ascending))
@@ -122,7 +124,7 @@ extension CommentsViewController {
         if commentsForPost.count > 0 {
             let comment = commentsForPost[indexPath.item]
             cell.profileImageView.imageUrlString = comment.user.profileImageUrl
-            cell.textLabel.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
+            cell.textView.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
         }
         
         return cell
@@ -146,6 +148,11 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: view.frame.width, height: height)
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    // MARK: Private Methods
     private func generateAutoSizingHeight(at indexPath: IndexPath) -> CGFloat {
         let dummyCell = makeDummyCell(at: indexPath)
         dummyCell.layoutIfNeeded()
@@ -160,7 +167,7 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
             fatalError("Casting Error at: \(#function)")
         }
         let comment = commentsForPost[indexPath.item]
-        dummyCell.textLabel.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
+        dummyCell.textView.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
         return dummyCell
     }
 }
@@ -185,6 +192,19 @@ extension UIView {
             tf.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             tf.bottomAnchor.constraint(equalTo: bottomAnchor),
             tf.trailingAnchor.constraint(equalTo: btn.leadingAnchor)
+        ])
+    }
+    
+    fileprivate func addLineSeparatorView() {
+        let line = UIView()
+        line.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
+        addSubview(line)
+        line.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            line.topAnchor.constraint(equalTo: topAnchor),
+            line.leadingAnchor.constraint(equalTo: leadingAnchor),
+            line.trailingAnchor.constraint(equalTo: trailingAnchor),
+            line.heightAnchor.constraint(equalToConstant: 0.7)
         ])
     }
 }
