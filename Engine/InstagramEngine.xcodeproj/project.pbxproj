@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		080C5AAD21FACEE700AD8D7C /* CommentsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5AAC21FACEE700AD8D7C /* CommentsUseCase.swift */; };
 		080C5AB121FAE54E00AD8D7C /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5AB021FAE54E00AD8D7C /* Comment.swift */; };
+		080C5AB321FB5E8000AD8D7C /* FeaturePostLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5AB221FB5E8000AD8D7C /* FeaturePostLoadable.swift */; };
+		080C5AB621FB5EF100AD8D7C /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5AB521FB5EF100AD8D7C /* Sort.swift */; };
 		084FF5A221EB5359000EA933 /* LoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5A121EB5359000EA933 /* LoginUseCase.swift */; };
 		084FF5EF21EDC93F000EA933 /* PhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5EE21EDC93F000EA933 /* PhotoUseCase.swift */; };
 		084FF62421EF4644000EA933 /* SharePhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */; };
@@ -40,6 +42,8 @@
 /* Begin PBXFileReference section */
 		080C5AAC21FACEE700AD8D7C /* CommentsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsUseCase.swift; sourceTree = "<group>"; };
 		080C5AB021FAE54E00AD8D7C /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		080C5AB221FB5E8000AD8D7C /* FeaturePostLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturePostLoadable.swift; sourceTree = "<group>"; };
+		080C5AB521FB5EF100AD8D7C /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		084FF5A121EB5359000EA933 /* LoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUseCase.swift; sourceTree = "<group>"; };
 		084FF5EE21EDC93F000EA933 /* PhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUseCase.swift; sourceTree = "<group>"; };
 		084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoUseCase.swift; sourceTree = "<group>"; };
@@ -80,6 +84,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		080C5AB421FB5ECE00AD8D7C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				080C5AB221FB5E8000AD8D7C /* FeaturePostLoadable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		0858765821DA741E00C32422 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
@@ -87,6 +99,7 @@
 				084FF62B21EF7CFB000EA933 /* Post.swift */,
 				0858765421DA73FA00C32422 /* User.swift */,
 				08F9848321E4B67500DE6E78 /* Result.swift */,
+				080C5AB521FB5EF100AD8D7C /* Sort.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -94,6 +107,7 @@
 		0858765B21DB7C7F00C32422 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
+				080C5AB421FB5ECE00AD8D7C /* Protocols */,
 				080C5AAC21FACEE700AD8D7C /* CommentsUseCase.swift */,
 				085E525F21F2ED1E0029C7BE /* HomeFeedUseCase.swift */,
 				085E527521F3A5A70029C7BE /* SearchUseCase.swift */,
@@ -261,6 +275,7 @@
 				08F9847521E17CF200DE6E78 /* UserProfileUseCase.swift in Sources */,
 				080C5AB121FAE54E00AD8D7C /* Comment.swift in Sources */,
 				080C5AAD21FACEE700AD8D7C /* CommentsUseCase.swift in Sources */,
+				080C5AB321FB5E8000AD8D7C /* FeaturePostLoadable.swift in Sources */,
 				084FF5EF21EDC93F000EA933 /* PhotoUseCase.swift in Sources */,
 				0858765521DA73FA00C32422 /* User.swift in Sources */,
 				085E526021F2ED1E0029C7BE /* HomeFeedUseCase.swift in Sources */,
@@ -268,6 +283,7 @@
 				08F984C621E6816900DE6E78 /* AuthUseCase.swift in Sources */,
 				084FF62C21EF7CFB000EA933 /* Post.swift in Sources */,
 				085E527621F3A5A70029C7BE /* SearchUseCase.swift in Sources */,
+				080C5AB621FB5EF100AD8D7C /* Sort.swift in Sources */,
 				0858764F21DA70A700C32422 /* RegisterUseCase.swift in Sources */,
 				084FF5A221EB5359000EA933 /* LoginUseCase.swift in Sources */,
 			);

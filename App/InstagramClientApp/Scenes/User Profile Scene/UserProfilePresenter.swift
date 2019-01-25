@@ -46,11 +46,11 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
         view.displayPost(post)
     }
     
-    func loadPostFailed(_ error: HomeFeedUseCase.Error) {
+    func loadPostFailed(_ error: Error) {
         view.displayError(error.localizedDescription)
     }
     
-    func downloadPostImageFailed(_ error: HomeFeedUseCase.Error) {
+    func downloadPostImageFailed(_ error: Error) {
         view.displayError(error.localizedDescription)
     }
     

@@ -33,14 +33,22 @@ public protocol UserProfileUseCaseOutput {
     func checkIsFollowFailed(_ error: Error)
 }
 
-final public class UserProfileUseCase {
-    
+final public class UserProfileUseCase: FeaturePostLoadable {
     private let client: UserProfileClient
     private let output: UserProfileUseCaseOutput
     
-    public init(client: UserProfileClient, output: UserProfileUseCaseOutput) {
+    public let postClient: LoadPostClient
+    public let profileClient: UserProfileClient
+    public let postOutput: LoadPostOutput
+    
+    public init(client: UserProfileClient, output: UserProfileUseCaseOutput&LoadPostOutput,
+                postClient: LoadPostClient, profileClient: UserProfileClient) {
         self.client = client
         self.output = output
+        
+        self.postClient = postClient
+        self.profileClient = profileClient
+        self.postOutput = output
     }
     
     public enum Order {

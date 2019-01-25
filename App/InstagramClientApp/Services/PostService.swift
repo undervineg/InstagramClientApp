@@ -26,15 +26,39 @@ final class PostService: LoadPostClient {
         self.profileService = profileService
     }
     
-    func fetchCurrentUserPost(_ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
+    func fetchAllPosts(_ completion: @escaping (Result<Post, Error>) -> Void) {
+        fetchCurrentUserPost { (result) in
+            switch result {
+            case .success(let post): completion(.success(post))
+            case .failure(let error): completion(.failure(error))
+            }
+        }
+        profileService.fetchFollowingListOfCurrentUser { [unowned self] (result) in
+            switch result {
+            case .success(let followingUsers):
+                followingUsers.forEach { (uid) in
+                    self.fetchUserPost(of: uid) { result in
+                        switch result {
+                        case .success(let post): completion(.success(post))
+                        case .failure(let error): completion(.failure(error))
+                        }
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func fetchCurrentUserPost(_ completion: @escaping (Result<Post, Error>) -> Void) {
         guard let currentUserId = auth.currentUserId else {
-            completion(.failure(.userIDNotExist))
+            completion(.failure(HomeFeedUseCase.Error.userIDNotExist))
             return
         }
         fetchUserPost(of: currentUserId, completion)
     }
     
-    func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
+    func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
         
         database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any], Error>) in
@@ -49,15 +73,15 @@ final class PostService: LoadPostClient {
         }
     }
     
-    func fetchCurrentUserPost(with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
+    func fetchCurrentUserPost(with order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void) {
         guard let currentUserId = auth.currentUserId else {
-            completion(.failure(.userIDNotExist))
+            completion(.failure(HomeFeedUseCase.Error.userIDNotExist))
             return
         }
         fetchUserPost(of: currentUserId, with: order, completion)
     }
     
-    func fetchUserPost(of uid: String, with order: Post.Order, _ completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
+    func fetchUserPost(of uid: String, with order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
         
         database.fetch(under: refs, orderBy: order) { [weak self] (result: Result<(String, [String: Any]), Error>) in
@@ -69,20 +93,28 @@ final class PostService: LoadPostClient {
         }
     }
     
-    func downloadPostImage(from url: URL, completion: @escaping (Result<Data, HomeFeedUseCase.Error>) -> Void) {
+    func downloadPostImage(from url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
         networking.get(from: url) { (result) in
             switch result {
             case .success(let data):
                 completion(.success(data))
             case .failure:
-                completion(.failure(.postImageNotFound))
+                completion(.failure(HomeFeedUseCase.Error.postImageNotFound))
             }
         }
     }
     
+    func increaseLikes(of postId: String, completion: @escaping (Error?) -> Void) {
+        guard let currentUid = auth.currentUserId else { return }
+        let refs: [Reference] = [Reference.directory("likes"), .directory(postId)]
+        let values = [currentUid: 1]
+        
+        database.update(values, under: refs, completion: completion)
+    }
+    
     
     // MARK: Private Methods
-    private func generatePost(of uid: String, postId: String, value: [String: Any], completion: @escaping (Result<Post, HomeFeedUseCase.Error>) -> Void) {
+    private func generatePost(of uid: String, postId: String, value: [String: Any], completion: @escaping (Result<Post, Error>) -> Void) {
         profileService.loadUserInfo(of: uid) { (result) in
             switch result {
             case .success(let userInfo):
@@ -95,7 +127,7 @@ final class PostService: LoadPostClient {
                 let post = Post(postId, userInfo, caption, imageUrl, imageWidth, imageHeight, creationDate)
                 completion(.success(post))
             case .failure:
-                completion(.failure(.userIDNotExist))
+                completion(.failure(HomeFeedUseCase.Error.userIDNotExist))
             }
         }
     }

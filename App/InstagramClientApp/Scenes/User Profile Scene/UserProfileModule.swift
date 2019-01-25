@@ -15,8 +15,7 @@ final class UserProfileModule {
     private let profileService: UserProfileService
     private let postService: PostService
     private let presenter: UserProfilePresenter
-    private let profileUseCase: UserProfileUseCase
-    private let postUseCase: HomeFeedUseCase
+    private let useCase: UserProfileUseCase
     
     var withNavigation: UINavigationController {
         return UINavigationController(rootViewController: viewController)
@@ -34,18 +33,18 @@ final class UserProfileModule {
                                   networking: URLSession.shared,
                                   profileService: profileService)
         presenter = UserProfilePresenter(view: WeakRef(viewController))
-        profileUseCase = UserProfileUseCase(client: profileService, output: presenter)
-        postUseCase = HomeFeedUseCase(postClient: postService, profileClient: profileService, output: presenter)
+        useCase = UserProfileUseCase(client: profileService, output: presenter,
+                                            postClient: postService, profileClient: profileService)
         
         router.viewController = viewController
         
-        viewController.loadProfile = profileUseCase.loadProfile
-        viewController.downloadProfileImage = profileUseCase.downloadProfileImage
-        viewController.logout = profileUseCase.logout
-        viewController.loadPosts = postUseCase.loadPosts
-        viewController.downloadPostImage = postUseCase.downloadPostImage
-        viewController.follow = profileUseCase.followUser
-        viewController.unfollow = profileUseCase.unfollowUser
-        viewController.checkIsFollowing = profileUseCase.checkIsFollowing
+        viewController.loadProfile = useCase.loadProfile
+        viewController.downloadProfileImage = useCase.downloadProfileImage
+        viewController.logout = useCase.logout
+        viewController.loadPosts = (useCase as FeaturePostLoadable).loadPosts
+        viewController.downloadPostImage = (useCase as FeaturePostLoadable).downloadPostImage
+        viewController.follow = useCase.followUser
+        viewController.unfollow = useCase.unfollowUser
+        viewController.checkIsFollowing = useCase.checkIsFollowing
     }
 }

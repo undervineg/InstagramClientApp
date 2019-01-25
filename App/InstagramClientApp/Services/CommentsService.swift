@@ -32,17 +32,6 @@ final class CommentsService: CommentsClient {
             default: return
             }
         }
-        
-//        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any], Error>) in
-//            switch result {
-//            case .success(let values):
-//                values.forEach({ (key, value) in
-//                    guard let value = value as? [String: Any] else { return }
-//                    self?.generateComment(value: value, completion: completion)
-//                })
-//            default: return
-//            }
-//        }
     }
     
     func saveComment(_ commentText: String, _ submitDate: Double, forPost postId: String, _ completion: @escaping (Error?) -> Void) {
