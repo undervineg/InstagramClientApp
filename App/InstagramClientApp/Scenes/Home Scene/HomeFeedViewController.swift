@@ -16,9 +16,7 @@ final class HomeFeedViewController: UICollectionViewController {
     var loadAllPosts: (() -> Void)?
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
-//    var loadLikes: (() -> Void)?
-//    var likePost: ((String) -> Void)?
-//    var unlikePost: ((String) -> Void)?
+    var changeLikes: ((String, Bool, Int) -> Void)?
     
     private var router: HomeFeedRouter.Routes?
     
@@ -100,28 +98,11 @@ extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension HomeFeedViewController: PostView {
-    func displayLikes(_ isLike: Bool) {
-        print(isLike)
-    }
-    
-    func displayPost(_ post: Post) {
-        let index = (posts.count > 0) ?
-            posts.firstIndex { post.creationDate >= $0.creationDate } ?? posts.count : 0
-        
-        posts.insert(post, at: index)
-        
-        DispatchQueue.main.async {
-            self.collectionView.refreshControl?.endRefreshing()
-            self.collectionView.reloadData()
-        }
-    }
-}
-
 extension HomeFeedViewController: FeedCellDelegate {
     func didTapLikeButton(_ cell: FeedCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-//        likePost?(posts[indexPath.item].id)
+        let currentPost = posts[indexPath.item]
+        changeLikes?(currentPost.id, !currentPost.hasLiked, indexPath.item)
     }
     
     func didTapCommentsButton(_ cell: FeedCell) {
@@ -152,6 +133,27 @@ extension HomeFeedViewController: FeedCellDelegate {
     
     func didPostImageUrlSet(_ cell: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
         downloadPostImage?(url, completion)
+    }
+}
+
+extension HomeFeedViewController: LikesView {
+    func displayLikes(_ hasLiked: Bool, at index: Int) {
+        posts[index].hasLiked = hasLiked
+        collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+    }
+}
+
+extension HomeFeedViewController: PostView {
+    func displayPost(_ post: Post) {
+        let index = (posts.count > 0) ?
+            posts.firstIndex { post.creationDate >= $0.creationDate } ?? posts.count : 0
+        
+        posts.insert(post, at: index)
+        
+        DispatchQueue.main.async {
+            self.collectionView.refreshControl?.endRefreshing()
+            self.collectionView.reloadData()
+        }
     }
 }
 

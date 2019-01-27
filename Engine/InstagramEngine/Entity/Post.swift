@@ -16,7 +16,7 @@ public struct Post {
     public let imageWidth: Float
     public let imageHeight: Float
     public let creationDate: Date
-    public let hasLiked: Bool
+    public var hasLiked: Bool
     
     public init(_ id: String, _ user: User, _ caption: String, _ imageUrl: String, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double, _ hasLiked: Bool) {
         self.id = id

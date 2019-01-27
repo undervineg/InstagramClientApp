@@ -103,18 +103,26 @@ final class PostService: LoadPostClient {
         }
     }
     
-//    func increaseLikes(of postId: String, completion: @escaping (Error?) -> Void) {
-//        guard let currentUid = auth.currentUserId else { return }
-//        let refs: [Reference] = [Reference.directory("likes"), .directory(postId)]
-//        let values = [currentUid: 1]
-//
-//        database.update(values, under: refs, completion: completion)
-//    }
-//
-//    func decreaseLikes(of postId: String, completion: @escaping (Error?) -> Void) {
-//
-//    }
+    func changeLikes(of postId: String, to userNewlyLikes: Bool, completion: @escaping (Error?) -> Void) {
+        if userNewlyLikes == true {
+            increaseLikes(of: postId, completion: completion)
+        } else {
+            decreaseLikes(of: postId, completion: completion)
+        }
+    }
     
+    private func increaseLikes(of postId: String, completion: @escaping (Error?) -> Void) {
+        guard let currentUid = auth.currentUserId else { return }
+        let refs: [Reference] = [Reference.directory("likes"), .directory(postId)]
+        let values = [currentUid: 1]
+
+        database.update(values, under: refs, completion: completion)
+    }
+    
+    private func decreaseLikes(of postId: String, completion: @escaping (Error?) -> Void) {
+        
+    }
+
     func fetchUserLikes(of postId: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         guard let currentUid = auth.currentUserId else { return }
         let refs: [Reference] = [.directory(Keys.Database.likesDir), .directory(postId), .directory(currentUid)]

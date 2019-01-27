@@ -17,29 +17,29 @@ public protocol LoadPostClient {
     func downloadPostImage(from url: URL, completion: @escaping (Result<Data, Error>) -> Void)
     
     func fetchUserLikes(of postId: String, completion: @escaping (Result<Bool, Error>) -> Void)
-//    func increaseLikes(of postId: String, completion: @escaping (Error?) -> Void)
-//    func decreaseLikes(of postId: String, completion: @escaping (Error?) -> Void)
+    func changeLikes(of postId: String, to likesState: Bool, completion: @escaping (Error?) -> Void)
 }
 
 public protocol LoadPostOutput {
     func loadPostSucceeded(_ post: Post)
     func loadPostFailed(_ error: Error)
     func downloadPostImageFailed(_ error: Error)
-    
-//    func increaseLikesSucceeded()
-//    func decreaseLikesSucceeded()
-//    func saveLikesFailed(_ error: Error)
-    func loadLikesSucceeded(_ isLike: Bool)
-    func loadLikesFailed(_ error: Error)
+}
+
+public protocol LikesOutput {
+    func changeLikesSucceeded(to newLikesState: Bool, at index: Int)
+    func saveLikesFailed(_ error: Error)
 }
 
 final public class HomeFeedUseCase: FeaturePostLoadable {
     public let postClient: LoadPostClient
     public let postOutput: LoadPostOutput
+    private let likesOutput: LikesOutput
     
-    public init(postClient: LoadPostClient, output: LoadPostOutput) {
+    public init(postClient: LoadPostClient, output: LoadPostOutput&LikesOutput) {
         self.postClient = postClient
         self.postOutput = output
+        self.likesOutput = output
     }
     
     public enum Error: Swift.Error {
@@ -68,18 +68,14 @@ final public class HomeFeedUseCase: FeaturePostLoadable {
         }
     }
     
-//    public func likePost(_ postId: String) {
-//        postClient.increaseLikes(of: postId) { [weak self] (error) in
-//            if let error = error {
-//                self?.postOutput.saveLikesFailed(error)
-//            }
-//            self?.postOutput.increaseLikesSucceeded()
-//        }
-//    }
-    
-//    public func unlikePost(_ postId: String) {
-//
-//    }
+    public func changeLikes(of postId: String, to newLikesState: Bool, at index: Int) {
+        postClient.changeLikes(of: postId, to: newLikesState) { [weak self] (error) in
+            if let error = error {
+                self?.likesOutput.saveLikesFailed(error)
+            }
+            self?.likesOutput.changeLikesSucceeded(to: newLikesState, at: index)
+        }
+    }
     
     // MARK: Private Methods
     private func handleLoadedPost(_ result: Result<Post, HomeFeedUseCase.Error>) {

@@ -10,13 +10,16 @@ import InstagramEngine
 
 protocol PostView: ErrorPresentable {
     func displayPost(_ post: Post)
-    func displayLikes(_ isLike: Bool)
 }
 
-final class HomeFeedPresenter: LoadPostOutput {
-    private let view: PostView
+protocol LikesView: ErrorPresentable {
+    func displayLikes(_ hasLiked: Bool, at index: Int)
+}
+
+final class HomeFeedPresenter: LoadPostOutput, LikesOutput {
+    private let view: PostView & LikesView
     
-    init(view: PostView) {
+    init(view: PostView & LikesView) {
         self.view = view
     }
     
@@ -32,20 +35,8 @@ final class HomeFeedPresenter: LoadPostOutput {
         view.displayError(error.localizedDescription)
     }
     
-    func loadLikesSucceeded(_ isLike: Bool) {
-        view.displayLikes(isLike)
-    }
-    
-    func loadLikesFailed(_ error: Error) {
-        view.displayError(error.localizedDescription)
-    }
-    
-    func increaseLikesSucceeded() {
-        
-    }
-    
-    func decreaseLikesSucceeded() {
-        
+    func changeLikesSucceeded(to newState: Bool, at index: Int) {
+        view.displayLikes(newState, at: index)
     }
     
     func saveLikesFailed(_ error: Error) {
@@ -54,11 +45,13 @@ final class HomeFeedPresenter: LoadPostOutput {
 }
 
 extension WeakRef: PostView where T: PostView {
-    func displayLikes(_ isLike: Bool) {
-        object?.displayLikes(isLike)
-    }
-    
     func displayPost(_ post: Post) {
         object?.displayPost(post)
+    }
+}
+
+extension WeakRef: LikesView where T: LikesView {
+    func displayLikes(_ hasLiked: Bool, at index: Int) {
+        object?.displayLikes(hasLiked, at: index)
     }
 }
