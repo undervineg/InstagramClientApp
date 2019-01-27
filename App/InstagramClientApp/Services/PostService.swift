@@ -10,7 +10,6 @@ import Foundation
 import InstagramEngine
 
 final class PostService: LoadPostClient {
-    
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let networking: APIClient
@@ -104,28 +103,58 @@ final class PostService: LoadPostClient {
         }
     }
     
-    func increaseLikes(of postId: String, completion: @escaping (Error?) -> Void) {
+//    func increaseLikes(of postId: String, completion: @escaping (Error?) -> Void) {
+//        guard let currentUid = auth.currentUserId else { return }
+//        let refs: [Reference] = [Reference.directory("likes"), .directory(postId)]
+//        let values = [currentUid: 1]
+//
+//        database.update(values, under: refs, completion: completion)
+//    }
+//
+//    func decreaseLikes(of postId: String, completion: @escaping (Error?) -> Void) {
+//
+//    }
+    
+    func fetchUserLikes(of postId: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         guard let currentUid = auth.currentUserId else { return }
-        let refs: [Reference] = [Reference.directory("likes"), .directory(postId)]
-        let values = [currentUid: 1]
+        let refs: [Reference] = [.directory(Keys.Database.likesDir), .directory(postId), .directory(currentUid)]
         
-        database.update(values, under: refs, completion: completion)
+        database.fetchAll(under: refs) { (result: Result<Int, Error>) in
+            switch result {
+            case .success(let count):
+                (count == 1) ? completion(.success(true)) : completion(.success(false))
+            case .failure(let error):
+                if error._code == 1001 {    // if it's nil, the user has no likes to this post
+                    completion(.success(false))
+                } else {
+                    completion(.failure(error))
+                }
+            }
+        }
     }
     
     
     // MARK: Private Methods
     private func generatePost(of uid: String, postId: String, value: [String: Any], completion: @escaping (Result<Post, Error>) -> Void) {
-        profileService.loadUserInfo(of: uid) { (result) in
+        profileService.loadUserInfo(of: uid) { [weak self] (result) in
             switch result {
             case .success(let userInfo):
-                let caption = value[Keys.Database.Post.caption] as? String ?? ""
-                let imageUrl = value[Keys.Database.Post.image] as? String ?? ""
-                let imageWidth = value[Keys.Database.Post.imageWidth] as? Float ?? 0.0
-                let imageHeight = value[Keys.Database.Post.imageHeight] as? Float ?? 0.0
-                let creationDate = value[Keys.Database.Post.creationDate] as? Double ?? 0.0
-                
-                let post = Post(postId, userInfo, caption, imageUrl, imageWidth, imageHeight, creationDate)
-                completion(.success(post))
+                self?.fetchUserLikes(of: postId) { (result) in
+                    switch result {
+                    case .success(let hasLiked):
+                        let caption = value[Keys.Database.Post.caption] as? String ?? ""
+                        let imageUrl = value[Keys.Database.Post.image] as? String ?? ""
+                        let imageWidth = value[Keys.Database.Post.imageWidth] as? Float ?? 0.0
+                        let imageHeight = value[Keys.Database.Post.imageHeight] as? Float ?? 0.0
+                        let creationDate = value[Keys.Database.Post.creationDate] as? Double ?? 0.0
+                        
+                        let post = Post(postId, userInfo, caption, imageUrl, imageWidth, imageHeight, creationDate, hasLiked)
+                        
+                        completion(.success(post))
+                    case .failure:
+                        completion(.failure(HomeFeedUseCase.Error.loadLikesError))
+                    }
+                }
             case .failure:
                 completion(.failure(HomeFeedUseCase.Error.userIDNotExist))
             }

@@ -28,6 +28,7 @@ final class FeedCell: UICollectionViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var postImageView: LoadableImageView!
     @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var likesButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -16,8 +16,9 @@ public struct Post {
     public let imageWidth: Float
     public let imageHeight: Float
     public let creationDate: Date
+    public let hasLiked: Bool
     
-    public init(_ id: String, _ user: User, _ caption: String, _ imageUrl: String, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double) {
+    public init(_ id: String, _ user: User, _ caption: String, _ imageUrl: String, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double, _ hasLiked: Bool) {
         self.id = id
         self.user = user
         self.caption = caption
@@ -25,6 +26,7 @@ public struct Post {
         self.imageWidth = imageWidth
         self.imageHeight = imageHeight
         self.creationDate = Date(timeIntervalSince1970: creationDate)
+        self.hasLiked = hasLiked
     }
     
     public enum Order {

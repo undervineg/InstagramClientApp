@@ -69,6 +69,26 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
     func checkIsFollowFailed(_ error: Error) {
         view.displayError(error.localizedDescription)
     }
+    
+    func saveLikesFailed(_ error: Error) {
+        //
+    }
+    
+    func loadLikesSucceeded(_ isLike: Bool) {
+        //
+    }
+    
+    func loadLikesFailed(_ error: Error) {
+        //
+    }
+    
+    func increaseLikesSucceeded() {
+        //
+    }
+    
+    func decreaseLikesSucceeded() {
+        //
+    }
 }
 
 extension WeakRef: UserProfileView where T: UserProfileView {

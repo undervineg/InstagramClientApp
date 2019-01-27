@@ -40,6 +40,10 @@ final class HomeModule {
         viewController.downloadPostImage = useCase.downloadPostImage
         viewController.downloadProfileImage = profileService.downloadProfileImage
         
+//        viewController.loadLikes = useCase.loadUserLikes
+//        viewController.likePost = useCase.likePost
+//        viewController.unlikePost = useCase.unlikePost
+        
         router.viewController = viewController
     }
 }

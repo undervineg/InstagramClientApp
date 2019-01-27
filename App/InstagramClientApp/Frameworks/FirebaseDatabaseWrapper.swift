@@ -24,11 +24,15 @@ extension Database: FirebaseDatabaseWrapper {
     }
     
     static func fetchAll<T>(under refs: [Reference], completion: @escaping (Result<T, Error>) -> Void) {
-        guard let newRef = databaseReference(from: refs) else { return }
+        let newRef = databaseReference(from: refs)
         
         // Fetch all childs of newRef at once
-        newRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let values = snapshot.value as? T else { return }
+        newRef?.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let values = snapshot.value as? T else {
+                let error = NSError(domain: "Casting nil error", code: 1001)
+                completion(.failure(error))
+                return
+            }
             completion(.success(values))
         }) { (error) in
             completion(.failure(error))

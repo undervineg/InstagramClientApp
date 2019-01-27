@@ -16,6 +16,9 @@ final class HomeFeedViewController: UICollectionViewController {
     var loadAllPosts: (() -> Void)?
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
+//    var loadLikes: (() -> Void)?
+//    var likePost: ((String) -> Void)?
+//    var unlikePost: ((String) -> Void)?
     
     private var router: HomeFeedRouter.Routes?
     
@@ -31,11 +34,8 @@ final class HomeFeedViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureExtraUI()
-        
         setupNotificationsForReloadNewPosts()
-        
         loadAllPosts?()
     }
     
@@ -61,6 +61,9 @@ final class HomeFeedViewController: UICollectionViewController {
             
             cell.postImageView.imageUrlString = post.imageUrl
             cell.profileImageView.imageUrlString = post.user.profileImageUrl
+            
+            let likesImageName = post.hasLiked ? "like_selected" : "like_unselected"
+            cell.likesButton.setImage(UIImage(named: likesImageName), for: .normal)
         }
         
         cell.profileImageView.cacheManager = self.cacheManager
@@ -98,6 +101,10 @@ extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension HomeFeedViewController: PostView {
+    func displayLikes(_ isLike: Bool) {
+        print(isLike)
+    }
+    
     func displayPost(_ post: Post) {
         let index = (posts.count > 0) ?
             posts.firstIndex { post.creationDate >= $0.creationDate } ?? posts.count : 0
@@ -113,7 +120,8 @@ extension HomeFeedViewController: PostView {
 
 extension HomeFeedViewController: FeedCellDelegate {
     func didTapLikeButton(_ cell: FeedCell) {
-        
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+//        likePost?(posts[indexPath.item].id)
     }
     
     func didTapCommentsButton(_ cell: FeedCell) {

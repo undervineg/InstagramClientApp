@@ -45,7 +45,7 @@ extension FeaturePostLoadable {
     private func handleLoadedPost(_ result: Result<Post, Error>) {
         switch result {
         case .success(let post):
-            self.postOutput.loadPostSucceeded(post)
+            postOutput.loadPostSucceeded(post)
         case .failure(let error):
             postOutput.loadPostFailed(error)
         }

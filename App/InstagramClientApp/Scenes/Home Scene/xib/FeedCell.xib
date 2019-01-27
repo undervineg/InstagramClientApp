@@ -130,6 +130,7 @@
             <size key="customSize" width="376" height="538"/>
             <connections>
                 <outlet property="captionLabel" destination="WP9-fH-nyJ" id="r8f-5P-Mln"/>
+                <outlet property="likesButton" destination="8iI-iS-3gI" id="esF-kC-Vvr"/>
                 <outlet property="postImageView" destination="ue5-H0-HMq" id="kfK-yQ-G23"/>
                 <outlet property="profileImageView" destination="ymp-MT-cTv" id="zi4-yC-3Ao"/>
                 <outlet property="usernameLabel" destination="dHq-Yf-kmN" id="d7d-at-57S"/>

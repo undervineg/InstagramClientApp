@@ -162,6 +162,10 @@ extension UserProfileViewController: UserProfileView, PostView {
             self.collectionView.reloadData()
         }
     }
+    
+    func displayLikes(_ isLike: Bool) {
+        //
+    }
 }
 
 extension UserProfileViewController: UserProfilePhotoCellDelegate {
