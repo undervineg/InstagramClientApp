@@ -192,6 +192,18 @@ extension UserProfileViewController: UserProfileHeaderDelegate {
         guard let uid = uid else { return }
         unfollow?(uid)
     }
+    
+    func didTapGridButton(_ userProfileHeaderCell: UserProfileHeader) {
+        
+    }
+    
+    func didTapListButton(_ userProfileHeaderCell: UserProfileHeader) {
+        
+    }
+    
+    func didTapBookmarkButton(_ userProfileHeaderCell: UserProfileHeader) {
+        
+    }
 }
 
 extension UserProfileViewController: UserProfileHeaderDataSource {

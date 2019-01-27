@@ -21,6 +21,9 @@ protocol UserProfileHeaderDelegate {
     func didTapEditProfileButton(_ userProfileHeaderCell: UserProfileHeader)
     func didTapFollowButton(_ userProfileHeaderCell: UserProfileHeader)
     func didTapUnfollowButton(_ userProfileHeaderCell: UserProfileHeader)
+    func didTapGridButton(_ userProfileHeaderCell: UserProfileHeader)
+    func didTapListButton(_ userProfileHeaderCell: UserProfileHeader)
+    func didTapBookmarkButton(_ userProfileHeaderCell: UserProfileHeader)
 }
 
 final class UserProfileHeader: UICollectionViewCell {
@@ -93,6 +96,40 @@ final class UserProfileHeader: UICollectionViewCell {
             delegate?.didTapUnfollowButton(self)
         }
     }
+    
+    @IBAction func handleGridButton(_ sender: UIButton) {
+        toggleButtonTintColor(sender)
+        delegate?.didTapGridButton(self)
+    }
+    
+    @IBAction func handleListButton(_ sender: UIButton) {
+        toggleButtonTintColor(sender)
+        delegate?.didTapListButton(self)
+    }
+    
+    @IBAction func handleBookmarkButton(_ sender: UIButton) {
+        toggleButtonTintColor(sender)
+        delegate?.didTapBookmarkButton(self)
+    }
+    
+    private func toggleButtonTintColor(_ sender: UIButton) {
+        sender.tintColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+        
+        let defaultGrayColor = UIColor(white: 0, alpha: 0.2)
+        switch sender {
+        case gridButton:
+            listButton.tintColor = defaultGrayColor
+            bookmarkButton.tintColor = defaultGrayColor
+        case listButton:
+            gridButton.tintColor = defaultGrayColor
+            bookmarkButton.tintColor = defaultGrayColor
+        case bookmarkButton:
+            gridButton.tintColor = defaultGrayColor
+            listButton.tintColor = defaultGrayColor
+        default: break
+        }
+    }
+    
 }
 
 extension UserProfileHeader: LoadableImageViewDelegate {

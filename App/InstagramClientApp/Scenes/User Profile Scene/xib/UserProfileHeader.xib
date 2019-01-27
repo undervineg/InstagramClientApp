@@ -32,16 +32,25 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zqE-9y-hiM">
                                 <rect key="frame" x="0.0" y="0.0" width="125" height="50"/>
                                 <state key="normal" image="grid"/>
+                                <connections>
+                                    <action selector="handleGridButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Soj-VZ-Uif"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dl4-6t-HTF">
                                 <rect key="frame" x="125" y="0.0" width="125" height="50"/>
                                 <color key="tintColor" white="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="list"/>
+                                <connections>
+                                    <action selector="handleListButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="SMN-Mg-yVA"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sda-xU-dzb">
                                 <rect key="frame" x="250" y="0.0" width="125" height="50"/>
                                 <color key="tintColor" white="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="ribbon"/>
+                                <connections>
+                                    <action selector="handleBookmarkButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="tKB-hR-oeu"/>
+                                </connections>
                             </button>
                         </subviews>
                         <constraints>
@@ -202,12 +211,12 @@ Cg
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="357" height="205"/>
             <connections>
-                <outlet property="bookmarkButton" destination="sda-xU-dzb" id="3oh-I3-PFg"/>
+                <outlet property="bookmarkButton" destination="sda-xU-dzb" id="7Yw-LP-d7W"/>
                 <outlet property="editProfileFollowButton" destination="I72-9D-li3" id="xK4-F6-4Wg"/>
                 <outlet property="followerLabel" destination="LEj-Dd-O3m" id="DAp-XA-pzC"/>
                 <outlet property="followingLabel" destination="Olq-Kt-Chj" id="0oA-yq-CEC"/>
-                <outlet property="gridButton" destination="zqE-9y-hiM" id="xzO-Bf-Dkb"/>
-                <outlet property="listButton" destination="Dl4-6t-HTF" id="DiV-DJ-wcU"/>
+                <outlet property="gridButton" destination="zqE-9y-hiM" id="cPF-MU-DYd"/>
+                <outlet property="listButton" destination="Dl4-6t-HTF" id="Wkd-nz-5XT"/>
                 <outlet property="postLabel" destination="KK0-PL-V9k" id="IxK-Mt-riH"/>
                 <outlet property="profileImageView" destination="BD5-E8-S5K" id="PDP-ca-S6V"/>
                 <outlet property="usernameLabel" destination="qyk-bj-4Fb" id="ono-Pf-l8d"/>
