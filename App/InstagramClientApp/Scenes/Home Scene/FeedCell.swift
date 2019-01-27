@@ -46,6 +46,7 @@ final class FeedCell: UICollectionViewCell {
         usernameLabel.text = nil
         postImageView.image = nil
         captionLabel.text = nil
+        likesButton.imageView?.image = nil
     }
 
     // MARK: Actions
