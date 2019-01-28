@@ -14,6 +14,7 @@ public protocol FeaturePostLoadable: class {
     
     func loadAllPosts()
     func loadPosts(of uid: String?, orderBy order: Post.Order)
+    func loadPaginatePosts(of uid: String?, from postId: String?, limit: Int)
     func downloadPostImage(from url: URL, completion: @escaping (Data) -> Void)
 }
 
@@ -26,7 +27,15 @@ extension FeaturePostLoadable {
         if let uid = uid {
             postClient.fetchUserPost(of: uid, handleLoadedPost)
         } else {
-            postClient.fetchCurrentUserPost(with: order, handleLoadedPost)
+            postClient.fetchCurrentUserPostWithOrder(order, handleLoadedPost)
+        }
+    }
+    
+    public func loadPaginatePosts(of uid: String?, from postId: String?, limit: Int) {
+        if let uid = uid {
+            postClient.fetchUserPostWithPagination(of: uid, from: postId, to: limit, completion: handlePaginateLoadedPost)
+        } else {
+            postClient.fetchCurrentUserPostWithPagination(startFrom: postId, to: limit, completion: handlePaginateLoadedPost)
         }
     }
     
@@ -45,7 +54,16 @@ extension FeaturePostLoadable {
     private func handleLoadedPost(_ result: Result<Post, Error>) {
         switch result {
         case .success(let post):
-            postOutput.loadPostSucceeded(post)
+            postOutput.loadPostSucceeded(post, hasMoreToLoad: false)
+        case .failure(let error):
+            postOutput.loadPostFailed(error)
+        }
+    }
+    
+    private func handlePaginateLoadedPost(_ result: Result<([Post], Bool), Error>) {
+        switch result {
+        case .success(let (posts, isPagingFinished)):
+            postOutput.loadPaginatedPostsSucceeded(posts, hasMoreToLoad: !isPagingFinished)
         case .failure(let error):
             postOutput.loadPostFailed(error)
         }

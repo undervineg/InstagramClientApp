@@ -23,7 +23,7 @@ final class UserProfileViewController: UICollectionViewController {
     
     // MARK: Commands
     var loadProfile: ((String?) -> Void)?
-    var loadPosts: ((String?, Post.Order) -> Void)?
+    var loadPaginatePosts: ((String?, String?, Int) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var logout: (() -> Void)?
@@ -40,6 +40,8 @@ final class UserProfileViewController: UICollectionViewController {
     private var userPosts: [Post] = []
     
     private var cacheManager: Cacheable?
+    private let pageUnit: Int = 4
+    private var hasMoreToLoad: Bool = true
     
     // MARK: Initializer
     convenience init(router: UserProfileRouter.Routes, cacheManager: Cacheable) {
@@ -105,11 +107,19 @@ final class UserProfileViewController: UICollectionViewController {
         let cellId = isGridView ? gridCellId : listCellId
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         
+        let post = userPosts[indexPath.item]
+        
+        // Request more data when it's last cell currently
+        let isLastCell = indexPath.item == userPosts.count - 1
+        if userPosts.count > 0 && isLastCell && hasMoreToLoad {
+            loadPaginatePosts?(uid, userPosts.last?.id, pageUnit)
+        }
+        
         if let cell = cell as? UserProfileGridCell {
             cell.delegate = self
             
             if userPosts.count > 0 {
-                cell.postImageUrl = userPosts[indexPath.item].imageUrl
+                cell.postImageUrl = post.imageUrl
                 cell.imageView.cacheManager = self.cacheManager
             }
         }
@@ -118,7 +128,7 @@ final class UserProfileViewController: UICollectionViewController {
 //            cell.delegate = self
             
             if userPosts.count > 0 {
-                cell.post = userPosts[indexPath.item]
+                cell.post = post
             }
 
             cell.profileImageView.cacheManager = self.cacheManager
@@ -239,7 +249,9 @@ extension UserProfileViewController: UserProfileView, PostView {
         setTitleOnNavigationBar()
         collectionView.reloadData()
         
-        loadPosts?(uid, .creationDate(.ascending))
+        if userPosts.count == 0 {
+            loadPaginatePosts?(uid, nil, pageUnit)
+        }
     }
     
     func toggleFollowButton(_ isFollowing: Bool) {
@@ -249,8 +261,10 @@ extension UserProfileViewController: UserProfileView, PostView {
     }
     
     // MARK: Post View
-    func displayPost(_ post: Post) {
-        userPosts.insert(post, at: 0)
+    func displayPost(_ posts: [Post], hasMoreToLoad: Bool) {
+        userPosts += posts
+        self.hasMoreToLoad = hasMoreToLoad
+        
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }

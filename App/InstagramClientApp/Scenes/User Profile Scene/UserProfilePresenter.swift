@@ -42,8 +42,12 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
         view.displayError(error.localizedDescription)
     }
     
-    func loadPostSucceeded(_ post: Post) {
-        view.displayPost(post)
+    func loadPostSucceeded(_ post: Post, hasMoreToLoad: Bool) {
+        view.displayPost([post], hasMoreToLoad: hasMoreToLoad)
+    }
+    
+    func loadPaginatedPostsSucceeded(_ posts: [Post], hasMoreToLoad: Bool) {
+        view.displayPost(posts, hasMoreToLoad: hasMoreToLoad)
     }
     
     func loadPostFailed(_ error: Error) {

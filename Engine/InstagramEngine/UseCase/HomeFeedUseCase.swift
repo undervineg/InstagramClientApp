@@ -10,10 +10,15 @@ import Foundation
 
 public protocol LoadPostClient {
     func fetchAllPosts(_ completion: @escaping (Result<Post, Error>) -> Void)
+    
     func fetchCurrentUserPost(_ completion: @escaping (Result<Post, Error>) -> Void)
-    func fetchCurrentUserPost(with order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void)
-    func fetchUserPost(of uid: String, with order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void)
+    func fetchCurrentUserPostWithOrder(_ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void)
+    func fetchCurrentUserPostWithPagination(startFrom postId: String?, to limit: Int, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
+    
     func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, Error>) -> Void)
+    func fetchUserPostWithOrder(of uid: String, _ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void)
+    func fetchUserPostWithPagination(of uid: String, from postId: String?, to limit: Int, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
+    
     func downloadPostImage(from url: URL, completion: @escaping (Result<Data, Error>) -> Void)
     
     func fetchUserLikes(of postId: String, completion: @escaping (Result<Bool, Error>) -> Void)
@@ -21,7 +26,8 @@ public protocol LoadPostClient {
 }
 
 public protocol LoadPostOutput {
-    func loadPostSucceeded(_ post: Post)
+    func loadPostSucceeded(_ post: Post, hasMoreToLoad: Bool)
+    func loadPaginatedPostsSucceeded(_ posts: [Post], hasMoreToLoad: Bool)
     func loadPostFailed(_ error: Error)
     func downloadPostImageFailed(_ error: Error)
 }
@@ -81,7 +87,7 @@ final public class HomeFeedUseCase: FeaturePostLoadable {
     private func handleLoadedPost(_ result: Result<Post, HomeFeedUseCase.Error>) {
         switch result {
         case .success(let post):
-            self.postOutput.loadPostSucceeded(post)
+            self.postOutput.loadPostSucceeded(post, hasMoreToLoad: false)
         case .failure(let error):
             postOutput.loadPostFailed(error)
         }

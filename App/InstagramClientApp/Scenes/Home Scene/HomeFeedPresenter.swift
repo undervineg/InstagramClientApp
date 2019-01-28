@@ -9,7 +9,7 @@
 import InstagramEngine
 
 protocol PostView: ErrorPresentable {
-    func displayPost(_ post: Post)
+    func displayPost(_ posts: [Post], hasMoreToLoad: Bool)
 }
 
 protocol LikesView: ErrorPresentable {
@@ -23,8 +23,12 @@ final class HomeFeedPresenter: LoadPostOutput, LikesOutput {
         self.view = view
     }
     
-    func loadPostSucceeded(_ post: Post) {
-        view.displayPost(post)
+    func loadPostSucceeded(_ post: Post, hasMoreToLoad: Bool) {
+        view.displayPost([post], hasMoreToLoad: hasMoreToLoad)
+    }
+    
+    func loadPaginatedPostsSucceeded(_ posts: [Post], hasMoreToLoad: Bool) {
+        view.displayPost(posts, hasMoreToLoad: hasMoreToLoad)
     }
     
     func loadPostFailed(_ error: Error) {
@@ -45,8 +49,8 @@ final class HomeFeedPresenter: LoadPostOutput, LikesOutput {
 }
 
 extension WeakRef: PostView where T: PostView {
-    func displayPost(_ post: Post) {
-        object?.displayPost(post)
+    func displayPost(_ posts: [Post], hasMoreToLoad: Bool) {
+        object?.displayPost(posts, hasMoreToLoad: hasMoreToLoad)
     }
 }
 

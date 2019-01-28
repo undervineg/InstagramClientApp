@@ -41,7 +41,8 @@ final class UserProfileModule {
         viewController.loadProfile = useCase.loadProfile
         viewController.downloadProfileImage = useCase.downloadProfileImage
         viewController.logout = useCase.logout
-        viewController.loadPosts = (useCase as FeaturePostLoadable).loadPosts
+        viewController.loadPaginatePosts = (useCase as FeaturePostLoadable).loadPaginatePosts
+//        viewController.loadPosts = (useCase as FeaturePostLoadable).loadPosts
         viewController.downloadPostImage = (useCase as FeaturePostLoadable).downloadPostImage
         viewController.follow = useCase.followUser
         viewController.unfollow = useCase.unfollowUser

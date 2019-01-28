@@ -133,15 +133,17 @@ extension HomeFeedViewController: LikesView {
 }
 
 extension HomeFeedViewController: PostView {
-    func displayPost(_ post: Post) {
-        let index = (posts.count > 0) ?
-            posts.firstIndex { post.creationDate >= $0.creationDate } ?? posts.count : 0
-        
-        posts.insert(post, at: index)
-        
-        DispatchQueue.main.async {
-            self.collectionView.refreshControl?.endRefreshing()
-            self.collectionView.reloadData()
+    func displayPost(_ loadedPosts: [Post], hasMoreToLoad: Bool) {
+        loadedPosts.forEach { (post) in
+            let index = (posts.count > 0) ?
+                posts.firstIndex { post.creationDate >= $0.creationDate } ?? posts.count : 0
+            
+            posts.insert(post, at: index)
+            
+            DispatchQueue.main.async {
+                self.collectionView.refreshControl?.endRefreshing()
+                self.collectionView.reloadData()
+            }
         }
     }
 }
