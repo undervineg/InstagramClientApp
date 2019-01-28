@@ -56,8 +56,8 @@
 		0858766D21DB8C7600C32422 /* RegisterUserVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */; };
 		0858767721DC5CC700C32422 /* RegisterUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858767521DC5CC700C32422 /* RegisterUserViewController.swift */; };
 		0858767821DC5CC700C32422 /* RegisterUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0858767621DC5CC700C32422 /* RegisterUserViewController.xib */; };
-		085E525D21F176C60029C7BE /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E525B21F176C60029C7BE /* FeedCell.swift */; };
-		085E525E21F176C60029C7BE /* FeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 085E525C21F176C60029C7BE /* FeedCell.xib */; };
+		085E525D21F176C60029C7BE /* HomeFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E525B21F176C60029C7BE /* HomeFeedCell.swift */; };
+		085E525E21F176C60029C7BE /* HomeFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 085E525C21F176C60029C7BE /* HomeFeedCell.xib */; };
 		085E526221F2F31B0029C7BE /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E526121F2F31B0029C7BE /* PostService.swift */; };
 		085E526521F2F8C70029C7BE /* HomeFeedPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E526421F2F8C70029C7BE /* HomeFeedPresenter.swift */; };
 		085E526A21F35DC40029C7BE /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E526921F35DC40029C7BE /* CacheManager.swift */; };
@@ -86,7 +86,7 @@
 		0887639D21F6C62900F8AE49 /* CameraModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639C21F6C62900F8AE49 /* CameraModule.swift */; };
 		0887639F21F6C6B600F8AE49 /* CameraRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887639E21F6C6B600F8AE49 /* CameraRouter.swift */; };
 		0889079F21F05C500045B145 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0889079E21F05C500045B145 /* Reference.swift */; };
-		088907A221F074C80045B145 /* UserProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088907A121F074C80045B145 /* UserProfilePhotoCell.swift */; };
+		088907A221F074C80045B145 /* UserProfileGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088907A121F074C80045B145 /* UserProfileGridCell.swift */; };
 		0891AE0721F6E6270002A7CB /* HomeFeedRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0621F6E6270002A7CB /* HomeFeedRoute.swift */; };
 		0891AE0921F6E6570002A7CB /* SettingsRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0821F6E6570002A7CB /* SettingsRoute.swift */; };
 		0891AE0D21F780ED0002A7CB /* CameraCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE0C21F780ED0002A7CB /* CameraCaptureProcessor.swift */; };
@@ -206,8 +206,8 @@
 		0858766C21DB8C7600C32422 /* RegisterUserVCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserVCTests.swift; sourceTree = "<group>"; };
 		0858767521DC5CC700C32422 /* RegisterUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserViewController.swift; sourceTree = "<group>"; };
 		0858767621DC5CC700C32422 /* RegisterUserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterUserViewController.xib; sourceTree = "<group>"; };
-		085E525B21F176C60029C7BE /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
-		085E525C21F176C60029C7BE /* FeedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedCell.xib; sourceTree = "<group>"; };
+		085E525B21F176C60029C7BE /* HomeFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedCell.swift; sourceTree = "<group>"; };
+		085E525C21F176C60029C7BE /* HomeFeedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeFeedCell.xib; sourceTree = "<group>"; };
 		085E526121F2F31B0029C7BE /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		085E526421F2F8C70029C7BE /* HomeFeedPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedPresenter.swift; sourceTree = "<group>"; };
 		085E526921F35DC40029C7BE /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
@@ -240,7 +240,7 @@
 		0887639C21F6C62900F8AE49 /* CameraModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModule.swift; sourceTree = "<group>"; };
 		0887639E21F6C6B600F8AE49 /* CameraRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRouter.swift; sourceTree = "<group>"; };
 		0889079E21F05C500045B145 /* Reference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reference.swift; sourceTree = "<group>"; };
-		088907A121F074C80045B145 /* UserProfilePhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePhotoCell.swift; sourceTree = "<group>"; };
+		088907A121F074C80045B145 /* UserProfileGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileGridCell.swift; sourceTree = "<group>"; };
 		0891AE0621F6E6270002A7CB /* HomeFeedRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedRoute.swift; sourceTree = "<group>"; };
 		0891AE0821F6E6570002A7CB /* SettingsRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoute.swift; sourceTree = "<group>"; };
 		0891AE0C21F780ED0002A7CB /* CameraCaptureProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureProcessor.swift; sourceTree = "<group>"; };
@@ -383,7 +383,7 @@
 			isa = PBXGroup;
 			children = (
 				084FF61121EEF804000EA933 /* xib */,
-				088907A121F074C80045B145 /* UserProfilePhotoCell.swift */,
+				088907A121F074C80045B145 /* UserProfileGridCell.swift */,
 				08BF0C5521E854EB004CE846 /* UserProfileHeader.swift */,
 				08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */,
 				08F984B321E54A4700DE6E78 /* UserProfilePresenter.swift */,
@@ -397,7 +397,7 @@
 			isa = PBXGroup;
 			children = (
 				085E526321F2F85C0029C7BE /* xib */,
-				085E525B21F176C60029C7BE /* FeedCell.swift */,
+				085E525B21F176C60029C7BE /* HomeFeedCell.swift */,
 				084FF5DC21EDAAFD000EA933 /* HomeFeedViewController.swift */,
 				085E526421F2F8C70029C7BE /* HomeFeedPresenter.swift */,
 				0887639321F6C44F00F8AE49 /* HomeFeedRouter.swift */,
@@ -488,7 +488,7 @@
 		085E526321F2F85C0029C7BE /* xib */ = {
 			isa = PBXGroup;
 			children = (
-				085E525C21F176C60029C7BE /* FeedCell.xib */,
+				085E525C21F176C60029C7BE /* HomeFeedCell.xib */,
 			);
 			path = xib;
 			sourceTree = "<group>";
@@ -849,7 +849,7 @@
 				08BF0C5821E854EB004CE846 /* UserProfileHeader.xib in Resources */,
 				080C5AA421FAA6CB00AD8D7C /* CommentsCell.xib in Resources */,
 				0858767821DC5CC700C32422 /* RegisterUserViewController.xib in Resources */,
-				085E525E21F176C60029C7BE /* FeedCell.xib in Resources */,
+				085E525E21F176C60029C7BE /* HomeFeedCell.xib in Resources */,
 				0884512221DA665C008B8121 /* Assets.xcassets in Resources */,
 				0891AE1221F78D2E0002A7CB /* CameraViewController.xib in Resources */,
 			);
@@ -1028,9 +1028,9 @@
 				084FF62621EF4787000EA933 /* ShareService.swift in Sources */,
 				085E526221F2F31B0029C7BE /* PostService.swift in Sources */,
 				08BF0C5721E854EB004CE846 /* UserProfileHeader.swift in Sources */,
-				088907A221F074C80045B145 /* UserProfilePhotoCell.swift in Sources */,
+				088907A221F074C80045B145 /* UserProfileGridCell.swift in Sources */,
 				085E526E21F396490029C7BE /* UserSearchViewController.swift in Sources */,
-				085E525D21F176C60029C7BE /* FeedCell.swift in Sources */,
+				085E525D21F176C60029C7BE /* HomeFeedCell.swift in Sources */,
 				080C5A9121F998E600AD8D7C /* UILabel+Extension.swift in Sources */,
 				084FF5F321EDD0B7000EA933 /* PhotoService.swift in Sources */,
 				080C5A8621F858FD00AD8D7C /* SlideAnimator.swift in Sources */,

@@ -21,8 +21,8 @@ protocol UserProfileHeaderDelegate {
     func didTapEditProfileButton(_ userProfileHeaderCell: UserProfileHeader)
     func didTapFollowButton(_ userProfileHeaderCell: UserProfileHeader)
     func didTapUnfollowButton(_ userProfileHeaderCell: UserProfileHeader)
-    func didTapGridButton(_ userProfileHeaderCell: UserProfileHeader)
-    func didTapListButton(_ userProfileHeaderCell: UserProfileHeader)
+    func didChangeToGridView(_ userProfileHeaderCell: UserProfileHeader)
+    func didChangeToListView(_ userProfileHeaderCell: UserProfileHeader)
     func didTapBookmarkButton(_ userProfileHeaderCell: UserProfileHeader)
 }
 
@@ -99,12 +99,12 @@ final class UserProfileHeader: UICollectionViewCell {
     
     @IBAction func handleGridButton(_ sender: UIButton) {
         toggleButtonTintColor(sender)
-        delegate?.didTapGridButton(self)
+        delegate?.didChangeToGridView(self)
     }
     
     @IBAction func handleListButton(_ sender: UIButton) {
         toggleButtonTintColor(sender)
-        delegate?.didTapListButton(self)
+        delegate?.didChangeToListView(self)
     }
     
     @IBAction func handleBookmarkButton(_ sender: UIButton) {

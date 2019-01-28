@@ -9,13 +9,13 @@
 import UIKit
 import InstagramEngine
 
-protocol UserProfilePhotoCellDelegate {
-    func didImageUrlSet(_ userProfileHeaderCell: UserProfilePhotoCell, _ url: URL, _ completion: @escaping (Data) -> Void)
+protocol UserProfileGridCellDelegate {
+    func didImageUrlSet(_ userProfileHeaderCell: UserProfileGridCell, _ url: URL, _ completion: @escaping (Data) -> Void)
 }
 
-final class UserProfilePhotoCell: UICollectionViewCell {
+final class UserProfileGridCell: UICollectionViewCell {
     
-    var delegate: UserProfilePhotoCellDelegate?
+    var delegate: UserProfileGridCellDelegate?
     var postImageUrl: String? { didSet { imageView.imageUrlString = postImageUrl } }
     
     let imageView: LoadableImageView = {
@@ -50,7 +50,7 @@ final class UserProfilePhotoCell: UICollectionViewCell {
     }
 }
 
-extension UserProfilePhotoCell: LoadableImageViewDelegate {
+extension UserProfileGridCell: LoadableImageViewDelegate {
     func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
         delegate?.didImageUrlSet(self, url, completion)
     }

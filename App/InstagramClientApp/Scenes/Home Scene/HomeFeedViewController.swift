@@ -47,21 +47,10 @@ final class HomeFeedViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FeedCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeFeedCell
         
         if posts.count > 0 {
-            let post = posts[indexPath.item]
-            cell.usernameLabel.text = post.user.username
-            
-            cell.captionLabel.setCaptionText(username: post.user.username,
-                                        caption: post.caption,
-                                        createdDate: post.creationDate.timeAgoDisplay())
-            
-            cell.postImageView.imageUrlString = post.imageUrl
-            cell.profileImageView.imageUrlString = post.user.profileImageUrl
-            
-            let likesImageName = post.hasLiked ? "like_selected" : "like_unselected"
-            cell.likesButton.setImage(UIImage(named: likesImageName), for: .normal)
+            cell.post = posts[indexPath.item]
         }
         
         cell.profileImageView.cacheManager = self.cacheManager
@@ -98,31 +87,31 @@ extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension HomeFeedViewController: FeedCellDelegate {
-    func didTapLikeButton(_ cell: FeedCell) {
+extension HomeFeedViewController: HomeFeedCellDelegate {
+    func didTapLikeButton(_ cell: HomeFeedCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         let currentPost = posts[indexPath.item]
         changeLikes?(currentPost.id, !currentPost.hasLiked, indexPath.item)
     }
     
-    func didTapCommentsButton(_ cell: FeedCell) {
+    func didTapCommentsButton(_ cell: HomeFeedCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         router?.openCommentsPage(postId: posts[indexPath.item].id)
     }
     
-    func didTapSendMeesageButton(_ cell: FeedCell) {
+    func didTapSendMeesageButton(_ cell: HomeFeedCell) {
         
     }
     
-    func didTapBookMarkButton(_ cell: FeedCell) {
+    func didTapBookMarkButton(_ cell: HomeFeedCell) {
         
     }
     
-    func didTapOptionButton(_ cell: FeedCell) {
+    func didTapOptionButton(_ cell: HomeFeedCell) {
         
     }
     
-    func didProfileImageUrlSet(_ cell: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
+    func didProfileImageUrlSet(_ cell: HomeFeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
         downloadProfileImage?(url) { (result) in
             switch result {
             case .success(let imageData) : completion(imageData)
@@ -131,7 +120,7 @@ extension HomeFeedViewController: FeedCellDelegate {
         }
     }
     
-    func didPostImageUrlSet(_ cell: FeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
+    func didPostImageUrlSet(_ cell: HomeFeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
         downloadPostImage?(url, completion)
     }
 }
@@ -170,7 +159,7 @@ extension HomeFeedViewController {
         
         navigationItem.titleView = UIImageView(image: UIImage(named: "logo2"))
         
-        let nib = FeedCell.nibFromClassName()
+        let nib = HomeFeedCell.nibFromClassName()
         collectionView.register(nib, forCellWithReuseIdentifier: cellId)
         
         let refreshControl = UIRefreshControl()

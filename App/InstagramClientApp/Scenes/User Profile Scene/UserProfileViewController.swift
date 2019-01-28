@@ -10,7 +10,8 @@ import UIKit
 import InstagramEngine
 
 private let headerId = "headerId"
-private let cellId = "cellId"
+private let gridCellId = "gridCellId"
+private let listCellId = "listCellId"
 
 final class UserProfileViewController: UICollectionViewController {
     
@@ -18,6 +19,7 @@ final class UserProfileViewController: UICollectionViewController {
     
     private var isCurrentUser: Bool { return uid == nil }
     private var isFollowing: Bool = false
+    private var isGridView: Bool = true
     
     // MARK: Commands
     var loadProfile: ((String?) -> Void)?
@@ -100,13 +102,27 @@ final class UserProfileViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserProfilePhotoCell
+        let cellId = isGridView ? gridCellId : listCellId
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         
-        cell.delegate = self
+        if let cell = cell as? UserProfileGridCell {
+            cell.delegate = self
+            
+            if userPosts.count > 0 {
+                cell.postImageUrl = userPosts[indexPath.item].imageUrl
+                cell.imageView.cacheManager = self.cacheManager
+            }
+        }
         
-        if userPosts.count > 0 {
-            cell.postImageUrl = userPosts[indexPath.item].imageUrl
-            cell.imageView.cacheManager = self.cacheManager
+        if let cell = cell as? HomeFeedCell {
+//            cell.delegate = self
+            
+            if userPosts.count > 0 {
+                cell.post = userPosts[indexPath.item]
+            }
+
+            cell.profileImageView.cacheManager = self.cacheManager
+            cell.postImageView.cacheManager = self.cacheManager
         }
 
         return cell
@@ -115,15 +131,22 @@ final class UserProfileViewController: UICollectionViewController {
 }
 
 extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
-    
     // MARK: Collection View Delegate Flow Layout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 200)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let w = (view.frame.width - 2) / 3
-        return CGSize(width: w, height: w)
+        if isGridView {
+            let w = (view.frame.width - 2) / 3
+            return CGSize(width: w, height: w)
+        } else {
+            var height: CGFloat = 40 + 8 + 8 // username
+            height += view.frame.width       // image
+            height += 50                     // buttons
+            height += 60                     // caption
+            return CGSize(width: view.frame.width, height: height)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -135,41 +158,8 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension UserProfileViewController: UserProfileView, PostView {
-    // MARK: User Profile View
-    func onLogoutSucceeded() {
-        router?.openLoginPage()
-    }
-    
-    func displayUserInfo(_ userInfo: User) {
-        user = userInfo
-        setTitleOnNavigationBar()
-        collectionView.reloadData()
-        
-        loadPosts?(uid, .creationDate(.ascending))
-    }
-    
-    func toggleFollowButton(_ isFollowing: Bool) {
-        guard !isCurrentUser else { return }
-        self.isFollowing = isFollowing
-        collectionView.reloadData()
-    }
-    
-    // MARK: Post View
-    func displayPost(_ post: Post) {
-        userPosts.insert(post, at: 0)
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
-    }
-    
-    func displayLikes(_ isLike: Bool) {
-        //
-    }
-}
-
-extension UserProfileViewController: UserProfilePhotoCellDelegate {
-    func didImageUrlSet(_ userProfileHeaderCell: UserProfilePhotoCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
+extension UserProfileViewController: UserProfileGridCellDelegate {
+    func didImageUrlSet(_ userProfileHeaderCell: UserProfileGridCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
         downloadPostImage?(url, completion)
     }
 }
@@ -193,12 +183,14 @@ extension UserProfileViewController: UserProfileHeaderDelegate {
         unfollow?(uid)
     }
     
-    func didTapGridButton(_ userProfileHeaderCell: UserProfileHeader) {
-        
+    func didChangeToGridView(_ userProfileHeaderCell: UserProfileHeader) {
+        isGridView = true
+        collectionView.reloadData()
     }
     
-    func didTapListButton(_ userProfileHeaderCell: UserProfileHeader) {
-        
+    func didChangeToListView(_ userProfileHeaderCell: UserProfileHeader) {
+        isGridView = false
+        collectionView.reloadData()
     }
     
     func didTapBookmarkButton(_ userProfileHeaderCell: UserProfileHeader) {
@@ -236,6 +228,35 @@ extension UserProfileViewController: UserProfileHeaderDataSource {
     }
 }
 
+extension UserProfileViewController: UserProfileView, PostView {
+    // MARK: User Profile View
+    func onLogoutSucceeded() {
+        router?.openLoginPage()
+    }
+    
+    func displayUserInfo(_ userInfo: User) {
+        user = userInfo
+        setTitleOnNavigationBar()
+        collectionView.reloadData()
+        
+        loadPosts?(uid, .creationDate(.ascending))
+    }
+    
+    func toggleFollowButton(_ isFollowing: Bool) {
+        guard !isCurrentUser else { return }
+        self.isFollowing = isFollowing
+        collectionView.reloadData()
+    }
+    
+    // MARK: Post View
+    func displayPost(_ post: Post) {
+        userPosts.insert(post, at: 0)
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+}
+
 extension UserProfileViewController {
     // MARK: Private Methods
     private func configureLogoutButton() {
@@ -256,6 +277,7 @@ extension UserProfileViewController {
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: headerId)
         
-        collectionView.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(UserProfileGridCell.self, forCellWithReuseIdentifier: gridCellId)
+        collectionView.register(HomeFeedCell.nibFromClassName(), forCellWithReuseIdentifier: listCellId)
     }
 }
