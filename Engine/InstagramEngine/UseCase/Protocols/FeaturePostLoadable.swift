@@ -54,7 +54,7 @@ extension FeaturePostLoadable {
     private func handleLoadedPost(_ result: Result<Post, Error>) {
         switch result {
         case .success(let post):
-            postOutput.loadPostSucceeded(post, hasMoreToLoad: false)
+            postOutput.loadPostSucceeded(post)
         case .failure(let error):
             postOutput.loadPostFailed(error)
         }
@@ -63,7 +63,7 @@ extension FeaturePostLoadable {
     private func handlePaginateLoadedPost(_ result: Result<([Post], Bool), Error>) {
         switch result {
         case .success(let (posts, isPagingFinished)):
-            postOutput.loadPaginatedPostsSucceeded(posts, hasMoreToLoad: !isPagingFinished)
+            postOutput.loadPaginatedPostSucceeded(posts, hasMoreToLoad: !isPagingFinished)
         case .failure(let error):
             postOutput.loadPostFailed(error)
         }

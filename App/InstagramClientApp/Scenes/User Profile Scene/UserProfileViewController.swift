@@ -107,11 +107,9 @@ final class UserProfileViewController: UICollectionViewController {
         let cellId = isGridView ? gridCellId : listCellId
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         
-        let post = userPosts[indexPath.item]
-        
         // Request more data when it's last cell currently
         let isLastCell = indexPath.item == userPosts.count - 1
-        if userPosts.count > 0 && isLastCell && hasMoreToLoad {
+        if isLastCell && hasMoreToLoad {
             loadPaginatePosts?(uid, userPosts.last?.id, pageUnit)
         }
         
@@ -119,7 +117,7 @@ final class UserProfileViewController: UICollectionViewController {
             cell.delegate = self
             
             if userPosts.count > 0 {
-                cell.postImageUrl = post.imageUrl
+                cell.postImageUrl = userPosts[indexPath.item].imageUrl
                 cell.imageView.cacheManager = self.cacheManager
             }
         }
@@ -128,7 +126,7 @@ final class UserProfileViewController: UICollectionViewController {
 //            cell.delegate = self
             
             if userPosts.count > 0 {
-                cell.post = post
+                cell.post = userPosts[indexPath.item]
             }
 
             cell.profileImageView.cacheManager = self.cacheManager
@@ -249,7 +247,7 @@ extension UserProfileViewController: UserProfileView, PostView {
         setTitleOnNavigationBar()
         collectionView.reloadData()
         
-        if userPosts.count == 0 {
+        if userPosts.isEmpty {
             loadPaginatePosts?(uid, nil, pageUnit)
         }
     }
@@ -265,9 +263,7 @@ extension UserProfileViewController: UserProfileView, PostView {
         userPosts += posts
         self.hasMoreToLoad = hasMoreToLoad
         
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+        collectionView.reloadData()
     }
 }
 

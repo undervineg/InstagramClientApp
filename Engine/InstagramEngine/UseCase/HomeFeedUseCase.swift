@@ -26,8 +26,8 @@ public protocol LoadPostClient {
 }
 
 public protocol LoadPostOutput {
-    func loadPostSucceeded(_ post: Post, hasMoreToLoad: Bool)
-    func loadPaginatedPostsSucceeded(_ posts: [Post], hasMoreToLoad: Bool)
+    func loadPostSucceeded(_ post: Post)
+    func loadPaginatedPostSucceeded(_ posts: [Post], hasMoreToLoad: Bool)
     func loadPostFailed(_ error: Error)
     func downloadPostImageFailed(_ error: Error)
 }
@@ -87,7 +87,7 @@ final public class HomeFeedUseCase: FeaturePostLoadable {
     private func handleLoadedPost(_ result: Result<Post, HomeFeedUseCase.Error>) {
         switch result {
         case .success(let post):
-            self.postOutput.loadPostSucceeded(post, hasMoreToLoad: false)
+            self.postOutput.loadPostSucceeded(post)
         case .failure(let error):
             postOutput.loadPostFailed(error)
         }

@@ -505,14 +505,14 @@
 		086E6C7F21DD27840094B808 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				08F984C921E6878E00DE6E78 /* AuthService.swift */,
-				08F9847821E4B1E100DE6E78 /* RegisterUserService.swift */,
-				084FF5A321EB54B7000EA933 /* LoginService.swift */,
-				08F984B721E54B6C00DE6E78 /* UserProfileService.swift */,
-				085E526121F2F31B0029C7BE /* PostService.swift */,
-				084FF5F221EDD0B7000EA933 /* PhotoService.swift */,
-				084FF62521EF4787000EA933 /* ShareService.swift */,
 				080C5AAA21FACD0D00AD8D7C /* CommentsService.swift */,
+				084FF62521EF4787000EA933 /* ShareService.swift */,
+				084FF5F221EDD0B7000EA933 /* PhotoService.swift */,
+				085E526121F2F31B0029C7BE /* PostService.swift */,
+				08F984B721E54B6C00DE6E78 /* UserProfileService.swift */,
+				084FF5A321EB54B7000EA933 /* LoginService.swift */,
+				08F9847821E4B1E100DE6E78 /* RegisterUserService.swift */,
+				08F984C921E6878E00DE6E78 /* AuthService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";

@@ -102,27 +102,24 @@ final class PostService: LoadPostClient {
     
     func fetchUserPostWithPagination(of uid: String, from postId: String?, to limit: Int, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
-        
-        database.fetch(under: refs, from: postId, to: limit) { (result: Result<([String: [String: Any]], Bool), Error>) in
+
+        var posts: [Post] = []
+        database.fetch(under: refs, from: postId, to: limit) { (result: Result<([(String, [String: Any])], Bool), Error>) in
             switch result {
-            case .success(let (rawPostsChunk, isPagingFinished)):
-                var loadedPostsChunk: [Post] = []
-                rawPostsChunk.forEach { (arg) in
-                    let (postId, postValues) = arg
-                    self.generatePost(of: uid, postId: postId, value: postValues) {
+            case .success(let (rawValues, isPagingFinished)):
+                rawValues.forEach { (key, values) in
+                    self.generatePost(of: uid, postId: key, value: values) {
                         switch $0 {
                         case .success(let post):
-                            loadedPostsChunk.append(post)
-                            if loadedPostsChunk.count == rawPostsChunk.count {
-                                completion(.success((loadedPostsChunk, isPagingFinished)))
+                            posts.append(post)
+                            if posts.count == rawValues.count {
+                                completion(.success((posts, isPagingFinished)))
                             }
-                        case .failure(let error):
-                            completion(.failure(error))
+                        case .failure(let error): completion(.failure(error))
                         }
                     }
                 }
-                
-            default: return
+            case .failure(let error): completion(.failure(error))
             }
         }
     }

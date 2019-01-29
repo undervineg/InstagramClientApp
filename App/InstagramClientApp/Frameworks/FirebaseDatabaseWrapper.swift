@@ -13,7 +13,7 @@ protocol FirebaseDatabaseWrapper {
     static func update(_ values: [AnyHashable: Any], under refs: [Reference], completion: @escaping (Error?) -> Void)
     static func fetchAll<T>(under refs: [Reference], completion: @escaping (Result<T, Error>) -> Void)
     static func fetch<T>(under refs: [Reference], orderBy order: HasKey & Sortable, completion: @escaping (Result<(String, T), Error>) -> Void)
-    static func fetch<T>(under refs: [Reference], from startValue: String?, to limit: Int, completion: @escaping (Result<([String: T], Bool), Error>) -> Void)
+    static func fetch<T>(under refs: [Reference], from startValue: String?, to limit: Int, completion: @escaping (Result<([(String, T)], Bool), Error>) -> Void)
     static func delete(from refs: [Reference], completion: @escaping (Error?) -> Void)
 }
 
@@ -52,28 +52,29 @@ extension Database: FirebaseDatabaseWrapper {
         }
     }
     
-    static func fetch<T>(under refs: [Reference], from startValue: String?, to limit: Int, completion: @escaping (Result<([String: T], Bool), Error>) -> Void) {
+    static func fetch<T>(under refs: [Reference], from startValue: String?, to limit: Int, completion: @escaping (Result<([(String, T)], Bool), Error>) -> Void) {
         guard let newRef = databaseReference(from: refs) else { return }
-        
+
         var query = newRef.queryOrderedByKey()
-        
+
         if let startValue = startValue {
             query = query.queryStarting(atValue: startValue)
         }
-        
+
         query.queryLimited(toFirst: UInt(limit)).observeSingleEvent(of: .value, with: { (snapshot) in
             guard var childSnapshots = snapshot.children.allObjects as? [DataSnapshot] else { return }
-            
-            if startValue != nil {
+
+            let isPagingFinished = childSnapshots.count < limit
+
+            if startValue != nil && childSnapshots.count > 0 {
                 childSnapshots.removeFirst()
             }
-            
-            let objects = childSnapshots.reduce(into: [:], { (result, childSnapshot) in
-                guard let value = childSnapshot.value as? T else { return }
-                result.updateValue(value, forKey: childSnapshot.key)
-            }) as [String: T]
-            
-            completion(.success((objects, objects.count < limit)))
+
+            let parsedValues = childSnapshots.compactMap({ (childSnapshot) -> (String, T)? in
+                guard let value = childSnapshot.value as? T else { return nil }
+                return (childSnapshot.key, value)
+            })
+            completion(.success((parsedValues, isPagingFinished)))
 
         }) { (error) in
             completion(.failure(error))
