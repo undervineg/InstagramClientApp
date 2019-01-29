@@ -65,12 +65,12 @@ final class PostService: LoadPostClient {
         fetchUserPostWithOrder(of: currentUserId, order, completion)
     }
     
-    func fetchCurrentUserPostWithPagination(startFrom postId: String?, to limit: Int, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
+    func fetchCurrentUserPostWithPagination(startFrom postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
         guard let currentUserId = auth.currentUserId else {
             completion(.failure(HomeFeedUseCase.Error.userIDNotExist))
             return
         }
-        fetchUserPostWithPagination(of: currentUserId, from: postId, to: limit, completion: completion)
+        fetchUserPostWithPagination(of: currentUserId, from: postId, to: limit, with: order, completion: completion)
     }
     
     func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, Error>) -> Void) {
@@ -100,11 +100,11 @@ final class PostService: LoadPostClient {
         }
     }
     
-    func fetchUserPostWithPagination(of uid: String, from postId: String?, to limit: Int, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
+    func fetchUserPostWithPagination(of uid: String, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
 
         var posts: [Post] = []
-        database.fetch(under: refs, from: postId, to: limit) { (result: Result<([(String, [String: Any])], Bool), Error>) in
+        database.fetch(under: refs, from: postId, to: limit, orderBy: order) { (result: Result<([(String, [String: Any])], Bool), Error>) in
             switch result {
             case .success(let (rawValues, isPagingFinished)):
                 rawValues.forEach { (key, values) in

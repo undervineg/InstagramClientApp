@@ -23,7 +23,7 @@ final class UserProfileViewController: UICollectionViewController {
     
     // MARK: Commands
     var loadProfile: ((String?) -> Void)?
-    var loadPaginatePosts: ((String?, String?, Int) -> Void)?
+    var loadPaginatePosts: ((String?, Any?, Int, Post.Order) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var logout: (() -> Void)?
@@ -41,6 +41,7 @@ final class UserProfileViewController: UICollectionViewController {
     
     private var cacheManager: Cacheable?
     private let pageUnit: Int = 4
+    private let sort: Sort = .descending
     private var hasMoreToLoad: Bool = true
     
     // MARK: Initializer
@@ -110,7 +111,8 @@ final class UserProfileViewController: UICollectionViewController {
         // Request more data when it's last cell currently
         let isLastCell = indexPath.item == userPosts.count - 1
         if isLastCell && hasMoreToLoad {
-            loadPaginatePosts?(uid, userPosts.last?.id, pageUnit)
+            let nextStartingValue = userPosts.last?.creationDate.timeIntervalSince1970
+            loadPaginatePosts?(uid, nextStartingValue, pageUnit, .creationDate(sort))
         }
         
         if let cell = cell as? UserProfileGridCell {
@@ -127,10 +129,9 @@ final class UserProfileViewController: UICollectionViewController {
             
             if userPosts.count > 0 {
                 cell.post = userPosts[indexPath.item]
+                cell.profileImageView.cacheManager = self.cacheManager
+                cell.postImageView.cacheManager = self.cacheManager
             }
-
-            cell.profileImageView.cacheManager = self.cacheManager
-            cell.postImageView.cacheManager = self.cacheManager
         }
 
         return cell
@@ -248,7 +249,7 @@ extension UserProfileViewController: UserProfileView, PostView {
         collectionView.reloadData()
         
         if userPosts.isEmpty {
-            loadPaginatePosts?(uid, nil, pageUnit)
+            loadPaginatePosts?(uid, nil, pageUnit, .creationDate(sort))
         }
     }
     

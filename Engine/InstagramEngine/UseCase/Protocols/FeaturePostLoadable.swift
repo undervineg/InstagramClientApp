@@ -14,7 +14,7 @@ public protocol FeaturePostLoadable: class {
     
     func loadAllPosts()
     func loadPosts(of uid: String?, orderBy order: Post.Order)
-    func loadPaginatePosts(of uid: String?, from postId: String?, limit: Int)
+    func loadPaginatePosts(of uid: String?, from postId: Any?, limit: Int, orderBy order: Post.Order)
     func downloadPostImage(from url: URL, completion: @escaping (Data) -> Void)
 }
 
@@ -31,11 +31,11 @@ extension FeaturePostLoadable {
         }
     }
     
-    public func loadPaginatePosts(of uid: String?, from postId: String?, limit: Int) {
+    public func loadPaginatePosts(of uid: String?, from postId: Any?, limit: Int, orderBy order: Post.Order) {
         if let uid = uid {
-            postClient.fetchUserPostWithPagination(of: uid, from: postId, to: limit, completion: handlePaginateLoadedPost)
+            postClient.fetchUserPostWithPagination(of: uid, from: postId, to: limit, with: order, completion: handlePaginateLoadedPost)
         } else {
-            postClient.fetchCurrentUserPostWithPagination(startFrom: postId, to: limit, completion: handlePaginateLoadedPost)
+            postClient.fetchCurrentUserPostWithPagination(startFrom: postId, to: limit, with: order, completion: handlePaginateLoadedPost)
         }
     }
     

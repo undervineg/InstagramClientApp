@@ -12,8 +12,8 @@ import InstagramEngine
 protocol FirebaseDatabaseWrapper {
     static func update(_ values: [AnyHashable: Any], under refs: [Reference], completion: @escaping (Error?) -> Void)
     static func fetchAll<T>(under refs: [Reference], completion: @escaping (Result<T, Error>) -> Void)
-    static func fetch<T>(under refs: [Reference], orderBy order: HasKey & Sortable, completion: @escaping (Result<(String, T), Error>) -> Void)
-    static func fetch<T>(under refs: [Reference], from startValue: String?, to limit: Int, completion: @escaping (Result<([(String, T)], Bool), Error>) -> Void)
+    static func fetch<T>(under refs: [Reference], orderBy order: HasKey, completion: @escaping (Result<(String, T), Error>) -> Void)
+    static func fetch<T>(under refs: [Reference], from startValue: Any?, to limit: Int, orderBy order: HasKey&Sortable, completion: @escaping (Result<([(String, T)], Bool), Error>) -> Void)
     static func delete(from refs: [Reference], completion: @escaping (Error?) -> Void)
 }
 
@@ -40,7 +40,7 @@ extension Database: FirebaseDatabaseWrapper {
         }
     }
     
-    static func fetch<T>(under refs: [Reference], orderBy order: HasKey & Sortable, completion: @escaping (Result<(String, T), Error>) -> Void) {
+    static func fetch<T>(under refs: [Reference], orderBy order: HasKey, completion: @escaping (Result<(String, T), Error>) -> Void) {
         guard let newRef = databaseReference(from: refs) else { return }
         
         // Fetch 1 by 1
@@ -52,21 +52,34 @@ extension Database: FirebaseDatabaseWrapper {
         }
     }
     
-    static func fetch<T>(under refs: [Reference], from startValue: String?, to limit: Int, completion: @escaping (Result<([(String, T)], Bool), Error>) -> Void) {
+    static func fetch<T>(under refs: [Reference], from fromValue: Any?, to limit: Int, orderBy order: HasKey&Sortable, completion: @escaping (Result<([(String, T)], Bool), Error>) -> Void) {
         guard let newRef = databaseReference(from: refs) else { return }
 
-        var query = newRef.queryOrderedByKey()
+        var query = newRef.queryOrdered(byChild: order.key)
 
-        if let startValue = startValue {
-            query = query.queryStarting(atValue: startValue)
+        switch order.sortBy {
+        case .ascending:
+            if let startValue = fromValue {
+                query = query.queryStarting(atValue: startValue)
+            }
+            query = query.queryLimited(toFirst: UInt(limit))
+        case .descending:
+            if let endValue = fromValue {
+                query = query.queryEnding(atValue: endValue)
+            }
+            query = query.queryLimited(toLast: UInt(limit))
         }
 
-        query.queryLimited(toFirst: UInt(limit)).observeSingleEvent(of: .value, with: { (snapshot) in
+        query.observeSingleEvent(of: .value, with: { (snapshot) in
             guard var childSnapshots = snapshot.children.allObjects as? [DataSnapshot] else { return }
-
+            
+            if order.sortBy == .descending {
+                childSnapshots.reverse()
+            }
+            
             let isPagingFinished = childSnapshots.count < limit
-
-            if startValue != nil && childSnapshots.count > 0 {
+            
+            if fromValue != nil && childSnapshots.count > 0 {
                 childSnapshots.removeFirst()
             }
 

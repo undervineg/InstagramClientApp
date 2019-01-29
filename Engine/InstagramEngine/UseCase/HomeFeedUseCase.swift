@@ -13,11 +13,11 @@ public protocol LoadPostClient {
     
     func fetchCurrentUserPost(_ completion: @escaping (Result<Post, Error>) -> Void)
     func fetchCurrentUserPostWithOrder(_ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void)
-    func fetchCurrentUserPostWithPagination(startFrom postId: String?, to limit: Int, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
+    func fetchCurrentUserPostWithPagination(startFrom postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
     
     func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, Error>) -> Void)
     func fetchUserPostWithOrder(of uid: String, _ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void)
-    func fetchUserPostWithPagination(of uid: String, from postId: String?, to limit: Int, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
+    func fetchUserPostWithPagination(of uid: String, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
     
     func downloadPostImage(from url: URL, completion: @escaping (Result<Data, Error>) -> Void)
     
