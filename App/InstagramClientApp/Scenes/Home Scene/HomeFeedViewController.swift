@@ -133,7 +133,7 @@ extension HomeFeedViewController: LikesView {
 }
 
 extension HomeFeedViewController: PostView {
-    func displayPost(_ loadedPosts: [Post], hasMoreToLoad: Bool) {
+    func displayPosts(_ loadedPosts: [Post], hasMoreToLoad: Bool) {
         loadedPosts.forEach { (post) in
             let index = (posts.count > 0) ?
                 posts.firstIndex { post.creationDate >= $0.creationDate } ?? posts.count : 0
@@ -145,6 +145,10 @@ extension HomeFeedViewController: PostView {
                 self.collectionView.reloadData()
             }
         }
+    }
+    
+    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
+        //
     }
 }
 

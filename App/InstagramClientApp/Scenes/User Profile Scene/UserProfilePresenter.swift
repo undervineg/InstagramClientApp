@@ -43,11 +43,15 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
     }
     
     func loadPostSucceeded(_ post: Post) {
-        view.displayPost([post], hasMoreToLoad: false)
+        view.displayPosts([post], hasMoreToLoad: false)
     }
     
-    func loadPaginatedPostSucceeded(_ posts: [Post], hasMoreToLoad: Bool) {
-        view.displayPost(posts, hasMoreToLoad: hasMoreToLoad)
+    func loadPaginatedPostSucceeded(_ posts: [Post], hasMoreToLoad: Bool, isReloading: Bool) {
+        if isReloading {
+            view.displayReloadedPosts(posts, hasMoreToLoad: hasMoreToLoad)
+        } else {
+            view.displayPosts(posts, hasMoreToLoad: hasMoreToLoad)
+        }
     }
     
     func loadPostFailed(_ error: Error) {

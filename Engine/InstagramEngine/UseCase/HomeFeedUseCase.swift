@@ -27,7 +27,7 @@ public protocol LoadPostClient {
 
 public protocol LoadPostOutput {
     func loadPostSucceeded(_ post: Post)
-    func loadPaginatedPostSucceeded(_ posts: [Post], hasMoreToLoad: Bool)
+    func loadPaginatedPostSucceeded(_ posts: [Post], hasMoreToLoad: Bool, isReloading: Bool)
     func loadPostFailed(_ error: Error)
     func downloadPostImageFailed(_ error: Error)
 }

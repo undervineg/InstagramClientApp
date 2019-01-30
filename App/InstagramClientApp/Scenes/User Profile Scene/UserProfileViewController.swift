@@ -23,7 +23,8 @@ final class UserProfileViewController: UICollectionViewController {
     
     // MARK: Commands
     var loadProfile: ((String?) -> Void)?
-    var loadPaginatePosts: ((String?, Any?, Int, Post.Order) -> Void)?
+    var loadPaginatePosts: ((String?, Any?, Int, Post.Order, Bool) -> Void)?
+    var reloadNewPaginatePosts: ((String?, Any?, Int, Post.Order) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
     var logout: (() -> Void)?
@@ -40,7 +41,7 @@ final class UserProfileViewController: UICollectionViewController {
     private var userPosts: [Post] = []
     
     private var cacheManager: Cacheable?
-    private let pageUnit: Int = 4
+    private let pagingCount: Int = 4
     private let order: Post.Order = .creationDate(.descending)
     private var hasMoreToLoad: Bool = true
     
@@ -59,6 +60,7 @@ final class UserProfileViewController: UICollectionViewController {
         collectionView.backgroundColor = .white
         
         registerCollectionViewCells()
+        setupNotificationsForReloadNewPosts()
         
         if isCurrentUser {
             configureLogoutButton()
@@ -69,18 +71,6 @@ final class UserProfileViewController: UICollectionViewController {
         if let uid = uid {
             checkIsFollowing?(uid)
         }
-    }
-
-    // MARK: Actions
-    @objc private func handleLogout(_ sender: UIBarButtonItem) {
-        let actionSheet = UIAlertController(title: nil, message: "Are you sure?", preferredStyle: .actionSheet)
-        let logoutAction = UIAlertAction(title: "Log Out", style: .destructive) { [weak self] _ in
-            self?.logout?()
-        }
-        let cancleAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        actionSheet.addAction(logoutAction)
-        actionSheet.addAction(cancleAction)
-        present(actionSheet, animated: true, completion: nil)
     }
     
     // MARK: UICollectionViewDataSource
@@ -111,8 +101,8 @@ final class UserProfileViewController: UICollectionViewController {
         // Request more data when it's last cell currently
         let isLastCell = indexPath.item == userPosts.count - 1
         if isLastCell && hasMoreToLoad {
-            let nextStartingValue = userPosts.last?.creationDate.timeIntervalSince1970
-            loadPaginatePosts?(uid, nextStartingValue, pageUnit, order)
+            let nextStartingPost = userPosts.last?.creationDate.timeIntervalSince1970
+            loadPaginatePosts?(uid, nextStartingPost, pagingCount, order, false)
         }
         
         if let cell = cell as? UserProfileGridCell {
@@ -137,6 +127,22 @@ final class UserProfileViewController: UICollectionViewController {
         return cell
     }
     
+    // MARK: Actions
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        let firstPost = userPosts.first?.creationDate.timeIntervalSince1970
+        loadPaginatePosts?(uid, firstPost, pagingCount, order.switchSortingForPagination(), true)
+    }
+    
+    @objc private func handleLogout(_ sender: UIBarButtonItem) {
+        let actionSheet = UIAlertController(title: nil, message: "Are you sure?", preferredStyle: .actionSheet)
+        let logoutAction = UIAlertAction(title: "Log Out", style: .destructive) { [weak self] _ in
+            self?.logout?()
+        }
+        let cancleAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        actionSheet.addAction(logoutAction)
+        actionSheet.addAction(cancleAction)
+        present(actionSheet, animated: true, completion: nil)
+    }
 }
 
 extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
@@ -238,9 +244,26 @@ extension UserProfileViewController: UserProfileHeaderDataSource {
 }
 
 extension UserProfileViewController: UserProfileView, PostView {
+    // MARK: Post View
+    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
+        userPosts.insert(contentsOf: posts, at: 0)
+        self.hasMoreToLoad = hasMoreToLoad
+        
+        collectionView.reloadData()
+    }
+    
+    func displayPosts(_ posts: [Post], hasMoreToLoad: Bool) {
+        userPosts.append(contentsOf: posts)
+        self.hasMoreToLoad = hasMoreToLoad
+        
+        collectionView.reloadData()
+    }
+    
     // MARK: User Profile View
-    func onLogoutSucceeded() {
-        router?.openLoginPage()
+    func toggleFollowButton(_ isFollowing: Bool) {
+        guard !isCurrentUser else { return }
+        self.isFollowing = isFollowing
+        collectionView.reloadData()
     }
     
     func displayUserInfo(_ userInfo: User) {
@@ -249,27 +272,23 @@ extension UserProfileViewController: UserProfileView, PostView {
         collectionView.reloadData()
         
         if userPosts.isEmpty {
-            loadPaginatePosts?(uid, nil, pageUnit, order)
+            loadPaginatePosts?(uid, nil, pagingCount, order, false)
         }
     }
-    
-    func toggleFollowButton(_ isFollowing: Bool) {
-        guard !isCurrentUser else { return }
-        self.isFollowing = isFollowing
-        collectionView.reloadData()
-    }
-    
-    // MARK: Post View
-    func displayPost(_ posts: [Post], hasMoreToLoad: Bool) {
-        userPosts += posts
-        self.hasMoreToLoad = hasMoreToLoad
-        
-        collectionView.reloadData()
+
+    func onLogoutSucceeded() {
+        router?.openLoginPage()
     }
 }
 
 extension UserProfileViewController {
     // MARK: Private Methods
+    private func setupNotificationsForReloadNewPosts() {
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.shareNewFeed, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.followNewUser, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.unfollowOldUser, object: nil)
+    }
+    
     private func configureLogoutButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "gear"),
                                                             style: .plain,

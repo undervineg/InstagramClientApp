@@ -34,12 +34,12 @@ final class UserProfileService: UserProfileClient {
     func loadUserInfo(of uid: String, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void) {
         let refs: [Reference] = [.directory(Keys.Database.usersDir), .directory(uid)]
         
-        database.fetchAll(under: refs) { (result: Result<[String: Any], Error>) in
+        database.fetchAll(under: refs) { (result: Result<[String: Any]?, Error>) in
             switch result {
             case .success(let values):
-                let email = values[Keys.Database.Profile.email] as? String ?? ""
-                let username = values[Keys.Database.Profile.username] as? String ?? ""
-                let profileImageUrl = values[Keys.Database.Profile.image] as? String ?? ""
+                let email = values?[Keys.Database.Profile.email] as? String ?? ""
+                let username = values?[Keys.Database.Profile.username] as? String ?? ""
+                let profileImageUrl = values?[Keys.Database.Profile.image] as? String ?? ""
                 
                 let userInfo = User(id: uid, email: email, username: username, profileImageUrl: profileImageUrl)
                 
@@ -68,9 +68,10 @@ final class UserProfileService: UserProfileClient {
     func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void) {
         let refs: [Reference] = [.directory(Keys.Database.usersDir)]
         
-        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any], Error>) in
+        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any]?, Error>) in
             switch result {
             case .success(let values):
+                guard let values = values else { return }
                 let users = values.compactMap({ (uid, uinfo) -> User? in
                     if shouldOmitCurrentUser, uid == self?.auth.currentUserId {
                         return nil
@@ -120,10 +121,10 @@ final class UserProfileService: UserProfileClient {
         guard let currentUserId = auth.currentUserId else { return }
         let refs: [Reference] = [.directory(Keys.Database.followingDir), .directory(currentUserId), .directory(uid)]
         
-        database.fetchAll(under: refs) { (result: Result<Int, Error>) in
+        database.fetchAll(under: refs) { (result: Result<Int?, Error>) in
             switch result {
             case .success(let count):
-                let isFollowing = (count > 0) ? true : false
+                let isFollowing = (count ?? 0 > 0) ? true : false
                 completion(.success(isFollowing))
             case .failure(let error):
                 completion(.failure(error))
@@ -138,9 +139,10 @@ final class UserProfileService: UserProfileClient {
     
     func fetchFollowingList(of uid: String, _ completion: @escaping (Result<[String], Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.followingDir), .directory(uid)]
-        database.fetchAll(under: refs) { (result: Result<[String: Int], Error>) in
+        database.fetchAll(under: refs) { (result: Result<[String: Int]?, Error>) in
             switch result {
             case .success(let followingUserData):
+                guard let followingUserData = followingUserData else { return }
                 let followingUidList = followingUserData.keys.compactMap { $0 }
                 completion(.success(followingUidList))
             case .failure(let error):

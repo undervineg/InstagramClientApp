@@ -32,5 +32,20 @@ public struct Post {
     public enum Order {
         case caption(Sort)
         case creationDate(Sort)
+        
+        public func switchSortingForPagination() -> Order {
+            switch self {
+            case .caption(let sort):
+                switch sort {
+                case .ascending: return .caption(.descending)
+                case .descending: return .caption(.ascending)
+                }
+            case .creationDate(let sort):
+                switch sort {
+                case .ascending: return .creationDate(.descending)
+                case .descending: return .creationDate(.ascending)
+                }
+            }
+        }
     }
 }

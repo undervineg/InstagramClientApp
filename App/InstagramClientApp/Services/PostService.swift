@@ -76,10 +76,10 @@ final class PostService: LoadPostClient {
     func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
         
-        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any], Error>) in
+        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any]?, Error>) in
             switch result {
             case .success(let values):
-                values.forEach({ (key, value) in
+                values?.forEach({ (key, value) in
                     guard let value = value as? [String: Any] else { return }
                     self?.generatePost(of: uid, postId: key, value: value, completion: completion)
                 })
@@ -100,6 +100,8 @@ final class PostService: LoadPostClient {
         }
     }
     
+    private let serialQueue = DispatchQueue(label: "test")
+    
     func fetchUserPostWithPagination(of uid: String, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
 
@@ -107,16 +109,21 @@ final class PostService: LoadPostClient {
         database.fetch(under: refs, from: postId, to: limit, orderBy: order) { (result: Result<([(String, [String: Any])], Bool), Error>) in
             switch result {
             case .success(let (rawValues, isPagingFinished)):
-                rawValues.forEach { (key, values) in
-                    self.generatePost(of: uid, postId: key, value: values) {
-                        switch $0 {
-                        case .success(let post):
-                            posts.append(post)
-                            if posts.count == rawValues.count {
-                                completion(.success((posts, isPagingFinished)))
+                self.serialQueue.async {
+                    rawValues.forEach { (key, values) in
+                        let semaphore = DispatchSemaphore(value: 0)
+                        self.generatePost(of: uid, postId: key, value: values) {
+                            switch $0 {
+                            case .success(let post):
+                                posts.append(post)
+                                semaphore.signal()
+                                if posts.count == rawValues.count {
+                                    completion(.success((posts, isPagingFinished)))
+                                }
+                            case .failure(let error): completion(.failure(error))
                             }
-                        case .failure(let error): completion(.failure(error))
                         }
+                        semaphore.wait()
                     }
                 }
             case .failure(let error): completion(.failure(error))
@@ -137,7 +144,7 @@ final class PostService: LoadPostClient {
     
     func changeLikes(of postId: String, to userNewlyLikes: Bool, completion: @escaping (Error?) -> Void) {
         guard let currentUid = auth.currentUserId else { return }
-        let refs: [Reference] = [Reference.directory("likes"), .directory(postId)]
+        let refs: [Reference] = [Reference.directory(Keys.Database.likesDir), .directory(postId)]
         let values = [currentUid: userNewlyLikes ? 1 : 0]
         
         database.update(values, under: refs, completion: completion)
@@ -147,7 +154,7 @@ final class PostService: LoadPostClient {
         guard let currentUid = auth.currentUserId else { return }
         let refs: [Reference] = [.directory(Keys.Database.likesDir), .directory(postId), .directory(currentUid)]
         
-        database.fetchAll(under: refs) { (result: Result<Int, Error>) in
+        database.fetchAll(under: refs) { (result: Result<Int?, Error>) in
             switch result {
             case .success(let count):
                 (count == 1) ? completion(.success(true)) : completion(.success(false))
@@ -175,9 +182,9 @@ final class PostService: LoadPostClient {
                         let imageWidth = value[Keys.Database.Post.imageWidth] as? Float ?? 0.0
                         let imageHeight = value[Keys.Database.Post.imageHeight] as? Float ?? 0.0
                         let creationDate = value[Keys.Database.Post.creationDate] as? Double ?? 0.0
-                        
+
                         let post = Post(postId, userInfo, caption, imageUrl, imageWidth, imageHeight, creationDate, hasLiked)
-                        
+
                         completion(.success(post))
                     case .failure:
                         completion(.failure(HomeFeedUseCase.Error.loadLikesError))
