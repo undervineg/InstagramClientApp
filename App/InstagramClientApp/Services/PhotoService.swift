@@ -16,8 +16,8 @@ final class PhotoService: PhotoClient {
         self.photos = photos
     }
     
-    func fetchAllPhotos(limit: Int, isAscending: Bool, _ completion: @escaping (Result<(Data, Bool), PhotoUseCase.Error>) -> Void) {
-        photos.fetchAllPhotos(limit: limit, isAscending: isAscending) { (data, isAllPhotosFetched) in
+    func fetchAllPhotos(limit: Int, order: Photo.Order, _ completion: @escaping (Result<(Data, Bool), PhotoUseCase.Error>) -> Void) {
+        photos.fetchAllPhotos(limit: limit, order: order) { (data, isAllPhotosFetched) in
             guard let data = data else {
                 completion(.failure(.dataNotExist))
                 return
@@ -33,6 +33,20 @@ final class PhotoService: PhotoClient {
                 return
             }
             completion(nil)
+        }
+    }
+}
+
+extension Photo.Order: HasKey, Sortable {
+    var sortBy: Sort {
+        switch self {
+        case .creationDate(let sort): return sort
+        }
+    }
+    
+    var key: String {
+        switch self {
+        case .creationDate: return Keys.Database.Post.creationDate
         }
     }
 }

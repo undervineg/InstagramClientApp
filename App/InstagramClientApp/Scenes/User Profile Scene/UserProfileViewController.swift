@@ -41,7 +41,7 @@ final class UserProfileViewController: UICollectionViewController {
     
     private var cacheManager: Cacheable?
     private let pageUnit: Int = 4
-    private let sort: Sort = .descending
+    private let order: Post.Order = .creationDate(.descending)
     private var hasMoreToLoad: Bool = true
     
     // MARK: Initializer
@@ -112,7 +112,7 @@ final class UserProfileViewController: UICollectionViewController {
         let isLastCell = indexPath.item == userPosts.count - 1
         if isLastCell && hasMoreToLoad {
             let nextStartingValue = userPosts.last?.creationDate.timeIntervalSince1970
-            loadPaginatePosts?(uid, nextStartingValue, pageUnit, .creationDate(sort))
+            loadPaginatePosts?(uid, nextStartingValue, pageUnit, order)
         }
         
         if let cell = cell as? UserProfileGridCell {
@@ -249,7 +249,7 @@ extension UserProfileViewController: UserProfileView, PostView {
         collectionView.reloadData()
         
         if userPosts.isEmpty {
-            loadPaginatePosts?(uid, nil, pageUnit, .creationDate(sort))
+            loadPaginatePosts?(uid, nil, pageUnit, order)
         }
     }
     

@@ -51,11 +51,6 @@ final public class UserProfileUseCase: FeaturePostLoadable {
         self.postOutput = output
     }
     
-    public enum Order {
-        case username(Sort)
-        case caption(Sort)
-    }
-    
     public enum Error: Swift.Error {
         case currentUserIDNotExist
         case currentUserNotExist

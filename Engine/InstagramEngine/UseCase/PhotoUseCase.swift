@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol PhotoClient {
-    func fetchAllPhotos(limit: Int, isAscending: Bool, _ completion: @escaping (Result<(Data, Bool), PhotoUseCase.Error>) -> Void)
+    func fetchAllPhotos(limit: Int, order: Photo.Order, _ completion: @escaping (Result<(Data, Bool), PhotoUseCase.Error>) -> Void)
     func savePhoto(_ photoData: Data, _ completion: @escaping (PhotoUseCase.Error?) -> Void)
 }
 
@@ -44,8 +44,8 @@ final public class PhotoUseCase {
         }
     }
     
-    public func loadAllPhotos(limit: Int, isAscending: Bool) {
-        client.fetchAllPhotos(limit: limit, isAscending: isAscending) { (result) in
+    public func loadAllPhotos(limit: Int, order: Photo.Order) {
+        client.fetchAllPhotos(limit: limit, order: order) { (result) in
             switch result {
             case .success(let (data, isAllPhotosFetched)):
                 self.output.fetchAllPhotosSucceeded(data, isAllPhotosFetched)

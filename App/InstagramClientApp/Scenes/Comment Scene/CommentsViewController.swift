@@ -51,6 +51,7 @@ final class CommentsViewController: UICollectionViewController {
     private var commentsForPost: [Comment] = []
     
     private var cacheManager: Cacheable?
+    private let order: Comment.Order = .creationDate(.ascending)
     
     // MARK: Initializer
     convenience init(currentPostId: String, cacheManager: Cacheable) {
@@ -71,7 +72,7 @@ final class CommentsViewController: UICollectionViewController {
         collectionView.keyboardDismissMode = .interactive
         
         if let postId = currentPostId {
-            loadCommentsForPost?(postId, .creationDate(.ascending))
+            loadCommentsForPost?(postId, order)
         }
     }
     
@@ -100,7 +101,12 @@ final class CommentsViewController: UICollectionViewController {
 
 extension CommentsViewController: CommentsView {
     func displayComment(_ comment: Comment) {
-        commentsForPost.append(comment)
+        switch order.sortBy {
+        case .ascending:
+            commentsForPost.append(comment)
+        case .descending:
+            commentsForPost.insert(comment, at: 0)
+        }
         collectionView.reloadData()
     }
 }

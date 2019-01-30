@@ -9,15 +9,17 @@
 import Photos
 
 protocol PhotosWrapper {
-    static func fetchAllPhotos(limit: Int, isAscending: Bool, _ completion: @escaping (Data?, Bool) -> Void)
+    static func fetchAllPhotos(limit: Int, order: HasKey&Sortable, _ completion: @escaping (Data?, Bool) -> Void)
     static func savePhoto(data: Data, _ completion: @escaping (Error?) -> Void)
 }
 
 extension PHAsset: PhotosWrapper {
-    static func fetchAllPhotos(limit: Int = 10, isAscending: Bool, _ completion: @escaping (Data?, Bool) -> Void) {
+    static func fetchAllPhotos(limit: Int = 10, order: HasKey&Sortable, _ completion: @escaping (Data?, Bool) -> Void) {
         let options = PHFetchOptions()
         options.fetchLimit = limit
-        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: isAscending)
+        
+        let isAscending = order.sortBy == .ascending
+        let sortDescriptor = NSSortDescriptor(key: order.key, ascending: isAscending)
         options.sortDescriptors = [sortDescriptor]
         
         DispatchQueue.global(qos: .background).async {

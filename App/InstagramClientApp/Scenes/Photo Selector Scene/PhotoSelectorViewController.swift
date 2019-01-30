@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Photos
+import InstagramEngine
 
 private let cellReuseId = "Cell"
 private let headerReuseId = "Header"
@@ -15,7 +15,7 @@ private let headerReuseId = "Header"
 final class PhotoSelectorViewController: UICollectionViewController {
     
     // MARK: Commands
-    var loadAllPhotos: ((Int, Bool) -> Void)?
+    var loadAllPhotos: ((Int, Photo.Order) -> Void)?
     
     // MARK: Router
     private var router: PhotoSelectorRouter.Routes?
@@ -47,7 +47,7 @@ final class PhotoSelectorViewController: UICollectionViewController {
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                      withReuseIdentifier: headerReuseId)
         
-        loadAllPhotos?(50, false)
+        loadAllPhotos?(50, .creationDate(.descending))
     }
     
     // MARK: Actions
