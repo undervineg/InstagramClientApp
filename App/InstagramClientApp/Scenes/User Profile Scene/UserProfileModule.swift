@@ -13,6 +13,7 @@ final class UserProfileModule {
     let router: UserProfileRouter
     let viewController: UserProfileViewController
     private let profileService: UserProfileService
+    private let loginService: LoginService
     private let postService: PostService
     private let presenter: UserProfilePresenter
     private let useCase: UserProfileUseCase
@@ -28,13 +29,13 @@ final class UserProfileModule {
         profileService = UserProfileService(firebaseAuth: Auth.self,
                                      firebaseDatabase: Database.self,
                                      networking: URLSession.shared)
+        loginService = LoginService(auth: Auth.self)
         postService = PostService(firebaseAuth: Auth.self,
                                   firebaseDatabase: Database.self,
                                   networking: URLSession.shared,
                                   profileService: profileService)
         presenter = UserProfilePresenter(view: WeakRef(viewController))
-        useCase = UserProfileUseCase(client: profileService, output: presenter,
-                                            postClient: postService, profileClient: profileService)
+        useCase = UserProfileUseCase(client: profileService, output: presenter, loginClient: loginService, postClient: postService)
         
         router.viewController = viewController
         

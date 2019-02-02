@@ -10,6 +10,7 @@ import Foundation
 
 public protocol LoginClient {
     func login(email: String, password: String, completion: @escaping (LoginUseCase.Error?) -> Void)
+    func logout(_ completion: @escaping (Error?) -> Void)
 }
 
 public protocol LoginUseCaseOutput {

@@ -12,7 +12,6 @@ public protocol UserProfileClient {
     func loadCurrentUserInfo(_ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
     func loadUserInfo(of uid: String, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
     func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
-    func logout(_ completion: @escaping (Error?) -> Void)
     func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void)
     func followUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void)
     func unfollowUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void)
@@ -37,17 +36,18 @@ final public class UserProfileUseCase: FeaturePostLoadable {
     private let client: UserProfileClient
     private let output: UserProfileUseCaseOutput
     
+    private let loginClient: LoginClient
+    
     public let postClient: LoadPostClient
-    public let profileClient: UserProfileClient
     public let postOutput: LoadPostOutput
     
-    public init(client: UserProfileClient, output: UserProfileUseCaseOutput&LoadPostOutput,
-                postClient: LoadPostClient, profileClient: UserProfileClient) {
+    public init(client: UserProfileClient, output: UserProfileUseCaseOutput&LoadPostOutput, loginClient: LoginClient, postClient: LoadPostClient) {
         self.client = client
         self.output = output
         
+        self.loginClient = loginClient
+        
         self.postClient = postClient
-        self.profileClient = profileClient
         self.postOutput = output
     }
     
@@ -106,7 +106,7 @@ final public class UserProfileUseCase: FeaturePostLoadable {
     }
     
     public func logout() {
-        client.logout { [weak self] (error) in
+        loginClient.logout { [weak self] (error) in
             if let _ = error {
                 self?.output.logoutFailed(.logoutError)
             }

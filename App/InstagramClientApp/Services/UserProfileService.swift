@@ -61,10 +61,6 @@ final class UserProfileService: UserProfileClient {
         }
     }
     
-    func logout(_ completion: @escaping (Error?) -> Void) {
-         auth.logout(completion)
-    }
-    
     func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void) {
         let refs: [Reference] = [.directory(Keys.Database.usersDir)]
         

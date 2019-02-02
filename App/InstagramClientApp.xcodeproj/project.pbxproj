@@ -128,6 +128,7 @@
 		08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984DB21E69A8F00DE6E78 /* SplashRouter.swift */; };
 		08FBC62F2203563200D75825 /* FirebaseMessagingWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FBC62E2203563200D75825 /* FirebaseMessagingWrapper.swift */; };
 		08FBC6312203733900D75825 /* PushRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FBC6302203733900D75825 /* PushRouter.swift */; };
+		08FBC63322055BD600D75825 /* TokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FBC63222055BD600D75825 /* TokenService.swift */; };
 		08FE157721F4574900A58355 /* UserSearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157621F4574800A58355 /* UserSearchRouter.swift */; };
 		08FE157A21F4579700A58355 /* UserProfileRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157921F4579700A58355 /* UserProfileRoute.swift */; };
 		08FE157C21F5D12D00A58355 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157B21F5D12D00A58355 /* Date+Extension.swift */; };
@@ -285,6 +286,7 @@
 		08F984DB21E69A8F00DE6E78 /* SplashRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashRouter.swift; sourceTree = "<group>"; };
 		08FBC62E2203563200D75825 /* FirebaseMessagingWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseMessagingWrapper.swift; sourceTree = "<group>"; };
 		08FBC6302203733900D75825 /* PushRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRouter.swift; sourceTree = "<group>"; };
+		08FBC63222055BD600D75825 /* TokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenService.swift; sourceTree = "<group>"; };
 		08FE157621F4574800A58355 /* UserSearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchRouter.swift; sourceTree = "<group>"; };
 		08FE157921F4579700A58355 /* UserProfileRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileRoute.swift; sourceTree = "<group>"; };
 		08FE157B21F5D12D00A58355 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -518,6 +520,7 @@
 				084FF5A321EB54B7000EA933 /* LoginService.swift */,
 				08F9847821E4B1E100DE6E78 /* RegisterUserService.swift */,
 				08F984C921E6878E00DE6E78 /* AuthService.swift */,
+				08FBC63222055BD600D75825 /* TokenService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1018,6 +1021,7 @@
 				0891AE1421F78DD30002A7CB /* PhotoCapturedView.swift in Sources */,
 				084FF5DE21EDAAFD000EA933 /* HomeFeedViewController.swift in Sources */,
 				08BF0C6E21E8BB27004CE846 /* LoginViewController.swift in Sources */,
+				08FBC63322055BD600D75825 /* TokenService.swift in Sources */,
 				08F984AB21E53D2E00DE6E78 /* MainRoute.swift in Sources */,
 				084FF5A621EB5856000EA933 /* LoginPresenter.swift in Sources */,
 				084FF5FB21EDDB20000EA933 /* PhotoSelectorCell.swift in Sources */,

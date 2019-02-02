@@ -7,13 +7,21 @@
 //
 
 import FirebaseAuth
+import FirebaseDatabase
 import InstagramEngine
 
 final class LoginService: LoginClient {
     private let auth: FirebaseAuthWrapper.Type
+    private let tokenService: TokenService
     
     init(auth: FirebaseAuthWrapper.Type) {
         self.auth = auth
+        self.tokenService = TokenService(auth: Auth.self, database: Database.self)
+    }
+    
+    func logout(_ completion: @escaping (Error?) -> Void) {
+        tokenService.invalidateFcmToken()
+        auth.logout(completion)
     }
     
     func login(email: String, password: String, completion: @escaping (LoginUseCase.Error?) -> Void) {
@@ -23,6 +31,7 @@ final class LoginService: LoginClient {
                 completion(loginError)
                 return
             }
+            self.tokenService.refreshFcmToken()
             completion(nil)
         }
     }
