@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import InstagramEngine
 import Firebase
+import UserNotifications
 
 //@UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,6 +21,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
+        
+        attemptRegisterForRemoteNotifications(application)
 
         let window = UIWindow(frame: UIScreen.main.bounds)
         let splashModule = SplashModule()
@@ -40,5 +42,91 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = .black
         
         return true
+    }
+    
+    private func attemptRegisterForRemoteNotifications(_ application: UIApplication) {
+        // FCM token and message delegate
+        Messaging.messaging().delegate = self
+        
+        // UNUserNotificationCenter delegate
+        UNUserNotificationCenter.current().delegate = self
+        
+        // user authorization
+        let options: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: options) { (granted, error) in
+            if let error = error {
+                print("Failed to request auth: ", error)
+                return
+            }
+            if granted {
+                print("Succeeded to user auth granted: Register for remote notification")
+                DispatchQueue.main.async {
+                    application.registerForRemoteNotifications()
+                }
+            } else {
+                print("User denied to receive notification")
+            }
+        }
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Registering for notifications: ", deviceToken)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for notification: ", error)
+    }
+}
+
+extension AppDelegate: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        print("Registered with FCM with token: ", fcmToken)
+        // TODO: 앱을 지우고 다시 깔면 fcmToken이 변경되어 기존 사용자들의 fcmToken과 일치하지 않는 문제
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    // Handle user actions to notifications
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        let userInfo = response.notification.request.content.userInfo
+        
+        if let followerId = userInfo["followerId"] as? String {
+            openFollowerPage(followerId: followerId)
+        }
+        
+        completionHandler()
+    }
+    
+    private func openFollowerPage(followerId: String) {
+        if window?.rootViewController is SplashViewController {
+            openFollowerPageFromMain(followerId: followerId, after: 5000)
+        } else {
+            openFollowerPageFromMain(followerId: followerId)
+        }
+        // TODO: 로그아웃 상태에서도 알림이 오는 문제
+        
+    }
+    
+    private func openFollowerPageFromMain(followerId: String, after nanoSeconds: UInt64 = 0) {
+        DispatchQueue.main.asyncAfter(deadline: .init(uptimeNanoseconds: nanoSeconds)) {
+            guard let currentViewController = self.window?.rootViewController as? MainTabBarViewController else {
+                return
+            }
+            
+            currentViewController.presentedViewController?.dismiss(animated: true, completion: nil)
+            
+            let currentTabIndex = currentViewController.selectedIndex
+            let currentTabVC = currentViewController.viewControllers?[currentTabIndex]
+            
+            let router = PushRouter()
+            router.viewController = currentTabVC
+            router.openUserProfilePage(of: followerId)
+        }
+    }
+    
+    // Handle notifications that occured in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler(.alert)
     }
 }

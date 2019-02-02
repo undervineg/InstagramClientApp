@@ -14,13 +14,16 @@ final class RegisterUserService: RegisterUserClient {
     private let auth: FirebaseAuthWrapper.Type
     private let database: FirebaseDatabaseWrapper.Type
     private let storage: FirebaseStorageWrapper.Type
+    private let messaging: FirebaseMessagingWrapper.Type
     
     init(firebaseAuth: FirebaseAuthWrapper.Type,
          firebaseDatabase: FirebaseDatabaseWrapper.Type,
-         firebaseStorage: FirebaseStorageWrapper.Type) {
+         firebaseStorage: FirebaseStorageWrapper.Type,
+         firebaseMessaging: FirebaseMessagingWrapper.Type) {
         self.auth = firebaseAuth
         self.database = firebaseDatabase
         self.storage = firebaseStorage
+        self.messaging = firebaseMessaging
     }
     
     func register(email: String, username: String, password: String, profileImage: Data, completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
@@ -77,9 +80,12 @@ final class RegisterUserService: RegisterUserClient {
                           _ profileImageUrl: String,
                           _ completion: @escaping (RegisterUserUseCase.Error?) -> Void) {
         
+        guard let fcmToken = messaging.userFcmToken else { return }
+        
         let userInfo = [Keys.Database.Profile.email: email,
                         Keys.Database.Profile.username: username,
-                        Keys.Database.Profile.image: profileImageUrl]
+                        Keys.Database.Profile.image: profileImageUrl,
+                        Keys.Database.Profile.fcmToken: fcmToken]
         
         let refs: [Reference] = [.directory(Keys.Database.usersDir), .directory(userId)]
         

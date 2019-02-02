@@ -25,7 +25,8 @@ final class RegisterModule {
         viewController = RegisterUserViewController(router: router)
         service = RegisterUserService(firebaseAuth: Auth.self,
                                       firebaseDatabase: Database.self,
-                                      firebaseStorage: Storage.self)
+                                      firebaseStorage: Storage.self,
+                                      firebaseMessaging: Messaging.self)
         presenter = RegisterUserPresenter(view: WeakRef(viewController))
         useCase = RegisterUserUseCase(client: service, output: presenter)
         

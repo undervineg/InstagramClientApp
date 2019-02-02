@@ -20,6 +20,7 @@ struct Keys {
             static let email = "email"
             static let username = "username"
             static let image = "profileImageUrl"
+            static let fcmToken = "fcmToken"
         }
         
         struct Post {
