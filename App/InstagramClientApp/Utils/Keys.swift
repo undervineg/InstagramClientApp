@@ -47,4 +47,8 @@ struct Keys {
         static let profileImagesDir = "profile_images"
         static let postImagesDir = "post_images"
     }
+    
+    struct UserDefaults {
+        static let fcmToken = "fcmToken"
+    }
 }

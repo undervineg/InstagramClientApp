@@ -80,8 +80,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        print("Registered with FCM with token: ", fcmToken)
-        // TODO: 앱을 지우고 다시 깔면 fcmToken이 변경되어 기존 사용자들의 fcmToken과 일치하지 않는 문제
+        let tokenService = TokenService(auth: Auth.self, database: Database.self)
+        tokenService.refreshFcmToken(with: fcmToken)
     }
 }
 
@@ -104,8 +104,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         } else {
             openFollowerPageFromMain(followerId: followerId)
         }
-        // TODO: 로그아웃 상태에서도 알림이 오는 문제
-        
     }
     
     private func openFollowerPageFromMain(followerId: String, after nanoSeconds: UInt64 = 0) {

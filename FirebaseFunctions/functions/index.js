@@ -34,6 +34,7 @@ exports.observeFollowing = functions.database.ref('/following/{uid}/{followingId
          admin.messaging().send(payload)
            .then((response) => {
              console.log('Successfully sent message:', response);
+             console.log('Follower token:' + user.fcmToken + 'Followee token:' + userToFollow.fcmToken);
            })
            .catch((error) => {
              console.log('Error sending message:', error);
