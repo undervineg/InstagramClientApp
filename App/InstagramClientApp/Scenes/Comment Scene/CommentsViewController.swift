@@ -18,28 +18,11 @@ final class CommentsViewController: UICollectionViewController {
     var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
     
     // MARK: UI Properties
-    let commentTextField: UITextField = {
-        let tf = UITextField()
-        tf.placeholder = "Enter Comment"
-        return tf
-    }()
-    
-    private(set) lazy var commentSubmitButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Submit", for: .normal)
-        btn.setTitleColor(.black, for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        btn.addTarget(self, action: #selector(handleSubmit(_:)), for: .touchUpInside)
-        return btn
-    }()
-    
-    private(set) lazy var keyboardContainerView: UIView = {
-        let containerView = UIView()
+    private lazy var keyboardContainerView: CommentInputAccessaryView = {
+        let containerView = CommentInputAccessaryView()
         containerView.frame = CGRect(x: 0, y: 0, width: 0, height: 50)
         containerView.backgroundColor = .white
-        containerView.addButton(commentSubmitButton)
-        containerView.addTextField(commentTextField, nextTo: commentSubmitButton)
-        containerView.addLineSeparatorView()
+        containerView.delegate = self
         return containerView
     }()
     
@@ -85,17 +68,16 @@ final class CommentsViewController: UICollectionViewController {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
-    
-    // MARK: Actions
-    @objc private func handleSubmit(_ sender: UIButton) {
+}
+
+extension CommentsViewController: CommentInputAccessaryViewDelegate {
+    func didSubmitButtonTapped(_ inputView: CommentInputAccessaryView, with text: String) {
         guard let currentPostId = currentPostId else { return }
-        guard let commentText = commentTextField.text, commentText.count > 0 else { return }
         
         let submitDate = Date().timeIntervalSince1970
-        submitComment?(commentText, submitDate, currentPostId)
+        submitComment?(text, submitDate, currentPostId)
         
-        commentTextField.text = ""
-        commentTextField.resignFirstResponder()
+        inputView.clearTextField()
     }
 }
 
@@ -175,42 +157,5 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
         let comment = commentsForPost[indexPath.item]
         dummyCell.textView.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
         return dummyCell
-    }
-}
-
-extension UIView {
-    fileprivate func addButton(_ btn: UIButton) {
-        addSubview(btn)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            btn.topAnchor.constraint(equalTo: topAnchor),
-            btn.bottomAnchor.constraint(equalTo: bottomAnchor),
-            btn.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            btn.widthAnchor.constraint(equalToConstant: 50)
-        ])
-    }
-    
-    fileprivate func addTextField(_ tf: UITextField, nextTo btn: UIButton) {
-        addSubview(tf)
-        tf.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tf.topAnchor.constraint(equalTo: topAnchor),
-            tf.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            tf.bottomAnchor.constraint(equalTo: bottomAnchor),
-            tf.trailingAnchor.constraint(equalTo: btn.leadingAnchor)
-        ])
-    }
-    
-    fileprivate func addLineSeparatorView() {
-        let line = UIView()
-        line.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
-        addSubview(line)
-        line.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            line.topAnchor.constraint(equalTo: topAnchor),
-            line.leadingAnchor.constraint(equalTo: leadingAnchor),
-            line.trailingAnchor.constraint(equalTo: trailingAnchor),
-            line.heightAnchor.constraint(equalToConstant: 0.7)
-        ])
     }
 }

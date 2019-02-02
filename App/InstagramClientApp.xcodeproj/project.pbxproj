@@ -129,6 +129,7 @@
 		08FBC62F2203563200D75825 /* FirebaseMessagingWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FBC62E2203563200D75825 /* FirebaseMessagingWrapper.swift */; };
 		08FBC6312203733900D75825 /* PushRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FBC6302203733900D75825 /* PushRouter.swift */; };
 		08FBC63322055BD600D75825 /* TokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FBC63222055BD600D75825 /* TokenService.swift */; };
+		08FBC63722057C9B00D75825 /* CommentInputAccessaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FBC63622057C9B00D75825 /* CommentInputAccessaryView.swift */; };
 		08FE157721F4574900A58355 /* UserSearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157621F4574800A58355 /* UserSearchRouter.swift */; };
 		08FE157A21F4579700A58355 /* UserProfileRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157921F4579700A58355 /* UserProfileRoute.swift */; };
 		08FE157C21F5D12D00A58355 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157B21F5D12D00A58355 /* Date+Extension.swift */; };
@@ -287,6 +288,7 @@
 		08FBC62E2203563200D75825 /* FirebaseMessagingWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseMessagingWrapper.swift; sourceTree = "<group>"; };
 		08FBC6302203733900D75825 /* PushRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRouter.swift; sourceTree = "<group>"; };
 		08FBC63222055BD600D75825 /* TokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenService.swift; sourceTree = "<group>"; };
+		08FBC63622057C9B00D75825 /* CommentInputAccessaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessaryView.swift; sourceTree = "<group>"; };
 		08FE157621F4574800A58355 /* UserSearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchRouter.swift; sourceTree = "<group>"; };
 		08FE157921F4579700A58355 /* UserProfileRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileRoute.swift; sourceTree = "<group>"; };
 		08FE157B21F5D12D00A58355 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 		080C5A9A21FA12E500AD8D7C /* Comment Scene */ = {
 			isa = PBXGroup;
 			children = (
+				08FBC63622057C9B00D75825 /* CommentInputAccessaryView.swift */,
 				080C5AA221FAA6CB00AD8D7C /* CommentsCell.xib */,
 				080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */,
 				080C5A9B21FA17B300AD8D7C /* CommentsViewController.swift */,
@@ -1025,6 +1028,7 @@
 				08F984AB21E53D2E00DE6E78 /* MainRoute.swift in Sources */,
 				084FF5A621EB5856000EA933 /* LoginPresenter.swift in Sources */,
 				084FF5FB21EDDB20000EA933 /* PhotoSelectorCell.swift in Sources */,
+				08FBC63722057C9B00D75825 /* CommentInputAccessaryView.swift in Sources */,
 				085E526C21F368F70029C7BE /* Keys.swift in Sources */,
 				0887639621F6C47700F8AE49 /* CameraRoute.swift in Sources */,
 				084FF5B021EB8A32000EA933 /* SplashModule.swift in Sources */,
