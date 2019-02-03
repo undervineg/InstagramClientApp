@@ -323,6 +323,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0800C7BD2207406100A3D588 /* xib */ = {
+			isa = PBXGroup;
+			children = (
+				080C5AA221FAA6CB00AD8D7C /* CommentsCell.xib */,
+			);
+			path = xib;
+			sourceTree = "<group>";
+		};
 		080C5A8921F8591400AD8D7C /* Animator */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,9 +343,9 @@
 		080C5A9A21FA12E500AD8D7C /* Comment Scene */ = {
 			isa = PBXGroup;
 			children = (
+				0800C7BD2207406100A3D588 /* xib */,
 				0800C7BB22070C9300A3D588 /* EditableTextView.swift */,
 				08FBC63622057C9B00D75825 /* CommentInputAccessaryView.swift */,
-				080C5AA221FAA6CB00AD8D7C /* CommentsCell.xib */,
 				080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */,
 				080C5A9B21FA17B300AD8D7C /* CommentsViewController.swift */,
 				080C5AAE21FAD67900AD8D7C /* CommentsPresenter.swift */,
