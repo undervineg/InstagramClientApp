@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		07BAE690061EAC0790E88566 /* Pods_InstagramClientAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6ECD4CBCB2C85A5DB236C52 /* Pods_InstagramClientAppTests.framework */; };
+		0800C7BC22070C9300A3D588 /* EditableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0800C7BB22070C9300A3D588 /* EditableTextView.swift */; };
 		080C5A8621F858FD00AD8D7C /* SlideAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A8521F858FD00AD8D7C /* SlideAnimator.swift */; };
 		080C5A8821F8590D00AD8D7C /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A8721F8590D00AD8D7C /* Animator.swift */; };
 		080C5A8D21F95DCA00AD8D7C /* PhotoCapturedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080C5A8C21F95DCA00AD8D7C /* PhotoCapturedView.xib */; };
@@ -162,6 +163,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0800C7BB22070C9300A3D588 /* EditableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableTextView.swift; sourceTree = "<group>"; };
 		080C5A8521F858FD00AD8D7C /* SlideAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideAnimator.swift; sourceTree = "<group>"; };
 		080C5A8721F8590D00AD8D7C /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		080C5A8C21F95DCA00AD8D7C /* PhotoCapturedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoCapturedView.xib; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 		080C5A9A21FA12E500AD8D7C /* Comment Scene */ = {
 			isa = PBXGroup;
 			children = (
+				0800C7BB22070C9300A3D588 /* EditableTextView.swift */,
 				08FBC63622057C9B00D75825 /* CommentInputAccessaryView.swift */,
 				080C5AA221FAA6CB00AD8D7C /* CommentsCell.xib */,
 				080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */,
@@ -1085,6 +1088,7 @@
 				084FF5E521EDACF0000EA933 /* HomeModule.swift in Sources */,
 				08BF0C6B21E868E7004CE846 /* APIClient.swift in Sources */,
 				08F9847921E4B1E100DE6E78 /* RegisterUserService.swift in Sources */,
+				0800C7BC22070C9300A3D588 /* EditableTextView.swift in Sources */,
 				08F984B821E54B6C00DE6E78 /* UserProfileService.swift in Sources */,
 				0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */,
 				084FF62A21EF48F2000EA933 /* SharePhotoRouter.swift in Sources */,

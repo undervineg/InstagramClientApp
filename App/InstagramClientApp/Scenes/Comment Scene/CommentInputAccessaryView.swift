@@ -14,10 +14,10 @@ protocol CommentInputAccessaryViewDelegate {
 
 final class CommentInputAccessaryView: UIView {
     // MARK: UI Properties
-    private let commentTextField: UITextField = {
-        let tf = UITextField()
-        tf.placeholder = "Enter Comment"
-        return tf
+    private let commentTextView: EditableTextView = {
+        let tv = EditableTextView()
+        tv.font = UIFont.systemFont(ofSize: 18)
+        return tv
     }()
     
     private let commentSubmitButton: UIButton = {
@@ -28,14 +28,22 @@ final class CommentInputAccessaryView: UIView {
         return btn
     }()
     
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 0, height: 50)
+    }
+    
     var delegate: CommentInputAccessaryViewDelegate?
     
     // MARK: Initializer
     init() {
         super.init(frame: .zero)
         
+        backgroundColor = .white
+        
+        autoresizingMask = .flexibleHeight
+        
         addButton(commentSubmitButton)
-        addTextField(commentTextField, nextTo: commentSubmitButton)
+        addTextView(commentTextView, nextTo: commentSubmitButton)
         addLineSeparatorView()
         
         commentSubmitButton.addTarget(self, action: #selector(handleSubmit(_:)), for: .touchUpInside)
@@ -45,37 +53,38 @@ final class CommentInputAccessaryView: UIView {
         super.init(coder: aDecoder)
     }
     
-    // MARK: API
-    func clearTextField() {
-        commentTextField.text = nil
+    func clearTextView() {
+        commentTextView.text = nil
+        commentTextView.showPlaceholder()
     }
     
-    // MARK: Private methods
+    // MARK: Actions
     @objc private func handleSubmit(_ sender: UIButton) {
-        guard let commentText = commentTextField.text, commentText.count > 0 else { return }
+        guard let commentText = commentTextView.text, commentText.count > 0 else { return }
         
         delegate?.didSubmitButtonTapped(self, with: commentText)
     }
     
+    // MARK: Private methods
     private func addButton(_ btn: UIButton) {
         addSubview(btn)
         btn.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            btn.topAnchor.constraint(equalTo: topAnchor),
-            btn.bottomAnchor.constraint(equalTo: bottomAnchor),
+            btn.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             btn.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            btn.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8),
             btn.widthAnchor.constraint(equalToConstant: 50)
         ])
     }
     
-    private func addTextField(_ tf: UITextField, nextTo btn: UIButton) {
-        addSubview(tf)
-        tf.translatesAutoresizingMaskIntoConstraints = false
+    private func addTextView(_ tv: UITextView, nextTo btn: UIButton) {
+        addSubview(tv)
+        tv.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tf.topAnchor.constraint(equalTo: topAnchor),
-            tf.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            tf.bottomAnchor.constraint(equalTo: bottomAnchor),
-            tf.trailingAnchor.constraint(equalTo: btn.leadingAnchor)
+            tv.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            tv.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            tv.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            tv.trailingAnchor.constraint(equalTo: btn.leadingAnchor)
         ])
     }
     

@@ -18,13 +18,7 @@ final class CommentsViewController: UICollectionViewController {
     var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
     
     // MARK: UI Properties
-    private lazy var keyboardContainerView: CommentInputAccessaryView = {
-        let containerView = CommentInputAccessaryView()
-        containerView.frame = CGRect(x: 0, y: 0, width: 0, height: 50)
-        containerView.backgroundColor = .white
-        containerView.delegate = self
-        return containerView
-    }()
+    private let keyboardContainerView = CommentInputAccessaryView()
     
     override var inputAccessoryView: UIView? { return keyboardContainerView }
     override var canBecomeFirstResponder: Bool { return true }
@@ -54,6 +48,8 @@ final class CommentsViewController: UICollectionViewController {
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .interactive
         
+        keyboardContainerView.delegate = self
+        
         if let postId = currentPostId {
             loadCommentsForPost?(postId, order)
         }
@@ -77,7 +73,7 @@ extension CommentsViewController: CommentInputAccessaryViewDelegate {
         let submitDate = Date().timeIntervalSince1970
         submitComment?(text, submitDate, currentPostId)
         
-        inputView.clearTextField()
+        inputView.clearTextView()
     }
 }
 
