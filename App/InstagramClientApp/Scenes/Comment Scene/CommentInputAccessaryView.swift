@@ -29,7 +29,7 @@ final class CommentInputAccessaryView: UIView {
     }()
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 0, height: 50)
+        return CGSize(width: self.bounds.width, height: 50)
     }
     
     var delegate: CommentInputAccessaryViewDelegate?
