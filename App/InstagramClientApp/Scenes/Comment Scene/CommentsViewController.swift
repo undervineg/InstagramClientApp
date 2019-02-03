@@ -49,6 +49,7 @@ final class CommentsViewController: UICollectionViewController {
         collectionView.keyboardDismissMode = .interactive
         
         keyboardContainerView.delegate = self
+        addKeyboardNotifications()
         
         if let postId = currentPostId {
             loadCommentsForPost?(postId, order)
@@ -64,28 +65,25 @@ final class CommentsViewController: UICollectionViewController {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
-}
-
-extension CommentsViewController: CommentInputAccessaryViewDelegate {
-    func didSubmitButtonTapped(_ inputView: CommentInputAccessaryView, with text: String) {
-        guard let currentPostId = currentPostId else { return }
+    
+    // MARK: Actions
+    @objc private func keyboardWillChange(_ sender: NSNotification) {
+        guard commentsForPost.count > 0 else { return }
+        guard let keyboardFrame = (sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         
-        let submitDate = Date().timeIntervalSince1970
-        submitComment?(text, submitDate, currentPostId)
-        
-        inputView.clearTextView()
-    }
-}
-
-extension CommentsViewController: CommentsView {
-    func displayComment(_ comment: Comment) {
-        switch order.sortBy {
-        case .ascending:
-            commentsForPost.append(comment)
-        case .descending:
-            commentsForPost.insert(comment, at: 0)
+        switch sender.name {
+        case UIResponder.keyboardWillShowNotification:
+            if collectionView.frame.origin.y == 0 {
+                collectionView.frame.origin.y -= keyboardFrame.height
+                collectionView.contentInset.top += keyboardFrame.height
+            }
+        case UIResponder.keyboardWillHideNotification:
+            collectionView.frame.origin.y = 0
+            collectionView.contentInset.top = 0
+        default: return
         }
-        collectionView.reloadData()
+        
+        collectionView.scrollIndicatorInsets = collectionView.contentInset
     }
 }
 
@@ -115,6 +113,42 @@ extension CommentsViewController {
     }
 }
 
+extension CommentsViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let height = generateAutoSizingHeight(at: indexPath)
+        return CGSize(width: view.frame.width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+}
+
+extension CommentsViewController: CommentInputAccessaryViewDelegate {
+    func didSubmitButtonTapped(_ inputView: CommentInputAccessaryView, with text: String) {
+        guard let currentPostId = currentPostId else { return }
+        
+        let submitDate = Date().timeIntervalSince1970
+        submitComment?(text, submitDate, currentPostId)
+        
+        inputView.clearTextView()
+    }
+}
+
+extension CommentsViewController: CommentsView {
+    func displayComment(_ comment: Comment) {
+        switch order.sortBy {
+        case .ascending:
+            commentsForPost.append(comment)
+        case .descending:
+            commentsForPost.insert(comment, at: 0)
+        }
+        collectionView.reloadData()
+        
+        scrollToLastItem()
+    }
+}
+
 extension CommentsViewController: CommentsCellDelegate {
     func didProfileImageUrlSet(_ cell: CommentsCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
         downloadProfileImage?(url) { (result) in
@@ -126,16 +160,7 @@ extension CommentsViewController: CommentsCellDelegate {
     }
 }
 
-extension CommentsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = generateAutoSizingHeight(at: indexPath)
-        return CGSize(width: view.frame.width, height: height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
+extension CommentsViewController {
     // MARK: Private Methods
     private func generateAutoSizingHeight(at indexPath: IndexPath) -> CGFloat {
         let dummyCell = makeDummyCell(at: indexPath)
@@ -153,5 +178,15 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
         let comment = commentsForPost[indexPath.item]
         dummyCell.textView.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
         return dummyCell
+    }
+    
+    private func addKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func scrollToLastItem() {
+        let lastIndexPath = IndexPath(item: commentsForPost.count - 1, section: 0)
+        collectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: false)
     }
 }
