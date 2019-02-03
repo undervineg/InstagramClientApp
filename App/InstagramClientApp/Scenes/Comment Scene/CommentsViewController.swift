@@ -69,18 +69,19 @@ final class CommentsViewController: UICollectionViewController {
     // MARK: Actions
     @objc private func keyboardWillChange(_ sender: NSNotification) {
         guard commentsForPost.count > 0 else { return }
-        guard let keyboardFrame = (sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        guard let keyboardBeginFrame = (sender.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        guard let keyboardEndFrame = (sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        
+        guard !keyboardBeginFrame.equalTo(keyboardEndFrame) else { return }
         
         switch sender.name {
         case UIResponder.keyboardWillShowNotification:
-            if collectionView.frame.origin.y == 0 {
-                collectionView.frame.origin.y -= keyboardFrame.height
-                collectionView.contentInset.top += keyboardFrame.height
-            }
+            collectionView.frame.origin.y -= keyboardEndFrame.height
+            collectionView.contentInset.top += keyboardEndFrame.height
         case UIResponder.keyboardWillHideNotification:
             collectionView.frame.origin.y = 0
             collectionView.contentInset.top = 0
-        default: return
+        default: break
         }
         
         collectionView.scrollIndicatorInsets = collectionView.contentInset
