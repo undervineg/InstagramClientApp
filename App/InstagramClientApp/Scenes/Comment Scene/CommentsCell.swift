@@ -23,6 +23,7 @@ final class CommentsCell: UICollectionViewCell {
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
         profileImageView.delegate = self
         textView.isScrollEnabled = false
+        textView.isUserInteractionEnabled = false
     }
     
     override func prepareForReuse() {
