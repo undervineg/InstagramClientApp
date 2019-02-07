@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		07BAE690061EAC0790E88566 /* Pods_InstagramClientAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6ECD4CBCB2C85A5DB236C52 /* Pods_InstagramClientAppTests.framework */; };
 		0800C7BC22070C9300A3D588 /* EditableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0800C7BB22070C9300A3D588 /* EditableTextView.swift */; };
+		0800C7BF220760E300A3D588 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0800C7BE220760E300A3D588 /* CommentsViewController.swift */; };
 		080C5A8621F858FD00AD8D7C /* SlideAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A8521F858FD00AD8D7C /* SlideAnimator.swift */; };
 		080C5A8821F8590D00AD8D7C /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A8721F8590D00AD8D7C /* Animator.swift */; };
 		080C5A8D21F95DCA00AD8D7C /* PhotoCapturedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080C5A8C21F95DCA00AD8D7C /* PhotoCapturedView.xib */; };
 		080C5A8F21F9974200AD8D7C /* XibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A8E21F9974200AD8D7C /* XibLoadable.swift */; };
 		080C5A9121F998E600AD8D7C /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A9021F998E600AD8D7C /* UILabel+Extension.swift */; };
 		080C5A9721F9A38800AD8D7C /* CommentsRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A9621F9A38800AD8D7C /* CommentsRoute.swift */; };
-		080C5A9C21FA17B300AD8D7C /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A9B21FA17B300AD8D7C /* CommentsViewController.swift */; };
 		080C5A9E21FA1EC400AD8D7C /* CommentsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5A9D21FA1EC400AD8D7C /* CommentsModule.swift */; };
 		080C5AA321FAA6CB00AD8D7C /* CommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */; };
 		080C5AA421FAA6CB00AD8D7C /* CommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 080C5AA221FAA6CB00AD8D7C /* CommentsCell.xib */; };
@@ -164,13 +164,13 @@
 
 /* Begin PBXFileReference section */
 		0800C7BB22070C9300A3D588 /* EditableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableTextView.swift; sourceTree = "<group>"; };
+		0800C7BE220760E300A3D588 /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		080C5A8521F858FD00AD8D7C /* SlideAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideAnimator.swift; sourceTree = "<group>"; };
 		080C5A8721F8590D00AD8D7C /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		080C5A8C21F95DCA00AD8D7C /* PhotoCapturedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoCapturedView.xib; sourceTree = "<group>"; };
 		080C5A8E21F9974200AD8D7C /* XibLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XibLoadable.swift; sourceTree = "<group>"; };
 		080C5A9021F998E600AD8D7C /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		080C5A9621F9A38800AD8D7C /* CommentsRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsRoute.swift; sourceTree = "<group>"; };
-		080C5A9B21FA17B300AD8D7C /* CommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		080C5A9D21FA1EC400AD8D7C /* CommentsModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsModule.swift; sourceTree = "<group>"; };
 		080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCell.swift; sourceTree = "<group>"; };
 		080C5AA221FAA6CB00AD8D7C /* CommentsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsCell.xib; sourceTree = "<group>"; };
@@ -347,7 +347,7 @@
 				0800C7BB22070C9300A3D588 /* EditableTextView.swift */,
 				08FBC63622057C9B00D75825 /* CommentInputAccessaryView.swift */,
 				080C5AA121FAA6CB00AD8D7C /* CommentsCell.swift */,
-				080C5A9B21FA17B300AD8D7C /* CommentsViewController.swift */,
+				0800C7BE220760E300A3D588 /* CommentsViewController.swift */,
 				080C5AAE21FAD67900AD8D7C /* CommentsPresenter.swift */,
 				080C5A9D21FA1EC400AD8D7C /* CommentsModule.swift */,
 			);
@@ -1031,7 +1031,6 @@
 				080C5AAB21FACD0D00AD8D7C /* CommentsService.swift in Sources */,
 				08F9847D21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift in Sources */,
 				084FF5F121EDCB76000EA933 /* PhotosWrapper.swift in Sources */,
-				080C5A9C21FA17B300AD8D7C /* CommentsViewController.swift in Sources */,
 				0891AE1421F78DD30002A7CB /* PhotoCapturedView.swift in Sources */,
 				084FF5DE21EDAAFD000EA933 /* HomeFeedViewController.swift in Sources */,
 				08BF0C6E21E8BB27004CE846 /* LoginViewController.swift in Sources */,
@@ -1093,6 +1092,7 @@
 				08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */,
 				084FF62821EF4818000EA933 /* SharePhotoPresenter.swift in Sources */,
 				084FF5F521EDD219000EA933 /* PhotoSelectorPresenter.swift in Sources */,
+				0800C7BF220760E300A3D588 /* CommentsViewController.swift in Sources */,
 				084FF5E521EDACF0000EA933 /* HomeModule.swift in Sources */,
 				08BF0C6B21E868E7004CE846 /* APIClient.swift in Sources */,
 				08F9847921E4B1E100DE6E78 /* RegisterUserService.swift in Sources */,

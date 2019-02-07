@@ -29,6 +29,10 @@ final class EditableTextView: UITextView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     func showPlaceholder() {
         placeholderLabel.isHidden = false
