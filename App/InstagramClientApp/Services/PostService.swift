@@ -49,6 +49,12 @@ final class PostService: LoadPostClient {
         }
     }
     
+    func fetchCurrentUserPostsCount(_ completion: @escaping (Int) -> Void) {
+        guard let currentUserId = auth.currentUserId else { return }
+        
+        fetchPostsCount(of: currentUserId, completion)
+    }
+    
     func fetchCurrentUserPost(_ completion: @escaping (Result<Post, Error>) -> Void) {
         guard let currentUserId = auth.currentUserId else {
             completion(.failure(HomeFeedUseCase.Error.userIDNotExist))
@@ -73,8 +79,19 @@ final class PostService: LoadPostClient {
         fetchUserPostWithPagination(of: currentUserId, from: postId, to: limit, with: order, completion: completion)
     }
     
+    func fetchPostsCount(of uid: String, _ completion: @escaping (Int) -> Void) {
+        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid), .directory(Keys.Database.Post.count)]
+        
+        database.fetchAll(under: refs) { (result: Result<Int?, Error>) in
+            switch result {
+            case .success(let postsCount): completion(postsCount ?? 0)
+            default: return
+            }
+        }
+    }
+    
     func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, Error>) -> Void) {
-        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
+        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid), .directory(Keys.Database.Post.contentsDir)]
         
         database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any]?, Error>) in
             switch result {
@@ -89,7 +106,7 @@ final class PostService: LoadPostClient {
     }
     
     func fetchUserPostWithOrder(of uid: String, _ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void) {
-        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
+        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid), .directory(Keys.Database.Post.contentsDir)]
         
         database.fetch(under: refs, orderBy: order) { [weak self] (result: Result<(String, [String: Any]), Error>) in
             switch result {
@@ -103,7 +120,7 @@ final class PostService: LoadPostClient {
     private let serialQueue = DispatchQueue(label: "serialQueue.PostService")
     
     func fetchUserPostWithPagination(of uid: String, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
-        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
+        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid), .directory(Keys.Database.Post.contentsDir)]
 
         var posts: [Post] = []
         database.fetch(under: refs, from: postId, to: limit, orderBy: order) { (result: Result<([(String, [String: Any])], Bool), Error>) in
@@ -177,11 +194,11 @@ final class PostService: LoadPostClient {
                 self?.fetchUserLikes(of: postId) { (result) in
                     switch result {
                     case .success(let hasLiked):
-                        let caption = value[Keys.Database.Post.caption] as? String ?? ""
-                        let imageUrl = value[Keys.Database.Post.image] as? String ?? ""
-                        let imageWidth = value[Keys.Database.Post.imageWidth] as? Float ?? 0.0
-                        let imageHeight = value[Keys.Database.Post.imageHeight] as? Float ?? 0.0
-                        let creationDate = value[Keys.Database.Post.creationDate] as? Double ?? 0.0
+                        let caption = value[Keys.Database.Post.Contents.caption] as? String ?? ""
+                        let imageUrl = value[Keys.Database.Post.Contents.image] as? String ?? ""
+                        let imageWidth = value[Keys.Database.Post.Contents.imageWidth] as? Float ?? 0.0
+                        let imageHeight = value[Keys.Database.Post.Contents.imageHeight] as? Float ?? 0.0
+                        let creationDate = value[Keys.Database.Post.Contents.creationDate] as? Double ?? 0.0
 
                         let post = Post(postId, userInfo, caption, imageUrl, imageWidth, imageHeight, creationDate, hasLiked)
 
@@ -207,8 +224,8 @@ extension Post.Order: HasKey, Sortable {
     
     var key: String {
         switch self {
-        case .creationDate: return Keys.Database.Post.creationDate
-        case .caption: return Keys.Database.Post.caption
+        case .creationDate: return Keys.Database.Post.Contents.creationDate
+        case .caption: return Keys.Database.Post.Contents.caption
         }
     }
 }

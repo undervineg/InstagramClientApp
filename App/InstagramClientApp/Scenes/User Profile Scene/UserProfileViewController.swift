@@ -23,6 +23,7 @@ final class UserProfileViewController: UICollectionViewController {
 
     // MARK: Commands
     var loadProfile: ((String?) -> Void)?
+    var loadSummaryCounts: ((String?) -> Void)?
     var loadPaginatePosts: ((String?, Any?, Int, Post.Order, Bool) -> Void)?
     var reloadNewPaginatePosts: ((String?, Any?, Int, Post.Order) -> Void)?
     var downloadProfileImage: ((URL, @escaping (Data) -> Void) -> Void)?
@@ -39,6 +40,7 @@ final class UserProfileViewController: UICollectionViewController {
     // MARK: Model
     private var user: User?
     private var userPosts: [Post] = []
+    private var userPostsCount: Int = 0
 
     private var cacheManager: Cacheable?
     private let pagingCount: Int = 4
@@ -67,15 +69,11 @@ final class UserProfileViewController: UICollectionViewController {
         }
 
         loadProfile?(uid)
+        loadSummaryCounts?(uid)
 
         if let uid = uid {
             checkIsFollowing?(uid)
         }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: UICollectionViewDataSource
@@ -136,6 +134,9 @@ final class UserProfileViewController: UICollectionViewController {
     @objc private func refresh(_ sender: UIRefreshControl) {
         let firstPost = userPosts.first?.creationDate.timeIntervalSince1970
         loadPaginatePosts?(uid, firstPost, pagingCount, order.switchSortingForPagination(), true)
+        DispatchQueue.main.asyncAfter(deadline: .init(uptimeNanoseconds: 1000)) {
+            self.loadSummaryCounts?(self.uid)
+        }
     }
 
     @objc private func handleLogout(_ sender: UIBarButtonItem) {
@@ -229,7 +230,7 @@ extension UserProfileViewController: UserProfileHeaderDataSource {
 
     func summaryCounts(_ userProfileHeaderCell: UserProfileHeader, _ labelType: UserProfileHeader.SummaryLabelType) -> Int {
         switch labelType {
-        case .posts: return userPosts.count
+        case .posts: return userPostsCount
         case .followers: return 0
         case .followings: return 0
         }
@@ -253,7 +254,7 @@ extension UserProfileViewController: UserProfileView, PostView {
     func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
         userPosts.insert(contentsOf: posts, at: 0)
         self.hasMoreToLoad = hasMoreToLoad
-
+        
         collectionView.reloadData()
     }
 
@@ -270,15 +271,19 @@ extension UserProfileViewController: UserProfileView, PostView {
         self.isFollowing = isFollowing
         collectionView.reloadData()
     }
-
+    
     func displayUserInfo(_ userInfo: User) {
         user = userInfo
         setTitleOnNavigationBar()
         collectionView.reloadData()
-
+        
         if userPosts.isEmpty {
             loadPaginatePosts?(uid, nil, pagingCount, order, false)
         }
+    }
+    
+    func displayUserPostsCount(_ count: Int) {
+        userPostsCount = count
     }
 
     func onLogoutSucceeded() {

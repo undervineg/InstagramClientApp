@@ -11,10 +11,12 @@ import Foundation
 public protocol LoadPostClient {
     func fetchAllPosts(_ completion: @escaping (Result<Post, Error>) -> Void)
     
+    func fetchCurrentUserPostsCount(_ completion: @escaping (Int) -> Void)
     func fetchCurrentUserPost(_ completion: @escaping (Result<Post, Error>) -> Void)
     func fetchCurrentUserPostWithOrder(_ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void)
     func fetchCurrentUserPostWithPagination(startFrom postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
     
+    func fetchPostsCount(of uid: String, _ completion: @escaping (Int) -> Void)
     func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, Error>) -> Void)
     func fetchUserPostWithOrder(of uid: String, _ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void)
     func fetchUserPostWithPagination(of uid: String, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
@@ -23,13 +25,6 @@ public protocol LoadPostClient {
     
     func fetchUserLikes(of postId: String, completion: @escaping (Result<Bool, Error>) -> Void)
     func changeLikes(of postId: String, to likesState: Bool, completion: @escaping (Error?) -> Void)
-}
-
-public protocol LoadPostOutput {
-    func loadPostSucceeded(_ post: Post)
-    func loadPaginatedPostSucceeded(_ posts: [Post], hasMoreToLoad: Bool, isReloading: Bool)
-    func loadPostFailed(_ error: Error)
-    func downloadPostImageFailed(_ error: Error)
 }
 
 public protocol LikesOutput {

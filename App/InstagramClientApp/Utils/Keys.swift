@@ -24,12 +24,17 @@ struct Keys {
         }
         
         struct Post {
-            static let uid = "userId"
-            static let caption = "caption"
-            static let image = "imageUrl"
-            static let imageWidth = "imageWidth"
-            static let imageHeight = "imageHeight"
-            static let creationDate = "creationDate"
+            static let count = "count"
+            static let contentsDir = "contents"
+            
+            struct Contents {
+                static let uid = "userId"
+                static let caption = "caption"
+                static let image = "imageUrl"
+                static let imageWidth = "imageWidth"
+                static let imageHeight = "imageHeight"
+                static let creationDate = "creationDate"
+            }
         }
         
         struct Comment {

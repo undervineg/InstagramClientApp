@@ -40,6 +40,7 @@ final class UserProfileModule {
         router.viewController = viewController
         
         viewController.loadProfile = useCase.loadProfile
+        viewController.loadSummaryCounts = useCase.loadSummaryCounts
         viewController.downloadProfileImage = useCase.downloadProfileImage
         viewController.logout = useCase.logout
         viewController.loadPaginatePosts = (useCase as FeaturePostLoadable).loadPaginatePosts

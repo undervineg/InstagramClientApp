@@ -46,7 +46,7 @@ extension Photo.Order: HasKey, Sortable {
     
     var key: String {
         switch self {
-        case .creationDate: return Keys.Database.Post.creationDate
+        case .creationDate: return Keys.Database.Post.Contents.creationDate
         }
     }
 }

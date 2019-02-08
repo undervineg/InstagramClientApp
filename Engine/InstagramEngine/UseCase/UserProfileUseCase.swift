@@ -23,6 +23,7 @@ public protocol UserProfileClient {
 public protocol UserProfileUseCaseOutput {
     func loadUserSucceeded(_ user: User)
     func loadUserFailed(_ error: UserProfileUseCase.Error)
+    func loadPostsCountSucceeded(_ postsCount: Int)
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error)
     func logoutSucceeded()
     func logoutFailed(_ error: UserProfileUseCase.Error)
@@ -91,6 +92,18 @@ final public class UserProfileUseCase: FeaturePostLoadable {
             output.loadUserSucceeded(user)
         case .failure(let error):
             output.loadUserFailed(error)
+        }
+    }
+    
+    public func loadSummaryCounts(of uid: String?) {
+        if let uid = uid {
+            postClient.fetchPostsCount(of: uid) { [weak self] in
+                self?.output.loadPostsCountSucceeded($0)
+            }
+        } else {
+            postClient.fetchCurrentUserPostsCount { [weak self] in
+                self?.output.loadPostsCountSucceeded($0)
+            }
         }
     }
     

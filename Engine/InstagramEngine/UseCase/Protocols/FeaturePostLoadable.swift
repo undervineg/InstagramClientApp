@@ -18,6 +18,13 @@ public protocol FeaturePostLoadable: class {
     func downloadPostImage(from url: URL, completion: @escaping (Data) -> Void)
 }
 
+public protocol LoadPostOutput {
+    func loadPostSucceeded(_ post: Post)
+    func loadPaginatedPostSucceeded(_ posts: [Post], hasMoreToLoad: Bool, isReloading: Bool)
+    func loadPostFailed(_ error: Error)
+    func downloadPostImageFailed(_ error: Error)
+}
+
 extension FeaturePostLoadable {
     public func loadAllPosts() {
         postClient.fetchAllPosts(handleLoadedPost)

@@ -7,8 +7,27 @@ admin.initializeApp();
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 
-exports.observeFollowing = functions.database.ref('/following/{uid}/{followingId}')
-  .onCreate((snapshot, context) => {
+exports.observePostsCreated = functions.database.ref('/posts/{uid}/contents/{postId}').onCreate((snapshot, context) => {
+  var uid = context.params.uid
+  console.log('Post added by user:' + uid)
+
+  return admin.database().ref('/posts/' + uid + '/count').once('value', snapshot => {
+    var newCountOfPosts = snapshot.val() + 1;
+    return admin.database().ref('/posts/' + uid).update({ count: newCountOfPosts });
+  })
+})
+
+exports.observePostsDeleted = functions.database.ref('/posts/{uid}/contents/{postId}').onDelete((snapshot, context) => {
+  var uid = context.params.uid
+  console.log('Post added by user:' + uid)
+
+  return admin.database().ref('/posts/' + uid + '/count').once('value', snapshot => {
+    var newCountOfPosts = snapshot.val() - 1;
+    return admin.database().ref('/posts/' + uid).update({ count: newCountOfPosts });
+  })
+})
+
+exports.observeFollowing = functions.database.ref('/following/{uid}/contents/{followingId}').onCreate((snapshot, context) => {
      var uid = context.params.uid
      var followingId = context.params.followingId
 
@@ -44,36 +63,3 @@ exports.observeFollowing = functions.database.ref('/following/{uid}/{followingId
 
      })
   })
-
-exports.sendPushNotifications = functions.https.onRequest((req, res) => {
-  res.send("Attempting to send push notifications...")
-  console.log("LOGGER --- Trying to send push message...")
-
-  // This registration token comes from the client FCM SDKs.
-  var uid = 'YDUzOdEoKtOkfC1fAReU0BDLvvF3'
-
-  return admin.database().ref('/users/' + uid).once('value', snapshot => {
-    var user = snapshot.val();
-
-    console.log('User username:' + user.username + 'fcmToken:' + user.fcmToken)
-
-    // See documentation on defining a message payload.
-    var payload = {
-      notification: {
-        title: "You have a new follower!",
-        body: newFollower.username + "is now following you."
-      },
-      token: user.fcmToken
-    };
-
-    // Send a message to the device corresponding to the provided registration token.
-    admin.messaging().send(payload)
-      .then((response) => {
-        // Response is a message ID string.
-        console.log('Successfully sent message:', response);
-      })
-      .catch((error) => {
-        console.log('Error sending message:', error);
-      });
-  })
-})
