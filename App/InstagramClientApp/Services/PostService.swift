@@ -100,7 +100,7 @@ final class PostService: LoadPostClient {
         }
     }
     
-    private let serialQueue = DispatchQueue(label: "test")
+    private let serialQueue = DispatchQueue(label: "serialQueue.PostService")
     
     func fetchUserPostWithPagination(of uid: String, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
         let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid)]
