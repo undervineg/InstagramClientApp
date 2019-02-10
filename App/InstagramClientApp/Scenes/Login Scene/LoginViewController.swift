@@ -48,7 +48,8 @@ final class LoginViewController: UIViewController {
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
-        indicatorView.startAnimating()
+        view.endEditing(true)
+        startIndicatorAnimating()
         login?(email, password)
     }
     
@@ -59,7 +60,25 @@ final class LoginViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
+}
+
+extension LoginViewController: LoginView {
+    // MARK: Login View
+    func displayMain() {
+        stopIndicatorAnimating()
+        router?.openMainPage()
+    }
     
+    func displayError(_ errorMessage: String) {
+        let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
+            self?.stopIndicatorAnimating()
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+}
+
+extension LoginViewController {
     // MARK: Private Methods
     private func isAllTextFieldsValid() -> Bool {
         return [emailTextField, passwordTextField].isAllValid()
@@ -72,21 +91,14 @@ final class LoginViewController: UIViewController {
         loginButton.layer.masksToBounds = true
         loginButton.enableButtonWithColor(false)
     }
-}
-
-extension LoginViewController: LoginView {
     
-    // MARK: Login View
-    func displayMain() {
-        indicatorView.stopAnimating()
-        router?.openMainPage()
+    private func startIndicatorAnimating() {
+        loginButton.setTitleColor(.clear, for: .normal)
+        indicatorView.startAnimating()
     }
     
-    func displayError(_ errorMessage: String) {
-        let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
-            self?.indicatorView.stopAnimating()
-        }))
-        present(alert, animated: true, completion: nil)
+    private func stopIndicatorAnimating() {
+        loginButton.setTitleColor(.white, for: .normal)
+        indicatorView.stopAnimating()
     }
 }

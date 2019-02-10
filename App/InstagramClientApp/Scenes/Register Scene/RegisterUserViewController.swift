@@ -78,14 +78,14 @@ extension RegisterUserViewController: RegisterUserView {
     
     // MARK: RegisterUserView
     func displayMain() {
-        indicatorView.stopAnimating()
+        stopIndicatorAnimating()
         router?.openMainPage()
     }
     
     func displayError(_ errorMessage: String) {
         let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
-            self?.indicatorView.stopAnimating()
+            self?.stopIndicatorAnimating()
         }))
         present(alert, animated: true, completion: nil)
     }
@@ -106,7 +106,8 @@ extension RegisterUserViewController {
         let password = passwordTextField.text ?? ""
         let profileImageData = profileImageButton.imageView?.image?.jpegData(compressionQuality: 0.3)
         
-        indicatorView.startAnimating()
+        view.endEditing(true)
+        startIndicatorAnimating()
         register?(email, username, password, profileImageData!)
     }
     
@@ -130,6 +131,16 @@ extension RegisterUserViewController {
         signUpButton.enableButtonWithColor(false)
         
         navigationController?.isNavigationBarHidden = true
+    }
+    
+    private func startIndicatorAnimating() {
+        signUpButton.setTitleColor(.clear, for: .normal)
+        indicatorView.startAnimating()
+    }
+    
+    private func stopIndicatorAnimating() {
+        signUpButton.setTitleColor(.white, for: .normal)
+        indicatorView.stopAnimating()
     }
 
 }

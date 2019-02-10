@@ -25,13 +25,6 @@ class SharePhotoViewController: UIViewController {
         return tv
     }()
     
-    let indicatorView: UIActivityIndicatorView = {
-        let iv = UIActivityIndicatorView()
-        iv.style = .gray
-        iv.hidesWhenStopped = true
-        return iv
-    }()
-    
     private var router: SharePhotoRouter.Routes?
     
     private var selectedImage: UIImage?
@@ -69,21 +62,22 @@ class SharePhotoViewController: UIViewController {
         let imageHeight = Float(image.size.height)
         let uploadDate = Date().timeIntervalSince1970
         
-        indicatorView.startAnimating()
+        view.endEditing(true)
+        startIndicatorAnimating()
         share?(imageData, caption, imageWidth, imageHeight, uploadDate)
     }
 }
 
 extension SharePhotoViewController: SharePhotoView {
     func displayMain() {
-        indicatorView.stopAnimating()
+        stopIndicatorAnimating()
         router?.openMainPage()
     }
     
     func displayError(_ errorMessage: String) {
         let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
-            self?.indicatorView.stopAnimating()
+            self?.stopIndicatorAnimating()
             self?.enableShareButton(true)
         }))
         present(alert, animated: true, completion: nil)
@@ -91,8 +85,19 @@ extension SharePhotoViewController: SharePhotoView {
 }
 
 extension SharePhotoViewController {
-    
     // MARK: Private Methods
+    private func startIndicatorAnimating() {
+        let indicatorView = UIActivityIndicatorView(style: .gray)
+        let indicatorViewBarItem = UIBarButtonItem(customView: indicatorView)
+        navigationItem.setRightBarButton(indicatorViewBarItem, animated: true)
+        indicatorView.startAnimating()
+    }
+    
+    private func stopIndicatorAnimating() {
+        let shareItem = UIBarButtonItem(title: "Share", style: .done, target: self, action: #selector(share(_:)))
+        navigationItem.setRightBarButton(shareItem, animated: true)
+    }
+    
     private func enableShareButton(_ isEnabled: Bool) {
         navigationItem.rightBarButtonItem?.isEnabled = isEnabled
     }
@@ -132,13 +137,6 @@ extension SharePhotoViewController {
             textView.leadingAnchor.constraint(equalTo: shareImageView.trailingAnchor, constant: 4),
             textView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             textView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
-        ])
-        
-        view.addSubview(indicatorView)
-        indicatorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            indicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            indicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 }

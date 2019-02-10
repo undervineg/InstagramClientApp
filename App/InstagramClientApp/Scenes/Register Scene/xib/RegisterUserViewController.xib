@@ -68,25 +68,39 @@
                                 <action selector="handleTextInputChange:" destination="-1" eventType="editingChanged" id="ImR-rg-2TS"/>
                             </connections>
                         </textField>
-                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNw-WI-nkt">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OFH-ru-QuI">
                             <rect key="frame" x="0.0" y="157.5" width="295" height="42.5"/>
-                            <color key="backgroundColor" red="0.0" green="0.47058823529411764" blue="0.68627450980392157" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <state key="normal" title="Sign Up">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </state>
-                            <connections>
-                                <action selector="signUp:" destination="-1" eventType="touchUpInside" id="F0k-ln-cYc"/>
-                            </connections>
-                        </button>
+                            <subviews>
+                                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNw-WI-nkt">
+                                    <rect key="frame" x="0.0" y="0.0" width="295" height="42.5"/>
+                                    <color key="backgroundColor" red="0.0" green="0.47058823529411764" blue="0.68627450980392157" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" title="Sign Up">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="signUp:" destination="-1" eventType="touchUpInside" id="F0k-ln-cYc"/>
+                                    </connections>
+                                </button>
+                                <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="72S-ff-RFy">
+                                    <rect key="frame" x="137.5" y="11.5" width="20" height="20"/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="72S-ff-RFy" firstAttribute="centerX" secondItem="hNw-WI-nkt" secondAttribute="centerX" id="4eB-3U-xeW"/>
+                                <constraint firstItem="hNw-WI-nkt" firstAttribute="leading" secondItem="OFH-ru-QuI" secondAttribute="leading" id="OI4-DO-WY7"/>
+                                <constraint firstItem="hNw-WI-nkt" firstAttribute="top" secondItem="OFH-ru-QuI" secondAttribute="top" id="SVh-4Q-bYo"/>
+                                <constraint firstAttribute="trailing" secondItem="hNw-WI-nkt" secondAttribute="trailing" id="YNF-o2-mFk"/>
+                                <constraint firstItem="72S-ff-RFy" firstAttribute="centerY" secondItem="hNw-WI-nkt" secondAttribute="centerY" id="aWN-O3-6VW"/>
+                                <constraint firstAttribute="bottom" secondItem="hNw-WI-nkt" secondAttribute="bottom" id="oDt-GL-bWL"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="height" constant="200" id="r2H-OL-HwN"/>
                     </constraints>
                 </stackView>
-                <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="72S-ff-RFy">
-                    <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
-                </activityIndicatorView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9gK-J8-67g">
                     <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                     <constraints>
@@ -119,10 +133,8 @@
                 <constraint firstItem="0SE-Ue-sz8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="668-mc-AMA"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="9gK-J8-67g" secondAttribute="bottom" id="Nh0-As-ck0"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0SE-Ue-sz8" secondAttribute="trailing" constant="40" id="TYh-Wz-ZLC"/>
-                <constraint firstItem="72S-ff-RFy" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="TnR-eR-1xw"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9gK-J8-67g" secondAttribute="trailing" id="UMV-5Z-6dY"/>
                 <constraint firstItem="0SE-Ue-sz8" firstAttribute="top" secondItem="yHg-R9-K1J" secondAttribute="bottom" constant="20" id="nFq-9s-eOc"/>
-                <constraint firstItem="72S-ff-RFy" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="nPw-77-Fvu"/>
                 <constraint firstItem="9gK-J8-67g" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="suC-47-Tm2"/>
                 <constraint firstItem="yHg-R9-K1J" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="yjf-YG-tpc"/>
             </constraints>
