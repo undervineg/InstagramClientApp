@@ -110,13 +110,25 @@ extension CameraViewController: PhotoUseCaseOutput {
         }
     }
     
-    func fetchAllPhotosSucceeded(_ photoData: Data, _ isAllPhotosFetched: Bool) {
-        //
-    }
-    
-    func fetchAllPhotosFailed(_ error: PhotoUseCase.Error) {
-        //
-    }
+//    func fetchRequestedPhotoSucceeded(at index: Int, _ image: UIImage?) {
+//        //
+//    }
+//
+//    func fetchPhotosSucceeded(_ photoData: Data, _ isAllPhotosFetched: Bool) {
+//        //
+//    }
+//
+//    func fetchPhotosFailed(_ error: PhotoUseCase.Error) {
+//        //
+//    }
+//
+//    func photosCount(_ count: Int) {
+//        //
+//    }
+//
+//    func fetchPhotosSucceeded(at index: Int, _ photoData: Data) {
+//        //
+//    }
 }
 
 extension CameraViewController {
@@ -231,6 +243,18 @@ extension CameraViewController: ErrorPresentable {
 }
 
 extension WeakRef: PhotoUseCaseOutput where T: PhotoUseCaseOutput {
+//    func fetchRequestedPhotoSucceeded(at index: Int, _ image: UIImage?) {
+//        object?.fetchRequestedPhotoSucceeded(at: index, image)
+//    }
+    
+//    func fetchPhotosSucceeded(at index: Int, _ photoData: Data) {
+//        object?.fetchPhotosSucceeded(at: index, photoData)
+//    }
+//
+//    func photosCount(_ count: Int) {
+//        object?.photosCount(count)
+//    }
+    
     func savePhotoSucceeded() {
         object?.savePhotoSucceeded()
     }
@@ -239,11 +263,11 @@ extension WeakRef: PhotoUseCaseOutput where T: PhotoUseCaseOutput {
         object?.savePhotoFailed(error)
     }
     
-    func fetchAllPhotosSucceeded(_ photoData: Data, _ isAllPhotosFetched: Bool) {
-        object?.fetchAllPhotosSucceeded(photoData, isAllPhotosFetched)
-    }
-    
-    func fetchAllPhotosFailed(_ error: PhotoUseCase.Error) {
-        object?.fetchAllPhotosFailed(error)
-    }
+//    func fetchPhotosSucceeded(_ photoData: Data, _ isAllPhotosFetched: Bool) {
+//        object?.fetchPhotosSucceeded(photoData, isAllPhotosFetched)
+//    }
+//
+//    func fetchPhotosFailed(_ error: PhotoUseCase.Error) {
+//        object?.fetchPhotosFailed(error)
+//    }
 }

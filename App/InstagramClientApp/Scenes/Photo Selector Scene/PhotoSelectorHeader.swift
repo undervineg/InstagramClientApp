@@ -10,6 +10,8 @@ import UIKit
 
 final class PhotoSelectorHeader: UICollectionViewCell {
     
+    static let reuseId = "PhotoSelectorHeader"
+    
     let imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill

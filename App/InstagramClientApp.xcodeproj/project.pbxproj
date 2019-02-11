@@ -704,12 +704,12 @@
 			isa = PBXGroup;
 			children = (
 				088907A021F05D3D0045B145 /* Types */,
-				08F9847C21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift */,
-				08F9847E21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift */,
-				086E6C7D21DD27380094B808 /* FirebaseStorageWrapper.swift */,
-				08FBC62E2203563200D75825 /* FirebaseMessagingWrapper.swift */,
 				08BF0C6A21E868E7004CE846 /* APIClient.swift */,
 				084FF5F021EDCB76000EA933 /* PhotosWrapper.swift */,
+				08FBC62E2203563200D75825 /* FirebaseMessagingWrapper.swift */,
+				086E6C7D21DD27380094B808 /* FirebaseStorageWrapper.swift */,
+				08F9847E21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift */,
+				08F9847C21E4B2BF00DE6E78 /* FirebaseAuthWrapper.swift */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";

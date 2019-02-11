@@ -10,7 +10,11 @@ import UIKit
 
 final class PhotoSelectorCell: UICollectionViewCell {
     
-    let imageView: UIImageView = {
+    static let reuseId = "PhotoSelectorCell"
+    
+    var representedAssetIdentifier: String?
+    
+    private let imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
@@ -36,5 +40,9 @@ final class PhotoSelectorCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func configure(with image: UIImage?) {
+        imageView.image = image
     }
 }

@@ -18,7 +18,7 @@ final class CameraModule {
     init() {
         router = CameraRouter()
         viewController = CameraViewController(router: router)
-        service = PhotoService(photos: PHAsset.self)
+        service = PhotoService(photos: PhotosManager())
         useCase = PhotoUseCase(client: service, output: viewController)
         
         viewController.saveCapturedPhoto = useCase.savePhoto

@@ -9,23 +9,25 @@
 import UIKit
 import InstagramEngine
 
-private let cellReuseId = "Cell"
-private let headerReuseId = "Header"
-
-final class PhotoSelectorViewController: UICollectionViewController {
-    
+final class PhotoSelectorViewController: UICollectionViewController, UICollectionViewDataSourcePrefetching {
     // MARK: Commands
-    var loadAllPhotos: ((Int, Photo.Order) -> Void)?
+    var loadAllPhotos: ((Photo.Order) -> Int)?
+    var startCachingPhotos: (([Int], Float, Float) -> Void)?
+    var stopCachingPhotos: (([Int]) -> Void)?
+    var resetCachedPhotos: (() -> Void)?
+    var assetInfo: ((Int) -> PhotoAsset?)?
+    var requestImage: ((Int, Float, Float, @escaping (UIImage?) -> Void) -> Void)?
+    
+    private let order: Photo.Order = .creationDate(.descending)
+    private let headerSize: (Float, Float) = (350, 350)
+    private var thumbnailSize: (Float, Float) = (0, 0)
     
     // MARK: Router
     private var router: PhotoSelectorRouter.Routes?
     
     // MARK: Models
-    private var images: [UIImage] = []
+    private var photosCount: Int?
     private var selectedImage: UIImage?
-    
-    // MARK: UI Properties
-    override var prefersStatusBarHidden: Bool { return true }
     
     // MARK: Initializer
     convenience init(router: PhotoSelectorRouter.Routes) {
@@ -38,16 +40,85 @@ final class PhotoSelectorViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        resetCachedPhotos?()
+        
+        photosCount = loadAllPhotos?(order)
+        
         collectionView.backgroundColor = .white
         
         configureNavigationBar()
         
-        self.collectionView.register(PhotoSelectorCell.self, forCellWithReuseIdentifier: cellReuseId)
-        self.collectionView.register(PhotoSelectorHeader.self,
+        collectionView.register(PhotoSelectorCell.self, forCellWithReuseIdentifier: PhotoSelectorCell.reuseId)
+        collectionView.register(PhotoSelectorHeader.self,
                                      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                     withReuseIdentifier: headerReuseId)
+                                     withReuseIdentifier: PhotoSelectorHeader.reuseId)
         
-        loadAllPhotos?(50, .creationDate(.descending))
+        collectionView.isPrefetchingEnabled = true
+        collectionView.prefetchDataSource = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let scale = UIScreen.main.scale
+        let cellSize = (collectionViewLayout as! UICollectionViewFlowLayout).itemSize
+        thumbnailSize = (Float(cellSize.width * scale), Float(cellSize.height * scale))
+    }
+    
+    // MARK: UICollectionViewDataSourcePrefetching
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        let indexes = indexPaths.compactMap { (indexPath) -> Int? in
+            return indexPath.item
+        }
+        startCachingPhotos?(indexes, thumbnailSize.0, thumbnailSize.1)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        let indexes = indexPaths.compactMap { (indexPath) -> Int? in
+            return indexPath.item
+        }
+        stopCachingPhotos?(indexes)
+    }
+
+    // MARK: UICollectionViewDataSource
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return photosCount ?? 0
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoSelectorCell.reuseId, for: indexPath) as! PhotoSelectorCell
+    
+        cell.representedAssetIdentifier = assetInfo?(indexPath.item)?.identifier
+        requestImage?(indexPath.item, thumbnailSize.0, thumbnailSize.1) { (image) in
+            if cell.representedAssetIdentifier == self.assetInfo?(indexPath.item)?.identifier {
+                cell.configure(with: image)
+            }
+        }
+        
+        if self.selectedImage == nil {
+            requestImage?(indexPath.item, headerSize.0, headerSize.1) { (image) in
+                self.selectedImage = image
+                collectionView.collectionViewLayout.invalidateLayout()
+            }
+        }
+    
+        return cell
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let headerView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: PhotoSelectorHeader.reuseId,
+            for: indexPath
+            ) as! PhotoSelectorHeader
+        
+        headerView.imageView.image = selectedImage
+        
+        return headerView
     }
     
     // MARK: Actions
@@ -60,40 +131,11 @@ final class PhotoSelectorViewController: UICollectionViewController {
         router?.openSharePhotoPage(with: selectedImage)
     }
 
-    // MARK: UICollectionViewDataSource
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseId, for: indexPath) as! PhotoSelectorCell
-    
-        if images.count > 0 {
-            cell.imageView.image = images[indexPath.item]
-        }
-    
-        return cell
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: headerReuseId,
-            for: indexPath
-            ) as! PhotoSelectorHeader
-        
-        headerView.imageView.image = selectedImage
-        
-        return headerView
-    }
-
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedImage = images[indexPath.item]
+        requestImage?(indexPath.item, headerSize.0, headerSize.1) { (image) in
+            self.selectedImage = image
+        }
         collectionView.reloadData()
         
         collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .bottom, animated: true)
@@ -102,7 +144,6 @@ final class PhotoSelectorViewController: UICollectionViewController {
 }
 
 extension PhotoSelectorViewController: UICollectionViewDelegateFlowLayout {
-    
     // MARK: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (view.frame.width - 3) / 4
@@ -127,27 +168,7 @@ extension PhotoSelectorViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension PhotoSelectorViewController: PhotoSelectorView {
-    
-    // MARK: PhotoSelectorView
-    func displayAllPhotos(_ photoData: Data, _ isAllPhotosFetched: Bool) {
-        DispatchQueue.main.async {
-            if let image = UIImage(data: photoData) {
-                if self.selectedImage == nil {
-                    self.selectedImage = image
-                }
-                self.images.append(image)
-            }
-            if isAllPhotosFetched {
-                self.collectionView.reloadData()
-            }
-        }
-    }
-
-}
-
 extension PhotoSelectorViewController {
-    
     // MARK: Private Methods
     private func configureNavigationBar() {
         navigationController?.navigationBar.tintColor = .black
@@ -156,5 +177,18 @@ extension PhotoSelectorViewController {
         let nextItem = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(next(_:)))
         navigationItem.setLeftBarButton(cancelItem, animated: true)
         navigationItem.setRightBarButton(nextItem, animated: true)
+    }
+}
+
+extension Array {
+    subscript(safe index: Int) -> Element? {
+        get {
+            return indices.contains(index) ? self[index] : nil
+        }
+        set {
+            if indices.contains(index), let newValue = newValue {
+                self.insert(newValue, at: index)
+            }
+        }
     }
 }

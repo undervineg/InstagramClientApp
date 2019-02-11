@@ -13,3 +13,13 @@ public struct Photo {
         case creationDate(Sort)
     }
 }
+
+public struct PhotoAsset {
+    public let identifier: String
+    public let isLivePhoto: Bool
+    
+    public init(identifier: String, isLivePhoto: Bool) {
+        self.identifier = identifier
+        self.isLivePhoto = isLivePhoto
+    }
+}
