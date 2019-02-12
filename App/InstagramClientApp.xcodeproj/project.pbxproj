@@ -39,7 +39,6 @@
 		084FF5ED21EDB936000EA933 /* PhotoSelectorModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5EC21EDB936000EA933 /* PhotoSelectorModule.swift */; };
 		084FF5F121EDCB76000EA933 /* PhotosWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5F021EDCB76000EA933 /* PhotosWrapper.swift */; };
 		084FF5F321EDD0B7000EA933 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5F221EDD0B7000EA933 /* PhotoService.swift */; };
-		084FF5F521EDD219000EA933 /* PhotoSelectorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5F421EDD219000EA933 /* PhotoSelectorPresenter.swift */; };
 		084FF5F921EDD3DF000EA933 /* ErrorPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5F821EDD3DF000EA933 /* ErrorPresentable.swift */; };
 		084FF5FB21EDDB20000EA933 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5FA21EDDB20000EA933 /* PhotoSelectorCell.swift */; };
 		084FF5FD21EEC56E000EA933 /* PhotoSelectorHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5FC21EEC56E000EA933 /* PhotoSelectorHeader.swift */; };
@@ -194,7 +193,6 @@
 		084FF5EC21EDB936000EA933 /* PhotoSelectorModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorModule.swift; sourceTree = "<group>"; };
 		084FF5F021EDCB76000EA933 /* PhotosWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosWrapper.swift; sourceTree = "<group>"; };
 		084FF5F221EDD0B7000EA933 /* PhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
-		084FF5F421EDD219000EA933 /* PhotoSelectorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorPresenter.swift; sourceTree = "<group>"; };
 		084FF5F821EDD3DF000EA933 /* ErrorPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPresentable.swift; sourceTree = "<group>"; };
 		084FF5FA21EDDB20000EA933 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
 		084FF5FC21EEC56E000EA933 /* PhotoSelectorHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorHeader.swift; sourceTree = "<group>"; };
@@ -446,7 +444,6 @@
 				084FF5FA21EDDB20000EA933 /* PhotoSelectorCell.swift */,
 				084FF5FC21EEC56E000EA933 /* PhotoSelectorHeader.swift */,
 				084FF5E821EDB61D000EA933 /* PhotoSelectorViewController.swift */,
-				084FF5F421EDD219000EA933 /* PhotoSelectorPresenter.swift */,
 				084FF60E21EEF6F1000EA933 /* PhotoSelectorRouter.swift */,
 				084FF5EC21EDB936000EA933 /* PhotoSelectorModule.swift */,
 			);
@@ -1091,7 +1088,6 @@
 				084FF5EB21EDB822000EA933 /* PhotoSelectorRoute.swift in Sources */,
 				08F984DC21E69A8F00DE6E78 /* SplashRouter.swift in Sources */,
 				084FF62821EF4818000EA933 /* SharePhotoPresenter.swift in Sources */,
-				084FF5F521EDD219000EA933 /* PhotoSelectorPresenter.swift in Sources */,
 				0800C7BF220760E300A3D588 /* CommentsViewController.swift in Sources */,
 				084FF5E521EDACF0000EA933 /* HomeModule.swift in Sources */,
 				08BF0C6B21E868E7004CE846 /* APIClient.swift in Sources */,
