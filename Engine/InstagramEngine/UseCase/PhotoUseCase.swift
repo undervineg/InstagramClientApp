@@ -9,7 +9,14 @@
 import UIKit
 
 public protocol PhotoClient {
+    func assetCount() -> Int
     func savePhoto(_ photoData: Data, _ completion: @escaping (PhotoUseCase.Error?) -> Void)
+    func getAssetInfo(at index: Int) -> PhotoAsset?
+    func requestImage(at index: Int, width: Float, height: Float, _ completion: @escaping (UIImage?) -> Void)
+    func fetchAllPhotos(order: Photo.Order)
+    func startCachingPhotos(at indexes: [Int], width: Float, height: Float)
+    func stopCachingPhotos(at indexes: [Int])
+    func resetCache()
 }
 
 public protocol PhotoUseCaseOutput {

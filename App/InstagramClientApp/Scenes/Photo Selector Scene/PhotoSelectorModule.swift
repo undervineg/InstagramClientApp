@@ -22,10 +22,13 @@ final class PhotoSelectorModule {
     init() {
         self.router = PhotoSelectorRouter()
         viewController = PhotoSelectorViewController(router: router)
-        service = PhotoService(photos: PhotosManager())
+        let photoManager = PhotosManager()
+        photoManager.photoLibraryChangeHandler = viewController.handlePhotoLibraryChanges
+        service = PhotoService(photos: photoManager)
         
         router.viewController = viewController
 
+        viewController.assetCount = service.assetCount
         viewController.loadAllPhotos = service.fetchAllPhotos
         viewController.startCachingPhotos = service.startCachingPhotos
         viewController.stopCachingPhotos = service.stopCachingPhotos

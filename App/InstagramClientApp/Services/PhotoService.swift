@@ -6,14 +6,18 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import UIKit
 import InstagramEngine
+import Photos
 
 final class PhotoService: PhotoClient {
     private let photos: PhotosWrapper
     
     init(photos: PhotosWrapper) {
         self.photos = photos
+    }
+    
+    func assetCount() -> Int {
+        return photos.assetCount()
     }
     
     func getAssetInfo(at index: Int) -> PhotoAsset? {
@@ -25,8 +29,8 @@ final class PhotoService: PhotoClient {
         photos.requestImage(at: index, sizeOf: targetSize, completion)
     }
     
-    func fetchAllPhotos(order: Photo.Order) -> Int {
-        return photos.fetchAllPhotos(order: order)
+    func fetchAllPhotos(order: Photo.Order) {
+        photos.fetchAllPhotos(order: order)
     }
     
     func startCachingPhotos(at indexes: [Int], width: Float, height: Float) {

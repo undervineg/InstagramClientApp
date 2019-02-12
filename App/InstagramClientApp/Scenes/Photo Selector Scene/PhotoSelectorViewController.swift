@@ -8,10 +8,12 @@
 
 import UIKit
 import InstagramEngine
+//import PhotosUI
 
 final class PhotoSelectorViewController: UICollectionViewController, UICollectionViewDataSourcePrefetching {
     // MARK: Commands
-    var loadAllPhotos: ((Photo.Order) -> Int)?
+    var assetCount: (() -> Int)?
+    var loadAllPhotos: ((Photo.Order) -> Void)?
     var startCachingPhotos: (([Int], Float, Float) -> Void)?
     var stopCachingPhotos: (([Int]) -> Void)?
     var resetCachedPhotos: (() -> Void)?
@@ -26,7 +28,7 @@ final class PhotoSelectorViewController: UICollectionViewController, UICollectio
     private var router: PhotoSelectorRouter.Routes?
     
     // MARK: Models
-    private var photosCount: Int?
+    private var photosCount: Int? { return assetCount?() }
     private var selectedImage: UIImage?
     
     // MARK: Initializer
@@ -42,7 +44,7 @@ final class PhotoSelectorViewController: UICollectionViewController, UICollectio
         
         resetCachedPhotos?()
         
-        photosCount = loadAllPhotos?(order)
+        loadAllPhotos?(order)
         
         collectionView.backgroundColor = .white
         
@@ -130,7 +132,34 @@ final class PhotoSelectorViewController: UICollectionViewController, UICollectio
         guard let selectedImage = selectedImage else { return }
         router?.openSharePhotoPage(with: selectedImage)
     }
+    
+    func handlePhotoLibraryChanges(_ hasIncrementalChanges: Bool,
+                                   indexSets: (removed: IndexSet?, inserted: IndexSet?, changed: IndexSet?),
+                                   enumerateMoves: (@escaping (Int, Int) -> Void) -> Void) {
+        guard hasIncrementalChanges else {
+            collectionView.reloadData()
+            return
+        }
+        
+        collectionView.performBatchUpdates({
+            if let removed = indexSets.removed, removed.count > 0 {
+                collectionView.deleteItems(at: removed.map { IndexPath(item: $0, section: 0) })
+            }
+            if let inserted = indexSets.inserted, inserted.count > 0 {
+                collectionView.insertItems(at: inserted.map { IndexPath(item: $0, section: 0) })
+            }
+            if let changed = indexSets.changed, changed.count > 0 {
+                collectionView.reloadItems(at: changed.map { IndexPath(item: $0, section: 0) })
+            }
+            enumerateMoves { (fromIndex, toIndex) in
+                self.collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
+                                             to: IndexPath(item: toIndex, section: 0))
+            }
+        })
+    }
+}
 
+extension PhotoSelectorViewController: UICollectionViewDelegateFlowLayout {
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         requestImage?(indexPath.item, headerSize.0, headerSize.1) { (image) in
@@ -140,10 +169,7 @@ final class PhotoSelectorViewController: UICollectionViewController, UICollectio
         
         collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .bottom, animated: true)
     }
-
-}
-
-extension PhotoSelectorViewController: UICollectionViewDelegateFlowLayout {
+    
     // MARK: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (view.frame.width - 3) / 4
