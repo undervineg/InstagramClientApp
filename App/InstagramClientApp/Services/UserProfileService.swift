@@ -22,17 +22,10 @@ final class UserProfileService: UserProfileClient {
         self.networking = networking
     }
     
-    func loadCurrentUserInfo(_ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void) {
-        guard let uid = auth.currentUserId else {
-            completion(.failure(.currentUserIDNotExist))
-            return
-        }
+    func loadUserInfo(of uid: String?, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void) {
+        guard let userId = (uid == nil) ? auth.currentUserId : uid else { return }
         
-        loadUserInfo(of: uid, completion)
-    }
-    
-    func loadUserInfo(of uid: String, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void) {
-        let refs: [Reference] = [.directory(Keys.Database.usersDir), .directory(uid)]
+        let refs: [Reference] = [.directory(Keys.Database.usersDir), .directory(userId)]
         
         database.fetchAll(under: refs) { (result: Result<[String: Any]?, Error>) in
             switch result {
@@ -41,22 +34,11 @@ final class UserProfileService: UserProfileClient {
                 let username = values?[Keys.Database.Profile.username] as? String ?? ""
                 let profileImageUrl = values?[Keys.Database.Profile.image] as? String ?? ""
                 
-                let userInfo = User(id: uid, email: email, username: username, profileImageUrl: profileImageUrl)
+                let userInfo = User(id: userId, email: email, username: username, imageUrl: profileImageUrl)
                 
                 completion(.success(userInfo))
             case .failure:
                 completion(.failure(.currentUserNotExist))
-            }
-        }
-    }
-    
-    func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) {
-        networking.get(from: url) { (result) in
-            switch result {
-            case .success(let data):
-                completion(.success(data))
-            case .failure:
-                completion(.failure(.profileImageNotExist))
             }
         }
     }
@@ -77,7 +59,7 @@ final class UserProfileService: UserProfileClient {
                     let username = uinfo[Keys.Database.Profile.username] as? String ?? ""
                     let profileImageUrl = uinfo[Keys.Database.Profile.image] as? String ?? ""
 
-                    return User(id: uid, email: email, username: username, profileImageUrl: profileImageUrl)
+                    return User(id: uid, email: email, username: username, imageUrl: profileImageUrl)
                 })
                 completion(.success(users))
             case .failure(let error):
@@ -128,22 +110,62 @@ final class UserProfileService: UserProfileClient {
         }
     }
     
-    func fetchFollowingListOfCurrentUser(_ completion: @escaping (Result<[String], Error>) -> Void) {
-        guard let currentUserId = auth.currentUserId else { return }
-        fetchFollowingList(of: currentUserId, completion)
+    func fetchFollowingCount(of uid: String?, _ completion: @escaping (Int) -> Void) {
+        guard let userId = (uid == nil) ? auth.currentUserId : uid else { return }
+        
+        let refs: [Reference] = [.directory(Keys.Database.followingDir), .directory(userId), .directory(Keys.Database.count)]
+        
+        database.fetchAll(under: refs) { (result: Result<Int?, Error>) in
+            switch result {
+            case .success(let count): completion(count ?? 0)
+            default: return
+            }
+        }
     }
     
-    func fetchFollowingList(of uid: String, _ completion: @escaping (Result<[String], Error>) -> Void) {
-        let refs: [Reference] = [Reference.directory(Keys.Database.followingDir), .directory(uid)]
+    func fetchFollowingList(of uid: String?, _ completion: @escaping (Result<[String], Error>) -> Void) {
+        guard let userId = (uid == nil) ? auth.currentUserId : uid else { return }
+        
+        let refs: [Reference] = [Reference.directory(Keys.Database.followingDir), .directory(userId)]
+        
         database.fetchAll(under: refs) { (result: Result<[String: Int]?, Error>) in
             switch result {
             case .success(let followingUserData):
                 guard let followingUserData = followingUserData else { return }
-                let followingUidList = followingUserData.keys.compactMap { $0 }
+                let followingUidList = followingUserData.keys.map { $0 }
                 completion(.success(followingUidList))
             case .failure(let error):
                 completion(.failure(error))
             }
+        }
+    }
+    
+    func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) {
+        networking.get(from: url) { (result) in
+            switch result {
+            case .success(let data):
+                if let data = data {
+                    completion(.success(data))
+                }
+            case .failure:
+                completion(.failure(.profileImageNotExist))
+            }
+        }
+    }
+}
+
+extension User.Order: HasKey, Sortable {
+    var sortBy: Sort {
+        switch self {
+        case .email(let sort): return sort
+        case .username(let sort): return sort
+        }
+    }
+    
+    var key: String {
+        switch self {
+        case .email: return Keys.Database.Profile.email
+        case .username: return Keys.Database.Profile.username
         }
     }
 }

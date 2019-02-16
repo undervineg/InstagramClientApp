@@ -8,25 +8,6 @@
 
 import Foundation
 
-public protocol LoadPostClient {
-    func fetchAllPosts(_ completion: @escaping (Result<Post, Error>) -> Void)
-    
-    func fetchCurrentUserPostsCount(_ completion: @escaping (Int) -> Void)
-    func fetchCurrentUserPost(_ completion: @escaping (Result<Post, Error>) -> Void)
-    func fetchCurrentUserPostWithOrder(_ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void)
-    func fetchCurrentUserPostWithPagination(startFrom postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
-    
-    func fetchPostsCount(of uid: String, _ completion: @escaping (Int) -> Void)
-    func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, Error>) -> Void)
-    func fetchUserPostWithOrder(of uid: String, _ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void)
-    func fetchUserPostWithPagination(of uid: String, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
-    
-    func downloadPostImage(from url: URL, completion: @escaping (Result<Data, Error>) -> Void)
-    
-    func fetchUserLikes(of postId: String, completion: @escaping (Result<Bool, Error>) -> Void)
-    func changeLikes(of postId: String, to likesState: Bool, completion: @escaping (Error?) -> Void)
-}
-
 public protocol LikesOutput {
     func changeLikesSucceeded(to newLikesState: Bool, at index: Int)
     func saveLikesFailed(_ error: Error)
@@ -77,14 +58,5 @@ final public class HomeFeedUseCase: FeaturePostLoadable {
             self?.likesOutput.changeLikesSucceeded(to: newLikesState, at: index)
         }
     }
-    
-    // MARK: Private Methods
-    private func handleLoadedPost(_ result: Result<Post, HomeFeedUseCase.Error>) {
-        switch result {
-        case .success(let post):
-            self.postOutput.loadPostSucceeded(post)
-        case .failure(let error):
-            postOutput.loadPostFailed(error)
-        }
-    }
+
 }

@@ -9,7 +9,8 @@
 import InstagramEngine
 
 protocol PostView: ErrorPresentable {
-    func displayPosts(_ posts: [Post], hasMoreToLoad: Bool)
+    func displayPostsCount(_ count: Int)
+    func displayPosts(_ posts: [Post?], hasMoreToLoad: Bool)
     func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool)
 }
 
@@ -24,7 +25,11 @@ final class HomeFeedPresenter: LoadPostOutput, LikesOutput {
         self.view = view
     }
     
-    func loadPostSucceeded(_ post: Post) {
+    func loadPostsCountSucceeded(_ count: Int) {
+        view.displayPostsCount(count)
+    }
+    
+    func loadPostSucceeded(_ post: Post?) {
         view.displayPosts([post], hasMoreToLoad: false)
     }
     
@@ -54,12 +59,16 @@ final class HomeFeedPresenter: LoadPostOutput, LikesOutput {
 }
 
 extension WeakRef: PostView where T: PostView {
-    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
-        object?.displayReloadedPosts(posts, hasMoreToLoad: hasMoreToLoad)
+    func displayPosts(_ posts: [Post?], hasMoreToLoad: Bool) {
+        object?.displayPosts(posts, hasMoreToLoad: hasMoreToLoad)
     }
     
-    func displayPosts(_ posts: [Post], hasMoreToLoad: Bool) {
-        object?.displayPosts(posts, hasMoreToLoad: hasMoreToLoad)
+    func displayPostsCount(_ count: Int) {
+        object?.displayPostsCount(count)
+    }
+    
+    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
+        object?.displayReloadedPosts(posts, hasMoreToLoad: hasMoreToLoad)
     }
 }
 

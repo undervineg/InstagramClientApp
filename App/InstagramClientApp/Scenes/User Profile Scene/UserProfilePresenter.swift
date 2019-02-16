@@ -31,8 +31,8 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
         view.displayError(error.localizedDescription)
     }
     
-    func loadPostsCountSucceeded(_ postsCount: Int) {
-        view.displayUserPostsCount(postsCount)
+    func loadPostsCountSucceeded(_ count: Int) {
+        view.displayUserPostsCount(count)
     }
     
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error) {
@@ -47,7 +47,7 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
         view.displayError(error.localizedDescription)
     }
     
-    func loadPostSucceeded(_ post: Post) {
+    func loadPostSucceeded(_ post: Post?) {
         view.displayPosts([post], hasMoreToLoad: false)
     }
     

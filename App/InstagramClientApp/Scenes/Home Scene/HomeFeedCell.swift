@@ -10,9 +10,6 @@ import UIKit
 import InstagramEngine
 
 protocol HomeFeedCellDelegate {
-    func didProfileImageUrlSet(_ cell: HomeFeedCell, _ url: URL, _ completion: @escaping (Data) -> Void)
-    func didPostImageUrlSet(_ cell: HomeFeedCell, _ url: URL, _ completion: @escaping (Data) -> Void)
-    
     func didTapLikeButton(_ cell: HomeFeedCell)
     func didTapCommentsButton(_ cell: HomeFeedCell)
     func didTapSendMeesageButton(_ cell: HomeFeedCell)
@@ -22,29 +19,28 @@ protocol HomeFeedCellDelegate {
 
 final class HomeFeedCell: UICollectionViewCell {
     
+    static let reuseId = "HomeFeedCell"
+    
+    var representedId: UUID?
+    
     var delegate: HomeFeedCellDelegate?
     
-    @IBOutlet weak var profileImageView: LoadableImageView!
+    @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var postImageView: LoadableImageView!
+    @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var likesButton: UIButton!
     
-    var post: Post? {
-        didSet {
-            guard let post = post else { return }
-            usernameLabel.text = post.user.username
-            
-            captionLabel.setCaptionText(username: post.user.username,
-                                             caption: post.caption,
-                                             createdDate: post.creationDate.timeAgoDisplay())
-            
-            postImageView.imageUrlString = post.imageUrl
-            profileImageView.imageUrlString = post.user.profileImageUrl
-            
-            let likesImageName = post.hasLiked ? "like_selected" : "like_unselected"
-            likesButton.setImage(UIImage(named: likesImageName), for: .normal)
-        }
+    func configure(with post: Post?) {
+        guard let post = post else { return }
+        usernameLabel.text = post.user.username
+        
+        captionLabel.setCaptionText(username: post.user.username,
+                                    caption: post.caption,
+                                    createdDate: post.creationDate.timeAgoDisplay())
+        
+        let likesImageName = post.hasLiked ? "like_selected" : "like_unselected"
+        likesButton.setImage(UIImage(named: likesImageName), for: .normal)
     }
     
     override func awakeFromNib() {
@@ -52,9 +48,6 @@ final class HomeFeedCell: UICollectionViewCell {
         
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
         profileImageView.layer.masksToBounds = true
-        
-        profileImageView.delegate = self
-        postImageView.delegate = self
     }
     
     override func prepareForReuse() {
@@ -85,16 +78,6 @@ final class HomeFeedCell: UICollectionViewCell {
     
     @IBAction func handleOptionButton(_ sender: UIButton) {
         delegate?.didTapOptionButton(self)
-    }
-}
-
-extension HomeFeedCell: LoadableImageViewDelegate {
-    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
-        if loadableImageView == profileImageView {
-            delegate?.didProfileImageUrlSet(self, url, completion)
-        } else if loadableImageView == postImageView {
-            delegate?.didPostImageUrlSet(self, url, completion)
-        }
     }
 }
 

@@ -8,17 +8,17 @@
 
 import Foundation
 
-public struct User: Equatable {
+public struct User: Equatable, HasImageUrl {
     public let id: String
     public let email: String
     public let username: String
-    public let profileImageUrl: String
+    public let imageUrl: String
     
-    public init(id: String, email: String, username: String, profileImageUrl: String) {
+    public init(id: String, email: String, username: String, imageUrl: String) {
         self.id = id
         self.email = email
         self.username = username
-        self.profileImageUrl = profileImageUrl
+        self.imageUrl = imageUrl
     }
     
     public enum Order {

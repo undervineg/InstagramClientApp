@@ -95,6 +95,9 @@
 		0891AE1821F78ECB0002A7CB /* UIView+XibExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE1721F78ECB0002A7CB /* UIView+XibExtension.swift */; };
 		08962F2121F0EF3E00A3C5D3 /* LoadableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */; };
 		08962F2321F0F5AE00A3C5D3 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2221F0F5AE00A3C5D3 /* Sort.swift */; };
+		08B5B51922146CB100C4BE6F /* AsyncFetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B5B51822146CB100C4BE6F /* AsyncFetchService.swift */; };
+		08B5B51D22148D8500C4BE6F /* ImageDownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B5B51C22148D8500C4BE6F /* ImageDownloadOperation.swift */; };
+		08B5B51F2217033800C4BE6F /* PostDownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B5B51E2217033700C4BE6F /* PostDownloadOperation.swift */; };
 		08BF0C5721E854EB004CE846 /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C5521E854EB004CE846 /* UserProfileHeader.swift */; };
 		08BF0C5821E854EB004CE846 /* UserProfileHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08BF0C5621E854EB004CE846 /* UserProfileHeader.xib */; };
 		08BF0C6821E8652F004CE846 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */; };
@@ -253,6 +256,9 @@
 		0891AE1721F78ECB0002A7CB /* UIView+XibExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+XibExtension.swift"; sourceTree = "<group>"; };
 		08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableImageView.swift; sourceTree = "<group>"; };
 		08962F2221F0F5AE00A3C5D3 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
+		08B5B51822146CB100C4BE6F /* AsyncFetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFetchService.swift; sourceTree = "<group>"; };
+		08B5B51C22148D8500C4BE6F /* ImageDownloadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloadOperation.swift; sourceTree = "<group>"; };
+		08B5B51E2217033700C4BE6F /* PostDownloadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDownloadOperation.swift; sourceTree = "<group>"; };
 		08BF0C5521E854EB004CE846 /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		08BF0C5621E854EB004CE846 /* UserProfileHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeader.xib; sourceTree = "<group>"; };
 		08BF0C6621E8652F004CE846 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
@@ -523,6 +529,9 @@
 		086E6C7F21DD27840094B808 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				08B5B51822146CB100C4BE6F /* AsyncFetchService.swift */,
+				08B5B51C22148D8500C4BE6F /* ImageDownloadOperation.swift */,
+				08B5B51E2217033700C4BE6F /* PostDownloadOperation.swift */,
 				080C5AAA21FACD0D00AD8D7C /* CommentsService.swift */,
 				084FF62521EF4787000EA933 /* ShareService.swift */,
 				084FF5F221EDD0B7000EA933 /* PhotoService.swift */,
@@ -701,8 +710,8 @@
 			isa = PBXGroup;
 			children = (
 				088907A021F05D3D0045B145 /* Types */,
-				08BF0C6A21E868E7004CE846 /* APIClient.swift */,
 				084FF5F021EDCB76000EA933 /* PhotosWrapper.swift */,
+				08BF0C6A21E868E7004CE846 /* APIClient.swift */,
 				08FBC62E2203563200D75825 /* FirebaseMessagingWrapper.swift */,
 				086E6C7D21DD27380094B808 /* FirebaseStorageWrapper.swift */,
 				08F9847E21E4B2EF00DE6E78 /* FirebaseDatabaseWrapper.swift */,
@@ -1008,6 +1017,7 @@
 				08BF0C6821E8652F004CE846 /* UserProfileViewController.swift in Sources */,
 				08FE157F21F6301D00A58355 /* main.swift in Sources */,
 				08FE157A21F4579700A58355 /* UserProfileRoute.swift in Sources */,
+				08B5B51D22148D8500C4BE6F /* ImageDownloadOperation.swift in Sources */,
 				084FF5AE21EB87C9000EA933 /* LoginModule.swift in Sources */,
 				084FF61A21EF170B000EA933 /* RegisterRouter.swift in Sources */,
 				084FF5E721EDAD26000EA933 /* UserSearchModule.swift in Sources */,
@@ -1040,6 +1050,7 @@
 				0887639621F6C47700F8AE49 /* CameraRoute.swift in Sources */,
 				084FF5B021EB8A32000EA933 /* SplashModule.swift in Sources */,
 				08F984B421E54A4700DE6E78 /* UserProfilePresenter.swift in Sources */,
+				08B5B51F2217033800C4BE6F /* PostDownloadOperation.swift in Sources */,
 				0891AE1821F78ECB0002A7CB /* UIView+XibExtension.swift in Sources */,
 				08F984D021E691B100DE6E78 /* SplashPresenter.swift in Sources */,
 				0887639F21F6C6B600F8AE49 /* CameraRouter.swift in Sources */,
@@ -1066,6 +1077,7 @@
 				085E525D21F176C60029C7BE /* HomeFeedCell.swift in Sources */,
 				080C5A9121F998E600AD8D7C /* UILabel+Extension.swift in Sources */,
 				084FF5F321EDD0B7000EA933 /* PhotoService.swift in Sources */,
+				08B5B51922146CB100C4BE6F /* AsyncFetchService.swift in Sources */,
 				080C5A8621F858FD00AD8D7C /* SlideAnimator.swift in Sources */,
 				086E6C7E21DD27380094B808 /* FirebaseStorageWrapper.swift in Sources */,
 				0891AE0D21F780ED0002A7CB /* CameraCaptureProcessor.swift in Sources */,

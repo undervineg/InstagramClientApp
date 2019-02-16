@@ -9,31 +9,34 @@
 import UIKit
 import InstagramEngine
 
-private let cellId = "cellId"
-
-final class HomeFeedViewController: UICollectionViewController {
-
+final class HomeFeedViewController: UICollectionViewController, UICollectionViewDataSourcePrefetching {
     var loadAllPosts: (() -> Void)?
-    var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
-    var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
+    var loadPostImage: ((NSUUID, Post, ((UIImage?) -> Void)?) -> Void)?
+    var getCachedPostImage: ((NSUUID) -> UIImage?)?
+    var cancelLoadPostImage: ((NSUUID) -> Void)?
+    var loadProfileImage: ((NSUUID, User, ((UIImage?) -> Void)?) -> Void)?
+    var getCachedProfileImage: ((NSUUID) -> UIImage?)?
+    var cancelLoadProfileImage: ((NSUUID) -> Void)?
     var changeLikes: ((String, Bool, Int) -> Void)?
     
     private var router: HomeFeedRouter.Routes?
     
-    private var posts: [Post] = []
-    private var cacheManager: Cacheable?
+    private var posts: [PostObject] = []
     
-    convenience init(router: HomeFeedRouter.Routes, cacheManager: Cacheable) {
+    convenience init(router: HomeFeedRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
         self.router = router
-        self.cacheManager = cacheManager
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureExtraUI()
         setupNotificationsForReloadNewPosts()
+
+        collectionView.isPrefetchingEnabled = true
+        collectionView.prefetchDataSource = self
+        
         loadAllPosts?()
     }
     
@@ -47,18 +50,56 @@ final class HomeFeedViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeFeedCell
-        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeFeedCell.reuseId, for: indexPath) as! HomeFeedCell
+
         if posts.count > 0 {
-            cell.post = posts[indexPath.item]
+            let post = posts[indexPath.item]
+            cell.configure(with: post.data)
+            cell.representedId = post.uuid
+            
+            if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
+                cell.postImageView.image = cachedPostImage
+            } else {
+                loadPostImage?(post.uuid as NSUUID, post.data) { (fetchedImage) in
+                    DispatchQueue.main.async {
+                        guard cell.representedId == post.uuid else { return }
+                        cell.postImageView.image = fetchedImage
+                    }
+                }
+            }
+            
+            if let cachedProfileImage = getCachedProfileImage?(post.uuid as NSUUID) {
+                cell.profileImageView.image = cachedProfileImage
+            } else {
+                loadProfileImage?(post.uuid as NSUUID, post.data.user) { (fetchedImage) in
+                    DispatchQueue.main.async {
+                        guard cell.representedId == post.uuid else { return }
+                        cell.profileImageView.image = fetchedImage
+                    }
+                }
+            }
         }
-        
-        cell.profileImageView.cacheManager = self.cacheManager
-        cell.postImageView.cacheManager = self.cacheManager
         
         cell.delegate = self
         
         return cell
+    }
+    
+    // MARK: Prefetch
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach {
+            guard posts.count - 1 > $0.item else { return }
+            let post = posts[$0.item]
+            loadPostImage?(post.uuid as NSUUID, post.data, nil)
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach {
+            guard posts.count - 1 > $0.item else { return }
+            let post = posts[$0.item]
+            cancelLoadPostImage?(post.uuid as NSUUID)
+        }
     }
     
     // MARK: Actions
@@ -90,13 +131,13 @@ extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
 extension HomeFeedViewController: HomeFeedCellDelegate {
     func didTapLikeButton(_ cell: HomeFeedCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        let currentPost = posts[indexPath.item]
+        let currentPost = posts[indexPath.item].data
         changeLikes?(currentPost.id, !currentPost.hasLiked, indexPath.item)
     }
     
     func didTapCommentsButton(_ cell: HomeFeedCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        router?.openCommentsPage(postId: posts[indexPath.item].id)
+        router?.openCommentsPage(postId: posts[indexPath.item].data.id)
     }
     
     func didTapSendMeesageButton(_ cell: HomeFeedCell) {
@@ -110,46 +151,32 @@ extension HomeFeedViewController: HomeFeedCellDelegate {
     func didTapOptionButton(_ cell: HomeFeedCell) {
         
     }
-    
-    func didProfileImageUrlSet(_ cell: HomeFeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
-        downloadProfileImage?(url) { (result) in
-            switch result {
-            case .success(let imageData) : completion(imageData)
-            default: return
-            }
-        }
-    }
-    
-    func didPostImageUrlSet(_ cell: HomeFeedCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
-        downloadPostImage?(url, completion)
-    }
 }
 
 extension HomeFeedViewController: LikesView {
     func displayLikes(_ hasLiked: Bool, at index: Int) {
-        posts[index].hasLiked = hasLiked
+        posts[index].data.hasLiked = hasLiked
         collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
     }
 }
 
 extension HomeFeedViewController: PostView {
-    func displayPosts(_ loadedPosts: [Post], hasMoreToLoad: Bool) {
-        loadedPosts.forEach { (post) in
+    func displayPosts(_ loadedPosts: [Post?], hasMoreToLoad: Bool) {
+        loadedPosts.forEach { (loadedPost) in
+            guard let loadedPost = loadedPost else { return }
             let index = (posts.count > 0) ?
-                posts.firstIndex { post.creationDate >= $0.creationDate } ?? posts.count : 0
-            
-            posts.insert(post, at: index)
-            
-            DispatchQueue.main.async {
-                self.collectionView.refreshControl?.endRefreshing()
-                self.collectionView.reloadData()
-            }
+                posts.firstIndex { loadedPost.creationDate >= $0.data.creationDate } ?? posts.count : 0
+            posts.insert(PostObject(loadedPost), at: index)
+        }
+
+        DispatchQueue.main.async {
+            self.collectionView.refreshControl?.endRefreshing()
+            self.collectionView.reloadData()
         }
     }
     
-    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
-        //
-    }
+    func displayPostsCount(_ count: Int) { }
+    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) { }
 }
 
 extension HomeFeedViewController {
@@ -166,7 +193,7 @@ extension HomeFeedViewController {
         navigationItem.titleView = UIImageView(image: UIImage(named: "logo2"))
         
         let nib = HomeFeedCell.nibFromClassName()
-        collectionView.register(nib, forCellWithReuseIdentifier: cellId)
+        collectionView.register(nib, forCellWithReuseIdentifier: HomeFeedCell.reuseId)
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)

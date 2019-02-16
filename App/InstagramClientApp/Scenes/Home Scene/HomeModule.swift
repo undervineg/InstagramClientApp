@@ -24,23 +24,34 @@ final class HomeModule {
     
     init() {
         router = HomeFeedRouter()
-        let cacheManager = CacheManager()
-        viewController = HomeFeedViewController(router: router, cacheManager: cacheManager)
+        viewController = HomeFeedViewController(router: router)
+        let networking = URLSessionManager()
         profileService = UserProfileService(firebaseAuth: Auth.self,
                                             firebaseDatabase: Database.self,
-                                            networking: URLSession.shared)
+                                            networking: networking)
         service = PostService(firebaseAuth: Auth.self,
                               firebaseDatabase: Database.self,
-                              networking: URLSession.shared,
+                              networking: networking,
                               profileService: profileService)
         presenter = HomeFeedPresenter(view: WeakRef(viewController))
         useCase = HomeFeedUseCase(postClient: service, output: presenter)
         
+//        viewController.getPostsCount = useCase.getPostsCount
+//        viewController.loadNewPosts = useCase.loadNewPosts
+//        viewController.downloadPostImage = useCase.downloadPostImage
+//        viewController.downloadProfileImage = profileService.downloadProfileImage
         viewController.loadAllPosts = useCase.loadAllPosts
-        viewController.downloadPostImage = useCase.downloadPostImage
-        viewController.downloadProfileImage = profileService.downloadProfileImage
-        
         viewController.changeLikes = useCase.changeLikes
+        
+        let postImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
+        viewController.loadPostImage = postImageFetchService.startFetch
+        viewController.cancelLoadPostImage = postImageFetchService.cancelFetch
+        viewController.getCachedPostImage = postImageFetchService.fetchedData
+        
+        let profileImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
+        viewController.loadProfileImage = profileImageFetchService.startFetch
+        viewController.cancelLoadProfileImage = profileImageFetchService.cancelFetch
+        viewController.getCachedProfileImage = profileImageFetchService.fetchedData
         
         router.viewController = viewController
     }

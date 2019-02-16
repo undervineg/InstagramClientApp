@@ -15,6 +15,8 @@ final class PostService: LoadPostClient {
     private let networking: APIClient
     private let profileService: UserProfileService
     
+    private let serialQueue = DispatchQueue(label: "serialQueue.PostService")
+    
     init(firebaseAuth: FirebaseAuthWrapper.Type,
          firebaseDatabase: FirebaseDatabaseWrapper.Type,
          networking: APIClient,
@@ -25,20 +27,27 @@ final class PostService: LoadPostClient {
         self.profileService = profileService
     }
     
-    func fetchAllPosts(_ completion: @escaping (Result<Post, Error>) -> Void) {
-        fetchCurrentUserPost { (result) in
+    func fetchAllPosts(of uid: String?, _ completion: @escaping (Result<Post?, Error>) -> Void) {
+        self.fetchPost(of: uid) { result in
             switch result {
-            case .success(let post): completion(.success(post))
+            case .success(let post):
+//                self.serialQueue.async {
+                    completion(.success(post))
+//                }
             case .failure(let error): completion(.failure(error))
             }
         }
-        profileService.fetchFollowingListOfCurrentUser { [unowned self] (result) in
+        
+        profileService.fetchFollowingList(of: uid) { [unowned self] (result) in
             switch result {
             case .success(let followingUsers):
-                followingUsers.forEach { (uid) in
-                    self.fetchUserPost(of: uid) { result in
+                followingUsers.forEach { (followingUser) in
+                    self.fetchPost(of: followingUser) { result in
                         switch result {
-                        case .success(let post): completion(.success(post))
+                        case .success(let post):
+//                            self.serialQueue.async {
+                                completion(.success(post))
+//                            }
                         case .failure(let error): completion(.failure(error))
                         }
                     }
@@ -49,78 +58,23 @@ final class PostService: LoadPostClient {
         }
     }
     
-    func fetchCurrentUserPostsCount(_ completion: @escaping (Int) -> Void) {
-        guard let currentUserId = auth.currentUserId else { return }
+    func fetchPostsCount(of uid: String?, _ completion: @escaping (Int) -> Void) {
+        guard let userId = (uid == nil) ? auth.currentUserId : uid else { return }
         
-        fetchPostsCount(of: currentUserId, completion)
-    }
-    
-    func fetchCurrentUserPost(_ completion: @escaping (Result<Post, Error>) -> Void) {
-        guard let currentUserId = auth.currentUserId else {
-            completion(.failure(HomeFeedUseCase.Error.userIDNotExist))
-            return
-        }
-        fetchUserPost(of: currentUserId, completion)
-    }
-    
-    func fetchCurrentUserPostWithOrder(_ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void) {
-        guard let currentUserId = auth.currentUserId else {
-            completion(.failure(HomeFeedUseCase.Error.userIDNotExist))
-            return
-        }
-        fetchUserPostWithOrder(of: currentUserId, order, completion)
-    }
-    
-    func fetchCurrentUserPostWithPagination(startFrom postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
-        guard let currentUserId = auth.currentUserId else {
-            completion(.failure(HomeFeedUseCase.Error.userIDNotExist))
-            return
-        }
-        fetchUserPostWithPagination(of: currentUserId, from: postId, to: limit, with: order, completion: completion)
-    }
-    
-    func fetchPostsCount(of uid: String, _ completion: @escaping (Int) -> Void) {
-        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid), .directory(Keys.Database.Post.count)]
+        let refs: [Reference] = [.directory(Keys.Database.postsDir), .directory(userId), .directory(Keys.Database.count)]
         
         database.fetchAll(under: refs) { (result: Result<Int?, Error>) in
             switch result {
-            case .success(let postsCount): completion(postsCount ?? 0)
+            case .success(let count): completion(count ?? 0)
             default: return
             }
         }
     }
     
-    func fetchUserPost(of uid: String, _ completion: @escaping (Result<Post, Error>) -> Void) {
-        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid), .directory(Keys.Database.Post.contentsDir)]
+    func fetchPostWithPagination(of uid: String?, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
+        guard let userId = (uid == nil) ? auth.currentUserId : uid else { return }
         
-        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any]?, Error>) in
-            switch result {
-            case .success(let values):
-                values?.forEach({ (key, value) in
-                    guard let value = value as? [String: Any] else { return }
-                    self?.generatePost(of: uid, postId: key, value: value, completion: completion)
-                })
-            default: return
-            }
-        }
-    }
-    
-    func fetchUserPostWithOrder(of uid: String, _ order: Post.Order, _ completion: @escaping (Result<Post, Error>) -> Void) {
-        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid), .directory(Keys.Database.Post.contentsDir)]
-        
-        database.fetch(under: refs, orderBy: order) { [weak self] (result: Result<(String, [String: Any]), Error>) in
-            switch result {
-            case .success(let (postId, postValues)):
-                self?.generatePost(of: uid, postId: postId, value: postValues, completion: completion)
-            default: return
-            }
-        }
-    }
-    
-    private let serialQueue = DispatchQueue(label: "serialQueue.PostService")
-    
-    func fetchUserPostWithPagination(of uid: String, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void) {
-        let refs: [Reference] = [Reference.directory(Keys.Database.postsDir), .directory(uid), .directory(Keys.Database.Post.contentsDir)]
+        let refs: [Reference] = [.directory(Keys.Database.postsDir), .directory(userId), .directory(Keys.Database.contents)]
 
         var posts: [Post] = []
         database.fetch(under: refs, from: postId, to: limit, orderBy: order) { (result: Result<([(String, [String: Any])], Bool), Error>) in
@@ -129,7 +83,7 @@ final class PostService: LoadPostClient {
                 self.serialQueue.async {
                     rawValues.forEach { (key, values) in
                         let semaphore = DispatchSemaphore(value: 0)
-                        self.generatePost(of: uid, postId: key, value: values) {
+                        self.generatePost(of: userId, postId: key, value: values) {
                             switch $0 {
                             case .success(let post):
                                 posts.append(post)
@@ -152,7 +106,9 @@ final class PostService: LoadPostClient {
         networking.get(from: url) { (result) in
             switch result {
             case .success(let data):
-                completion(.success(data))
+                if let data = data {
+                    completion(.success(data))
+                }
             case .failure:
                 completion(.failure(HomeFeedUseCase.Error.postImageNotFound))
             }
@@ -161,7 +117,7 @@ final class PostService: LoadPostClient {
     
     func changeLikes(of postId: String, to userNewlyLikes: Bool, completion: @escaping (Error?) -> Void) {
         guard let currentUid = auth.currentUserId else { return }
-        let refs: [Reference] = [Reference.directory(Keys.Database.likesDir), .directory(postId)]
+        let refs: [Reference] = [.directory(Keys.Database.likesDir), .directory(postId)]
         let values = [currentUid: userNewlyLikes ? 1 : 0]
         
         database.update(values, under: refs, completion: completion)
@@ -187,6 +143,32 @@ final class PostService: LoadPostClient {
     
     
     // MARK: Private Methods
+    private func fetchPost(of uid: String?, _ completion: @escaping (Result<Post?, Error>) -> Void) {
+        guard let userId = (uid == nil) ? auth.currentUserId : uid else { return }
+        
+        let refs: [Reference] = [.directory(Keys.Database.postsDir), .directory(userId), .directory(Keys.Database.contents)]
+        
+        database.fetchAll(under: refs) { [weak self] (result: Result<[String: Any]?, Error>) in
+            switch result {
+            case .success(let values):
+                guard let values = values else {
+                    completion(.success(nil))
+                    return
+                }
+                values.forEach({ (key, value) in
+                    guard let value = value as? [String: Any] else { return }
+                    self?.generatePost(of: userId, postId: key, value: value) {
+                        switch $0 {
+                        case .success(let post): completion(.success(post))
+                        case .failure(let error): completion(.failure(error))
+                        }
+                    }
+                })
+            default: return
+            }
+        }
+    }
+    
     private func generatePost(of uid: String, postId: String, value: [String: Any], completion: @escaping (Result<Post, Error>) -> Void) {
         profileService.loadUserInfo(of: uid) { [weak self] (result) in
             switch result {
@@ -194,11 +176,11 @@ final class PostService: LoadPostClient {
                 self?.fetchUserLikes(of: postId) { (result) in
                     switch result {
                     case .success(let hasLiked):
-                        let caption = value[Keys.Database.Post.Contents.caption] as? String ?? ""
-                        let imageUrl = value[Keys.Database.Post.Contents.image] as? String ?? ""
-                        let imageWidth = value[Keys.Database.Post.Contents.imageWidth] as? Float ?? 0.0
-                        let imageHeight = value[Keys.Database.Post.Contents.imageHeight] as? Float ?? 0.0
-                        let creationDate = value[Keys.Database.Post.Contents.creationDate] as? Double ?? 0.0
+                        let caption = value[Keys.Database.Post.caption] as? String ?? ""
+                        let imageUrl = value[Keys.Database.Post.image] as? String ?? ""
+                        let imageWidth = value[Keys.Database.Post.imageWidth] as? Float ?? 0.0
+                        let imageHeight = value[Keys.Database.Post.imageHeight] as? Float ?? 0.0
+                        let creationDate = value[Keys.Database.Post.creationDate] as? Double ?? 0.0
 
                         let post = Post(postId, userInfo, caption, imageUrl, imageWidth, imageHeight, creationDate, hasLiked)
 
@@ -224,8 +206,8 @@ extension Post.Order: HasKey, Sortable {
     
     var key: String {
         switch self {
-        case .creationDate: return Keys.Database.Post.Contents.creationDate
-        case .caption: return Keys.Database.Post.Contents.caption
+        case .creationDate: return Keys.Database.Post.creationDate
+        case .caption: return Keys.Database.Post.caption
         }
     }
 }

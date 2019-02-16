@@ -36,17 +36,17 @@ final class ShareService: SharePhotoClient {
                 if let userId = self.auth.currentUserId {
                     
                     let postValues = [
-                        Keys.Database.Post.Contents.caption: caption,
-                        Keys.Database.Post.Contents.image: url,
-                        Keys.Database.Post.Contents.imageWidth: imageWidth,
-                        Keys.Database.Post.Contents.imageHeight: imageHeight,
-                        Keys.Database.Post.Contents.creationDate: uploadDate
+                        Keys.Database.Post.caption: caption,
+                        Keys.Database.Post.image: url,
+                        Keys.Database.Post.imageWidth: imageWidth,
+                        Keys.Database.Post.imageHeight: imageHeight,
+                        Keys.Database.Post.creationDate: uploadDate
                         ] as [String: Any]
                     
                     let refs: [Reference] = [
                         .directory(Keys.Database.postsDir),
                         .directory(userId),
-                        .directory(Keys.Database.Post.contentsDir),
+                        .directory(Keys.Database.contents),
                         .autoId
                     ]
                     

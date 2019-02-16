@@ -24,15 +24,15 @@ final class UserProfileModule {
     
     init() {
         self.router = UserProfileRouter()
-        let cacheManager = CacheManager()
-        viewController = UserProfileViewController(router: router, cacheManager: cacheManager)
+        let networking = URLSessionManager()
+        viewController = UserProfileViewController(router: router)
         profileService = UserProfileService(firebaseAuth: Auth.self,
                                      firebaseDatabase: Database.self,
-                                     networking: URLSession.shared)
+                                     networking: networking)
         loginService = LoginService(auth: Auth.self)
         postService = PostService(firebaseAuth: Auth.self,
                                   firebaseDatabase: Database.self,
-                                  networking: URLSession.shared,
+                                  networking: networking,
                                   profileService: profileService)
         presenter = UserProfilePresenter(view: WeakRef(viewController))
         useCase = UserProfileUseCase(client: profileService, output: presenter, loginClient: loginService, postClient: postService)
@@ -41,12 +41,20 @@ final class UserProfileModule {
         
         viewController.loadProfile = useCase.loadProfile
         viewController.loadSummaryCounts = useCase.loadSummaryCounts
-        viewController.downloadProfileImage = useCase.downloadProfileImage
         viewController.logout = useCase.logout
         viewController.loadPaginatePosts = (useCase as FeaturePostLoadable).loadPaginatePosts
-        viewController.downloadPostImage = (useCase as FeaturePostLoadable).downloadPostImage
         viewController.follow = useCase.followUser
         viewController.unfollow = useCase.unfollowUser
         viewController.checkIsFollowing = useCase.checkIsFollowing
+        
+        let postImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
+        viewController.loadPostImage = postImageFetchService.startFetch
+        viewController.cancelLoadPostImage = postImageFetchService.cancelFetch
+        viewController.getCachedPostImage = postImageFetchService.fetchedData
+        
+        let profileImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
+        viewController.loadProfileImage = profileImageFetchService.startFetch
+        viewController.cancelLoadProfileImage = profileImageFetchService.cancelFetch
+        viewController.getCachedProfileImage = profileImageFetchService.fetchedData
     }
 }

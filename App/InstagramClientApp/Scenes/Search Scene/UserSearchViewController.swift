@@ -73,7 +73,7 @@ class UserSearchViewController: UICollectionViewController {
             let user = isFiltering() ? filteredUsers[indexPath.item] : users[indexPath.item]
             cell.usernameLabel.text = user.username
             
-            cell.profileImageUrlString = user.profileImageUrl
+            cell.profileImageUrlString = user.imageUrl
             cell.profileImageView.cacheManager = cacheManager
         }
         

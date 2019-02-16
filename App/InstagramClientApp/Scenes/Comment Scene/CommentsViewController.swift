@@ -137,7 +137,7 @@ extension CommentsViewController: UICollectionViewDataSource {
 
         if commentsForPost.count > 0 {
             let comment = commentsForPost[indexPath.item]
-            cell.profileImageView.imageUrlString = comment.user.profileImageUrl
+            cell.profileImageView.imageUrlString = comment.user.imageUrl
             cell.textView.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
         }
 

@@ -17,7 +17,6 @@ protocol UserProfileHeaderDataSource {
 }
 
 protocol UserProfileHeaderDelegate {
-    func didProfileUrlSet(_ userProfileHeaderCell: UserProfileHeader, _ url: URL, _ completion: @escaping (Data) -> Void)
     func didTapEditProfileButton(_ userProfileHeaderCell: UserProfileHeader)
     func didTapFollowButton(_ userProfileHeaderCell: UserProfileHeader)
     func didTapUnfollowButton(_ userProfileHeaderCell: UserProfileHeader)
@@ -28,7 +27,9 @@ protocol UserProfileHeaderDelegate {
 
 final class UserProfileHeader: UICollectionViewCell {
     
-    @IBOutlet weak var profileImageView: LoadableImageView!
+    static let reuseId = "UserProfileHeader"
+    
+    @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var postLabel: UILabel!
     @IBOutlet weak var followerLabel: UILabel!
@@ -73,10 +74,7 @@ final class UserProfileHeader: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         configureSubviews()
-        
-        profileImageView.delegate = self
     }
     
     override func prepareForReuse() {
@@ -132,20 +130,12 @@ final class UserProfileHeader: UICollectionViewCell {
     
 }
 
-extension UserProfileHeader: LoadableImageViewDelegate {
-    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
-        delegate?.didProfileUrlSet(self, url, completion)
-    }
-}
-
 extension UserProfileHeader {
     // MARK: Private Methods
     private func setDataToSubviews() {
         guard let dataSource = dataSource else { return }
         
         usernameLabel.text = dataSource.username(self)
-        
-        profileImageView.imageUrlString = dataSource.userProfileUrl(self)
         
         currentEditFollowButtonType = dataSource.editProfileButtonType(self)
         

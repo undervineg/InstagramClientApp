@@ -10,18 +10,13 @@ import InstagramEngine
 import Foundation
 
 protocol APIClient {
-    func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void)
+    func get(from url: URL, completion: @escaping (Result<Data?, Error>) -> Void)
 }
 
-extension URLSession: APIClient {
-    func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
+final class URLSessionManager: APIClient {
+    func get(from url: URL, completion: @escaping (Result<Data?, Error>) -> Void) {
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
-                completion(.failure(error))
-                return
-            }
-            guard let data = data else {
-                let error = NSError(domain: "Data not exist", code: 0)
                 completion(.failure(error))
                 return
             }

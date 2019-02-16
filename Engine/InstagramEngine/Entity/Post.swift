@@ -8,7 +8,21 @@
 
 import Foundation
 
-public struct Post {
+public protocol HasImageUrl {
+    var imageUrl: String { get }
+}
+
+public final class PostObject {
+    public let uuid: UUID
+    public var data: Post
+    
+    public init(_ data: Post) {
+        self.uuid = UUID()
+        self.data = data
+    }
+}
+
+public struct Post: HasImageUrl {
     public let id: String
     public let user: User
     public let caption: String
@@ -16,6 +30,7 @@ public struct Post {
     public let imageWidth: Float
     public let imageHeight: Float
     public let creationDate: Date
+    
     public var hasLiked: Bool
     
     public init(_ id: String, _ user: User, _ caption: String, _ imageUrl: String, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double, _ hasLiked: Bool) {

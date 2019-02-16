@@ -9,17 +9,14 @@
 import UIKit
 import InstagramEngine
 
-protocol UserProfileGridCellDelegate {
-    func didImageUrlSet(_ userProfileHeaderCell: UserProfileGridCell, _ url: URL, _ completion: @escaping (Data) -> Void)
-}
-
 final class UserProfileGridCell: UICollectionViewCell {
     
-    var delegate: UserProfileGridCellDelegate?
-    var postImageUrl: String? { didSet { imageView.imageUrlString = postImageUrl } }
+    static let reuseId = "UserProfileGridCell"
     
-    let imageView: LoadableImageView = {
-        let iv = LoadableImageView(frame: .zero)
+    var representedId: UUID?
+    
+    let imageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         return iv
@@ -36,8 +33,6 @@ final class UserProfileGridCell: UICollectionViewCell {
             imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
-        
-        imageView.delegate = self
     }
     
     override func prepareForReuse() {
@@ -47,11 +42,5 @@ final class UserProfileGridCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-}
-
-extension UserProfileGridCell: LoadableImageViewDelegate {
-    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
-        delegate?.didImageUrlSet(self, url, completion)
     }
 }

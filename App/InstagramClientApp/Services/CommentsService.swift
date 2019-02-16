@@ -25,7 +25,7 @@ final class CommentsService: CommentsClient {
     func fetchComments(postId: String, with order: Comment.Order, _ completion: @escaping (Result<Comment, Error>) -> Void) {
         let refs: [Reference] = [.directory(Keys.Database.commentsDir), .directory(postId)]
         
-        database.fetch(under: refs, orderBy: order) { (result: Result<(String, [String: Any]), Error>) in
+        database.fetchNew(under: refs, orderBy: order) { (result: Result<(String, [String: Any]), Error>) in
             switch result {
             case .success(let (_, commentValues)):
                 self.generateComment(value: commentValues, completion: completion)

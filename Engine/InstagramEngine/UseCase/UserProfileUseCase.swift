@@ -9,21 +9,21 @@
 import Foundation
 
 public protocol UserProfileClient {
-    func loadCurrentUserInfo(_ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
-    func loadUserInfo(of uid: String, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
-    func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
+    func loadUserInfo(of uid: String?, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
     func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void)
+    
     func followUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void)
     func unfollowUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void)
     func checkIsFollowing(_ uid: String, _ completion: @escaping (Result<Bool, Error>) -> Void)
-    func fetchFollowingListOfCurrentUser(_ completion: @escaping (Result<[String], Error>) -> Void)
-    func fetchFollowingList(of uid: String, _ completion: @escaping (Result<[String], Error>) -> Void)
+    func fetchFollowingList(of uid: String?, _ completion: @escaping (Result<[String], Error>) -> Void)
+    func fetchFollowingCount(of uid: String?, _ completion: @escaping (Int) -> Void)
+    
+    func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
 }
 
 public protocol UserProfileUseCaseOutput {
     func loadUserSucceeded(_ user: User)
     func loadUserFailed(_ error: UserProfileUseCase.Error)
-    func loadPostsCountSucceeded(_ postsCount: Int)
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error)
     func logoutSucceeded()
     func logoutFailed(_ error: UserProfileUseCase.Error)
@@ -79,11 +79,7 @@ final public class UserProfileUseCase: FeaturePostLoadable {
     }
     
     public func loadProfile(of uid: String?) {
-        if let uid = uid {
-            client.loadUserInfo(of: uid, handleLoadedResult)
-        } else {
-            client.loadCurrentUserInfo(handleLoadedResult)
-        }
+        client.loadUserInfo(of: uid, handleLoadedResult)
     }
     
     private func handleLoadedResult(_ result: Result<User, UserProfileUseCase.Error>) {
@@ -96,14 +92,8 @@ final public class UserProfileUseCase: FeaturePostLoadable {
     }
     
     public func loadSummaryCounts(of uid: String?) {
-        if let uid = uid {
-            postClient.fetchPostsCount(of: uid) { [weak self] in
-                self?.output.loadPostsCountSucceeded($0)
-            }
-        } else {
-            postClient.fetchCurrentUserPostsCount { [weak self] in
-                self?.output.loadPostsCountSucceeded($0)
-            }
+        postClient.fetchPostsCount(of: uid) { [weak self] in
+            self?.postOutput.loadPostsCountSucceeded($0)
         }
     }
     

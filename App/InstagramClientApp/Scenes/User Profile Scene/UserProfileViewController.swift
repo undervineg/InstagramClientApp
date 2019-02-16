@@ -9,25 +9,23 @@
 import UIKit
 import InstagramEngine
 
-private let headerId = "headerId"
-private let gridCellId = "gridCellId"
-private let listCellId = "listCellId"
-
 final class UserProfileViewController: UICollectionViewController {
 
     var uid: String? = nil
-
-    private var isCurrentUser: Bool { return uid == nil }
-    private var isFollowing: Bool = false
-    private var isGridView: Bool = true
 
     // MARK: Commands
     var loadProfile: ((String?) -> Void)?
     var loadSummaryCounts: ((String?) -> Void)?
     var loadPaginatePosts: ((String?, Any?, Int, Post.Order, Bool) -> Void)?
     var reloadNewPaginatePosts: ((String?, Any?, Int, Post.Order) -> Void)?
-    var downloadProfileImage: ((URL, @escaping (Data) -> Void) -> Void)?
-    var downloadPostImage: ((URL, @escaping (Data) -> Void) -> Void)?
+    
+    var loadPostImage: ((NSUUID, Post, ((UIImage?) -> Void)?) -> Void)?
+    var getCachedPostImage: ((NSUUID) -> UIImage?)?
+    var cancelLoadPostImage: ((NSUUID) -> Void)?
+    var loadProfileImage: ((NSUUID, User, ((UIImage?) -> Void)?) -> Void)?
+    var getCachedProfileImage: ((NSUUID) -> UIImage?)?
+    var cancelLoadProfileImage: ((NSUUID) -> Void)?
+    
     var logout: (() -> Void)?
     var editProfile: (() -> Void)?
     var follow: ((String) -> Void)?
@@ -39,20 +37,25 @@ final class UserProfileViewController: UICollectionViewController {
 
     // MARK: Model
     private var user: User?
-    private var userPosts: [Post] = []
+    private var userPosts: [PostObject] = []
     private var userPostsCount: Int = 0
 
     private var cacheManager: Cacheable?
     private let pagingCount: Int = 4
     private let order: Post.Order = .creationDate(.descending)
     private var hasMoreToLoad: Bool = true
+    
+    private var isCurrentUser: Bool { return uid == nil }
+    private var isFollowing: Bool = false
+    private var isGridView: Bool = true
+    
+    private let uuidForHeader = NSUUID()
 
     // MARK: Initializer
-    convenience init(router: UserProfileRouter.Routes, cacheManager: Cacheable) {
+    convenience init(router: UserProfileRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
         self.init(collectionViewLayout: layout)
         self.router = router
-        self.cacheManager = cacheManager
     }
 
     // MARK: Life Cycle
@@ -87,43 +90,78 @@ final class UserProfileViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                     withReuseIdentifier: headerId,
+                                                                     withReuseIdentifier: UserProfileHeader.reuseId,
                                                                      for: indexPath) as! UserProfileHeader
         headerView.dataSource = self
         headerView.delegate = self
 
-        headerView.profileImageView.cacheManager = self.cacheManager
-
+        if let cachedProfileImage = getCachedProfileImage?(uuidForHeader) {
+            headerView.profileImageView.image = cachedProfileImage
+        } else if let user = user {
+            loadProfileImage?(uuidForHeader, user) { (fetchedImage) in
+                DispatchQueue.main.async {
+                    headerView.profileImageView.image = fetchedImage
+                }
+            }
+        }
+        
         return headerView
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellId = isGridView ? gridCellId : listCellId
+        let cellId = isGridView ? UserProfileGridCell.reuseId : HomeFeedCell.reuseId
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
 
         // Request more data when it's last cell currently
         let isLastCell = indexPath.item == userPosts.count - 1
         if isLastCell && hasMoreToLoad {
-            let nextStartingPost = userPosts.last?.creationDate.timeIntervalSince1970
+            let nextStartingPost = userPosts.last?.data.creationDate.timeIntervalSince1970
             loadPaginatePosts?(uid, nextStartingPost, pagingCount, order, false)
         }
+        
+        if userPosts.count > 0 {
+            let post = userPosts[indexPath.item]
 
-        if let cell = cell as? UserProfileGridCell {
-            cell.delegate = self
-
-            if userPosts.count > 0 {
-                cell.postImageUrl = userPosts[indexPath.item].imageUrl
-                cell.imageView.cacheManager = self.cacheManager
+            if let cell = cell as? UserProfileGridCell {
+                cell.representedId = post.uuid
+                
+                if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
+                    cell.imageView.image = cachedPostImage
+                } else {
+                    loadPostImage?(post.uuid as NSUUID, post.data) { (fetchedImage) in
+                        DispatchQueue.main.async {
+                            guard cell.representedId == post.uuid else { return }
+                            cell.imageView.image = fetchedImage
+                        }
+                    }
+                }
             }
-        }
 
-        if let cell = cell as? HomeFeedCell {
-//            cell.delegate = self
-
-            if userPosts.count > 0 {
-                cell.post = userPosts[indexPath.item]
-                cell.profileImageView.cacheManager = self.cacheManager
-                cell.postImageView.cacheManager = self.cacheManager
+            if let cell = cell as? HomeFeedCell {
+                cell.configure(with: post.data)
+                cell.representedId = post.uuid
+                
+                if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
+                    cell.postImageView.image = cachedPostImage
+                } else {
+                    loadPostImage?(post.uuid as NSUUID, post.data) { (fetchedImage) in
+                        DispatchQueue.main.async {
+                            guard cell.representedId == post.uuid else { return }
+                            cell.postImageView.image = fetchedImage
+                        }
+                    }
+                }
+                
+                if let cachedProfileImage = getCachedProfileImage?(post.uuid as NSUUID) {
+                    cell.profileImageView.image = cachedProfileImage
+                } else {
+                    loadProfileImage?(post.uuid as NSUUID, post.data.user) { (fetchedImage) in
+                        DispatchQueue.main.async {
+                            guard cell.representedId == post.uuid else { return }
+                            cell.profileImageView.image = fetchedImage
+                        }
+                    }
+                }
             }
         }
 
@@ -132,7 +170,7 @@ final class UserProfileViewController: UICollectionViewController {
 
     // MARK: Actions
     @objc private func refresh(_ sender: UIRefreshControl) {
-        let firstPost = userPosts.first?.creationDate.timeIntervalSince1970
+        let firstPost = userPosts.first?.data.creationDate.timeIntervalSince1970
         loadPaginatePosts?(uid, firstPost, pagingCount, order.switchSortingForPagination(), true)
         DispatchQueue.main.asyncAfter(deadline: .init(uptimeNanoseconds: 1000)) {
             self.loadSummaryCounts?(self.uid)
@@ -179,16 +217,10 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension UserProfileViewController: UserProfileGridCellDelegate {
-    func didImageUrlSet(_ userProfileHeaderCell: UserProfileGridCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
-        downloadPostImage?(url, completion)
-    }
-}
-
 extension UserProfileViewController: UserProfileHeaderDelegate {
-    func didProfileUrlSet(_ userProfileHeaderCell: UserProfileHeader, _ url: URL, _ completion: @escaping (Data) -> Void) {
-        downloadProfileImage?(url, completion)
-    }
+//    func didProfileUrlSet(_ userProfileHeaderCell: UserProfileHeader, _ url: URL, _ completion: @escaping (Data) -> Void) {
+//        downloadProfileImage?(url, completion)
+//    }
 
     func didTapEditProfileButton(_ userProfileHeaderCell: UserProfileHeader) {
         editProfile?()
@@ -225,7 +257,7 @@ extension UserProfileViewController: UserProfileHeaderDataSource {
     }
 
     func userProfileUrl(_ userProfileHeaderCell: UserProfileHeader) -> String? {
-        return user?.profileImageUrl
+        return user?.imageUrl
     }
 
     func summaryCounts(_ userProfileHeaderCell: UserProfileHeader, _ labelType: UserProfileHeader.SummaryLabelType) -> Int {
@@ -252,17 +284,25 @@ extension UserProfileViewController: UserProfileHeaderDataSource {
 extension UserProfileViewController: UserProfileView, PostView {
     // MARK: Post View
     func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
-        userPosts.insert(contentsOf: posts, at: 0)
+        posts.forEach {
+            userPosts.insert(PostObject($0), at: 0)
+        }
         self.hasMoreToLoad = hasMoreToLoad
         
         collectionView.reloadData()
     }
-
-    func displayPosts(_ posts: [Post], hasMoreToLoad: Bool) {
-        userPosts.append(contentsOf: posts)
+    
+    func displayPosts(_ posts: [Post?], hasMoreToLoad: Bool) {
+        posts.compactMap { $0 }.forEach {
+            userPosts.append(PostObject($0))
+        }
         self.hasMoreToLoad = hasMoreToLoad
-
+        
         collectionView.reloadData()
+    }
+    
+    func displayPostsCount(_ count: Int) {
+        
     }
 
     // MARK: User Profile View
@@ -315,9 +355,8 @@ extension UserProfileViewController {
         let profileHeaderCellNib = UserProfileHeader.nibFromClassName()
         collectionView.register(profileHeaderCellNib,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: headerId)
-
-        collectionView.register(UserProfileGridCell.self, forCellWithReuseIdentifier: gridCellId)
-        collectionView.register(HomeFeedCell.nibFromClassName(), forCellWithReuseIdentifier: listCellId)
+                                withReuseIdentifier: UserProfileHeader.reuseId)
+        collectionView.register(UserProfileGridCell.self, forCellWithReuseIdentifier: UserProfileGridCell.reuseId)
+        collectionView.register(HomeFeedCell.nibFromClassName(), forCellWithReuseIdentifier: HomeFeedCell.reuseId)
     }
 }

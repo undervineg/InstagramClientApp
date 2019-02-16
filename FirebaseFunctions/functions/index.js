@@ -12,8 +12,8 @@ exports.observePostsCreated = functions.database.ref('/posts/{uid}/contents/{pos
   console.log('Post added by user:' + uid)
 
   return admin.database().ref('/posts/' + uid + '/count').once('value', snapshot => {
-    var newCountOfPosts = snapshot.val() + 1;
-    return admin.database().ref('/posts/' + uid).update({ count: newCountOfPosts });
+    var newCount = snapshot.val() + 1;
+    return admin.database().ref('/posts/' + uid).update({ count: newCount });
   })
 })
 
@@ -22,12 +22,28 @@ exports.observePostsDeleted = functions.database.ref('/posts/{uid}/contents/{pos
   console.log('Post added by user:' + uid)
 
   return admin.database().ref('/posts/' + uid + '/count').once('value', snapshot => {
-    var newCountOfPosts = snapshot.val() - 1;
-    return admin.database().ref('/posts/' + uid).update({ count: newCountOfPosts });
+    var newCount = snapshot.val() - 1;
+    return admin.database().ref('/posts/' + uid).update({ count: newCount });
   })
 })
 
-exports.observeFollowing = functions.database.ref('/following/{uid}/contents/{followingId}').onCreate((snapshot, context) => {
+exports.observeFollow = functions.database.ref('/following/{uid}/{followingId}').onCreate((snapshot, context) => {
+  var uid = context.params.uid
+  return admin.database().ref('/following/' + uid + '/count').once('value', snapshot => {
+    var newCount = snapshot.val() + 1;
+    return admin.database().ref('/following/' + uid).update({ count: newCount });
+  })
+})
+
+exports.observeUnfollow = functions.database.ref('/following/{uid}/{followingId}').onDelete((snapshot, context) => {
+  var uid = context.params.uid
+  return admin.database().ref('/following/' + uid + '/count').once('value', snapshot => {
+    var newCount = snapshot.val() - 1;
+    return admin.database().ref('/following/' + uid).update({ count: newCount });
+  })
+})
+
+exports.observeFollowing = functions.database.ref('/following/{uid}/{followingId}').onCreate((snapshot, context) => {
      var uid = context.params.uid
      var followingId = context.params.followingId
 
@@ -58,8 +74,7 @@ exports.observeFollowing = functions.database.ref('/following/{uid}/contents/{fo
            .catch((error) => {
              console.log('Error sending message:', error);
            });
-
-       })
-
      })
-  })
+
+   })
+})
