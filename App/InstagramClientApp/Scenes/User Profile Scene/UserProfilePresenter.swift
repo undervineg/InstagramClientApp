@@ -11,7 +11,6 @@ import Foundation
 
 protocol UserProfileView: ErrorPresentable {
     func displayUserInfo(_ user: User)
-    func displayUserPostsCount(_ count: Int)
     func onLogoutSucceeded()
     func toggleFollowButton(_ isFollowing: Bool)
 }
@@ -32,7 +31,7 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
     }
     
     func loadPostsCountSucceeded(_ count: Int) {
-        view.displayUserPostsCount(count)
+        view.displayPostsCount(count)
     }
     
     func downloadProfileImageFailed(_ error: UserProfileUseCase.Error) {
@@ -85,10 +84,6 @@ final class UserProfilePresenter: UserProfileUseCaseOutput, LoadPostOutput {
 }
 
 extension WeakRef: UserProfileView where T: UserProfileView {
-    func displayUserPostsCount(_ count: Int) {
-        object?.displayUserPostsCount(count)
-    }
-    
     func toggleFollowButton(_ isFollowing: Bool) {
         object?.toggleFollowButton(isFollowing)
     }

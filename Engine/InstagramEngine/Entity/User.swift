@@ -8,6 +8,16 @@
 
 import Foundation
 
+public final class UserObject {
+    public let uuid: UUID
+    public var data: User
+    
+    public init(_ data: User) {
+        self.uuid = UUID()
+        self.data = data
+    }
+}
+
 public struct User: Equatable, HasImageUrl {
     public let id: String
     public let email: String

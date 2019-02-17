@@ -9,15 +9,13 @@
 import UIKit
 import InstagramEngine
 
-final class UserProfileViewController: UICollectionViewController {
-
+final class UserProfileViewController: UICollectionViewController, UICollectionViewDataSourcePrefetching {
     var uid: String? = nil
 
     // MARK: Commands
     var loadProfile: ((String?) -> Void)?
     var loadSummaryCounts: ((String?) -> Void)?
     var loadPaginatePosts: ((String?, Any?, Int, Post.Order, Bool) -> Void)?
-    var reloadNewPaginatePosts: ((String?, Any?, Int, Post.Order) -> Void)?
     
     var loadPostImage: ((NSUUID, Post, ((UIImage?) -> Void)?) -> Void)?
     var getCachedPostImage: ((NSUUID) -> UIImage?)?
@@ -30,7 +28,7 @@ final class UserProfileViewController: UICollectionViewController {
     var editProfile: (() -> Void)?
     var follow: ((String) -> Void)?
     var unfollow: ((String) -> Void)?
-    var checkIsFollowing: ((String) -> Void)?
+    var checkCurrentUserIsFollowing: ((String) -> Void)?
 
     // MARK: Router
     private var router: UserProfileRouter.Routes?
@@ -40,8 +38,7 @@ final class UserProfileViewController: UICollectionViewController {
     private var userPosts: [PostObject] = []
     private var userPostsCount: Int = 0
 
-    private var cacheManager: Cacheable?
-    private let pagingCount: Int = 4
+    private let pagingCount: Int = 20
     private let order: Post.Order = .creationDate(.descending)
     private var hasMoreToLoad: Bool = true
     
@@ -66,6 +63,8 @@ final class UserProfileViewController: UICollectionViewController {
 
         registerCollectionViewCells()
         setupNotificationsForReloadNewPosts()
+        collectionView.isPrefetchingEnabled = true
+        collectionView.prefetchDataSource = self
 
         if isCurrentUser {
             configureLogoutButton()
@@ -73,9 +72,27 @@ final class UserProfileViewController: UICollectionViewController {
 
         loadProfile?(uid)
         loadSummaryCounts?(uid)
+        loadPaginatePosts?(uid, nil, pagingCount, order, false)
 
         if let uid = uid {
-            checkIsFollowing?(uid)
+            checkCurrentUserIsFollowing?(uid)
+        }
+    }
+    
+    // MARK: Prefetching
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach {
+            guard userPosts.count - 1 > $0.item else { return }
+            let post = userPosts[$0.item]
+            loadPostImage?(post.uuid as NSUUID, post.data, nil)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach {
+            guard userPosts.count - 1 > $0.item else { return }
+            let post = userPosts[$0.item]
+            cancelLoadPostImage?(post.uuid as NSUUID)
         }
     }
 
@@ -86,26 +103,6 @@ final class UserProfileViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return userPosts.count
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                     withReuseIdentifier: UserProfileHeader.reuseId,
-                                                                     for: indexPath) as! UserProfileHeader
-        headerView.dataSource = self
-        headerView.delegate = self
-
-        if let cachedProfileImage = getCachedProfileImage?(uuidForHeader) {
-            headerView.profileImageView.image = cachedProfileImage
-        } else if let user = user {
-            loadProfileImage?(uuidForHeader, user) { (fetchedImage) in
-                DispatchQueue.main.async {
-                    headerView.profileImageView.image = fetchedImage
-                }
-            }
-        }
-        
-        return headerView
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -167,12 +164,32 @@ final class UserProfileViewController: UICollectionViewController {
 
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                         withReuseIdentifier: UserProfileHeader.reuseId,
+                                                                         for: indexPath) as! UserProfileHeader
+        headerView.dataSource = self
+        headerView.delegate = self
+        
+        if let cachedProfileImage = getCachedProfileImage?(uuidForHeader) {
+            headerView.profileImageView.image = cachedProfileImage
+        } else if let user = user {
+            loadProfileImage?(uuidForHeader, user) { (fetchedImage) in
+                DispatchQueue.main.async {
+                    headerView.profileImageView.image = fetchedImage
+                }
+            }
+        }
+        
+        return headerView
+    }
 
     // MARK: Actions
     @objc private func refresh(_ sender: UIRefreshControl) {
         let firstPost = userPosts.first?.data.creationDate.timeIntervalSince1970
         loadPaginatePosts?(uid, firstPost, pagingCount, order.switchSortingForPagination(), true)
-        DispatchQueue.main.asyncAfter(deadline: .init(uptimeNanoseconds: 1000)) {
+        DispatchQueue.main.asyncAfter(deadline: .init(uptimeNanoseconds: 500)) {
             self.loadSummaryCounts?(self.uid)
         }
     }
@@ -186,6 +203,49 @@ final class UserProfileViewController: UICollectionViewController {
         actionSheet.addAction(logoutAction)
         actionSheet.addAction(cancleAction)
         present(actionSheet, animated: true, completion: nil)
+    }
+}
+
+extension UserProfileViewController: UserProfileView, PostView {
+    // MARK: Post View
+    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
+        posts.forEach {
+            userPosts.insert(PostObject($0), at: 0)
+        }
+        self.hasMoreToLoad = hasMoreToLoad
+        
+        collectionView.reloadData()
+    }
+    
+    func displayPosts(_ posts: [Post?], hasMoreToLoad: Bool) {
+        posts.compactMap { $0 }.forEach {
+            userPosts.append(PostObject($0))
+        }
+        self.hasMoreToLoad = hasMoreToLoad
+        
+        collectionView.reloadData()
+    }
+    
+    func displayPostsCount(_ count: Int) {
+        userPostsCount = count
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    // MARK: User Profile View
+    func displayUserInfo(_ userInfo: User) {
+        user = userInfo
+        setTitleOnNavigationBar()
+        collectionView.reloadData()
+    }
+    
+    func toggleFollowButton(_ isFollowing: Bool) {
+        guard !isCurrentUser else { return }
+        self.isFollowing = isFollowing
+        collectionView.reloadData()
+    }
+    
+    func onLogoutSucceeded() {
+        router?.openLoginPage()
     }
 }
 
@@ -218,10 +278,6 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension UserProfileViewController: UserProfileHeaderDelegate {
-//    func didProfileUrlSet(_ userProfileHeaderCell: UserProfileHeader, _ url: URL, _ completion: @escaping (Data) -> Void) {
-//        downloadProfileImage?(url, completion)
-//    }
-
     func didTapEditProfileButton(_ userProfileHeaderCell: UserProfileHeader) {
         editProfile?()
     }
@@ -278,56 +334,6 @@ extension UserProfileViewController: UserProfileHeaderDataSource {
         }
 
         return buttonType
-    }
-}
-
-extension UserProfileViewController: UserProfileView, PostView {
-    // MARK: Post View
-    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
-        posts.forEach {
-            userPosts.insert(PostObject($0), at: 0)
-        }
-        self.hasMoreToLoad = hasMoreToLoad
-        
-        collectionView.reloadData()
-    }
-    
-    func displayPosts(_ posts: [Post?], hasMoreToLoad: Bool) {
-        posts.compactMap { $0 }.forEach {
-            userPosts.append(PostObject($0))
-        }
-        self.hasMoreToLoad = hasMoreToLoad
-        
-        collectionView.reloadData()
-    }
-    
-    func displayPostsCount(_ count: Int) {
-        
-    }
-
-    // MARK: User Profile View
-    func toggleFollowButton(_ isFollowing: Bool) {
-        guard !isCurrentUser else { return }
-        self.isFollowing = isFollowing
-        collectionView.reloadData()
-    }
-    
-    func displayUserInfo(_ userInfo: User) {
-        user = userInfo
-        setTitleOnNavigationBar()
-        collectionView.reloadData()
-        
-        if userPosts.isEmpty {
-            loadPaginatePosts?(uid, nil, pagingCount, order, false)
-        }
-    }
-    
-    func displayUserPostsCount(_ count: Int) {
-        userPostsCount = count
-    }
-
-    func onLogoutSucceeded() {
-        router?.openLoginPage()
     }
 }
 

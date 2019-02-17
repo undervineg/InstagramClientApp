@@ -45,7 +45,7 @@ final class UserProfileModule {
         viewController.loadPaginatePosts = (useCase as FeaturePostLoadable).loadPaginatePosts
         viewController.follow = useCase.followUser
         viewController.unfollow = useCase.unfollowUser
-        viewController.checkIsFollowing = useCase.checkIsFollowing
+        viewController.checkCurrentUserIsFollowing = useCase.checkIsFollowing
         
         let postImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
         viewController.loadPostImage = postImageFetchService.startFetch

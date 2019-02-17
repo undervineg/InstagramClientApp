@@ -22,18 +22,23 @@ final class UserSearchModule {
     }
     
     init() {
+        let networking = URLSessionManager()
         router = UserSearchRouter()
-        let cacheManager = CacheManager()
-        viewController = UserSearchViewController(router: router, cacheManager: cacheManager)
+        viewController = UserSearchViewController(router: router)
         service = UserProfileService(firebaseAuth: Auth.self,
                                      firebaseDatabase: Database.self,
-                                     networking: URLSessionManager())
+                                     networking: networking)
         presenter = UserSearchPresenter(view: WeakRef(viewController))
         useCase = SearchUseCase(client: service, output: presenter)
         
         router.viewController = viewController
         
         viewController.fetchAllUsers = useCase.fetchAllUsers
-        viewController.downloadProfileImage = service.downloadProfileImage
+        
+        let profileImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self,
+                                                         networking: networking)
+        viewController.loadProfileImage = profileImageFetchService.startFetch
+        viewController.cancelLoadProfileImage = profileImageFetchService.cancelFetch
+        viewController.getCachedProfileImage = profileImageFetchService.fetchedData
     }
 }

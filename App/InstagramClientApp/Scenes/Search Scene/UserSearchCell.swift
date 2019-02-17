@@ -13,12 +13,14 @@ protocol UserSearchCellDelegate {
 }
 
 final class UserSearchCell: UICollectionViewCell {
+    
+    static let reuseId = "UserSearchCell"
 
     @IBOutlet weak var profileImageView: LoadableImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     
     var delegate: UserSearchCellDelegate?
-    var profileImageUrlString: String? { didSet { profileImageView.imageUrlString = profileImageUrlString } }
+//    var profileImageUrlString: String? { didSet { profileImageView.imageUrlString = profileImageUrlString } }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,7 +28,7 @@ final class UserSearchCell: UICollectionViewCell {
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
         profileImageView.layer.masksToBounds = true
         
-        profileImageView.delegate = self
+//        profileImageView.delegate = self
     }
 
     override func prepareForReuse() {
@@ -36,8 +38,8 @@ final class UserSearchCell: UICollectionViewCell {
     }
 }
 
-extension UserSearchCell: LoadableImageViewDelegate {
-    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
-        delegate?.didProfileUrlSet(self, url, completion)
-    }
-}
+//extension UserSearchCell: LoadableImageViewDelegate {
+//    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
+//        delegate?.didProfileUrlSet(self, url, completion)
+//    }
+//}
