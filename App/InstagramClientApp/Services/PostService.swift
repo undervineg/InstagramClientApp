@@ -37,7 +37,9 @@ final class PostService: LoadPostClient {
             case .failure(let error): completion(.failure(error))
             }
         }
-        
+    }
+    
+    func fetchFollowerPosts(of uid: String?, _ completion: @escaping (Result<Post?, Error>) -> Void) {
         profileService.fetchFollowingList(of: uid) { [unowned self] (result) in
             switch result {
             case .success(let followingUsers):
@@ -45,9 +47,9 @@ final class PostService: LoadPostClient {
                     self.fetchPost(of: followingUser) { result in
                         switch result {
                         case .success(let post):
-//                            self.serialQueue.async {
-                                completion(.success(post))
-//                            }
+                            //                            self.serialQueue.async {
+                            completion(.success(post))
+                        //                            }
                         case .failure(let error): completion(.failure(error))
                         }
                     }
@@ -82,19 +84,19 @@ final class PostService: LoadPostClient {
             case .success(let (rawValues, isPagingFinished)):
                 self.serialQueue.async {
                     rawValues.forEach { (key, values) in
-                        let semaphore = DispatchSemaphore(value: 0)
+//                        let semaphore = DispatchSemaphore(value: 0)
                         self.generatePost(of: userId, postId: key, value: values) {
                             switch $0 {
                             case .success(let post):
                                 posts.append(post)
-                                semaphore.signal()
+//                                semaphore.signal()
                                 if posts.count == rawValues.count {
                                     completion(.success((posts, isPagingFinished)))
                                 }
                             case .failure(let error): completion(.failure(error))
                             }
                         }
-                        semaphore.wait()
+//                        semaphore.wait()
                     }
                 }
             case .failure(let error): completion(.failure(error))

@@ -41,6 +41,7 @@ final class HomeModule {
 //        viewController.downloadPostImage = useCase.downloadPostImage
 //        viewController.downloadProfileImage = profileService.downloadProfileImage
         viewController.loadAllPosts = useCase.loadAllPosts
+        viewController.loadFollowerPosts = useCase.loadFollowingPosts
         viewController.changeLikes = useCase.changeLikes
         
         let postImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)

@@ -11,6 +11,7 @@ import Foundation
 public protocol LoadPostClient {
     func fetchPostsCount(of uid: String?, _ completion: @escaping (Int) -> Void)
     func fetchAllPosts(of uid: String?, _ completion: @escaping (Result<Post?, Error>) -> Void)
+    func fetchFollowerPosts(of uid: String?, _ completion: @escaping (Result<Post?, Error>) -> Void)
     func fetchPostWithPagination(of uid: String?, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
     
     func fetchUserLikes(of postId: String, completion: @escaping (Result<Bool, Error>) -> Void)
@@ -22,7 +23,8 @@ public protocol FeaturePostLoadable: class {
     var postOutput: LoadPostOutput { get }
     
     func getPostsCount(of uid: String?)
-    func loadAllPosts()
+    func loadAllPosts(of uid: String?)
+    func loadFollowingPosts(of uid: String?)
     func loadPaginatePosts(of uid: String?, from postId: Any?, limit: Int, orderBy order: Post.Order, isReloading: Bool)
 }
 
@@ -40,8 +42,19 @@ extension FeaturePostLoadable {
         }
     }
     
-    public func loadAllPosts() {
-        postClient.fetchAllPosts(of: nil) { [weak self] in
+    public func loadAllPosts(of uid: String?) {
+        postClient.fetchAllPosts(of: uid) { [weak self] in
+            switch $0 {
+            case .success(let post):
+                self?.postOutput.loadPostSucceeded(post)
+            case .failure(let error):
+                self?.postOutput.loadPostFailed(error)
+            }
+        }
+    }
+    
+    public func loadFollowingPosts(of uid: String?) {
+        postClient.fetchFollowerPosts(of: uid) { [weak self] in
             switch $0 {
             case .success(let post):
                 self?.postOutput.loadPostSucceeded(post)

@@ -10,7 +10,8 @@ import UIKit
 import InstagramEngine
 
 final class HomeFeedViewController: UICollectionViewController, UICollectionViewDataSourcePrefetching {
-    var loadAllPosts: (() -> Void)?
+    var loadAllPosts: ((String?) -> Void)?
+    var loadFollowerPosts: ((String?) -> Void)?
     var loadPostImage: ((NSUUID, Post, ((UIImage?) -> Void)?) -> Void)?
     var getCachedPostImage: ((NSUUID) -> UIImage?)?
     var cancelLoadPostImage: ((NSUUID) -> Void)?
@@ -37,7 +38,8 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
         collectionView.isPrefetchingEnabled = true
         collectionView.prefetchDataSource = self
         
-        loadAllPosts?()
+        loadAllPosts?(nil)
+        loadFollowerPosts?(nil)
     }
     
     // MARK: UICollectionViewDataSource
@@ -105,7 +107,8 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
     // MARK: Actions
     @objc private func refresh(_ sender: UIRefreshControl) {
         posts.removeAll()
-        loadAllPosts?()
+        loadAllPosts?(nil)
+        loadFollowerPosts?(nil)
     }
     
     @objc private func openCamera(_ sender: UIBarButtonItem) {
