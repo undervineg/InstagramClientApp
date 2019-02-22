@@ -152,9 +152,3 @@ extension UIButton {
         self.isEnabled = isAllTextFieldsValid
     }
 }
-
-extension Array where Element: UITextField {
-    func isAllValid() -> Bool {
-        return self.allSatisfy { $0.text?.count ?? 0 > 0 }
-    }
-}

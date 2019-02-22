@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CommentInputAccessaryViewDelegate {
-    func didSubmitButtonTapped(_ inputView: CommentInputAccessaryView, with text: String)
+    func didSubmitButtonTapped(_ inputView: CommentInputAccessaryView, with text: String?)
 }
 
 final class CommentInputAccessaryView: UIView {
@@ -60,9 +60,9 @@ final class CommentInputAccessaryView: UIView {
     
     // MARK: Actions
     @objc private func handleSubmit(_ sender: UIButton) {
-        guard let commentText = commentTextView.text, commentText.count > 0 else { return }
-        
-        delegate?.didSubmitButtonTapped(self, with: commentText)
+        guard let commentText = commentTextView.trimmedText() else { return }
+        let comment = commentText.count > 0 ? commentText : nil
+        delegate?.didSubmitButtonTapped(self, with: comment)
     }
     
     // MARK: Private methods

@@ -73,7 +73,6 @@ final class CommentsViewController: UIViewController {
 
     // MARK: Actions
     @objc private func keyboardWillChange(_ sender: NSNotification) {
-//        guard commentsForPost.count > 0 else { return }
         guard
             let keyboardBeginFrame = (sender.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
             let keyboardEndFrame = (sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
@@ -85,15 +84,6 @@ final class CommentsViewController: UIViewController {
                 collectionView.contentInset.top += lastCellAttributes.frame.height * 2.5
                 collectionView.contentOffset.y += lastCellAttributes.frame.height
             }
-//            if collectionView.visibleCells.count < commentsForPost.count {
-//                collectionViewTopAnchor?.constant = -keyboardEndFrame.height
-//                let lastCell = IndexPath(item: commentsForPost.count - 1, section: 0)
-//                if let lastCellAttributes = collectionView.layoutAttributesForItem(at: lastCell) {
-//                    collectionView.contentInset.top += lastCellAttributes.frame.height * 2.5
-//                    collectionView.contentOffset.y += lastCellAttributes.frame.height
-//                }
-//            }
-//            containerViewBottomAnchor?.constant = -keyboardEndFrame.height
         case UIResponder.keyboardWillHideNotification:
             changeUIForKeyboard(0, 0) { (lastCellAttributes) in
                 collectionView.contentInset.top = 0
@@ -101,17 +91,6 @@ final class CommentsViewController: UIViewController {
                     collectionView.contentOffset.y -= lastCellAttributes.frame.height
                 }
             }
-//            if collectionView.visibleCells.count < commentsForPost.count {
-//                collectionViewTopAnchor?.constant = 0
-//                let lastCell = IndexPath(item: commentsForPost.count - 1, section: 0)
-//                if let lastCellAttributes = collectionView.layoutAttributesForItem(at: lastCell) {
-//                    collectionView.contentInset.top = 0
-//                    if collectionView.contentOffset.y > -lastCellAttributes.frame.height {
-//                        collectionView.contentOffset.y -= lastCellAttributes.frame.height
-//                    }
-//                }
-//            }
-//            containerViewBottomAnchor?.constant = 0
         default: break
         }
         
@@ -185,9 +164,13 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension CommentsViewController: CommentInputAccessaryViewDelegate {
-    func didSubmitButtonTapped(_ inputView: CommentInputAccessaryView, with text: String) {
+    func didSubmitButtonTapped(_ inputView: CommentInputAccessaryView, with text: String?) {
         guard let currentPostId = currentPostId else { return }
-
+        guard let text = text else {
+            inputView.clearTextView()
+            return
+        }
+        
         let submitDate = Date().timeIntervalSince1970
         submitComment?(text, submitDate, currentPostId)
 
