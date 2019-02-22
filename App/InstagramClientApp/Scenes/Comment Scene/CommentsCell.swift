@@ -7,23 +7,33 @@
 //
 
 import UIKit
+import InstagramEngine
 
-protocol CommentsCellDelegate {
-    func didProfileImageUrlSet(_ cell: CommentsCell, _ url: URL, _ completion: @escaping (Data) -> Void)
-}
+//protocol CommentsCellDelegate {
+//    func didProfileImageUrlSet(_ cell: CommentsCell, _ url: URL, _ completion: @escaping (Data) -> Void)
+//}
 
 final class CommentsCell: UICollectionViewCell {
-    @IBOutlet weak var profileImageView: LoadableImageView!
+    static let reuseId = "CommentsCell"
+    var representedId: UUID?
+    
+    @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var textView: UITextView!
     
-    var delegate: CommentsCellDelegate?
+//    var delegate: CommentsCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
-        profileImageView.delegate = self
+//        profileImageView.delegate = self
         textView.isScrollEnabled = false
         textView.isUserInteractionEnabled = false
+    }
+    
+    func configure(with comment: Comment) {
+        textView.setCommentText(username: comment.user.username,
+                                text: comment.text,
+                                createdDate: comment.creationDate.timeAgoDisplay())
     }
     
     override func prepareForReuse() {
@@ -33,11 +43,11 @@ final class CommentsCell: UICollectionViewCell {
     }
 }
 
-extension CommentsCell: LoadableImageViewDelegate {
-    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
-        delegate?.didProfileImageUrlSet(self, url, completion)
-    }
-}
+//extension CommentsCell: LoadableImageViewDelegate {
+//    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
+//        delegate?.didProfileImageUrlSet(self, url, completion)
+//    }
+//}
 
 extension UITextView {
     func setCommentText(username: String, text: String, createdDate: String) {

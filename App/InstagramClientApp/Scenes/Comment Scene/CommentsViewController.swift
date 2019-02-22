@@ -9,14 +9,14 @@
 import UIKit
 import InstagramEngine
 
-private let cellId = "Cell"
-
-final class CommentsViewController: UIViewController {
+final class CommentsViewController: UIViewController, UICollectionViewDataSourcePrefetching {
     // MARK: Commands
     var submitComment: ((String, Double, String) -> Void)?
     var loadCommentsForPost: ((String, Comment.Order) -> Void)?
-    var downloadProfileImage: ((URL, @escaping (Result<Data, UserProfileUseCase.Error>) -> Void) -> Void)?
-
+    var loadProfileImage: ((NSUUID, User, ((UIImage?) -> Void)?) -> Void)?
+    var getCachedProfileImage: ((NSUUID) -> UIImage?)?
+    var cancelLoadProfileImage: ((NSUUID) -> Void)?
+    
     // MARK: UI Properties
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let keyboardContainerView = CommentInputAccessaryView()
@@ -28,16 +28,14 @@ final class CommentsViewController: UIViewController {
 
     // MARK: Models
     private var currentPostId: String?
-    private var commentsForPost: [Comment] = []
+    private var commentsForPost: [CommentObject] = []
 
-    private var cacheManager: Cacheable?
     private let order: Comment.Order = .creationDate(.ascending)
 
     // MARK: Initializer
-    convenience init(currentPostId: String, cacheManager: Cacheable) {
+    convenience init(currentPostId: String) {
         self.init()
         self.currentPostId = currentPostId
-        self.cacheManager = cacheManager
     }
 
     // MARK: Life Cycle
@@ -54,8 +52,11 @@ final class CommentsViewController: UIViewController {
         if let postId = currentPostId {
             loadCommentsForPost?(postId, order)
         }
+        
+        collectionView.isPrefetchingEnabled = true
+        collectionView.prefetchDataSource = self
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -137,18 +138,38 @@ extension CommentsViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CommentsCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentsCell.reuseId, for: indexPath) as! CommentsCell
 
-        cell.delegate = self
-        cell.profileImageView.cacheManager = self.cacheManager
-
-        if commentsForPost.count > 0 {
-            let comment = commentsForPost[indexPath.item]
-            cell.profileImageView.imageUrlString = comment.user.imageUrl
-            cell.textView.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
+        let comment = commentsForPost[indexPath.item]
+        cell.configure(with: comment.data)
+        cell.representedId = comment.uuid
+        
+        if let cachedProfileImage = getCachedProfileImage?(comment.uuid as NSUUID) {
+            cell.profileImageView?.image = cachedProfileImage
+        } else {
+            loadProfileImage?(comment.uuid as NSUUID, comment.data.user) { (fetchedImage) in
+                DispatchQueue.main.async {
+                    guard cell.representedId == comment.uuid else { return }
+                    cell.profileImageView?.image = fetchedImage
+                }
+            }
         }
-
         return cell
+    }
+    
+    // MARK: Prefetching
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach {
+            let comment = self.commentsForPost[$0.item]
+            loadProfileImage?(comment.uuid as NSUUID, comment.data.user, nil)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach {
+            let comment = self.commentsForPost[$0.item]
+            cancelLoadProfileImage?(comment.uuid as NSUUID)
+        }
     }
 }
 
@@ -180,9 +201,9 @@ extension CommentsViewController: CommentInputAccessaryViewDelegate {
 
 extension CommentsViewController: CommentsView {
     func displayComment(_ comment: Comment) {
-        commentsForPost.append(comment)
+        commentsForPost.append(CommentObject(comment))
         commentsForPost.sort { (c1, c2) -> Bool in
-            let compareResult = c1.creationDate.compare(c2.creationDate)
+            let compareResult = c1.data.creationDate.compare(c2.data.creationDate)
             switch order.sortBy {
             case .ascending: return compareResult == .orderedAscending
             case .descending: return compareResult == .orderedDescending
@@ -192,17 +213,6 @@ extension CommentsViewController: CommentsView {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             self.scrollToLastItem(animated: true)
-        }
-    }
-}
-
-extension CommentsViewController: CommentsCellDelegate {
-    func didProfileImageUrlSet(_ cell: CommentsCell, _ url: URL, _ completion: @escaping (Data) -> Void) {
-        downloadProfileImage?(url) { (result) in
-            switch result {
-            case .success(let imageData): completion(imageData)
-            default: return
-            }
         }
     }
 }
@@ -223,7 +233,7 @@ extension CommentsViewController {
             fatalError("Casting Error at: \(#function)")
         }
         let comment = commentsForPost[indexPath.item]
-        dummyCell.textView.setCommentText(username: comment.user.username, text: comment.text, createdDate: comment.creationDate.timeAgoDisplay())
+        dummyCell.textView.setCommentText(username: comment.data.user.username, text: comment.data.text, createdDate: comment.data.creationDate.timeAgoDisplay())
         return dummyCell
     }
 
@@ -250,7 +260,7 @@ extension CommentsViewController {
         ])
         
         collectionView.backgroundColor = .white
-        collectionView.register(CommentsCell.nibFromClassName(), forCellWithReuseIdentifier: cellId)
+        collectionView.register(CommentsCell.nibFromClassName(), forCellWithReuseIdentifier: CommentsCell.reuseId)
         collectionView.alwaysBounceVertical = true
         
         collectionView.dataSource = self

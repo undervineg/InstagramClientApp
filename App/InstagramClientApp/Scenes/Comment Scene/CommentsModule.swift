@@ -18,17 +18,21 @@ final class CommentsModule {
     private let useCase: CommentsUseCase
     
     init(postId: String) {
-        let cacheManager = CacheManager()
-        viewController = CommentsViewController(currentPostId: postId, cacheManager: cacheManager)
+        let networking = URLSessionManager()
+        viewController = CommentsViewController(currentPostId: postId)
         presenter = CommentsPresenter(view: WeakRef(viewController))
         profileService = UserProfileService(firebaseAuth: Auth.self,
                                             firebaseDatabase: Database.self,
-                                            networking: URLSessionManager())
+                                            networking: networking)
         service = CommentsService(database: Database.self, auth: Auth.self, profileService: profileService)
         useCase = CommentsUseCase(client: service, output: presenter)
         
         viewController.submitComment = useCase.saveComment
         viewController.loadCommentsForPost = useCase.loadComments
-        viewController.downloadProfileImage = profileService.downloadProfileImage
+        
+        let profileImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
+        viewController.loadProfileImage = profileImageFetchService.startFetch
+        viewController.cancelLoadProfileImage = profileImageFetchService.cancelFetch
+        viewController.getCachedProfileImage = profileImageFetchService.fetchedData
     }
 }

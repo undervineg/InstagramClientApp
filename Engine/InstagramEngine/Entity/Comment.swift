@@ -8,6 +8,16 @@
 
 import Foundation
 
+public final class CommentObject {
+    public let uuid: UUID
+    public var data: Comment
+    
+    public init(_ data: Comment) {
+        self.uuid = UUID()
+        self.data = data
+    }
+}
+
 public struct Comment {
     public let user: User
     public let text: String
