@@ -1,29 +1,19 @@
 //
-//  LikesViewController.swift
+//  FollowingNewsViewController.swift
 //  InstagramClientApp
 //
-//  Created by 심승민 on 21/02/2019.
+//  Created by 심승민 on 22/02/2019.
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
 import UIKit
-import FirebaseAuth
-import FirebaseDatabase
+import InstagramEngine
+import XLPagerTabStrip
 
-final class NotificationViewController: UITableViewController {
+final class FollowingNewsViewController: UITableViewController {
 
-    // MARK: Commands
-    var loadAllNotifications: (() -> Void)?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        service.loadAllNotifications(of: nil) { (result) in
-            switch result {
-            case .success(let notification): print(notification)
-            case .failure(let error): print(error)
-            }
-        }
     }
 
     // MARK: - Table view data source
@@ -42,5 +32,10 @@ final class NotificationViewController: UITableViewController {
 
         return cell
     }
+}
 
+extension FollowingNewsViewController: IndicatorInfoProvider {
+    func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
+        return IndicatorInfo(title: "팔로잉")
+    }
 }

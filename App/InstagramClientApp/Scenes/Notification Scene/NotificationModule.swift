@@ -6,22 +6,39 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import InstagramEngine
 import FirebaseAuth
 import FirebaseDatabase
 
-final class LikesModule {
-    let viewController: NotificationViewController
+final class NotificationModule {
+    let containerViewController: NotificationContainerController
+    private let myNewsViewController: MyNewsViewController
+    private let followingNewsViewController: FollowingNewsViewController
     private let service: NotificationService
-    private let presenter: SplashPresenter
-    private let useCase: AuthUseCase
+    private let presenter: NotificationPresenter
+    private let useCase: NotificationUseCase
     
     init() {
         let networking = URLSessionManager()
-        lazy var profileService = UserProfileService(firebaseAuth: Auth.self, firebaseDatabase: Database.self, networking: networking)
-        lazy var service = NotificationService(database: Database.self,
-                                               auth: Auth.self,
-                                               profileService: profileService,
-                                               postService: PostService(firebaseAuth: Auth.self, firebaseDatabase: Database.self, networking: networking, profileService: profileService))
+        let profileService = UserProfileService(firebaseAuth: Auth.self, firebaseDatabase: Database.self, networking: networking)
+        let postService = PostService(firebaseAuth: Auth.self, firebaseDatabase: Database.self, networking: networking, profileService: profileService)
+        self.service = NotificationService(database: Database.self,
+                                           auth: Auth.self,
+                                           profileService: profileService,
+                                           postService: postService)
+        self.myNewsViewController = MyNewsViewController()
+        self.presenter = NotificationPresenter(view: WeakRef(myNewsViewController))
+        self.useCase = NotificationUseCase(client: service, output: presenter)
+        
+        myNewsViewController.loadAllNotifications = useCase.loadAllNotifications
+        
+        let profileImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
+        myNewsViewController.loadProfileImage = profileImageFetchService.startFetch
+        myNewsViewController.cancelLoadProfileImage = profileImageFetchService.cancelFetch
+        myNewsViewController.getCachedProfileImage = profileImageFetchService.fetchedData
+        
+        followingNewsViewController = FollowingNewsViewController()
+        
+        containerViewController = NotificationContainerController(followingNewsViewController, myNewsViewController)
     }
 }

@@ -12,27 +12,27 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="MyNewsCell" customModule="InstagramClientApp" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="65" id="KGk-i7-Jjw" customClass="MyNewsCell" customModule="InstagramClientApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="64.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="We0-ee-H0y">
-                        <rect key="frame" x="228" y="9" width="76" height="26"/>
+                        <rect key="frame" x="214" y="17.5" width="90" height="30"/>
                         <color key="backgroundColor" red="0.29411764709999999" green="0.47058823529999999" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="76" id="Qbx-NP-Jw4"/>
-                            <constraint firstAttribute="height" constant="26" id="c0H-dm-545"/>
+                            <constraint firstAttribute="width" constant="90" id="Qbx-NP-Jw4"/>
+                            <constraint firstAttribute="height" constant="30" id="c0H-dm-545"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                        <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                        <inset key="titleEdgeInsets" minX="5" minY="1" maxX="5" maxY="1"/>
                         <state key="normal" title="팔로우">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRaidus">
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                 <integer key="value" value="3"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
@@ -41,14 +41,14 @@
                         </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="shg-Qp-DjE">
-                        <rect key="frame" x="12" y="-0.5" width="44" height="44.5"/>
+                        <rect key="frame" x="12" y="10" width="45" height="45"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="44" id="N8g-nA-ZXf"/>
+                            <constraint firstAttribute="width" constant="45" id="N8g-nA-ZXf"/>
                             <constraint firstAttribute="width" secondItem="shg-Qp-DjE" secondAttribute="height" multiplier="1:1" id="f9d-7Y-a6Z"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ias-ac-rwW">
-                        <rect key="frame" x="66" y="12" width="152" height="19.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ias-ac-rwW">
+                        <rect key="frame" x="67" y="12" width="137" height="41"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -58,11 +58,12 @@
                     <constraint firstItem="Ias-ac-rwW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="1" id="0XG-pj-kWS"/>
                     <constraint firstItem="shg-Qp-DjE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="6fj-zM-fg5"/>
                     <constraint firstItem="We0-ee-H0y" firstAttribute="leading" secondItem="Ias-ac-rwW" secondAttribute="trailing" constant="10" id="Ak3-do-yXP"/>
-                    <constraint firstItem="We0-ee-H0y" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Gfk-PI-f5T"/>
                     <constraint firstAttribute="trailing" secondItem="We0-ee-H0y" secondAttribute="trailing" constant="16" id="RB7-Qt-mde"/>
+                    <constraint firstAttribute="bottom" secondItem="shg-Qp-DjE" secondAttribute="bottom" constant="9.5" id="UKd-XH-4P0"/>
                     <constraint firstItem="Ias-ac-rwW" firstAttribute="leading" secondItem="shg-Qp-DjE" secondAttribute="trailing" constant="10" id="Wu8-3x-gce"/>
-                    <constraint firstItem="shg-Qp-DjE" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="bOD-bU-NLX"/>
-                    <constraint firstItem="Ias-ac-rwW" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="t8b-8O-XFG"/>
+                    <constraint firstItem="shg-Qp-DjE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="gBZ-Pr-Eo9"/>
+                    <constraint firstItem="Ias-ac-rwW" firstAttribute="centerY" secondItem="shg-Qp-DjE" secondAttribute="centerY" id="mJJ-AR-hg8"/>
+                    <constraint firstItem="We0-ee-H0y" firstAttribute="centerY" secondItem="Ias-ac-rwW" secondAttribute="centerY" id="yfu-eh-GoD"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -70,7 +71,7 @@
                 <outlet property="messageLabel" destination="Ias-ac-rwW" id="mzp-iB-TPU"/>
                 <outlet property="profileImageView" destination="shg-Qp-DjE" id="h5e-wd-iRB"/>
             </connections>
-            <point key="canvasLocation" x="129.59999999999999" y="153.82308845577214"/>
+            <point key="canvasLocation" x="129.59999999999999" y="163.26836581709148"/>
         </tableViewCell>
     </objects>
 </document>
