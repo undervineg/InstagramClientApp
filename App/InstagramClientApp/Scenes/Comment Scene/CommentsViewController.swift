@@ -47,6 +47,9 @@ final class CommentsViewController: UIViewController {
         
         configureKeyboardContainerView()
         configureCollectionView()
+        
+        keyboardContainerView.delegate = self
+        addKeyboardNotifications()
 
         if let postId = currentPostId {
             loadCommentsForPost?(postId, order)
@@ -70,35 +73,45 @@ final class CommentsViewController: UIViewController {
 
     // MARK: Actions
     @objc private func keyboardWillChange(_ sender: NSNotification) {
-        guard commentsForPost.count > 0 else { return }
+//        guard commentsForPost.count > 0 else { return }
         guard
             let keyboardBeginFrame = (sender.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
             let keyboardEndFrame = (sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
             !keyboardBeginFrame.equalTo(keyboardEndFrame) else { return }
         
-        let lastCell = IndexPath(item: commentsForPost.count - 1, section: 0)
-        
         switch sender.name {
         case UIResponder.keyboardWillShowNotification:
-            if collectionView.visibleCells.count < commentsForPost.count {
-                collectionViewTopAnchor?.constant = -keyboardEndFrame.height
-                if let lastCellAttributes = collectionView.layoutAttributesForItem(at: lastCell) {
-                    collectionView.contentInset.top += lastCellAttributes.frame.height * 2.5
-                    collectionView.contentOffset.y += lastCellAttributes.frame.height
-                }
+            changeUIForKeyboard(-keyboardEndFrame.height, -keyboardEndFrame.height) { (lastCellAttributes) in
+                collectionView.contentInset.top += lastCellAttributes.frame.height * 2.5
+                collectionView.contentOffset.y += lastCellAttributes.frame.height
             }
-            containerViewBottomAnchor?.constant = -keyboardEndFrame.height
+//            if collectionView.visibleCells.count < commentsForPost.count {
+//                collectionViewTopAnchor?.constant = -keyboardEndFrame.height
+//                let lastCell = IndexPath(item: commentsForPost.count - 1, section: 0)
+//                if let lastCellAttributes = collectionView.layoutAttributesForItem(at: lastCell) {
+//                    collectionView.contentInset.top += lastCellAttributes.frame.height * 2.5
+//                    collectionView.contentOffset.y += lastCellAttributes.frame.height
+//                }
+//            }
+//            containerViewBottomAnchor?.constant = -keyboardEndFrame.height
         case UIResponder.keyboardWillHideNotification:
-            if collectionView.visibleCells.count < commentsForPost.count {
-                collectionViewTopAnchor?.constant = 0
-                if let lastCellAttributes = collectionView.layoutAttributesForItem(at: lastCell) {
-                    collectionView.contentInset.top = 0
-                    if collectionView.contentOffset.y > -lastCellAttributes.frame.height {
-                        collectionView.contentOffset.y -= lastCellAttributes.frame.height
-                    }
+            changeUIForKeyboard(0, 0) { (lastCellAttributes) in
+                collectionView.contentInset.top = 0
+                if collectionView.contentOffset.y > -lastCellAttributes.frame.height {
+                    collectionView.contentOffset.y -= lastCellAttributes.frame.height
                 }
             }
-            containerViewBottomAnchor?.constant = 0
+//            if collectionView.visibleCells.count < commentsForPost.count {
+//                collectionViewTopAnchor?.constant = 0
+//                let lastCell = IndexPath(item: commentsForPost.count - 1, section: 0)
+//                if let lastCellAttributes = collectionView.layoutAttributesForItem(at: lastCell) {
+//                    collectionView.contentInset.top = 0
+//                    if collectionView.contentOffset.y > -lastCellAttributes.frame.height {
+//                        collectionView.contentOffset.y -= lastCellAttributes.frame.height
+//                    }
+//                }
+//            }
+//            containerViewBottomAnchor?.constant = 0
         default: break
         }
         
@@ -111,11 +124,26 @@ final class CommentsViewController: UIViewController {
         collectionView.scrollIndicatorInsets = collectionView.contentInset
     }
     
+    private func changeUIForKeyboard(_ collectionViewTop: CGFloat, _ containerViewBottom: CGFloat, handlerForLastCell: (UICollectionViewLayoutAttributes) -> Void) {
+        if collectionView.visibleCells.count < commentsForPost.count {
+            collectionViewTopAnchor?.constant = collectionViewTop
+            let lastCell = IndexPath(item: commentsForPost.count - 1, section: 0)
+            if let lastCellAttributes = collectionView.layoutAttributesForItem(at: lastCell) {
+                handlerForLastCell(lastCellAttributes)
+            }
+        }
+        containerViewBottomAnchor?.constant = containerViewBottom
+    }
+    
     @objc private func keyboardContainerViewDidDragged(_ gesture: UIPanGestureRecognizer) {
         let velocity = gesture.velocity(in: keyboardContainerView)
         guard abs(velocity.x) < abs(velocity.y), velocity.y > 0 else { return }
         
         keyboardContainerView.endEditing(true)
+    }
+    
+    @objc private func collectionViewDidTap(_ sender: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
 }
 
@@ -143,10 +171,6 @@ extension CommentsViewController: UICollectionViewDataSource {
 
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        keyboardContainerView.endEditing(true)
-    }
 }
 
 extension CommentsViewController: UICollectionViewDelegateFlowLayout {
@@ -173,15 +197,19 @@ extension CommentsViewController: CommentInputAccessaryViewDelegate {
 
 extension CommentsViewController: CommentsView {
     func displayComment(_ comment: Comment) {
-        switch order.sortBy {
-        case .ascending:
-            commentsForPost.append(comment)
-        case .descending:
-            commentsForPost.insert(comment, at: 0)
+        commentsForPost.append(comment)
+        commentsForPost.sort { (c1, c2) -> Bool in
+            let compareResult = c1.creationDate.compare(c2.creationDate)
+            switch order.sortBy {
+            case .ascending: return compareResult == .orderedAscending
+            case .descending: return compareResult == .orderedDescending
+            }
         }
-        collectionView.reloadData()
-
-        scrollToLastItem(animated: true)
+        
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            self.scrollToLastItem(animated: true)
+        }
     }
 }
 
@@ -244,6 +272,9 @@ extension CommentsViewController {
         
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(collectionViewDidTap(_:)))
+        collectionView.addGestureRecognizer(tapGesture)
     }
     
     private func configureKeyboardContainerView() {
@@ -256,9 +287,6 @@ extension CommentsViewController {
             containerViewBottomAnchor!,
             keyboardContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
-        keyboardContainerView.delegate = self
-        addKeyboardNotifications()
         
         let dragGesture = UIPanGestureRecognizer(target: self, action: #selector(keyboardContainerViewDidDragged(_:)))
         dragGesture.maximumNumberOfTouches = 1
