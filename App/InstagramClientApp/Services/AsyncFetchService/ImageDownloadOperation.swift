@@ -19,21 +19,7 @@ final class ImageDownloadOperation: CustomOperation<NSUUID, HasImageUrl, UIImage
         if let data = try? Data(contentsOf: url) {
             self.fetchedData = UIImage(data: data)
         } else {
-            self.fetchedData = UIImage(color: .lightGray)
+            self.fetchedData = UIImage(color: UIColor(red: 244/255, green: 246/255, blue: 249/255, alpha: 1))
         }
-    }
-}
-
-extension UIImage {
-    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
-        let rect = CGRect(origin: .zero, size: size)
-        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
-        color.setFill()
-        UIRectFill(rect)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        guard let cgImage = image?.cgImage else { return nil }
-        self.init(cgImage: cgImage)
     }
 }

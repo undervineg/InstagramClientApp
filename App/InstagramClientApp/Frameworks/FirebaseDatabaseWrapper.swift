@@ -11,6 +11,7 @@ import InstagramEngine
 
 protocol FirebaseDatabaseWrapper {
     static func update(_ values: [AnyHashable: Any], under refs: [Reference], completion: @escaping (Error?) -> Void)
+    static func fetchFromRoot<T>(under refs: [Reference], completion: @escaping (Result<T?, Error>) -> Void)
     static func fetchAll<T>(under refs: [Reference], completion: @escaping (Result<T?, Error>) -> Void)
     static func fetchNew<T>(under refs: [Reference], orderBy order: HasKey, completion: @escaping (Result<(String, T), Error>) -> Void)
     static func fetchUpdated<T>(under refs: [Reference], orderBy order: HasKey, completion: @escaping (Result<(String, T), Error>) -> Void)
@@ -24,6 +25,23 @@ extension Database: FirebaseDatabaseWrapper {
     static func update(_ values: [AnyHashable: Any], under refs: [Reference], completion: @escaping (Error?) -> Void) {
         guard let newRef = databaseReference(from: refs) else { return }
         newRef.updateChildValues(values) { (error, _) in completion(error) }
+    }
+    
+    static func fetchFromRoot<T>(under refs: [Reference], completion: @escaping (Result<T?, Error>) -> Void) {
+        let newRef = databaseReference(from: refs)
+        
+        // Fetch all childs of newRef at once
+        newRef?.observeSingleEvent(of: .value, with: { (snapshot) in
+            let key = snapshot.key
+            let values = snapshot.value
+            let keyAndValues = [key: values]
+            let parent = snapshot.ref.parent?.key
+            let result = (parent == nil) ? keyAndValues : [parent!: keyAndValues]
+            print("😘Result", result)
+            completion(.success(result as? T))
+        }) { (error) in
+            completion(.failure(error))
+        }
     }
     
     static func fetchAll<T>(under refs: [Reference], completion: @escaping (Result<T?, Error>) -> Void) {
