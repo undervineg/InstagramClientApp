@@ -30,6 +30,12 @@ public enum PushNotificationType: Int {
 
 public enum PushNotificationButtonType: Int {
     case follow = 0
+    
+    public var buttonTitle: String {
+        switch self {
+        case .follow: return "팔로우"
+        }
+    }
 }
 
 public struct PushNotification {

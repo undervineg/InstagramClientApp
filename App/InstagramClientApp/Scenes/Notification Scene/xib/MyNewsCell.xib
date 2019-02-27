@@ -20,25 +20,22 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="We0-ee-H0y">
-                        <rect key="frame" x="214" y="17.5" width="90" height="30"/>
-                        <color key="backgroundColor" red="0.29411764709999999" green="0.47058823529999999" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <rect key="frame" x="214" y="18.5" width="90" height="28"/>
+                        <color key="backgroundColor" red="0.066666666669999999" green="0.60392156860000001" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="90" id="Qbx-NP-Jw4"/>
-                            <constraint firstAttribute="height" constant="30" id="c0H-dm-545"/>
+                            <constraint firstAttribute="height" constant="28" id="c0H-dm-545"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                         <inset key="titleEdgeInsets" minX="5" minY="1" maxX="5" maxY="1"/>
-                        <state key="normal" title="팔로우">
+                        <state key="normal">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <integer key="value" value="3"/>
+                                <integer key="value" value="4"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
-                        <connections>
-                            <action selector="follow:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="VMl-Rb-A29"/>
-                        </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="shg-Qp-DjE">
                         <rect key="frame" x="12" y="10" width="45" height="45"/>
@@ -67,6 +64,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="detailButton" destination="We0-ee-H0y" id="gCV-p5-rHa"/>
                 <outlet property="messageLabel" destination="Ias-ac-rwW" id="mzp-iB-TPU"/>
                 <outlet property="profileImageView" destination="shg-Qp-DjE" id="h5e-wd-iRB"/>
             </connections>

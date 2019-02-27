@@ -16,6 +16,7 @@ final class MyNewsCell: UITableViewCell {
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var detailButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,14 +25,13 @@ final class MyNewsCell: UITableViewCell {
     }
     
     func configure(with data: PushNotification) {
+        let buttonTitle = data.detailButtonType?.buttonTitle
+        detailButton.setTitle(buttonTitle, for: .normal)
+        
         let message = data.body
         let creationDate = data.creationDate.timeAgoDisplay()
         let emphasizeIndices = data.emphasizeIndices ?? []
         messageLabel.setMessageText(text: message, with: emphasizeIndices, createdDate: creationDate)
-    }
-    
-    @IBAction func follow(_ sender: UIButton) {
-        
     }
     
     override func prepareForReuse() {
