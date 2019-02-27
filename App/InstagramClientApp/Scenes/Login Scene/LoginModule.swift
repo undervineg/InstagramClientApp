@@ -24,7 +24,7 @@ final class LoginModule {
         self.router = LoginRouter()
         viewController = LoginViewController(router: router)
         service = LoginService(auth: Auth.self)
-        presenter = LoginPresenter(view: viewController)
+        presenter = LoginPresenter(view: WeakRef(viewController))
         useCase = LoginUseCase(client: service, output: presenter)
         
         router.viewController = viewController

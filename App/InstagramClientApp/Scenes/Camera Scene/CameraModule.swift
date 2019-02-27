@@ -19,7 +19,7 @@ final class CameraModule {
         router = CameraRouter()
         viewController = CameraViewController(router: router)
         service = PhotoService(photos: PhotosManager())
-        useCase = PhotoUseCase(client: service, output: viewController)
+        useCase = PhotoUseCase(client: service, output: WeakRef(viewController))
         
         viewController.saveCapturedPhoto = useCase.savePhoto
         
