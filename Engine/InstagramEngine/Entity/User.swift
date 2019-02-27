@@ -18,7 +18,7 @@ public final class UserObject {
     }
 }
 
-public struct User: Equatable, HasImageUrl {
+public struct User: Equatable {
     public let id: String
     public let email: String
     public let username: String

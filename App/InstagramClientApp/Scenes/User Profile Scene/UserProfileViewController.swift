@@ -17,10 +17,10 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
     var loadSummaryCounts: ((String?) -> Void)?
     var loadPaginatePosts: ((String?, Any?, Int, Post.Order, Bool) -> Void)?
     
-    var loadPostImage: ((NSUUID, Post, ((UIImage?) -> Void)?) -> Void)?
+    var loadPostImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
     var getCachedPostImage: ((NSUUID) -> UIImage?)?
     var cancelLoadPostImage: ((NSUUID) -> Void)?
-    var loadProfileImage: ((NSUUID, User, ((UIImage?) -> Void)?) -> Void)?
+    var loadProfileImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
     var getCachedProfileImage: ((NSUUID) -> UIImage?)?
     var cancelLoadProfileImage: ((NSUUID) -> Void)?
     
@@ -84,7 +84,7 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
         indexPaths.forEach {
             guard userPosts.count - 1 > $0.item else { return }
             let post = userPosts[$0.item]
-            loadPostImage?(post.uuid as NSUUID, post.data, nil)
+            loadPostImage?(post.uuid as NSUUID, post.data.imageUrl as NSString, nil)
         }
     }
     
@@ -125,7 +125,7 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
                 if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
                     cell.imageView.image = cachedPostImage
                 } else {
-                    loadPostImage?(post.uuid as NSUUID, post.data) { (fetchedImage) in
+                    loadPostImage?(post.uuid as NSUUID, post.data.imageUrl as NSString) { (fetchedImage) in
                         DispatchQueue.main.async {
                             guard cell.representedId == post.uuid else { return }
                             cell.imageView.image = fetchedImage
@@ -141,7 +141,7 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
                 if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
                     cell.postImageView.image = cachedPostImage
                 } else {
-                    loadPostImage?(post.uuid as NSUUID, post.data) { (fetchedImage) in
+                    loadPostImage?(post.uuid as NSUUID, post.data.imageUrl as NSString) { (fetchedImage) in
                         DispatchQueue.main.async {
                             guard cell.representedId == post.uuid else { return }
                             cell.postImageView.image = fetchedImage
@@ -152,7 +152,7 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
                 if let cachedProfileImage = getCachedProfileImage?(post.uuid as NSUUID) {
                     cell.profileImageView.image = cachedProfileImage
                 } else {
-                    loadProfileImage?(post.uuid as NSUUID, post.user) { (fetchedImage) in
+                    loadProfileImage?(post.uuid as NSUUID, post.user.imageUrl as NSString) { (fetchedImage) in
                         DispatchQueue.main.async {
                             guard cell.representedId == post.uuid else { return }
                             cell.profileImageView.image = fetchedImage
@@ -175,7 +175,7 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
         if let cachedProfileImage = getCachedProfileImage?(uuidForHeader) {
             headerView.profileImageView.image = cachedProfileImage
         } else if let user = user {
-            loadProfileImage?(uuidForHeader, user) { (fetchedImage) in
+            loadProfileImage?(uuidForHeader, user.imageUrl as NSString) { (fetchedImage) in
                 DispatchQueue.main.async {
                     headerView.profileImageView.image = fetchedImage
                 }

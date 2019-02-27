@@ -8,10 +8,6 @@
 
 import Foundation
 
-public protocol HasImageUrl {
-    var imageUrl: String { get }
-}
-
 public final class PostObject {
     public let uuid: UUID
     public var data: Post
@@ -26,7 +22,7 @@ public final class PostObject {
     }
 }
 
-public struct Post: HasImageUrl {
+public struct Post {
     public let id: String
     public let caption: String
     public let imageUrl: String

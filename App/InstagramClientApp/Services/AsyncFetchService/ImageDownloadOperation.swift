@@ -10,11 +10,11 @@ import UIKit
 import Foundation
 import InstagramEngine
 
-final class ImageDownloadOperation: CustomOperation<NSUUID, HasImageUrl, UIImage> {
+final class ImageDownloadOperation: CustomOperation<NSUUID, NSString, UIImage> {
     override func main() {
         guard !isCancelled else { return }
         
-        guard let url = URL(string: model.imageUrl) else { return }
+        guard let url = URL(string: model as String) else { return }
         
         if let data = try? Data(contentsOf: url) {
             self.fetchedData = UIImage(data: data)

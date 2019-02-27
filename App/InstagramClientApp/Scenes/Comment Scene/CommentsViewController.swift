@@ -13,7 +13,7 @@ final class CommentsViewController: UIViewController, UICollectionViewDataSource
     // MARK: Commands
     var submitComment: ((String, Double, String) -> Void)?
     var loadCommentsForPost: ((String, Comment.Order) -> Void)?
-    var loadProfileImage: ((NSUUID, User, ((UIImage?) -> Void)?) -> Void)?
+    var loadProfileImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
     var getCachedProfileImage: ((NSUUID) -> UIImage?)?
     var cancelLoadProfileImage: ((NSUUID) -> Void)?
     
@@ -147,7 +147,7 @@ extension CommentsViewController: UICollectionViewDataSource {
         if let cachedProfileImage = getCachedProfileImage?(comment.uuid as NSUUID) {
             cell.profileImageView?.image = cachedProfileImage
         } else {
-            loadProfileImage?(comment.uuid as NSUUID, comment.data.user) { (fetchedImage) in
+            loadProfileImage?(comment.uuid as NSUUID, comment.data.user.imageUrl as NSString) { (fetchedImage) in
                 DispatchQueue.main.async {
                     guard cell.representedId == comment.uuid else { return }
                     cell.profileImageView?.image = fetchedImage
@@ -161,7 +161,7 @@ extension CommentsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {
             let comment = self.commentsForPost[$0.item]
-            loadProfileImage?(comment.uuid as NSUUID, comment.data.user, nil)
+            loadProfileImage?(comment.uuid as NSUUID, comment.data.user.imageUrl as NSString, nil)
         }
     }
     

@@ -15,7 +15,7 @@ class UserSearchViewController: UICollectionViewController, UICollectionViewData
     
     // MARK: Commands
     var fetchAllUsers: ((Bool) -> Void)?
-    var loadProfileImage: ((NSUUID, User, ((UIImage?) -> Void)?) -> Void)?
+    var loadProfileImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
     var getCachedProfileImage: ((NSUUID) -> UIImage?)?
     var cancelLoadProfileImage: ((NSUUID) -> Void)?
     
@@ -78,7 +78,7 @@ class UserSearchViewController: UICollectionViewController, UICollectionViewData
             if let cachedImage = getCachedProfileImage?(user.uuid as NSUUID) {
                 cell.profileImageView.image = cachedImage
             } else {
-                loadProfileImage?(user.uuid as NSUUID, user.data) { image in
+                loadProfileImage?(user.uuid as NSUUID, user.data.imageUrl as NSString) { image in
                     DispatchQueue.main.async {
                         cell.profileImageView.image = image
                     }
@@ -94,7 +94,7 @@ class UserSearchViewController: UICollectionViewController, UICollectionViewData
         indexPaths.forEach {
             guard users.count - 1 > $0.item else { return }
             let user = users[$0.item]
-            loadProfileImage?(user.uuid as NSUUID, user.data, nil)
+            loadProfileImage?(user.uuid as NSUUID, user.data.imageUrl as NSString, nil)
         }
     }
     
