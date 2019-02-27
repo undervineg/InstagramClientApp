@@ -31,13 +31,13 @@ final class HomeFeedCell: UICollectionViewCell {
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var likesButton: UIButton!
     
-    func configure(with post: Post?) {
+    func configure(with post: PostObject?) {
         guard let post = post else { return }
         usernameLabel.text = post.user.username
         
         captionLabel.setCaptionText(username: post.user.username,
-                                    caption: post.caption,
-                                    createdDate: post.creationDate.timeAgoDisplay())
+                                    caption: post.data.caption,
+                                    createdDate: post.data.creationDate.timeAgoDisplay())
         
         let likesImageName = post.hasLiked ? "like_selected" : "like_unselected"
         likesButton.setImage(UIImage(named: likesImageName), for: .normal)

@@ -16,7 +16,7 @@ protocol FirebaseDatabaseWrapper {
     static func fetchNew<T>(under refs: [Reference], orderBy order: HasKey, completion: @escaping (Result<(String, T), Error>) -> Void)
     static func fetchUpdated<T>(under refs: [Reference], orderBy order: HasKey, completion: @escaping (Result<(String, T), Error>) -> Void)
     static func fetchDeleted<T>(under refs: [Reference], orderBy order: HasKey, completion: @escaping (Result<(String, T), Error>) -> Void)
-    static func fetch<T>(under refs: [Reference], from startValue: Any?, to limit: Int, orderBy order: HasKey&Sortable, completion: @escaping (Result<([(String, T)], Bool), Error>) -> Void)
+    static func fetch<T>(under refs: [Reference], from startValue: Any?, to limit: Int, orderBy order: HasKey&Sortable, completion: @escaping (Result<([String: T?], Bool), Error>) -> Void)
     static func delete(from refs: [Reference], completion: @escaping (Error?) -> Void)
 }
 
@@ -68,11 +68,15 @@ extension Database: FirebaseDatabaseWrapper {
         fetch(.childRemoved, refs, order, completion)
     }
     
-    static func fetch<T>(under refs: [Reference], from fromValue: Any?, to limit: Int, orderBy order: HasKey&Sortable, completion: @escaping (Result<([(String, T)], Bool), Error>) -> Void) {
+    static func fetch<T>(under refs: [Reference],
+                         from fromValue: Any?,
+                         to limit: Int,
+                         orderBy order: HasKey&Sortable,
+                         completion: @escaping (Result<([String: T?], Bool), Error>) -> Void) {
         guard let newRef = databaseReference(from: refs) else { return }
-
+        
         var query = newRef.queryOrdered(byChild: order.key)
-
+        
         switch order.sortBy {
         case .ascending:
             if let startValue = fromValue {
@@ -85,11 +89,9 @@ extension Database: FirebaseDatabaseWrapper {
             }
             query = query.queryLimited(toLast: UInt(limit))
         }
-
+        
         query.observeSingleEvent(of: .value, with: { (snapshot) in
             guard var childSnapshots = snapshot.children.allObjects as? [DataSnapshot] else { return }
-            
-            childSnapshots.forEach({ print("raw: ", $0.key) })
             
             if order.sortBy == .descending {
                 childSnapshots.reverse()
@@ -101,20 +103,86 @@ extension Database: FirebaseDatabaseWrapper {
                 childSnapshots.removeFirst()
             }
 
-            let parsedValues = childSnapshots.compactMap({ (childSnapshot) -> (String, T)? in
-                guard let value = childSnapshot.value as? T else {
-                    print("Casting nil error at: ", #function)
-                    return nil
-                }
-                print("preprocessed: ", childSnapshot.key)
-                return (childSnapshot.key, value)
-            })
-            completion(.success((parsedValues, isPagingFinished)))
-
+//            let values = childSnapshots.compactMap { (childSnapshot) -> (String, Any?)? in
+//                return (childSnapshot.key, childSnapshot.value)
+//            } as? T
+            
+            
+            let values = childSnapshots.enumerated().reduce([String: Any](), { (result, child) -> [String: Any] in
+                var result = result
+                result["\(child.offset)"] = [child.element.key: child.element.value]
+                return result
+            }) as? T
+            
+            let key = snapshot.key
+            let keyAndValues = [key: values]
+            let parent = snapshot.ref.parent?.key
+            let result = (parent == nil) ? keyAndValues : [parent!: keyAndValues as? T]
+            print("🐤Result: ", result)
+            
+            completion(.success((result, isPagingFinished)))
+//            completion(.success((parsedValues, isPagingFinished)))
+            
         }) { (error) in
             completion(.failure(error))
         }
     }
+    
+    
+//    static func fetch<T>(under refs: [Reference],
+//                         from fromValue: Any?,
+//                         to limit: Int,
+//                         orderBy order: HasKey&Sortable,
+//                         completion: @escaping (Result<([(String, T)], Bool), Error>) -> Void) {
+//        guard let newRef = databaseReference(from: refs) else { return }
+//
+//        var query = newRef.queryOrdered(byChild: order.key)
+//
+//        switch order.sortBy {
+//        case .ascending:
+//            if let startValue = fromValue {
+//                query = query.queryStarting(atValue: startValue)
+//            }
+//            query = query.queryLimited(toFirst: UInt(limit))
+//        case .descending:
+//            if let endValue = fromValue {
+//                query = query.queryEnding(atValue: endValue)
+//            }
+//            query = query.queryLimited(toLast: UInt(limit))
+//        }
+//
+//        query.observeSingleEvent(of: .value, with: { (snapshot) in
+//            guard var childSnapshots = snapshot.children.allObjects as? [DataSnapshot] else { return }
+//
+//            childSnapshots.forEach {
+//                print("😍childSnapshots key: ", $0.key, " value: ", $0.value, " parent: ", $0.ref.parent?.key)
+//            }
+//
+//            if order.sortBy == .descending {
+//                childSnapshots.reverse()
+//            }
+//
+//            let isPagingFinished = childSnapshots.count < limit
+//
+//            if fromValue != nil && childSnapshots.count > 0 {
+//                childSnapshots.removeFirst()
+//            }
+//
+//            let parsedValues = childSnapshots.compactMap({ (childSnapshot) -> (String, T)? in
+//                guard let value = childSnapshot.value as? T else {
+//                    print("Casting nil error at: ", #function)
+//                    return nil
+//                }
+////                print("preprocessed: ", childSnapshot.key)
+//                return (childSnapshot.key, value)
+//            })
+//
+//            completion(.success((parsedValues, isPagingFinished)))
+//
+//        }) { (error) in
+//            completion(.failure(error))
+//        }
+//    }
     
     static func delete(from refs: [Reference], completion: @escaping (Error?) -> Void) {
         guard let newRef = databaseReference(from: refs) else { return }

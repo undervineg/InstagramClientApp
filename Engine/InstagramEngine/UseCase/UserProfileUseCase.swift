@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol UserProfileClient {
-    func loadUserInfo(of uid: String?, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
+    func fetchUserInfo(of uid: String?, _ completion: @escaping (Result<User, UserProfileUseCase.Error>) -> Void)
     func fetchAllUsers(shouldOmitCurrentUser: Bool, _ completion: @escaping (Result<[User], Error>) -> Void)
     
     func followUser(_ uid: String, _ completion: @escaping (UserProfileUseCase.Error?) -> Void)
@@ -17,8 +17,6 @@ public protocol UserProfileClient {
     func checkIsFollowing(_ uid: String, _ completion: @escaping (Result<Bool, Error>) -> Void)
     func fetchFollowingList(of uid: String?, _ completion: @escaping (Result<[String], Error>) -> Void)
     func fetchFollowingCount(of uid: String?, _ completion: @escaping (Int) -> Void)
-    
-    func downloadProfileImage(from url: URL, completion: @escaping (Result<Data, UserProfileUseCase.Error>) -> Void)
 }
 
 public protocol UserProfileUseCaseOutput {
@@ -59,6 +57,8 @@ final public class UserProfileUseCase: FeaturePostLoadable {
         case logoutError
         case followError
         case unfollowError
+        case subscribeTopicError
+        case unsubscribeTopicError
         
         public var localizedDescription: String {
             switch self {
@@ -74,12 +74,16 @@ final public class UserProfileUseCase: FeaturePostLoadable {
                 return "팔로우 도중 문제가 발생했습니다."
             case .unfollowError:
                 return "언팔로우 도중 문제가 발생했습니다."
+            case .subscribeTopicError:
+                return "토픽 구독 중 문제가 발생했습니다."
+            case .unsubscribeTopicError:
+                return "토픽 구독 해지 중 문제가 발생했습니다."
             }
         }
     }
     
     public func loadProfile(of uid: String?) {
-        client.loadUserInfo(of: uid, handleLoadedResult)
+        client.fetchUserInfo(of: uid, handleLoadedResult)
     }
     
     private func handleLoadedResult(_ result: Result<User, UserProfileUseCase.Error>) {
@@ -94,17 +98,6 @@ final public class UserProfileUseCase: FeaturePostLoadable {
     public func loadSummaryCounts(of uid: String?) {
         postClient.fetchPostsCount(of: uid) { [weak self] in
             self?.postOutput.loadPostsCountSucceeded($0)
-        }
-    }
-    
-    public func downloadProfileImage(from url: URL, completion: @escaping (Data) -> Void) {
-        client.downloadProfileImage(from: url) { [weak self] (result) in
-            switch result {
-            case .success(let data):
-                completion(data)
-            case .failure(let error):
-                self?.output.downloadProfileImageFailed(error)
-            }
         }
     }
     

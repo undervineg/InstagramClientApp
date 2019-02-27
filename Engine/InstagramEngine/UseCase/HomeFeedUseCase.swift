@@ -50,8 +50,8 @@ final public class HomeFeedUseCase: FeaturePostLoadable {
         }
     }
     
-    public func changeLikes(of postId: String, to newLikesState: Bool, at index: Int) {
-        postClient.changeLikes(of: postId, to: newLikesState) { [weak self] (error) in
+    public func changeLikes(_ postId: String, of uidWhoPosted: String, to newLikesState: Bool, at index: Int) {
+        postClient.changeLikes(postId, of: uidWhoPosted, to: newLikesState) { [weak self] (error) in
             if let error = error {
                 self?.likesOutput.saveLikesFailed(error)
             }

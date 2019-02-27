@@ -85,6 +85,7 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.6.1)
+  - XLPagerTabStrip (8.1.0)
 
 DEPENDENCIES:
   - Firebase/Auth
@@ -92,6 +93,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
+  - XLPagerTabStrip (~> 8.1)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -111,6 +113,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - Protobuf
+    - XLPagerTabStrip
 
 SPEC CHECKSUMS:
   Firebase: 963d5685fae888a56d6d4d9cfce6b9c976958798
@@ -129,7 +132,8 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
+  XLPagerTabStrip: 22d4c58200d7c105e0e407ab6bfd01a5d85014be
 
-PODFILE CHECKSUM: 9a610ff7f80ef1f1e5ea9344e91f6eeda3462771
+PODFILE CHECKSUM: e911efd639147643445868b13e7eec1b804e7976
 
 COCOAPODS: 1.6.0.beta.2

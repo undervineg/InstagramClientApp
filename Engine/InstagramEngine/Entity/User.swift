@@ -23,12 +23,14 @@ public struct User: Equatable, HasImageUrl {
     public let email: String
     public let username: String
     public let imageUrl: String
+    public let fcmToken: String?
     
-    public init(id: String, email: String, username: String, imageUrl: String) {
+    public init(id: String, email: String, username: String, imageUrl: String, fcmToken: String?) {
         self.id = id
         self.email = email
         self.username = username
         self.imageUrl = imageUrl
+        self.fcmToken = fcmToken
     }
     
     public enum Order {

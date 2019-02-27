@@ -9,13 +9,15 @@
 import Foundation
 
 public protocol LoadPostClient {
+    func fetchPost(of uid: String?, at postId: String, _ completion: @escaping (Result<PostObject?, Error>) -> Void)
+    func fetchPost(of uid: String?, _ completion: @escaping (Result<PostObject?, Error>) -> Void)
+    func fetchAllPosts(of uid: String?, _ completion: @escaping (Result<PostObject?, Error>) -> Void)
+    func fetchFollowerPosts(of uid: String?, _ completion: @escaping (Result<PostObject?, Error>) -> Void)
+    func fetchPostWithPagination(of uid: String?, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([PostObject], Bool), Error>) -> Void)
     func fetchPostsCount(of uid: String?, _ completion: @escaping (Int) -> Void)
-    func fetchAllPosts(of uid: String?, _ completion: @escaping (Result<Post?, Error>) -> Void)
-    func fetchFollowerPosts(of uid: String?, _ completion: @escaping (Result<Post?, Error>) -> Void)
-    func fetchPostWithPagination(of uid: String?, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([Post], Bool), Error>) -> Void)
     
-    func fetchUserLikes(of postId: String, completion: @escaping (Result<Bool, Error>) -> Void)
-    func changeLikes(of postId: String, to likesState: Bool, completion: @escaping (Error?) -> Void)
+    func fetchUserLikes(_ postId: String, of uidWhoPosted: String, completion: @escaping (Result<Bool, Error>) -> Void)
+    func changeLikes(_ postId: String, of uidWhoPosted: String, to likesState: Bool, completion: @escaping (Error?) -> Void)
 }
 
 public protocol FeaturePostLoadable: class {
@@ -30,8 +32,8 @@ public protocol FeaturePostLoadable: class {
 
 public protocol LoadPostOutput {
     func loadPostsCountSucceeded(_ count: Int)
-    func loadPostSucceeded(_ post: Post?)
-    func loadPaginatedPostSucceeded(_ posts: [Post], hasMoreToLoad: Bool, isReloading: Bool)
+    func loadPostSucceeded(_ post: PostObject?)
+    func loadPaginatedPostSucceeded(_ posts: [PostObject], hasMoreToLoad: Bool, isReloading: Bool)
     func loadPostFailed(_ error: Error)
 }
 
@@ -45,8 +47,8 @@ extension FeaturePostLoadable {
     public func loadAllPosts(of uid: String?) {
         postClient.fetchAllPosts(of: uid) { [weak self] in
             switch $0 {
-            case .success(let post):
-                self?.postOutput.loadPostSucceeded(post)
+            case .success(let postObj):
+                self?.postOutput.loadPostSucceeded(postObj)
             case .failure(let error):
                 self?.postOutput.loadPostFailed(error)
             }
@@ -56,8 +58,8 @@ extension FeaturePostLoadable {
     public func loadFollowingPosts(of uid: String?) {
         postClient.fetchFollowerPosts(of: uid) { [weak self] in
             switch $0 {
-            case .success(let post):
-                self?.postOutput.loadPostSucceeded(post)
+            case .success(let postObj):
+                self?.postOutput.loadPostSucceeded(postObj)
             case .failure(let error):
                 self?.postOutput.loadPostFailed(error)
             }
@@ -71,7 +73,7 @@ extension FeaturePostLoadable {
     }
     
     // MARK: Private Methods
-    private func handlePaginateLoadedPost(_ result: Result<([Post], Bool), Error>, isReloading: Bool) {
+    private func handlePaginateLoadedPost(_ result: Result<([PostObject], Bool), Error>, isReloading: Bool) {
         switch result {
         case .success(let (posts, isPagingFinished)):
             postOutput.loadPaginatedPostSucceeded(posts, hasMoreToLoad: !isPagingFinished, isReloading: isReloading)

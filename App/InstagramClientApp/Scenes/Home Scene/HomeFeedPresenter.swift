@@ -10,8 +10,8 @@ import InstagramEngine
 
 protocol PostView: ErrorPresentable {
     func displayPostsCount(_ count: Int)
-    func displayPosts(_ posts: [Post?], hasMoreToLoad: Bool)
-    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool)
+    func displayPostObjects(_ posts: [PostObject], hasMoreToLoad: Bool)
+    func displayReloadedPosts(_ posts: [PostObject], hasMoreToLoad: Bool)
 }
 
 protocol LikesView: ErrorPresentable {
@@ -29,15 +29,20 @@ final class HomeFeedPresenter: LoadPostOutput, LikesOutput {
         view.displayPostsCount(count)
     }
     
-    func loadPostSucceeded(_ post: Post?) {
-        view.displayPosts([post], hasMoreToLoad: false)
+    func loadPostSucceeded(_ post: PostObject?) {
+        guard let post = post else { return }
+        view.displayPostObjects([post], hasMoreToLoad: false)
     }
     
-    func loadPaginatedPostSucceeded(_ posts: [Post], hasMoreToLoad: Bool, isReloading: Bool) {
+    func loadPostsSucceeded(_ posts: [PostObject]) {
+        view.displayPostObjects(posts, hasMoreToLoad: false)
+    }
+    
+    func loadPaginatedPostSucceeded(_ posts: [PostObject], hasMoreToLoad: Bool, isReloading: Bool) {
         if isReloading {
             view.displayReloadedPosts(posts, hasMoreToLoad: hasMoreToLoad)
         } else {
-            view.displayPosts(posts, hasMoreToLoad: hasMoreToLoad)
+            view.displayPostObjects(posts, hasMoreToLoad: hasMoreToLoad)
         }
     }
     
@@ -59,16 +64,16 @@ final class HomeFeedPresenter: LoadPostOutput, LikesOutput {
 }
 
 extension WeakRef: PostView where T: PostView {
-    func displayPosts(_ posts: [Post?], hasMoreToLoad: Bool) {
-        object?.displayPosts(posts, hasMoreToLoad: hasMoreToLoad)
+    func displayReloadedPosts(_ posts: [PostObject], hasMoreToLoad: Bool) {
+        object?.displayReloadedPosts(posts, hasMoreToLoad: hasMoreToLoad)
+    }
+    
+    func displayPostObjects(_ posts: [PostObject], hasMoreToLoad: Bool) {
+        object?.displayPostObjects(posts, hasMoreToLoad: hasMoreToLoad)
     }
     
     func displayPostsCount(_ count: Int) {
         object?.displayPostsCount(count)
-    }
-    
-    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
-        object?.displayReloadedPosts(posts, hasMoreToLoad: hasMoreToLoad)
     }
 }
 

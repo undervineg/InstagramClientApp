@@ -18,7 +18,7 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
     var loadProfileImage: ((NSUUID, User, ((UIImage?) -> Void)?) -> Void)?
     var getCachedProfileImage: ((NSUUID) -> UIImage?)?
     var cancelLoadProfileImage: ((NSUUID) -> Void)?
-    var changeLikes: ((String, Bool, Int) -> Void)?
+    var changeLikes: ((String, String, Bool, Int) -> Void)?
     
     private var router: HomeFeedRouter.Routes?
     
@@ -56,7 +56,7 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
 
         if posts.count > 0 {
             let post = posts[indexPath.item]
-            cell.configure(with: post.data)
+            cell.configure(with: post)
             cell.representedId = post.uuid
             
             if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
@@ -73,7 +73,7 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
             if let cachedProfileImage = getCachedProfileImage?(post.uuid as NSUUID) {
                 cell.profileImageView.image = cachedProfileImage
             } else {
-                loadProfileImage?(post.uuid as NSUUID, post.data.user) { (fetchedImage) in
+                loadProfileImage?(post.uuid as NSUUID, post.user) { (fetchedImage) in
                     DispatchQueue.main.async {
                         guard cell.representedId == post.uuid else { return }
                         cell.profileImageView.image = fetchedImage
@@ -134,8 +134,8 @@ extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
 extension HomeFeedViewController: HomeFeedCellDelegate {
     func didTapLikeButton(_ cell: HomeFeedCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        let currentPost = posts[indexPath.item].data
-        changeLikes?(currentPost.id, !currentPost.hasLiked, indexPath.item)
+        let currentPost = posts[indexPath.item]
+        changeLikes?(currentPost.data.id, currentPost.user.id, !currentPost.hasLiked, indexPath.item)
     }
     
     func didTapCommentsButton(_ cell: HomeFeedCell) {
@@ -158,28 +158,41 @@ extension HomeFeedViewController: HomeFeedCellDelegate {
 
 extension HomeFeedViewController: LikesView {
     func displayLikes(_ hasLiked: Bool, at index: Int) {
-        posts[index].data.hasLiked = hasLiked
+        posts[index].hasLiked = hasLiked
         collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
     }
 }
 
 extension HomeFeedViewController: PostView {
-    func displayPosts(_ loadedPosts: [Post?], hasMoreToLoad: Bool) {
+    func displayPostObjects(_ loadedPosts: [PostObject], hasMoreToLoad: Bool) {
         loadedPosts.forEach { (loadedPost) in
-            guard let loadedPost = loadedPost else { return }
             let index = (posts.count > 0) ?
-                posts.firstIndex { loadedPost.creationDate >= $0.data.creationDate } ?? posts.count : 0
-            posts.insert(PostObject(loadedPost), at: index)
+                posts.firstIndex { loadedPost.data.creationDate >= $0.data.creationDate } ?? posts.count : 0
+            posts.insert(loadedPost, at: index)
         }
-
+        
         DispatchQueue.main.async {
             self.collectionView.refreshControl?.endRefreshing()
             self.collectionView.reloadData()
         }
     }
+
+//    func displayPosts(_ loadedPosts: [PostObject], hasMoreToLoad: Bool) {
+//        loadedPosts.forEach { (loadedPost) in
+//            guard let loadedPost = loadedPost else { return }
+//            let index = (posts.count > 0) ?
+//                posts.firstIndex { loadedPost.creationDate >= $0.data.creationDate } ?? posts.count : 0
+//            posts.insert(PostObject(loadedPost), at: index)
+//        }
+//
+//        DispatchQueue.main.async {
+//            self.collectionView.refreshControl?.endRefreshing()
+//            self.collectionView.reloadData()
+//        }
+//    }
     
     func displayPostsCount(_ count: Int) { }
-    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) { }
+    func displayReloadedPosts(_ posts: [PostObject], hasMoreToLoad: Bool) { }
 }
 
 extension HomeFeedViewController {

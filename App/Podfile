@@ -15,6 +15,7 @@ target 'InstagramClientApp' do
 
   # Pods for InstagramClientApp
   firebase
+  pod 'XLPagerTabStrip', '~> 8.1'
 
   target 'InstagramClientAppTests' do
     inherit! :search_paths

@@ -27,8 +27,9 @@ final class UserProfileModule {
         let networking = URLSessionManager()
         viewController = UserProfileViewController(router: router)
         profileService = UserProfileService(firebaseAuth: Auth.self,
-                                     firebaseDatabase: Database.self,
-                                     networking: networking)
+                                            firebaseDatabase: Database.self,
+                                            firebaseMessaging: Messaging.self,
+                                            networking: networking)
         loginService = LoginService(auth: Auth.self)
         postService = PostService(firebaseAuth: Auth.self,
                                   firebaseDatabase: Database.self,

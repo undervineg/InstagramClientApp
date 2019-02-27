@@ -28,6 +28,7 @@ final class HomeModule {
         let networking = URLSessionManager()
         profileService = UserProfileService(firebaseAuth: Auth.self,
                                             firebaseDatabase: Database.self,
+                                            firebaseMessaging: Messaging.self,
                                             networking: networking)
         service = PostService(firebaseAuth: Auth.self,
                               firebaseDatabase: Database.self,
@@ -35,11 +36,7 @@ final class HomeModule {
                               profileService: profileService)
         presenter = HomeFeedPresenter(view: WeakRef(viewController))
         useCase = HomeFeedUseCase(postClient: service, output: presenter)
-        
-//        viewController.getPostsCount = useCase.getPostsCount
-//        viewController.loadNewPosts = useCase.loadNewPosts
-//        viewController.downloadPostImage = useCase.downloadPostImage
-//        viewController.downloadProfileImage = profileService.downloadProfileImage
+
         viewController.loadAllPosts = useCase.loadAllPosts
         viewController.loadFollowerPosts = useCase.loadFollowingPosts
         viewController.changeLikes = useCase.changeLikes

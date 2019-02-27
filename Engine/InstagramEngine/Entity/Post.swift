@@ -15,33 +15,32 @@ public protocol HasImageUrl {
 public final class PostObject {
     public let uuid: UUID
     public var data: Post
+    public let user: User
+    public var hasLiked: Bool = false
     
-    public init(_ data: Post) {
+    public init(_ data: Post, _ user: User, hasLiked: Bool) {
         self.uuid = UUID()
         self.data = data
+        self.user = user
+        self.hasLiked = hasLiked
     }
 }
 
 public struct Post: HasImageUrl {
     public let id: String
-    public let user: User
     public let caption: String
     public let imageUrl: String
     public let imageWidth: Float
     public let imageHeight: Float
     public let creationDate: Date
     
-    public var hasLiked: Bool
-    
-    public init(_ id: String, _ user: User, _ caption: String, _ imageUrl: String, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double, _ hasLiked: Bool) {
+    public init(_ id: String, _ caption: String, _ imageUrl: String, _ imageWidth: Float, _ imageHeight: Float, _ creationDate: Double) {
         self.id = id
-        self.user = user
         self.caption = caption
         self.imageUrl = imageUrl
         self.imageWidth = imageWidth
         self.imageHeight = imageHeight
         self.creationDate = Date(timeIntervalSince1970: creationDate)
-        self.hasLiked = hasLiked
     }
     
     public enum Order {

@@ -135,7 +135,7 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
             }
 
             if let cell = cell as? HomeFeedCell {
-                cell.configure(with: post.data)
+                cell.configure(with: post)
                 cell.representedId = post.uuid
                 
                 if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
@@ -152,7 +152,7 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
                 if let cachedProfileImage = getCachedProfileImage?(post.uuid as NSUUID) {
                     cell.profileImageView.image = cachedProfileImage
                 } else {
-                    loadProfileImage?(post.uuid as NSUUID, post.data.user) { (fetchedImage) in
+                    loadProfileImage?(post.uuid as NSUUID, post.user) { (fetchedImage) in
                         DispatchQueue.main.async {
                             guard cell.representedId == post.uuid else { return }
                             cell.profileImageView.image = fetchedImage
@@ -208,18 +208,18 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
 
 extension UserProfileViewController: UserProfileView, PostView {
     // MARK: Post View
-    func displayReloadedPosts(_ posts: [Post], hasMoreToLoad: Bool) {
-        posts.forEach {
-            userPosts.insert(PostObject($0), at: 0)
+    func displayPostObjects(_ posts: [PostObject], hasMoreToLoad: Bool) {
+        posts.compactMap { $0 }.forEach {
+            userPosts.append($0)
         }
         self.hasMoreToLoad = hasMoreToLoad
         
         collectionView.reloadData()
     }
     
-    func displayPosts(_ posts: [Post?], hasMoreToLoad: Bool) {
-        posts.compactMap { $0 }.forEach {
-            userPosts.append(PostObject($0))
+    func displayReloadedPosts(_ posts: [PostObject], hasMoreToLoad: Bool) {
+        posts.forEach {
+            userPosts.insert($0, at: 0)
         }
         self.hasMoreToLoad = hasMoreToLoad
         
