@@ -16,7 +16,7 @@ final class UserSearchCell: UICollectionViewCell {
     
     static let reuseId = "UserSearchCell"
 
-    @IBOutlet weak var profileImageView: LoadableImageView!
+    @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     
     var delegate: UserSearchCellDelegate?

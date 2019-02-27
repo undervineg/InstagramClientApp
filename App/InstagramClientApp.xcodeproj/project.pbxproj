@@ -108,7 +108,6 @@
 		0891AE1221F78D2E0002A7CB /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0887639821F6C5A400F8AE49 /* CameraViewController.xib */; };
 		0891AE1421F78DD30002A7CB /* PhotoCapturedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE1321F78DD30002A7CB /* PhotoCapturedView.swift */; };
 		0891AE1821F78ECB0002A7CB /* UIView+XibExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0891AE1721F78ECB0002A7CB /* UIView+XibExtension.swift */; };
-		08962F2121F0EF3E00A3C5D3 /* LoadableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */; };
 		08962F2321F0F5AE00A3C5D3 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08962F2221F0F5AE00A3C5D3 /* Sort.swift */; };
 		08B5B51922146CB100C4BE6F /* AsyncFetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B5B51822146CB100C4BE6F /* AsyncFetchService.swift */; };
 		08B5B51D22148D8500C4BE6F /* ImageDownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B5B51C22148D8500C4BE6F /* ImageDownloadOperation.swift */; };
@@ -283,7 +282,6 @@
 		0891AE0C21F780ED0002A7CB /* CameraCaptureProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureProcessor.swift; sourceTree = "<group>"; };
 		0891AE1321F78DD30002A7CB /* PhotoCapturedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCapturedView.swift; sourceTree = "<group>"; };
 		0891AE1721F78ECB0002A7CB /* UIView+XibExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+XibExtension.swift"; sourceTree = "<group>"; };
-		08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableImageView.swift; sourceTree = "<group>"; };
 		08962F2221F0F5AE00A3C5D3 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		08B5B51822146CB100C4BE6F /* AsyncFetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFetchService.swift; sourceTree = "<group>"; };
 		08B5B51C22148D8500C4BE6F /* ImageDownloadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloadOperation.swift; sourceTree = "<group>"; };
@@ -813,7 +811,6 @@
 				0891AE1721F78ECB0002A7CB /* UIView+XibExtension.swift */,
 				08FE157B21F5D12D00A58355 /* Date+Extension.swift */,
 				085E526921F35DC40029C7BE /* CacheManager.swift */,
-				08962F2021F0EF3E00A3C5D3 /* LoadableImageView.swift */,
 				085E526B21F368F70029C7BE /* Keys.swift */,
 				08962F2221F0F5AE00A3C5D3 /* Sort.swift */,
 				084FF5F821EDD3DF000EA933 /* ErrorPresentable.swift */,
@@ -1190,7 +1187,6 @@
 				08F984B821E54B6C00DE6E78 /* UserProfileService.swift in Sources */,
 				0884511B21DA665A008B8121 /* AppDelegate.swift in Sources */,
 				084FF62A21EF48F2000EA933 /* SharePhotoRouter.swift in Sources */,
-				08962F2121F0EF3E00A3C5D3 /* LoadableImageView.swift in Sources */,
 				080C5A9721F9A38800AD8D7C /* CommentsRoute.swift in Sources */,
 				08FBC62F2203563200D75825 /* FirebaseMessagingWrapper.swift in Sources */,
 			);
