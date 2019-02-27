@@ -39,6 +39,10 @@ class UserSearchViewController: UICollectionViewController, UICollectionViewData
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
         
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+        
         collectionView.isPrefetchingEnabled = true
         collectionView.prefetchDataSource = self
         
@@ -107,6 +111,12 @@ class UserSearchViewController: UICollectionViewController, UICollectionViewData
         let user = isFiltering() ? filteredUsers[indexPath.item] : users[indexPath.item]
         router?.openUserProfilePage(of: user.data.id)
     }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        users.removeAll()
+        filteredUsers.removeAll()
+        fetchAllUsers?(true)
+    }
 }
 
 extension UserSearchViewController: UICollectionViewDelegateFlowLayout {
@@ -128,6 +138,7 @@ extension UserSearchViewController: SearchView {
         }
         
         DispatchQueue.main.async {
+            self.collectionView.refreshControl?.endRefreshing()
             self.collectionView.reloadData()
         }
     }
