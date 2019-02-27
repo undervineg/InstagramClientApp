@@ -9,10 +9,6 @@
 import UIKit
 import InstagramEngine
 
-//protocol CommentsCellDelegate {
-//    func didProfileImageUrlSet(_ cell: CommentsCell, _ url: URL, _ completion: @escaping (Data) -> Void)
-//}
-
 final class CommentsCell: UICollectionViewCell {
     static let reuseId = "CommentsCell"
     var representedId: UUID?
@@ -20,12 +16,9 @@ final class CommentsCell: UICollectionViewCell {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var textView: UITextView!
     
-//    var delegate: CommentsCellDelegate?
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
-//        profileImageView.delegate = self
         textView.isScrollEnabled = false
         textView.isUserInteractionEnabled = false
     }
@@ -42,12 +35,6 @@ final class CommentsCell: UICollectionViewCell {
         textView.text = nil
     }
 }
-
-//extension CommentsCell: LoadableImageViewDelegate {
-//    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
-//        delegate?.didProfileImageUrlSet(self, url, completion)
-//    }
-//}
 
 extension UITextView {
     func setCommentText(username: String, text: String, createdDate: String) {

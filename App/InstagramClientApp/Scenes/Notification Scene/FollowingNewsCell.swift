@@ -25,7 +25,6 @@ final class FollowingNewsCell: UITableViewCell {
     }
     
     func configure(with data: PushNotification) {
-//        let username = data.relatedUser?.username ?? ""
         let message = data.body
         let creationDate = data.creationDate.timeAgoDisplay()
         let emphasizeIndices = data.emphasizeIndices ?? []

@@ -20,15 +20,12 @@ final class UserSearchCell: UICollectionViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     
     var delegate: UserSearchCellDelegate?
-//    var profileImageUrlString: String? { didSet { profileImageView.imageUrlString = profileImageUrlString } }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
         profileImageView.layer.masksToBounds = true
-        
-//        profileImageView.delegate = self
     }
 
     override func prepareForReuse() {
@@ -37,9 +34,3 @@ final class UserSearchCell: UICollectionViewCell {
         usernameLabel.text = nil
     }
 }
-
-//extension UserSearchCell: LoadableImageViewDelegate {
-//    func didImageUrlSet(_ loadableImageView: LoadableImageView, _ url: URL, _ completion: @escaping (Data) -> Void) {
-//        delegate?.didProfileUrlSet(self, url, completion)
-//    }
-//}

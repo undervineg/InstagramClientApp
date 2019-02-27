@@ -21,7 +21,6 @@ final class NotificationModule {
                                                 firebaseMessaging: Messaging.self,
                                                 networking: networking)
         let postService = PostService(firebaseAuth: Auth.self, firebaseDatabase: Database.self, networking: networking, profileService: profileService)
-//        let imageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
         let imageFetchService = AsyncFetchService(operationType: RawImageDownloadOperation.self, networking: networking)
         let newsService = NotificationService(database: Database.self,
                                               auth: Auth.self,

@@ -176,20 +176,6 @@ extension HomeFeedViewController: PostView {
             self.collectionView.reloadData()
         }
     }
-
-//    func displayPosts(_ loadedPosts: [PostObject], hasMoreToLoad: Bool) {
-//        loadedPosts.forEach { (loadedPost) in
-//            guard let loadedPost = loadedPost else { return }
-//            let index = (posts.count > 0) ?
-//                posts.firstIndex { loadedPost.creationDate >= $0.data.creationDate } ?? posts.count : 0
-//            posts.insert(PostObject(loadedPost), at: index)
-//        }
-//
-//        DispatchQueue.main.async {
-//            self.collectionView.refreshControl?.endRefreshing()
-//            self.collectionView.reloadData()
-//        }
-//    }
     
     func displayPostsCount(_ count: Int) { }
     func displayReloadedPosts(_ posts: [PostObject], hasMoreToLoad: Bool) { }

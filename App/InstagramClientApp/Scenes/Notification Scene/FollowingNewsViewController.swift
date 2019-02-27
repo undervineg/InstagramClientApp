@@ -16,7 +16,6 @@ final class FollowingNewsViewController: UITableViewController, UITableViewDataS
     
     // MARK: Commands
     var loadAllNotifications: ((String?) -> Void)?
-//    var loadProfileImage: ((NSUUID, User, ((UIImage?) -> Void)?) -> Void)?
     var loadProfileImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
     var getCachedProfileImage: ((NSUUID) -> UIImage?)?
     var cancelLoadProfileImage: ((NSUUID) -> Void)?
@@ -64,17 +63,6 @@ final class FollowingNewsViewController: UITableViewController, UITableViewDataS
         cell.configure(with: notification.data)
         cell.representedId = notification.uuid
         
-//        if let cachedProfileImage = getCachedProfileImage?(notification.uuid as NSUUID) {
-//            cell.profileImageView?.image = cachedProfileImage
-//        } else if let relatedUser = notification.data.relatedUser {
-//            loadProfileImage?(notification.uuid as NSUUID, relatedUser) { (fetchedImage) in
-//                DispatchQueue.main.async {
-//                    guard cell.representedId == notification.uuid else { return }
-//                    cell.profileImageView?.image = fetchedImage
-//                }
-//            }
-//        }
-        
         if let cachedProfileImage = getCachedProfileImage?(notification.uuid as NSUUID) {
             cell.profileImageView?.image = cachedProfileImage
         } else {
@@ -96,9 +84,6 @@ final class FollowingNewsViewController: UITableViewController, UITableViewDataS
             let notification = notifications[$0.row]
             let urlString = notification.data.profileImageUrl as NSString
             loadProfileImage?(notification.uuid as NSUUID, urlString, nil)
-//            if let relatedUser = notification.data.relatedUser {
-//                loadProfileImage?(notification.uuid as NSUUID, relatedUser, nil)
-//            }
         }
     }
     
