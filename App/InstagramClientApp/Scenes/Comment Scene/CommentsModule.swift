@@ -23,6 +23,7 @@ final class CommentsModule {
         presenter = CommentsPresenter(view: WeakRef(viewController))
         profileService = UserProfileService(firebaseAuth: Auth.self,
                                             firebaseDatabase: Database.self,
+                                            firebaseMessaging: Messaging.self,
                                             networking: networking)
         service = CommentsService(database: Database.self, auth: Auth.self, profileService: profileService)
         useCase = CommentsUseCase(client: service, output: presenter)

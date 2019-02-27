@@ -25,12 +25,9 @@ final class ShareService: SharePhotoClient {
     
     func share(_ data: Data, _ caption: String, _ imageWidth: Float, _ imageHeight: Float, _ uploadDate: Double, completion: @escaping (Error?) -> Void) {
         let filename = UUID().uuidString
-        let refs: [Reference] = [
-            .directory(Keys.Storage.postImagesDir),
-            .directory(filename)
-        ]
+        let storageRefs: [Reference] = [.directory(Keys.Storage.postImagesDir), .directory(filename)]
         
-        storage.uploadImage(data, to: refs) { (result) in
+        storage.uploadImage(data, to: storageRefs) { (result) in
             switch result {
             case .success(let url):
                 if let userId = self.auth.currentUserId {
@@ -41,16 +38,15 @@ final class ShareService: SharePhotoClient {
                         Keys.Database.Post.imageWidth: imageWidth,
                         Keys.Database.Post.imageHeight: imageHeight,
                         Keys.Database.Post.creationDate: uploadDate
-                        ] as [String: Any]
+                    ] as [String: Any]
                     
-                    let refs: [Reference] = [
+                    let databaseRefs: [Reference] = [
                         .directory(Keys.Database.postsDir),
                         .directory(userId),
-                        .directory(Keys.Database.contents),
                         .autoId
                     ]
                     
-                    self.database.update(postValues, under: refs, completion: completion)
+                    self.database.update(postValues, under: databaseRefs, completion: completion)
                 }
             case .failure(let error):
                 completion(error)

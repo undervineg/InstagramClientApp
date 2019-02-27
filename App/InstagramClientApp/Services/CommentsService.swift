@@ -52,7 +52,7 @@ final class CommentsService: CommentsClient {
     private func generateComment(value: [String: Any], completion: @escaping (Result<Comment, Error>) -> Void) {
         guard let uid = value[Keys.Database.Comment.uid] as? String else { return }
         
-        profileService.loadUserInfo(of: uid) { (result) in
+        profileService.fetchUserInfo(of: uid) { (result) in
             switch result {
             case .success(let userInfo):
                 let text = value[Keys.Database.Comment.text] as? String ?? ""
