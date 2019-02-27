@@ -17,18 +17,17 @@ final class MyNewsCell: UITableViewCell {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
     
-    func configure(with data: PushNotification) {
-        let username = data.relatedUser?.username ?? ""
-        let message = data.body
-        let creationDate = data.creationDate.timeAgoDisplay()
-        
-        messageLabel.setMessageText(username: username, text: message, createdDate: creationDate)
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
         profileImageView.clipsToBounds = true
+    }
+    
+    func configure(with data: PushNotification) {
+        let message = data.body
+        let creationDate = data.creationDate.timeAgoDisplay()
+        let emphasizeIndices = data.emphasizeIndices ?? []
+        messageLabel.setMessageText(text: message, with: emphasizeIndices, createdDate: creationDate)
     }
     
     @IBAction func follow(_ sender: UIButton) {
@@ -44,11 +43,23 @@ final class MyNewsCell: UITableViewCell {
 }
 
 extension UILabel {
-    func setMessageText(username: String, text: String, createdDate: String) {
-        let attributedText = NSMutableAttributedString(string: username,
-                                                       attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: text,
-                                                 attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
+    func setMessageText(text: String, with emphasizeIndices: [Int], createdDate: String) {
+        var stressRanges: [NSRange] = []
+        
+        emphasizeIndices.enumerated().forEach { (index, startIndex) in
+            guard index % 2 == 0 else { return }
+            let length = emphasizeIndices[index + 1]
+            let range = NSRange(location: startIndex, length: length)
+            stressRanges.append(range)
+        }
+        
+        let attributedText = NSMutableAttributedString(string: text,
+                                                       attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)])
+        stressRanges.forEach { (range) in
+            attributedText.addAttribute(NSAttributedString.Key.font,
+                                        value: UIFont.boldSystemFont(ofSize: 14),
+                                        range: range)
+        }
         attributedText.append(NSAttributedString(string: " "+createdDate,
                                                  attributes: [
                                                     NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.gray]))

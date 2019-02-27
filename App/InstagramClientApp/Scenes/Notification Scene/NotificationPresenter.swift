@@ -25,7 +25,7 @@ final class NotificationPresenter: NotificationOutput {
     }
     
     func loadNotificationsFailed(_ error: Error) {
-        
+        view.displayError(error.localizedDescription)
     }
 }
 

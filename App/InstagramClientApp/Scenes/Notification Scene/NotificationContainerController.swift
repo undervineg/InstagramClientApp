@@ -13,6 +13,8 @@ final class NotificationContainerController: ButtonBarPagerTabStripViewControlle
 
     private var subViewControllers: [UIViewController] = []
     
+    private var isInitialAppeared: Bool = true
+    
     convenience init(_ vc1: UIViewController, _ vc2: UIViewController) {
         self.init()
         subViewControllers = [vc1, vc2]
@@ -39,19 +41,16 @@ final class NotificationContainerController: ButtonBarPagerTabStripViewControlle
         super.viewDidLoad()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        isInitialAppeared = false
+    }
+    
+    override var currentIndex: Int {
+        return isInitialAppeared ? 1 : super.currentIndex
+    }
+    
     override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
         return subViewControllers
-    }
-}
-
-extension CALayer {
-    func drawBottomBorder(_ lineWidth: CGFloat, _ lineColor: UIColor) {
-        let borderLayer = CALayer()
-        borderLayer.frame = CGRect(x: 0,
-                                   y: frame.height - lineWidth,
-                                   width: frame.width,
-                                   height: lineWidth)
-        borderLayer.backgroundColor = lineColor.cgColor
-        addSublayer(borderLayer)
     }
 }

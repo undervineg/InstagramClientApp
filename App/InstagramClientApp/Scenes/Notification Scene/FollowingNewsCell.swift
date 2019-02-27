@@ -7,18 +7,36 @@
 //
 
 import UIKit
+import InstagramEngine
 
-class FollowingNewsCell: UITableViewCell {
+final class FollowingNewsCell: UITableViewCell {
 
+    static let reuseId = "FollowingNewsCell"
+    var representedId: UUID?
+    
+    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var postImageView: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+        profileImageView.clipsToBounds = true
     }
     
+    func configure(with data: PushNotification) {
+//        let username = data.relatedUser?.username ?? ""
+        let message = data.body
+        let creationDate = data.creationDate.timeAgoDisplay()
+        let emphasizeIndices = data.emphasizeIndices ?? []
+        
+        messageLabel.setMessageText(text: message, with: emphasizeIndices, createdDate: creationDate)
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+        messageLabel.text = nil
+        postImageView.image = nil
+    }
 }

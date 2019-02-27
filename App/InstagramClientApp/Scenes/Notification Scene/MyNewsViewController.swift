@@ -11,9 +11,13 @@ import InstagramEngine
 import XLPagerTabStrip
 
 final class MyNewsViewController: UITableViewController, UITableViewDataSourcePrefetching {
+    
+    let type: PushNotificationType = .myNews
+    
     // MARK: Commands
     var loadAllNotifications: ((String?) -> Void)?
-    var loadProfileImage: ((NSUUID, User, ((UIImage?) -> Void)?) -> Void)?
+//    var loadProfileImage: ((NSUUID, User, ((UIImage?) -> Void)?) -> Void)?
+    var loadProfileImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
     var getCachedProfileImage: ((NSUUID) -> UIImage?)?
     var cancelLoadProfileImage: ((NSUUID) -> Void)?
     
@@ -28,6 +32,8 @@ final class MyNewsViewController: UITableViewController, UITableViewDataSourcePr
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.allowsSelection = false
         
         setupRefreshControl()
         
@@ -64,16 +70,29 @@ final class MyNewsViewController: UITableViewController, UITableViewDataSourcePr
         cell.configure(with: notification.data)
         cell.representedId = notification.uuid
         
+//        if let cachedProfileImage = getCachedProfileImage?(notification.uuid as NSUUID) {
+//            cell.profileImageView?.image = cachedProfileImage
+//        } else if let relatedUser = notification.data.relatedUser {
+//            loadProfileImage?(notification.uuid as NSUUID, relatedUser) { (fetchedImage) in
+//                DispatchQueue.main.async {
+//                    guard cell.representedId == notification.uuid else { return }
+//                    cell.profileImageView?.image = fetchedImage
+//                }
+//            }
+//        }
+        
         if let cachedProfileImage = getCachedProfileImage?(notification.uuid as NSUUID) {
             cell.profileImageView?.image = cachedProfileImage
-        } else if let relatedUser = notification.data.relatedUser {
-            loadProfileImage?(notification.uuid as NSUUID, relatedUser) { (fetchedImage) in
+        } else {
+            let urlString = notification.data.profileImageUrl as NSString
+            loadProfileImage?(notification.uuid as NSUUID, urlString) { (fetchedImage) in
                 DispatchQueue.main.async {
                     guard cell.representedId == notification.uuid else { return }
                     cell.profileImageView?.image = fetchedImage
                 }
             }
         }
+        
         return cell
     }
     
@@ -81,9 +100,11 @@ final class MyNewsViewController: UITableViewController, UITableViewDataSourcePr
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {
             let notification = notifications[$0.row]
-            if let relatedUser = notification.data.relatedUser {
-                loadProfileImage?(notification.uuid as NSUUID, relatedUser, nil)
-            }
+            let urlString = notification.data.profileImageUrl as NSString
+            loadProfileImage?(notification.uuid as NSUUID, urlString, nil)
+//            if let relatedUser = notification.data.relatedUser {
+//                loadProfileImage?(notification.uuid as NSUUID, relatedUser, nil)
+//            }
         }
     }
     
@@ -103,6 +124,7 @@ extension MyNewsViewController: IndicatorInfoProvider {
 
 extension MyNewsViewController: NotificationView {
     func displayNotification(_ notification: PushNotification) {
+        guard notification.type == self.type else { return }
         self.notifications.append(PushNotificationObject(notification))
         self.notifications.sort { (p1, p2) -> Bool in
             p1.data.creationDate.compare(p2.data.creationDate) == .orderedDescending

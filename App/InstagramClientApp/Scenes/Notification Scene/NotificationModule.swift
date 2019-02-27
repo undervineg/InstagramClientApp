@@ -7,38 +7,46 @@
 //
 
 import InstagramEngine
-import FirebaseAuth
-import FirebaseDatabase
+import Firebase
 
 final class NotificationModule {
     let containerViewController: NotificationContainerController
     private let myNewsViewController: MyNewsViewController
     private let followingNewsViewController: FollowingNewsViewController
-    private let service: NotificationService
-    private let presenter: NotificationPresenter
-    private let useCase: NotificationUseCase
     
     init() {
         let networking = URLSessionManager()
-        let profileService = UserProfileService(firebaseAuth: Auth.self, firebaseDatabase: Database.self, networking: networking)
+        let profileService = UserProfileService(firebaseAuth: Auth.self,
+                                                firebaseDatabase: Database.self,
+                                                firebaseMessaging: Messaging.self,
+                                                networking: networking)
         let postService = PostService(firebaseAuth: Auth.self, firebaseDatabase: Database.self, networking: networking, profileService: profileService)
-        self.service = NotificationService(database: Database.self,
-                                           auth: Auth.self,
-                                           profileService: profileService,
-                                           postService: postService)
+//        let imageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
+        let imageFetchService = AsyncFetchService(operationType: RawImageDownloadOperation.self, networking: networking)
+        let newsService = NotificationService(database: Database.self,
+                                              auth: Auth.self,
+                                              profileService: profileService,
+                                              postService: postService)
+        
         self.myNewsViewController = MyNewsViewController()
-        self.presenter = NotificationPresenter(view: WeakRef(myNewsViewController))
-        self.useCase = NotificationUseCase(client: service, output: presenter)
+        let myNewsPresenter = NotificationPresenter(view: WeakRef(myNewsViewController))
+        let myNewsUseCase = NotificationUseCase(client: newsService, output: myNewsPresenter)
         
-        myNewsViewController.loadAllNotifications = useCase.loadAllNotifications
+        self.myNewsViewController.loadAllNotifications = myNewsUseCase.loadAllNotifications
+        self.myNewsViewController.loadProfileImage = imageFetchService.startFetch
+        self.myNewsViewController.cancelLoadProfileImage = imageFetchService.cancelFetch
+        self.myNewsViewController.getCachedProfileImage = imageFetchService.fetchedData
         
-        let profileImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
-        myNewsViewController.loadProfileImage = profileImageFetchService.startFetch
-        myNewsViewController.cancelLoadProfileImage = profileImageFetchService.cancelFetch
-        myNewsViewController.getCachedProfileImage = profileImageFetchService.fetchedData
+        self.followingNewsViewController = FollowingNewsViewController()
+        let followingNewsPresenter = NotificationPresenter(view: WeakRef(followingNewsViewController))
+        let followingNewsUseCase = NotificationUseCase(client: newsService, output: followingNewsPresenter)
         
-        followingNewsViewController = FollowingNewsViewController()
+        self.followingNewsViewController.loadAllNotifications = followingNewsUseCase.loadAllNotifications
+        self.followingNewsViewController.loadProfileImage = imageFetchService.startFetch
+        self.followingNewsViewController.cancelLoadProfileImage = imageFetchService.cancelFetch
+        self.followingNewsViewController.getCachedProfileImage = imageFetchService.fetchedData
         
-        containerViewController = NotificationContainerController(followingNewsViewController, myNewsViewController)
+        self.containerViewController = NotificationContainerController(followingNewsViewController,
+                                                                       myNewsViewController)
     }
 }

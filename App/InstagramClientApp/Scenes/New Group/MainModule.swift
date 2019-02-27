@@ -41,7 +41,7 @@ extension UITabBarController {
         let homeVC = HomeModule().withNavigation
         let searchVC = UserSearchModule().withNavigation
         let photoVC = PhotoSelectorModule().withNavigation
-        let likeVC = UINavigationController(rootViewController: UIViewController())
+        let likeVC = NotificationModule().containerViewController
         let profileVC = UserProfileModule().withNavigation
         
         homeVC.configureTabBarItem(image: "home_unselected", selectedImage: "home_selected")

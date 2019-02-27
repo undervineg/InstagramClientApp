@@ -15,8 +15,29 @@ struct Keys {
         static let followingDir = "following"
         static let commentsDir = "comments"
         static let likesDir = "likes"
-        static let count = "count"
-        static let contents = "contents"
+        static let notificationsDir = "notifications"
+        static let countsDir = "counts"
+        
+        struct Counts {
+            static let post = "post"
+            static let following = "following"
+            static let follower = "follower"
+            static let notification = "unreadNotification"
+        }
+        
+        struct Notifications {
+            static let type = "type"
+            static let title = "title"
+            static let body = "body"
+            static let emphasizeIndices = "emphasizeIndices"
+            static let creationDate = "creationDate"
+            static let readDate = "readDate"
+            static let profileImageUrl = "profileImageUrl"
+            static let profileLink = "profileLink"
+            static let detailImageUrls = "detailImageUrls"
+            static let detailLinks = "detailLinks"
+            static let detailButtonType = "detailButtonType"
+        }
         
         struct Profile {
             static let email = "email"
@@ -26,7 +47,6 @@ struct Keys {
         }
         
         struct Post {
-            static let uid = "userId"
             static let caption = "caption"
             static let image = "imageUrl"
             static let imageWidth = "imageWidth"
