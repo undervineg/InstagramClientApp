@@ -21,7 +21,8 @@ final class NotificationModule {
                                                 firebaseMessaging: Messaging.self,
                                                 networking: networking)
         let postService = PostService(firebaseAuth: Auth.self, firebaseDatabase: Database.self, networking: networking, profileService: profileService)
-        let imageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
+        let postImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
+        let profileImageFetchService = AsyncFetchService(operationType: ImageDownloadOperation.self, networking: networking)
         let newsService = NotificationService(database: Database.self,
                                               auth: Auth.self,
                                               profileService: profileService,
@@ -32,18 +33,24 @@ final class NotificationModule {
         let myNewsUseCase = NotificationUseCase(client: newsService, output: myNewsPresenter)
         
         self.myNewsViewController.loadAllNotifications = myNewsUseCase.loadAllNotifications
-        self.myNewsViewController.loadProfileImage = imageFetchService.startFetch
-        self.myNewsViewController.cancelLoadProfileImage = imageFetchService.cancelFetch
-        self.myNewsViewController.getCachedProfileImage = imageFetchService.fetchedData
+        
+        self.myNewsViewController.loadProfileImage = profileImageFetchService.startFetch
+        self.myNewsViewController.cancelLoadProfileImage = profileImageFetchService.cancelFetch
+        self.myNewsViewController.getCachedProfileImage = profileImageFetchService.fetchedData
         
         self.followingNewsViewController = FollowingNewsViewController()
         let followingNewsPresenter = NotificationPresenter(view: WeakRef(followingNewsViewController))
         let followingNewsUseCase = NotificationUseCase(client: newsService, output: followingNewsPresenter)
         
         self.followingNewsViewController.loadAllNotifications = followingNewsUseCase.loadAllNotifications
-        self.followingNewsViewController.loadProfileImage = imageFetchService.startFetch
-        self.followingNewsViewController.cancelLoadProfileImage = imageFetchService.cancelFetch
-        self.followingNewsViewController.getCachedProfileImage = imageFetchService.fetchedData
+        
+        self.followingNewsViewController.loadProfileImage = profileImageFetchService.startFetch
+        self.followingNewsViewController.cancelLoadProfileImage = profileImageFetchService.cancelFetch
+        self.followingNewsViewController.getCachedProfileImage = profileImageFetchService.fetchedData
+        
+        self.followingNewsViewController.loadPostImage = postImageFetchService.startFetch
+        self.followingNewsViewController.cancelLoadPostImage = postImageFetchService.cancelFetch
+        self.followingNewsViewController.getCachedPostImage = postImageFetchService.fetchedData
         
         self.containerViewController = NotificationContainerController(followingNewsViewController,
                                                                        myNewsViewController)

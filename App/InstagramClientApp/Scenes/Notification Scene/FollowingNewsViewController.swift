@@ -16,9 +16,14 @@ final class FollowingNewsViewController: UITableViewController, UITableViewDataS
     
     // MARK: Commands
     var loadAllNotifications: ((String?) -> Void)?
+    
     var loadProfileImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
     var getCachedProfileImage: ((NSUUID) -> UIImage?)?
     var cancelLoadProfileImage: ((NSUUID) -> Void)?
+    
+    var loadPostImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
+    var getCachedPostImage: ((NSUUID) -> UIImage?)?
+    var cancelLoadPostImage: ((NSUUID) -> Void)?
     
     // MARK: Models
     private var notifications: [PushNotificationObject] = []
@@ -71,6 +76,17 @@ final class FollowingNewsViewController: UITableViewController, UITableViewDataS
                 DispatchQueue.main.async {
                     guard cell.representedId == notification.uuid else { return }
                     cell.profileImageView?.image = fetchedImage
+                }
+            }
+        }
+        
+        if let cachedPostImage = getCachedPostImage?(notification.uuid as NSUUID) {
+            cell.postImageView.image = cachedPostImage
+        } else if let urlString = notification.data.detailImageUrls?.first {
+            loadPostImage?(notification.uuid as NSUUID, urlString as NSString) { (fetchedImage) in
+                DispatchQueue.main.async {
+                    guard cell.representedId == notification.uuid else { return }
+                    cell.postImageView.image = fetchedImage
                 }
             }
         }
