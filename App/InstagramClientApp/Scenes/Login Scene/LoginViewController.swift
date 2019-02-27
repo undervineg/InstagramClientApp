@@ -81,7 +81,7 @@ extension LoginViewController: LoginView {
 extension LoginViewController {
     // MARK: Private Methods
     private func isAllTextFieldsValid() -> Bool {
-        return [emailTextField, passwordTextField].isAllValid()
+        return [emailTextField, passwordTextField].isAllValid(shouldCheckBlanksAt: nil)
     }
     
     private func configureUIExtras() {

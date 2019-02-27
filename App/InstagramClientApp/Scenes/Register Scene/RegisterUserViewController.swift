@@ -95,7 +95,7 @@ extension RegisterUserViewController {
     
     // MARK: Private Methods
     private func isAllTextFieldsValid() -> Bool {
-        return [emailTextField, usernameTextField, passwordTextField].isAllValid()
+        return [emailTextField, usernameTextField, passwordTextField].isAllValid(shouldCheckBlanksAt: 1)
     }
     
     private func validateTextFieldsAndRegisterUser() {
