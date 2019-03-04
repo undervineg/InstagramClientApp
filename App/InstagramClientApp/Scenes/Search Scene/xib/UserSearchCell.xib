@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="UserSearchCell" customModule="InstagramClientApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="345" height="98"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="345" height="98"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vUT-R4-fab">
+                        <rect key="frame" x="8" y="24" width="50" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="Rle-Gx-AOj"/>
+                            <constraint firstAttribute="height" constant="50" id="qqZ-De-P4x"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PBu-ck-Vv7">
+                        <rect key="frame" x="66" y="0.0" width="279" height="98"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rg8-PX-exo">
+                        <rect key="frame" x="66" y="97.5" width="279" height="0.5"/>
+                        <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="8P2-Rr-cor"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="vUT-R4-fab" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="0Sr-fs-BJ2"/>
+                <constraint firstAttribute="bottom" secondItem="PBu-ck-Vv7" secondAttribute="bottom" id="6Ed-Fx-fRH"/>
+                <constraint firstAttribute="trailing" secondItem="rg8-PX-exo" secondAttribute="trailing" id="9Tm-fF-GkB"/>
+                <constraint firstAttribute="bottom" secondItem="rg8-PX-exo" secondAttribute="bottom" id="Apu-b4-UTs"/>
+                <constraint firstItem="PBu-ck-Vv7" firstAttribute="leading" secondItem="vUT-R4-fab" secondAttribute="trailing" constant="8" id="DcH-fW-exI"/>
+                <constraint firstItem="PBu-ck-Vv7" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="YRm-fd-3rD"/>
+                <constraint firstItem="rg8-PX-exo" firstAttribute="leading" secondItem="PBu-ck-Vv7" secondAttribute="leading" id="bkd-TN-Ptk"/>
+                <constraint firstAttribute="trailing" secondItem="PBu-ck-Vv7" secondAttribute="trailing" id="ebK-tC-AVW"/>
+                <constraint firstItem="vUT-R4-fab" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="ryg-TF-G0p"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="345" height="98"/>
+            <connections>
+                <outlet property="profileImageView" destination="vUT-R4-fab" id="dcI-7x-6d4"/>
+                <outlet property="usernameLabel" destination="PBu-ck-Vv7" id="sew-AI-qOG"/>
+            </connections>
+            <point key="canvasLocation" x="373.60000000000002" y="174.51274362818592"/>
+        </collectionViewCell>
+    </objects>
+</document>

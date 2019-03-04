@@ -7,9 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		080C5AAD21FACEE700AD8D7C /* CommentsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5AAC21FACEE700AD8D7C /* CommentsUseCase.swift */; };
+		080C5AB121FAE54E00AD8D7C /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5AB021FAE54E00AD8D7C /* Comment.swift */; };
+		080C5AB321FB5E8000AD8D7C /* FeaturePostLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5AB221FB5E8000AD8D7C /* FeaturePostLoadable.swift */; };
+		080C5AB621FB5EF100AD8D7C /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C5AB521FB5EF100AD8D7C /* Sort.swift */; };
+		084FF5A221EB5359000EA933 /* LoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5A121EB5359000EA933 /* LoginUseCase.swift */; };
+		084FF5EF21EDC93F000EA933 /* PhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF5EE21EDC93F000EA933 /* PhotoUseCase.swift */; };
+		084FF62421EF4644000EA933 /* SharePhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */; };
+		084FF62C21EF7CFB000EA933 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FF62B21EF7CFB000EA933 /* Post.swift */; };
+		0858764F21DA70A700C32422 /* RegisterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858764E21DA70A700C32422 /* RegisterUseCase.swift */; };
+		0858765521DA73FA00C32422 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858765421DA73FA00C32422 /* User.swift */; };
+		0858765A21DA74D000C32422 /* RegisterUserUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0858765921DA74D000C32422 /* RegisterUserUseCaseTests.swift */; };
+		085B5931221E7F7000796C5B /* PushNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085B5930221E7F7000796C5B /* PushNotification.swift */; };
+		085B593C221E937D00796C5B /* NotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085B593B221E937D00796C5B /* NotificationUseCase.swift */; };
+		085E526021F2ED1E0029C7BE /* HomeFeedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E525F21F2ED1E0029C7BE /* HomeFeedUseCase.swift */; };
+		085E527621F3A5A70029C7BE /* SearchUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085E527521F3A5A70029C7BE /* SearchUseCase.swift */; };
+		086FB086220074AD008ECD52 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086FB085220074AD008ECD52 /* Photo.swift */; };
 		0884514E21DA6676008B8121 /* InstagramEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0884514421DA6676008B8121 /* InstagramEngine.framework */; };
-		0884515321DA6676008B8121 /* InstagramEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0884515221DA6676008B8121 /* InstagramEngineTests.swift */; };
-		0884515521DA6676008B8121 /* InstagramEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 0884514721DA6676008B8121 /* InstagramEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		08F9847521E17CF200DE6E78 /* UserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847421E17CF200DE6E78 /* UserProfileUseCase.swift */; };
+		08F9847721E17D2A00DE6E78 /* UserProfileUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9847621E17D2A00DE6E78 /* UserProfileUseCaseTests.swift */; };
+		08F9848421E4B67500DE6E78 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F9848321E4B67500DE6E78 /* Result.swift */; };
+		08F984C621E6816900DE6E78 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C521E6816900DE6E78 /* AuthUseCase.swift */; };
+		08F984C821E6829000DE6E78 /* AuthUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F984C721E6829000DE6E78 /* AuthUseCaseTests.swift */; };
+		08FE157E21F6227C00A58355 /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE157D21F6227C00A58355 /* NotificationName.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +43,32 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		080C5AAC21FACEE700AD8D7C /* CommentsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsUseCase.swift; sourceTree = "<group>"; };
+		080C5AB021FAE54E00AD8D7C /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		080C5AB221FB5E8000AD8D7C /* FeaturePostLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturePostLoadable.swift; sourceTree = "<group>"; };
+		080C5AB521FB5EF100AD8D7C /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
+		084FF5A121EB5359000EA933 /* LoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUseCase.swift; sourceTree = "<group>"; };
+		084FF5EE21EDC93F000EA933 /* PhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUseCase.swift; sourceTree = "<group>"; };
+		084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoUseCase.swift; sourceTree = "<group>"; };
+		084FF62B21EF7CFB000EA933 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		0858764E21DA70A700C32422 /* RegisterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUseCase.swift; sourceTree = "<group>"; };
+		0858765421DA73FA00C32422 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0858765921DA74D000C32422 /* RegisterUserUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserUseCaseTests.swift; sourceTree = "<group>"; };
+		085B5930221E7F7000796C5B /* PushNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotification.swift; sourceTree = "<group>"; };
+		085B593B221E937D00796C5B /* NotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUseCase.swift; sourceTree = "<group>"; };
+		085E525F21F2ED1E0029C7BE /* HomeFeedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedUseCase.swift; sourceTree = "<group>"; };
+		085E527521F3A5A70029C7BE /* SearchUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUseCase.swift; sourceTree = "<group>"; };
+		086FB085220074AD008ECD52 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		0884514421DA6676008B8121 /* InstagramEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = InstagramEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0884514721DA6676008B8121 /* InstagramEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstagramEngine.h; sourceTree = "<group>"; };
 		0884514821DA6676008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0884514D21DA6676008B8121 /* InstagramEngineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstagramEngineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0884515221DA6676008B8121 /* InstagramEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramEngineTests.swift; sourceTree = "<group>"; };
 		0884515421DA6676008B8121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		08F9847421E17CF200DE6E78 /* UserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileUseCase.swift; sourceTree = "<group>"; };
+		08F9847621E17D2A00DE6E78 /* UserProfileUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileUseCaseTests.swift; sourceTree = "<group>"; };
+		08F9848321E4B67500DE6E78 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		08F984C521E6816900DE6E78 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
+		08F984C721E6829000DE6E78 /* AuthUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCaseTests.swift; sourceTree = "<group>"; };
+		08FE157D21F6227C00A58355 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +90,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		080C5AB421FB5ECE00AD8D7C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				080C5AB221FB5E8000AD8D7C /* FeaturePostLoadable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		0858765821DA741E00C32422 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				080C5AB021FAE54E00AD8D7C /* Comment.swift */,
+				084FF62B21EF7CFB000EA933 /* Post.swift */,
+				085B5930221E7F7000796C5B /* PushNotification.swift */,
+				086FB085220074AD008ECD52 /* Photo.swift */,
+				0858765421DA73FA00C32422 /* User.swift */,
+				08F9848321E4B67500DE6E78 /* Result.swift */,
+				080C5AB521FB5EF100AD8D7C /* Sort.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		0858765B21DB7C7F00C32422 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				080C5AB421FB5ECE00AD8D7C /* Protocols */,
+				085B593B221E937D00796C5B /* NotificationUseCase.swift */,
+				080C5AAC21FACEE700AD8D7C /* CommentsUseCase.swift */,
+				085E525F21F2ED1E0029C7BE /* HomeFeedUseCase.swift */,
+				085E527521F3A5A70029C7BE /* SearchUseCase.swift */,
+				084FF62321EF4643000EA933 /* SharePhotoUseCase.swift */,
+				084FF5EE21EDC93F000EA933 /* PhotoUseCase.swift */,
+				08F9847421E17CF200DE6E78 /* UserProfileUseCase.swift */,
+				084FF5A121EB5359000EA933 /* LoginUseCase.swift */,
+				0858764E21DA70A700C32422 /* RegisterUseCase.swift */,
+				08F984C521E6816900DE6E78 /* AuthUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
 		0884513A21DA6676008B8121 = {
 			isa = PBXGroup;
 			children = (
@@ -71,8 +151,10 @@
 		0884514621DA6676008B8121 /* InstagramEngine */ = {
 			isa = PBXGroup;
 			children = (
-				0884514721DA6676008B8121 /* InstagramEngine.h */,
 				0884514821DA6676008B8121 /* Info.plist */,
+				08FE157D21F6227C00A58355 /* NotificationName.swift */,
+				0858765821DA741E00C32422 /* Entity */,
+				0858765B21DB7C7F00C32422 /* UseCase */,
 			);
 			path = InstagramEngine;
 			sourceTree = "<group>";
@@ -80,8 +162,10 @@
 		0884515121DA6676008B8121 /* InstagramEngineTests */ = {
 			isa = PBXGroup;
 			children = (
-				0884515221DA6676008B8121 /* InstagramEngineTests.swift */,
 				0884515421DA6676008B8121 /* Info.plist */,
+				08F984C721E6829000DE6E78 /* AuthUseCaseTests.swift */,
+				0858765921DA74D000C32422 /* RegisterUserUseCaseTests.swift */,
+				08F9847621E17D2A00DE6E78 /* UserProfileUseCaseTests.swift */,
 			);
 			path = InstagramEngineTests;
 			sourceTree = "<group>";
@@ -93,7 +177,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0884515521DA6676008B8121 /* InstagramEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,9 +231,11 @@
 				TargetAttributes = {
 					0884514321DA6676008B8121 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 					0884514C21DA6676008B8121 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 				};
 			};
@@ -194,6 +279,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				084FF62421EF4644000EA933 /* SharePhotoUseCase.swift in Sources */,
+				08FE157E21F6227C00A58355 /* NotificationName.swift in Sources */,
+				085B5931221E7F7000796C5B /* PushNotification.swift in Sources */,
+				08F9847521E17CF200DE6E78 /* UserProfileUseCase.swift in Sources */,
+				080C5AB121FAE54E00AD8D7C /* Comment.swift in Sources */,
+				080C5AAD21FACEE700AD8D7C /* CommentsUseCase.swift in Sources */,
+				080C5AB321FB5E8000AD8D7C /* FeaturePostLoadable.swift in Sources */,
+				084FF5EF21EDC93F000EA933 /* PhotoUseCase.swift in Sources */,
+				085B593C221E937D00796C5B /* NotificationUseCase.swift in Sources */,
+				0858765521DA73FA00C32422 /* User.swift in Sources */,
+				085E526021F2ED1E0029C7BE /* HomeFeedUseCase.swift in Sources */,
+				08F9848421E4B67500DE6E78 /* Result.swift in Sources */,
+				086FB086220074AD008ECD52 /* Photo.swift in Sources */,
+				08F984C621E6816900DE6E78 /* AuthUseCase.swift in Sources */,
+				084FF62C21EF7CFB000EA933 /* Post.swift in Sources */,
+				085E527621F3A5A70029C7BE /* SearchUseCase.swift in Sources */,
+				080C5AB621FB5EF100AD8D7C /* Sort.swift in Sources */,
+				0858764F21DA70A700C32422 /* RegisterUseCase.swift in Sources */,
+				084FF5A221EB5359000EA933 /* LoginUseCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +305,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0884515321DA6676008B8121 /* InstagramEngineTests.swift in Sources */,
+				08F9847721E17D2A00DE6E78 /* UserProfileUseCaseTests.swift in Sources */,
+				08F984C821E6829000DE6E78 /* AuthUseCaseTests.swift in Sources */,
+				0858765A21DA74D000C32422 /* RegisterUserUseCaseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +447,7 @@
 		0884515921DA6676008B8121 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -358,6 +465,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.undervine.InstagramEngine;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -366,6 +474,7 @@
 		0884515A21DA6676008B8121 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -391,6 +500,8 @@
 		0884515C21DA6676008B8121 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VY6BWEP79H;
 				INFOPLIST_FILE = InstagramEngineTests/Info.plist;
@@ -401,6 +512,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.undervine.InstagramEngineTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -409,6 +521,8 @@
 		0884515D21DA6676008B8121 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VY6BWEP79H;
 				INFOPLIST_FILE = InstagramEngineTests/Info.plist;
