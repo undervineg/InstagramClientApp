@@ -16,12 +16,30 @@ final class MyNewsViewController: UITableViewController, UITableViewDataSourcePr
     
     // MARK: Commands
     var loadAllNotifications: ((String?) -> Void)?
+    
     var loadProfileImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
     var getCachedProfileImage: ((NSUUID) -> UIImage?)?
     var cancelLoadProfileImage: ((NSUUID) -> Void)?
     
+    var loadPostImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
+    var getCachedPostImage: ((NSUUID) -> UIImage?)?
+    var cancelLoadPostImage: ((NSUUID) -> Void)?
+    
     // MARK: Models
-    private var notifications: [PushNotificationObject] = []
+    private var notifications: [PushNotificationObject] = [] {
+        didSet {
+            state = (notifications.count > 0) ? .loaded : .noData
+        }
+    }
+    
+    private var state: PageState = .noData {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.refreshControl?.endRefreshing()
+                self.tableView.reloadData()
+            }
+        }
+    }
     
     // MARK: Initializer
     convenience init() {
@@ -36,10 +54,10 @@ final class MyNewsViewController: UITableViewController, UITableViewDataSourcePr
         
         setupRefreshControl()
         
-        tableView.register(MyNewsCell.nibFromClassName(), forCellReuseIdentifier: MyNewsCell.reuseId)
+        tableView.register(ButtonNewsCell.nibFromClassName(), forCellReuseIdentifier: ButtonNewsCell.reuseId)
+        tableView.register(ImageNewsCell.nibFromClassName(), forCellReuseIdentifier: ImageNewsCell.reuseId)
+        tableView.register(NotificationDefaultCell.self, forCellReuseIdentifier: NotificationDefaultCell.reuseId)
         
-        tableView.estimatedRowHeight = 60
-        tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         
         tableView.prefetchDataSource = self
@@ -54,49 +72,96 @@ final class MyNewsViewController: UITableViewController, UITableViewDataSourcePr
     }
 
     // MARK: - Table view data source
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch state {
+        case .noData: return view.frame.height
+        case .loaded: return UITableView.automaticDimension
+        }
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return notifications.count
+        switch state {
+        case .noData: return 1
+        case .loaded: return notifications.count
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: MyNewsCell.reuseId, for: indexPath) as! MyNewsCell
-
-        let notification = notifications[indexPath.row]
-        cell.configure(with: notification.data)
-        cell.representedId = notification.uuid
+        switch state {
+        case .noData:
+            return tableView.dequeueReusableCell(withIdentifier: NotificationDefaultCell.reuseId, for: indexPath)
+        case .loaded:
+            let notification = notifications[indexPath.row]
+            
+            let cell: NotificationCell = (notification.data.detailButtonType == nil) ? tableView.dequeueReusableCell(for: indexPath) as ImageNewsCell : tableView.dequeueReusableCell(for: indexPath) as ButtonNewsCell
+            
+            return configuredCell(for: cell, notification)
+        }
+    }
+    
+    private func configuredCell(for cell: NotificationCell?, _ notification: PushNotificationObject) -> UITableViewCell {
+        cell?.configure(with: notification.data)
+        cell?.representedId = notification.uuid
         
         if let cachedProfileImage = getCachedProfileImage?(notification.uuid as NSUUID) {
-            cell.profileImageView?.image = cachedProfileImage
+            cell?.profileImageView?.image = cachedProfileImage
         } else {
             let urlString = notification.data.profileImageUrl as NSString
             loadProfileImage?(notification.uuid as NSUUID, urlString) { (fetchedImage) in
                 DispatchQueue.main.async {
-                    guard cell.representedId == notification.uuid else { return }
-                    cell.profileImageView?.image = fetchedImage
+                    guard cell?.representedId == notification.uuid else { return }
+                    cell?.profileImageView?.image = fetchedImage
                 }
             }
         }
         
-        return cell
+        if let cachedPostImage = getCachedPostImage?(notification.uuid as NSUUID) {
+            cell?.postImageView?.image = cachedPostImage
+        } else if let urlString = notification.data.detailImageUrls?.first as NSString? {
+            loadPostImage?(notification.uuid as NSUUID, urlString) { (fetchedImage) in
+                DispatchQueue.main.async {
+                    guard cell?.representedId == notification.uuid else { return }
+                    cell?.postImageView?.image = fetchedImage
+                }
+            }
+        }
+        
+        return cell as! UITableViewCell
     }
     
     // MARK: Prefetching
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {
+            guard notifications.count - 1 > $0.item else { return }
             let notification = notifications[$0.row]
-            let urlString = notification.data.profileImageUrl as NSString
-            loadProfileImage?(notification.uuid as NSUUID, urlString, nil)
+            let profileUrlString = notification.data.profileImageUrl as NSString
+            loadProfileImage?(notification.uuid as NSUUID, profileUrlString, nil)
+            
+            if notification.data.detailButtonType == nil {
+                if let postUrlString = notification.data.detailImageUrls?.first as NSString? {
+                   loadPostImage?(notification.uuid as NSUUID, postUrlString, nil)
+                }
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {
+            guard notifications.count - 1 > $0.item else { return }
             let notification = notifications[$0.row]
             cancelLoadProfileImage?(notification.uuid as NSUUID)
+            
+            if notification.data.detailButtonType == nil {
+                cancelLoadPostImage?(notification.uuid as NSUUID)
+            }
         }
     }
 }
@@ -114,11 +179,6 @@ extension MyNewsViewController: NotificationView {
         self.notifications.sort { (p1, p2) -> Bool in
             p1.data.creationDate.compare(p2.data.creationDate) == .orderedDescending
         }
-        
-        DispatchQueue.main.async {
-            self.tableView.refreshControl?.endRefreshing()
-            self.tableView.reloadData()
-        }
     }
 }
 
@@ -127,5 +187,14 @@ extension MyNewsViewController {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
         tableView.refreshControl = refreshControl
+    }
+}
+
+extension UITableView {
+    func dequeueReusableCell<T: UITableViewCell>(for indexPath: IndexPath) -> T where T: NotificationCell {
+        guard let cell = self.dequeueReusableCell(withIdentifier: T.reuseId, for: indexPath) as? T else {
+            fatalError("Could not dequeue cell with identifier: \(T.reuseId)")
+        }
+        return cell
     }
 }

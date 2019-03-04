@@ -38,6 +38,10 @@ final class NotificationModule {
         self.myNewsViewController.cancelLoadProfileImage = profileImageFetchService.cancelFetch
         self.myNewsViewController.getCachedProfileImage = profileImageFetchService.fetchedData
         
+        self.myNewsViewController.loadPostImage = postImageFetchService.startFetch
+        self.myNewsViewController.cancelLoadPostImage = postImageFetchService.cancelFetch
+        self.myNewsViewController.getCachedPostImage = postImageFetchService.fetchedData
+        
         self.followingNewsViewController = FollowingNewsViewController()
         let followingNewsPresenter = NotificationPresenter(view: WeakRef(followingNewsViewController))
         let followingNewsUseCase = NotificationUseCase(client: newsService, output: followingNewsPresenter)

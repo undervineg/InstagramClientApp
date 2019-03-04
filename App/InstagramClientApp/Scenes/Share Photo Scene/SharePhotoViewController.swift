@@ -43,7 +43,8 @@ class SharePhotoViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
-        configureNavigationBar()
+        navigationController?.navigationBar.tintColor = .black
+        showShareButton()
         configureShareView()
         
         shareImageView.image = selectedImage
@@ -70,14 +71,14 @@ class SharePhotoViewController: UIViewController {
 
 extension SharePhotoViewController: SharePhotoView {
     func displayMain() {
-        stopIndicatorAnimating()
+        showShareButton()
         router?.openMainPage()
     }
     
     func displayError(_ errorMessage: String) {
         let alert = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] _ in
-            self?.stopIndicatorAnimating()
+            self?.showShareButton()
             self?.enableShareButton(true)
         }))
         present(alert, animated: true, completion: nil)
@@ -93,20 +94,13 @@ extension SharePhotoViewController {
         indicatorView.startAnimating()
     }
     
-    private func stopIndicatorAnimating() {
-        let shareItem = UIBarButtonItem(title: "Share", style: .done, target: self, action: #selector(share(_:)))
+    private func showShareButton() {
+        let shareItem = UIBarButtonItem(title: "공유", style: .done, target: self, action: #selector(share(_:)))
         navigationItem.setRightBarButton(shareItem, animated: true)
     }
     
     private func enableShareButton(_ isEnabled: Bool) {
         navigationItem.rightBarButtonItem?.isEnabled = isEnabled
-    }
-    
-    private func configureNavigationBar() {
-        navigationController?.navigationBar.tintColor = .black
-        
-        let shareItem = UIBarButtonItem(title: "Share", style: .done, target: self, action: #selector(share(_:)))
-        navigationItem.setRightBarButton(shareItem, animated: true)
     }
     
     private func configureShareView() {

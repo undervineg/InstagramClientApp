@@ -10,6 +10,7 @@ import UIKit
 import InstagramEngine
 
 final class HomeFeedViewController: UICollectionViewController, UICollectionViewDataSourcePrefetching {
+    // Commands
     var loadAllPosts: ((String?) -> Void)?
     var loadFollowerPosts: ((String?) -> Void)?
     var loadPostImage: ((NSUUID, NSString, ((UIImage?) -> Void)?) -> Void)?
@@ -22,7 +23,21 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
     
     private var router: HomeFeedRouter.Routes?
     
-    private var posts: [PostObject] = []
+    // Model
+    private var posts: [PostObject] = [] {
+        didSet {
+            state = (posts.count > 0) ? .loaded : .noData
+        }
+    }
+    
+    private var state: PageState = .noData {
+        didSet {
+            DispatchQueue.main.async {
+                self.collectionView.refreshControl?.endRefreshing()
+                self.collectionView.reloadData()
+            }
+        }
+    }
     
     convenience init(router: HomeFeedRouter.Routes) {
         let layout = UICollectionViewFlowLayout()
@@ -32,6 +47,7 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureExtraUI()
         setupNotificationsForReloadNewPosts()
 
@@ -48,49 +64,59 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return posts.count
+        switch state {
+        case .noData: return 1
+        case .loaded: return posts.count
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeFeedCell.reuseId, for: indexPath) as! HomeFeedCell
-
-        if posts.count > 0 {
-            let post = posts[indexPath.item]
-            cell.configure(with: post)
-            cell.representedId = post.uuid
+        switch state {
+        case .noData:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedDefaultCell.reuseId, for: indexPath) as! FeedDefaultCell
+            cell.configure(with: "게시물이 없습니다.")
+            return cell
+        case .loaded:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeFeedCell.reuseId, for: indexPath) as! HomeFeedCell
             
-            if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
-                cell.postImageView.image = cachedPostImage
-            } else {
-                loadPostImage?(post.uuid as NSUUID, post.data.imageUrl as NSString) { (fetchedImage) in
-                    DispatchQueue.main.async {
-                        guard cell.representedId == post.uuid else { return }
-                        cell.postImageView.image = fetchedImage
+            if posts.count > indexPath.item {
+                let post = posts[indexPath.item]
+                cell.configure(with: post)
+                cell.representedId = post.uuid
+                
+                if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
+                    cell.postImageView.image = cachedPostImage
+                } else {
+                    loadPostImage?(post.uuid as NSUUID, post.data.imageUrl as NSString) { (fetchedImage) in
+                        DispatchQueue.main.async {
+                            guard cell.representedId == post.uuid else { return }
+                            cell.postImageView.image = fetchedImage
+                        }
+                    }
+                }
+                
+                if let cachedProfileImage = getCachedProfileImage?(post.uuid as NSUUID) {
+                    cell.profileImageView.image = cachedProfileImage
+                } else {
+                    loadProfileImage?(post.uuid as NSUUID, post.user.imageUrl as NSString) { (fetchedImage) in
+                        DispatchQueue.main.async {
+                            guard cell.representedId == post.uuid else { return }
+                            cell.profileImageView.image = fetchedImage
+                        }
                     }
                 }
             }
             
-            if let cachedProfileImage = getCachedProfileImage?(post.uuid as NSUUID) {
-                cell.profileImageView.image = cachedProfileImage
-            } else {
-                loadProfileImage?(post.uuid as NSUUID, post.user.imageUrl as NSString) { (fetchedImage) in
-                    DispatchQueue.main.async {
-                        guard cell.representedId == post.uuid else { return }
-                        cell.profileImageView.image = fetchedImage
-                    }
-                }
-            }
+            cell.delegate = self
+            
+            return cell
         }
-        
-        cell.delegate = self
-        
-        return cell
     }
     
     // MARK: Prefetch
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {
-            guard posts.count - 1 > $0.item else { return }
+            guard posts.count > $0.item else { return }
             let post = posts[$0.item]
             loadPostImage?(post.uuid as NSUUID, post.data.imageUrl as NSString, nil)
         }
@@ -98,7 +124,7 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
 
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {
-            guard posts.count - 1 > $0.item else { return }
+            guard posts.count > $0.item else { return }
             let post = posts[$0.item]
             cancelLoadPostImage?(post.uuid as NSUUID)
         }
@@ -119,11 +145,20 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
 
 extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var height: CGFloat = 40 + 8 + 8 // username
-        height += view.frame.width       // image
-        height += 50                     // buttons
-        height += 60                     // caption
-        return CGSize(width: view.frame.width, height: height)
+        switch state {
+        case .loaded:
+            var height: CGFloat = 40 + 8 + 8 // username
+            height += view.frame.width       // image
+            height += 50                     // buttons
+            height += 60                     // caption
+            return CGSize(width: view.frame.width, height: height)
+        case .noData:
+            var height: CGFloat = view.frame.height
+            height -= 20    // status bar
+            height -= 44    // navigation bar
+            height -= 49    // tab bar
+            return CGSize(width: view.frame.width, height: height)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -168,12 +203,8 @@ extension HomeFeedViewController: PostView {
         loadedPosts.forEach { (loadedPost) in
             let index = (posts.count > 0) ?
                 posts.firstIndex { loadedPost.data.creationDate >= $0.data.creationDate } ?? posts.count : 0
+            
             posts.insert(loadedPost, at: index)
-        }
-        
-        DispatchQueue.main.async {
-            self.collectionView.refreshControl?.endRefreshing()
-            self.collectionView.reloadData()
         }
     }
     
@@ -194,8 +225,8 @@ extension HomeFeedViewController {
         
         navigationItem.titleView = UIImageView(image: UIImage(named: "logo2"))
         
-        let nib = HomeFeedCell.nibFromClassName()
-        collectionView.register(nib, forCellWithReuseIdentifier: HomeFeedCell.reuseId)
+        collectionView.register(HomeFeedCell.nibFromClassName(), forCellWithReuseIdentifier: HomeFeedCell.reuseId)
+        collectionView.register(FeedDefaultCell.self, forCellWithReuseIdentifier: FeedDefaultCell.reuseId)
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)

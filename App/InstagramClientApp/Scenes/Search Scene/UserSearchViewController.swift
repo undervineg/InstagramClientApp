@@ -22,8 +22,21 @@ class UserSearchViewController: UICollectionViewController, UICollectionViewData
     // MARK: Models
     private var router: UserSearchRouter?
     
-    private var users: [UserObject] = []
+    private var users: [UserObject] = [] {
+        didSet {
+            state = (users.count > 0) ? .loaded : .noData
+        }
+    }
     private var filteredUsers: [UserObject] = []
+    
+    private var state: PageState = .noData {
+        didSet {
+            DispatchQueue.main.async {
+                self.collectionView.refreshControl?.endRefreshing()
+                self.collectionView.reloadData()
+            }
+        }
+    }
     
     // MARK: Initializer
     convenience init(router: UserSearchRouter) {
@@ -53,8 +66,8 @@ class UserSearchViewController: UICollectionViewController, UICollectionViewData
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
 
-        let nib = UserSearchCell.nibFromClassName()
-        self.collectionView.register(nib, forCellWithReuseIdentifier: UserSearchCell.reuseId)
+        collectionView.register(UserSearchCell.nibFromClassName(), forCellWithReuseIdentifier: UserSearchCell.reuseId)
+        collectionView.register(SearchDefaultCell.self, forCellWithReuseIdentifier: SearchDefaultCell.reuseId)
         
         fetchAllUsers?(true)
     }
@@ -65,28 +78,38 @@ class UserSearchViewController: UICollectionViewController, UICollectionViewData
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isFiltering() ? filteredUsers.count : users.count
+        switch state {
+        case .noData: return 1
+        case .loaded: return isFiltering() ? filteredUsers.count : users.count
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserSearchCell.reuseId, for: indexPath) as! UserSearchCell
-        
-        if users.count > 0 {
-            let user = isFiltering() ? filteredUsers[indexPath.item] : users[indexPath.item]
-            cell.usernameLabel.text = user.data.username
+        switch state {
+        case .noData:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchDefaultCell.reuseId, for: indexPath) as! SearchDefaultCell
+            cell.configure(with: "검색 가능한 사용자가 없습니다.")
+            return cell
+        case .loaded:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserSearchCell.reuseId, for: indexPath) as! UserSearchCell
             
-            if let cachedImage = getCachedProfileImage?(user.uuid as NSUUID) {
-                cell.profileImageView.image = cachedImage
-            } else {
-                loadProfileImage?(user.uuid as NSUUID, user.data.imageUrl as NSString) { image in
-                    DispatchQueue.main.async {
-                        cell.profileImageView.image = image
+            if users.count > 0 {
+                let user = isFiltering() ? filteredUsers[indexPath.item] : users[indexPath.item]
+                cell.usernameLabel.text = user.data.username
+                
+                if let cachedImage = getCachedProfileImage?(user.uuid as NSUUID) {
+                    cell.profileImageView.image = cachedImage
+                } else {
+                    loadProfileImage?(user.uuid as NSUUID, user.data.imageUrl as NSString) { image in
+                        DispatchQueue.main.async {
+                            cell.profileImageView.image = image
+                        }
                     }
                 }
             }
+            
+            return cell
         }
-        
-        return cell
     }
     
     // MARK: Prefetching
@@ -121,7 +144,16 @@ class UserSearchViewController: UICollectionViewController, UICollectionViewData
 
 extension UserSearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 66)
+        switch state {
+        case .noData:
+            var height: CGFloat = view.frame.height
+            height -= 20    // status bar
+            height -= 44    // navigation bar
+            height -= 56    // search bar
+            height -= 49    // tab bar
+            return CGSize(width: view.frame.width, height: height)
+        case .loaded: return CGSize(width: view.frame.width, height: 66)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -135,11 +167,6 @@ extension UserSearchViewController: SearchView {
         
         self.users.sort { (u1, u2) -> Bool in
             return u1.data.username.lowercased().compare(u2.data.username.lowercased()) == .orderedAscending
-        }
-        
-        DispatchQueue.main.async {
-            self.collectionView.refreshControl?.endRefreshing()
-            self.collectionView.reloadData()
         }
     }
 }

@@ -34,17 +34,47 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
     private var router: UserProfileRouter.Routes?
 
     // MARK: Model
-    private var user: User?
-    private var userPosts: [PostObject] = []
-    private var userPostsCount: Int = 0
-
+    private var userPosts: [PostObject] = [] {
+        didSet {
+            state = (userPosts.count > 0) ? .loaded : .noData
+        }
+    }
+    private var state: PageState = .noData {
+        didSet {
+            collectionView.refreshControl?.endRefreshing()
+            collectionView.reloadData()
+        }
+    }
+    private var user: User? {
+        didSet {
+            collectionView.refreshControl?.endRefreshing()
+            collectionView.reloadData()
+        }
+    }
+    private var userPostsCount: Int = 0 {
+        didSet {
+            collectionView.refreshControl?.endRefreshing()
+            collectionView.reloadData()
+        }
+    }
+    private var isFollowing: Bool = false {
+        didSet {
+            collectionView.refreshControl?.endRefreshing()
+            collectionView.reloadData()
+        }
+    }
+    private var isGridView: Bool = true {
+        didSet {
+            collectionView.refreshControl?.endRefreshing()
+            collectionView.reloadData()
+        }
+    }
+    
     private let pagingCount: Int = 20
     private let order: Post.Order = .creationDate(.descending)
     private var hasMoreToLoad: Bool = true
     
     private var isCurrentUser: Bool { return uid == nil }
-    private var isFollowing: Bool = false
-    private var isGridView: Bool = true
     
     private let uuidForHeader = NSUUID()
 
@@ -61,6 +91,7 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
 
         collectionView.backgroundColor = .white
 
+        configureExtraUI()
         registerCollectionViewCells()
         setupNotificationsForReloadNewPosts()
         collectionView.isPrefetchingEnabled = true
@@ -102,67 +133,79 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return userPosts.count
+        switch state {
+        case .noData: return 1
+        case .loaded: return userPosts.count
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellId = isGridView ? UserProfileGridCell.reuseId : HomeFeedCell.reuseId
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-
-        // Request more data when it's last cell currently
-        let isLastCell = indexPath.item == userPosts.count - 1
-        if isLastCell && hasMoreToLoad {
-            let nextStartingPost = userPosts.last?.data.creationDate.timeIntervalSince1970
-            loadPaginatePosts?(uid, nextStartingPost, pagingCount, order, false)
-        }
         
-        if userPosts.count > 0 {
-            let post = userPosts[indexPath.item]
-
-            if let cell = cell as? UserProfileGridCell {
-                cell.representedId = post.uuid
+        switch state {
+        case .noData:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileDefaultCell.reuseId, for: indexPath) as! ProfileDefaultCell
+            let text = isGridView ? "사진 및 동영상 공유" : "사진과 동영상을 공유하면\n프로필에 표시됩니다."
+            cell.configure(with: text)
+            return cell
+        case .loaded:
+            let cellId = isGridView ? UserProfileGridCell.reuseId : HomeFeedCell.reuseId
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+            
+            // Request more data when it's last cell currently
+            let isLastCell = indexPath.item == userPosts.count - 1
+            if isLastCell && hasMoreToLoad {
+                let nextStartingPost = userPosts.last?.data.creationDate.timeIntervalSince1970
+                loadPaginatePosts?(uid, nextStartingPost, pagingCount, order, false)
+            }
+            
+            if userPosts.count > 0 {
+                let post = userPosts[indexPath.item]
                 
-                if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
-                    cell.imageView.image = cachedPostImage
-                } else {
-                    loadPostImage?(post.uuid as NSUUID, post.data.imageUrl as NSString) { (fetchedImage) in
-                        DispatchQueue.main.async {
-                            guard cell.representedId == post.uuid else { return }
-                            cell.imageView.image = fetchedImage
+                if let cell = cell as? UserProfileGridCell {
+                    cell.representedId = post.uuid
+                    
+                    if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
+                        cell.imageView.image = cachedPostImage
+                    } else {
+                        loadPostImage?(post.uuid as NSUUID, post.data.imageUrl as NSString) { (fetchedImage) in
+                            DispatchQueue.main.async {
+                                guard cell.representedId == post.uuid else { return }
+                                cell.imageView.image = fetchedImage
+                            }
+                        }
+                    }
+                }
+                
+                if let cell = cell as? HomeFeedCell {
+                    cell.configure(with: post)
+                    cell.representedId = post.uuid
+                    
+                    if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
+                        cell.postImageView.image = cachedPostImage
+                    } else {
+                        loadPostImage?(post.uuid as NSUUID, post.data.imageUrl as NSString) { (fetchedImage) in
+                            DispatchQueue.main.async {
+                                guard cell.representedId == post.uuid else { return }
+                                cell.postImageView.image = fetchedImage
+                            }
+                        }
+                    }
+                    
+                    if let cachedProfileImage = getCachedProfileImage?(post.uuid as NSUUID) {
+                        cell.profileImageView.image = cachedProfileImage
+                    } else {
+                        loadProfileImage?(post.uuid as NSUUID, post.user.imageUrl as NSString) { (fetchedImage) in
+                            DispatchQueue.main.async {
+                                guard cell.representedId == post.uuid else { return }
+                                cell.profileImageView.image = fetchedImage
+                            }
                         }
                     }
                 }
             }
-
-            if let cell = cell as? HomeFeedCell {
-                cell.configure(with: post)
-                cell.representedId = post.uuid
-                
-                if let cachedPostImage = getCachedPostImage?(post.uuid as NSUUID) {
-                    cell.postImageView.image = cachedPostImage
-                } else {
-                    loadPostImage?(post.uuid as NSUUID, post.data.imageUrl as NSString) { (fetchedImage) in
-                        DispatchQueue.main.async {
-                            guard cell.representedId == post.uuid else { return }
-                            cell.postImageView.image = fetchedImage
-                        }
-                    }
-                }
-                
-                if let cachedProfileImage = getCachedProfileImage?(post.uuid as NSUUID) {
-                    cell.profileImageView.image = cachedProfileImage
-                } else {
-                    loadProfileImage?(post.uuid as NSUUID, post.user.imageUrl as NSString) { (fetchedImage) in
-                        DispatchQueue.main.async {
-                            guard cell.representedId == post.uuid else { return }
-                            cell.profileImageView.image = fetchedImage
-                        }
-                    }
-                }
-            }
+            
+            return cell
         }
-
-        return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -214,7 +257,10 @@ extension UserProfileViewController: UserProfileView, PostView {
         }
         self.hasMoreToLoad = hasMoreToLoad
         
-        collectionView.reloadData()
+        DispatchQueue.main.async {
+            self.collectionView.refreshControl?.endRefreshing()
+            self.collectionView.reloadData()
+        }
     }
     
     func displayReloadedPosts(_ posts: [PostObject], hasMoreToLoad: Bool) {
@@ -223,25 +269,25 @@ extension UserProfileViewController: UserProfileView, PostView {
         }
         self.hasMoreToLoad = hasMoreToLoad
         
-        collectionView.reloadData()
+        DispatchQueue.main.async {
+            self.collectionView.refreshControl?.endRefreshing()
+            self.collectionView.reloadData()
+        }
     }
     
     func displayPostsCount(_ count: Int) {
         userPostsCount = count
-        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     // MARK: User Profile View
     func displayUserInfo(_ userInfo: User) {
         user = userInfo
         setTitleOnNavigationBar()
-        collectionView.reloadData()
     }
     
     func toggleFollowButton(_ isFollowing: Bool) {
         guard !isCurrentUser else { return }
         self.isFollowing = isFollowing
-        collectionView.reloadData()
     }
     
     func onLogoutSucceeded() {
@@ -256,14 +302,24 @@ extension UserProfileViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if isGridView {
-            let w = (view.frame.width - 2) / 3
-            return CGSize(width: w, height: w)
-        } else {
-            var height: CGFloat = 40 + 8 + 8 // username
-            height += view.frame.width       // image
-            height += 50                     // buttons
-            height += 60                     // caption
+        switch state {
+        case .loaded:
+            if isGridView {
+                let w = (view.frame.width - 2) / 3
+                return CGSize(width: w, height: w)
+            } else {
+                var height: CGFloat = 40 + 8 + 8 // username
+                height += view.frame.width       // image
+                height += 50                     // buttons
+                height += 60                     // caption
+                return CGSize(width: view.frame.width, height: height)
+            }
+        case .noData:
+            var height: CGFloat = view.frame.height
+            height -= 20    // status bar
+            height -= 44    // navigation bar
+            height -= 200   // collection view header
+            height -= 49    // tab bar
             return CGSize(width: view.frame.width, height: height)
         }
     }
@@ -294,12 +350,10 @@ extension UserProfileViewController: UserProfileHeaderDelegate {
 
     func didChangeToGridView(_ userProfileHeaderCell: UserProfileHeader) {
         isGridView = true
-        collectionView.reloadData()
     }
 
     func didChangeToListView(_ userProfileHeaderCell: UserProfileHeader) {
         isGridView = false
-        collectionView.reloadData()
     }
 
     func didTapBookmarkButton(_ userProfileHeaderCell: UserProfileHeader) {
@@ -345,6 +399,12 @@ extension UserProfileViewController {
 //        NotificationCenter.default.addObserver(self, selector: #selector(refresh(_:)), name: NotificationName.unfollowOldUser, object: nil)
     }
 
+    private func configureExtraUI() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+    }
+    
     private func configureLogoutButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "gear"),
                                                             style: .plain,
@@ -364,5 +424,6 @@ extension UserProfileViewController {
                                 withReuseIdentifier: UserProfileHeader.reuseId)
         collectionView.register(UserProfileGridCell.self, forCellWithReuseIdentifier: UserProfileGridCell.reuseId)
         collectionView.register(HomeFeedCell.nibFromClassName(), forCellWithReuseIdentifier: HomeFeedCell.reuseId)
+        collectionView.register(ProfileDefaultCell.self, forCellWithReuseIdentifier: ProfileDefaultCell.reuseId)
     }
 }
