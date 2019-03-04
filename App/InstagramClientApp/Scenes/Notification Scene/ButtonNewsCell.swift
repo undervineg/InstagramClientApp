@@ -1,5 +1,5 @@
 //
-//  MyNewsCell.swift
+//  ButtonNewsCell.swift
 //  InstagramClientApp
 //
 //  Created by 심승민 on 22/02/2019.
@@ -9,14 +9,14 @@
 import UIKit
 import InstagramEngine
 
-final class MyNewsCell: UITableViewCell {
-
-    static let reuseId = "MyNewsCell"
+final class ButtonNewsCell: UITableViewCell, NotificationCell {
+    static let reuseId = "ButtonNewsCell"
     var representedId: UUID?
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var detailButton: UIButton!
+    var postImageView: UIImageView? = nil
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -38,6 +38,7 @@ final class MyNewsCell: UITableViewCell {
         super.prepareForReuse()
         profileImageView.image = nil
         messageLabel.text = nil
+        detailButton.setTitle(nil, for: .normal)
     }
     
 }
