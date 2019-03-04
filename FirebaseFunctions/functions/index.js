@@ -64,15 +64,119 @@ exports.observeUnfollowCount = functions.database.ref('/following/{followedId}/{
   })
 })
 
+exports.observeUnfollow = functions.database.ref('/following/{followedId}/{followerId}').onDelete((snapshot, context) => {
+  var followedId = context.params.followedId
+  var followerId = context.params.followerId
+
+  return admin.database().ref('/likes/' + followedId).once('value', snapshot => {
+    var q = async.queue(function(task, callback) {
+      var postId = Object.keys(task).map(k => task[k]);
+      return admin.database().ref('/likes/' + followedId + '/' + postId + '/' + followerId).remove().catch(function(error) {
+        console.log('Error removing likes: ' + error);
+      })
+    }, 5)
+
+    snapshot.forEach(function(childSnapshot) {
+      var postId = childSnapshot.key;
+      console.log('Post ID: ' + postId.toString());
+      q.push({name: postId}, function(err) {
+        if (err) {
+          console.log('Error pushing task: ' + postId);
+        }
+        console.log('Finished processing ' + postId);
+      });
+    })
+  })
+})
+
+exports.observeLikeNotificationForPostedUser = functions.database.ref('/likes/{uidWhoPostedId}/{postId}/{uidWhoLikesId}').onCreate((snapshot, context) => {
+  var userWhoPostedId = context.params.uidWhoPostedId
+  var userWhoLikesId = context.params.uidWhoLikesId
+  var postId = context.params.postId
+
+  var notiType = 0
+
+  return admin.database().ref('/users/' + userWhoPostedId).once('value', snapshot => {
+    var userWhoPosted = snapshot.val();
+    return admin.database().ref('/users/' + userWhoLikesId).once('value', snapshot => {
+        var userWhoLikes = snapshot.val();
+        return admin.database().ref('/posts/' + userWhoPostedId + '/' + postId).once('value', snapshot => {
+          var post = snapshot.val();
+
+          return admin.database().ref('/following/' + userWhoPostedId).once('value', snapshot => {
+            // send to posted user
+            return admin.database().ref('/counts/' + userWhoPostedId + '/unreadNotification').once('value', snapshot => {
+              var unreadCount = snapshot.val() + 1;
+              return admin.database().ref('/counts/' + userWhoPostedId).update({ unreadNotification: unreadCount }, function(error){
+                if (error) {
+                  console.log('Error saving message:', error);
+                  return
+                }
+
+                var body = userWhoLikes.username + "님이 회원님의 게시물을 좋아합니다."
+                var createdAt = Date.now() / 1000;
+                var emphasizeIndices = [0, userWhoLikes.username.length];
+
+                var payload = {
+                  notification: {
+                    body: body
+                  },
+                  apns: {
+                    payload: {
+                      aps: {
+                        sound: "default",
+                        badge: unreadCount
+                      }
+                    }
+                  },
+                  data: {
+                    type: notiType.toString(),
+                    postId: postId
+                  },
+                  token: userWhoPosted.fcmToken
+                };
+
+                return admin.database().ref('/notifications/' + userWhoPostedId).push().update({
+                  type: notiType,
+                  body: body,
+                  creationDate: createdAt,
+                  emphasizeIndices: emphasizeIndices,
+                  profileImageUrl: userWhoLikes.profileImageUrl,
+                  profileLink: userWhoLikesId,
+                  detailImageUrls: [post.imageUrl],
+                  detailLinks: [postId]
+                }, function(error){
+                  if (error) {
+                    console.log('Error saving message:', error);
+                    return
+                  }
+
+                  admin.messaging().send(payload)
+                    .then((response) => {
+                      console.log('Successfully sent message:', response);
+                      callback();
+                    })
+                    .catch((error) => {
+                      console.log('Error sending message:', error);
+                      return
+                    });
+
+                });
+
+              })
+            })
+          })
+        })
+    })
+  })
+})
+
 exports.observeLikeNotification = functions.database.ref('/likes/{uidWhoPostedId}/{postId}/{uidWhoLikesId}').onCreate((snapshot, context) => {
   var userWhoPostedId = context.params.uidWhoPostedId
   var userWhoLikesId = context.params.uidWhoLikesId
   var postId = context.params.postId
 
-  var topic = 'followers';
   var notiType = 1
-
-  console.log('Notification Topic: ' + topic);
 
   return admin.database().ref('/users/' + userWhoPostedId).once('value', snapshot => {
     var userWhoPosted = snapshot.val();
@@ -83,18 +187,6 @@ exports.observeLikeNotification = functions.database.ref('/likes/{uidWhoPostedId
 
           console.log("Liked Post: " + post);
 
-          var body = userWhoLikes.username + "님이 " + userWhoPosted.username + "님의 게시물을 좋아합니다."
-          var createdAt = Date.now() / 1000;
-          var startIndex_userLikes = 0
-          var length_userLikes = userWhoLikes.username.length
-          var endIndex_userLikes = startIndex_userLikes + length_userLikes - 1
-          var startIndex_userPosted = endIndex_userLikes + 3
-          var length_userPosted = userWhoPosted.username.length
-          var endIndex_userPosted = startIndex_userPosted + length_userPosted - 1
-          var emphasizeIndices = [startIndex_userLikes, length_userLikes, startIndex_userPosted, length_userPosted];
-
-          console.log('Send message: ' + body + ' created at ' + createdAt);
-
           var q = async.queue(function(task, callback) {
             var followerId = Object.keys(task).map(k => task[k]);
             console.log('Task values(followerId): ' + followerId + ' UserWhoLikesId: ' + userWhoLikesId);
@@ -103,71 +195,64 @@ exports.observeLikeNotification = functions.database.ref('/likes/{uidWhoPostedId
               console.log('skip: ' + followerId);
               return
             }
+
             // send notification
-            return admin.database().ref('/counts/' + followerId + '/unreadNotification').once('value', snapshot => {
-              var unreadCount = snapshot.val() + 1;
-              return admin.database().ref('/counts/' + followerId).update({ unreadNotification: unreadCount }, function(error){
+            return admin.database().ref('/users/' + followerId).once('value', snapshot => {
+              var follower = snapshot.val();
+
+              var body = userWhoLikes.username + "님이 " + userWhoPosted.username + "님의 게시물을 좋아합니다."
+              var createdAt = Date.now() / 1000;
+              var startIndex_userLikes = 0
+              var length_userLikes = userWhoLikes.username.length
+              var endIndex_userLikes = startIndex_userLikes + length_userLikes - 1
+              var startIndex_userPosted = endIndex_userLikes + 3
+              var length_userPosted = userWhoPosted.username.length
+              var endIndex_userPosted = startIndex_userPosted + length_userPosted - 1
+              var emphasizeIndices = [startIndex_userLikes, length_userLikes, startIndex_userPosted, length_userPosted];
+
+              console.log('Send message: ' + body + ' created at ' + createdAt);
+
+              var payload = {
+                notification: {
+                  body: body
+                },
+                data: {
+                  type: notiType.toString(),
+                  postId: postId
+                },
+                token: follower.fcmToken
+              };
+
+              return admin.database().ref('/notifications/' + followerId).push().update({
+                type: notiType,
+                body: body,
+                creationDate: createdAt,
+                emphasizeIndices: emphasizeIndices,
+                profileImageUrl: userWhoLikes.profileImageUrl,
+                profileLink: userWhoLikesId,
+                detailImageUrls: [post.imageUrl],
+                detailLinks: [postId]
+              }, function(error){
                 if (error) {
                   console.log('Error saving message:', error);
                   return
                 }
 
-                return admin.database().ref('/users/' + followerId).once('value', snapshot => {
-                  var follower = snapshot.val();
-
-                  var payload = {
-                    notification: {
-                      body: body
-                    },
-                    data: {
-                      type: notiType.toString(),
-                      postId: postId
-                    },
-                    token: follower.fcmToken
-                  };
-
-                  return admin.database().ref('/notifications/' + followerId).push().update({
-                    type: notiType,
-                    body: body,
-                    creationDate: createdAt,
-                    emphasizeIndices: emphasizeIndices,
-                    profileImageUrl: userWhoLikes.profileImageUrl,
-                    profileLink: userWhoLikesId,
-                    detailImageUrls: [post.imageUrl],
-                    detailLinks: [postId]
-                  }, function(error){
-                    if (error) {
-                      console.log('Error saving message:', error);
-                      return
-                    }
-
-                    admin.messaging().send(payload)
-                      .then((response) => {
-                        console.log('Successfully sent message:', response);
-                        callback();
-                      })
-                      .catch((error) => {
-                        console.log('Error sending message:', error);
-                        return
-                      });
-
+                admin.messaging().send(payload)
+                  .then((response) => {
+                    console.log('Successfully sent message:', response);
+                    callback();
+                  })
+                  .catch((error) => {
+                    console.log('Error sending message:', error);
+                    return
                   });
-                })
-
-              })
+              });
             })
 
           }, 5);
 
           return admin.database().ref('/following/' + userWhoPostedId).once('value', snapshot => {
-            // send to posted user
-            q.push({name: userWhoPostedId}, function(err) {
-              if (err) {
-                console.log('Error pushing task: ' + userWhoPostedId);
-              }
-              console.log('Finished processing ' + userWhoPostedId);
-            });
-            // send to followers of posted user
             snapshot.forEach(function(childSnapshot) {
               var followerId = childSnapshot.key;
               q.push({name: followerId}, function(err) {

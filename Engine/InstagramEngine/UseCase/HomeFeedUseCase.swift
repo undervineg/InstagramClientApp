@@ -31,6 +31,7 @@ final public class HomeFeedUseCase: FeaturePostLoadable {
         case fetchFollowingListError
         case loadLikesError
         case saveLikesError
+        case parseError
         
         public var localizedDescription: String {
             switch self {
@@ -46,6 +47,7 @@ final public class HomeFeedUseCase: FeaturePostLoadable {
                 return "좋아요를 불러오는 도중 문제가 발생했습니다."
             case .saveLikesError:
                 return "좋아요 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요."
+            default: return ""
             }
         }
     }

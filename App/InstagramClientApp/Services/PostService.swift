@@ -27,7 +27,7 @@ final class PostService: LoadPostClient {
         self.profileService = profileService
     }
     
-    func fetchPost(of uid: String?, at postId: String, _ completion: @escaping (Result<PostObject?, Error>) -> Void) {
+    func fetchPost(at postId: String, of uid: String?, _ completion: @escaping (Result<PostObject?, Error>) -> Void) {
         guard let userId = (uid == nil) ? auth.currentUserId : uid else { return }
         
         let refs: [Reference] = [.directory(Keys.Database.postsDir), .directory(userId), .directory(postId)]
@@ -67,60 +67,36 @@ final class PostService: LoadPostClient {
         database.fetchFromRoot(under: refs) { (result: Result<[String: Any]?, Error>) in
             switch result {
             case .success(let values):
-                guard let values = values else {
-                    completion(.success(nil))
-                    return
-                }
+                guard let values = values else { return }
                 
+                var posts = [String: [Post]]()
                 do {
-                    guard let posts = try PostMapper.map(values, shouldSort: false)[userId] else { return }
-                    print("🥵Fetched posts: ", posts)
-                    posts.forEach {
-                        self.generatePostObj(of: userId, post: $0, completion: { (result) in
-                            switch result {
-                            case .success(let postObj): completion(.success(postObj))
-                            case .failure(let error): completion(.failure(error))
-                            }
-                        })
-                    }
-                    
+                    posts = try PostMapper.map(values, shouldSort: false)
                 } catch {
                     print(error)
                 }
+                
+                posts[userId]?.forEach {
+                    self.generatePostObj(of: userId, post: $0, completion: { (result) in
+                        switch result {
+                        case .success(let postObj):
+                            completion(.success(postObj))
+                        case .failure:
+                            return
+                        }
+                    })
+                }
+                
             default: return
             }
         }
     }
     
-    func fetchAllPosts(of uid: String?, _ completion: @escaping (Result<PostObject?, Error>) -> Void) {
-        self.fetchPost(of: uid) { result in
+    func fetchFollowingList(of uid: String?, _ completion: @escaping (Result<[String], Error>) -> Void) {
+        profileService.fetchFollowingList(of: uid) { (result) in
             switch result {
-            case .success(let posts):
-//                self.serialQueue.async {
-                    completion(.success(posts))
-//                }
+            case .success(let followingUsers): completion(.success(followingUsers))
             case .failure(let error): completion(.failure(error))
-            }
-        }
-    }
-    
-    func fetchFollowerPosts(of uid: String?, _ completion: @escaping (Result<PostObject?, Error>) -> Void) {
-        profileService.fetchFollowingList(of: uid) { [unowned self] (result) in
-            switch result {
-            case .success(let followingUsers):
-                followingUsers.forEach { (followingUser) in
-                    self.fetchPost(of: followingUser) { result in
-                        switch result {
-                        case .success(let posts):
-                            //                            self.serialQueue.async {
-                            completion(.success(posts))
-                        //                            }
-                        case .failure(let error): completion(.failure(error))
-                        }
-                    }
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
         }
     }
@@ -163,7 +139,7 @@ final class PostService: LoadPostClient {
     func fetchPostsCount(of uid: String?, _ completion: @escaping (Int) -> Void) {
         guard let userId = (uid == nil) ? auth.currentUserId : uid else { return }
         
-        let refs: [Reference] = [.directory(Keys.Database.postsDir), .directory(userId), .directory(Keys.Database.Counts.post)]
+        let refs: [Reference] = [.directory(Keys.Database.countsDir), .directory(userId), .directory(Keys.Database.Counts.post)]
         
         database.fetchAll(under: refs) { (result: Result<Int?, Error>) in
             switch result {
@@ -295,8 +271,8 @@ private class PostMapper {
     }
     
     static func map(_ dictionary: [String: Any], shouldSort: Bool) throws -> [String: [Post]] {
-        let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: [])
         var parsedObject = [String: [Post]]()
+        let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: [])
         if shouldSort {
             parsedObject = try JSONDecoder().decode(RootWithOrder.self, from: jsonData).items
         } else {

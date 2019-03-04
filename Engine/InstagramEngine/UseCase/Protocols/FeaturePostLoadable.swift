@@ -9,12 +9,11 @@
 import Foundation
 
 public protocol LoadPostClient {
-    func fetchPost(of uid: String?, at postId: String, _ completion: @escaping (Result<PostObject?, Error>) -> Void)
+    func fetchPost(at postId: String, of uid: String?, _ completion: @escaping (Result<PostObject?, Error>) -> Void)
     func fetchPost(of uid: String?, _ completion: @escaping (Result<PostObject?, Error>) -> Void)
-    func fetchAllPosts(of uid: String?, _ completion: @escaping (Result<PostObject?, Error>) -> Void)
-    func fetchFollowerPosts(of uid: String?, _ completion: @escaping (Result<PostObject?, Error>) -> Void)
     func fetchPostWithPagination(of uid: String?, from postId: Any?, to limit: Int, with order: Post.Order, completion: @escaping (Result<([PostObject], Bool), Error>) -> Void)
     func fetchPostsCount(of uid: String?, _ completion: @escaping (Int) -> Void)
+    func fetchFollowingList(of uid: String?, _ completion: @escaping (Result<[String], Error>) -> Void)
     
     func fetchUserLikes(_ postId: String, of uidWhoPosted: String, completion: @escaping (Result<Bool, Error>) -> Void)
     func changeLikes(_ postId: String, of uidWhoPosted: String, to likesState: Bool, completion: @escaping (Error?) -> Void)
@@ -25,6 +24,7 @@ public protocol FeaturePostLoadable: class {
     var postOutput: LoadPostOutput { get }
     
     func getPostsCount(of uid: String?)
+    func getFollowingPostsCount(of uid: String?)
     func loadAllPosts(of uid: String?)
     func loadFollowingPosts(of uid: String?)
     func loadPaginatePosts(of uid: String?, from postId: Any?, limit: Int, orderBy order: Post.Order, isReloading: Bool)
@@ -38,6 +38,20 @@ public protocol LoadPostOutput {
 }
 
 extension FeaturePostLoadable {
+    public func getFollowingPostsCount(of uid: String?) {
+        postClient.fetchFollowingList(of: uid) { [weak self] in
+            switch $0 {
+            case .success(let followingUsers):
+                followingUsers.forEach { (followingId) in
+                    self?.postClient.fetchPostsCount(of: followingId) {
+                        self?.postOutput.loadPostsCountSucceeded($0)
+                    }
+                }
+            case .failure: return
+            }
+        }
+    }
+    
     public func getPostsCount(of uid: String?) {
         postClient.fetchPostsCount(of: uid) { [weak self] in
             self?.postOutput.loadPostsCountSucceeded($0)
@@ -45,7 +59,7 @@ extension FeaturePostLoadable {
     }
     
     public func loadAllPosts(of uid: String?) {
-        postClient.fetchAllPosts(of: uid) { [weak self] in
+        postClient.fetchPost(of: uid) { [weak self] in
             switch $0 {
             case .success(let postObj):
                 self?.postOutput.loadPostSucceeded(postObj)
@@ -53,17 +67,43 @@ extension FeaturePostLoadable {
                 self?.postOutput.loadPostFailed(error)
             }
         }
+//        postClient.fetchAllPosts(of: uid) { [weak self] in
+//            switch $0 {
+//            case .success(let postObj):
+//                self?.postOutput.loadPostSucceeded(postObj)
+//            case .failure(let error):
+//                self?.postOutput.loadPostFailed(error)
+//            }
+//        }
     }
     
     public func loadFollowingPosts(of uid: String?) {
-        postClient.fetchFollowerPosts(of: uid) { [weak self] in
+        postClient.fetchFollowingList(of: uid) { [weak self] in
             switch $0 {
-            case .success(let postObj):
-                self?.postOutput.loadPostSucceeded(postObj)
+            case .success(let followingUsers):
+                followingUsers.forEach { (followingId) in
+                    self?.postClient.fetchPost(of: followingId) { (result) in
+                        switch result {
+                        case .success(let posts):
+                            self?.postOutput.loadPostSucceeded(posts)
+                        case .failure(let error):
+                            self?.postOutput.loadPostFailed(error)
+                        }
+                    }
+                }
             case .failure(let error):
                 self?.postOutput.loadPostFailed(error)
             }
+            
         }
+//        postClient.fetchFollowerPosts(of: uid) { [weak self] in
+//            switch $0 {
+//            case .success(let postObj):
+//                self?.postOutput.loadPostSucceeded(postObj)
+//            case .failure(let error):
+//                self?.postOutput.loadPostFailed(error)
+//            }
+//        }
     }
     
     public func loadPaginatePosts(of uid: String?, from postId: Any?, limit: Int, orderBy order: Post.Order, isReloading: Bool) {
