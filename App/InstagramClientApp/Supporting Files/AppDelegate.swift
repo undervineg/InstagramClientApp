@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import InstagramEngine
 import UserNotifications
 
 //@UIApplicationMain
@@ -82,20 +83,46 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
         let userInfo = response.notification.request.content.userInfo
-        
-        if let followerId = userInfo["followerId"] as? String {
-            openFollowerPage(followerId: followerId)
-        }
+        handlePushNotification(userInfo)
         
         completionHandler()
     }
     
-    private func openFollowerPage(followerId: String) {
+    // Just alert when it's foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler(.alert)
+    }
+    
+    // MARK: Private Methods
+    private func handlePushNotification(_ userInfo: [AnyHashable : Any]) {
+        guard
+            let notificationTag = (userInfo["type"] as? NSString)?.integerValue,
+            let notificationType = PushNotificationType(rawValue: notificationTag) else {
+                return
+        }
+        
+        switch notificationType {
+        case .myNews:
+            guard let followerId = userInfo["followerId"] as? String else { break }
+            openFollowerPage(id: followerId)
+        case .followingNews:
+            guard let postId = userInfo["postId"] as? String else { return }
+            openPostPage(id: postId)
+        }
+    }
+    
+    private func openFollowerPage(id followerId: String) {
         if window?.rootViewController is SplashViewController {
             openFollowerPageFromMain(followerId: followerId, after: 5000)
         } else {
             openFollowerPageFromMain(followerId: followerId)
         }
+    }
+    
+    private func openPostPage(id postId: String) {
+        // TODO: Make Post page and route.
     }
     
     private func openFollowerPageFromMain(followerId: String, after nanoSeconds: UInt64 = 0) {
@@ -113,10 +140,5 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             router.viewController = currentTabVC
             router.openUserProfilePage(of: followerId)
         }
-    }
-    
-    // Handle notifications that occured in foreground
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler(.alert)
     }
 }
