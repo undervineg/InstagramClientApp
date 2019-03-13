@@ -9,7 +9,7 @@
 import UIKit
 import InstagramEngine
 
-protocol HomeFeedCellDelegate {
+protocol FeedCellDelegate {
     func didTapLikeButton(_ cell: HomeFeedCell)
     func didTapCommentsButton(_ cell: HomeFeedCell)
     func didTapSendMeesageButton(_ cell: HomeFeedCell)
@@ -23,7 +23,7 @@ final class HomeFeedCell: UICollectionViewCell {
     
     var representedId: UUID?
     
-    var delegate: HomeFeedCellDelegate?
+    var delegate: FeedCellDelegate?
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!

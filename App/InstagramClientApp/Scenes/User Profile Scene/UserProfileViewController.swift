@@ -29,6 +29,8 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
     var follow: ((String) -> Void)?
     var unfollow: ((String) -> Void)?
     var checkCurrentUserIsFollowing: ((String) -> Void)?
+    
+    var changeLikes: ((String, String, Bool, Int) -> Void)?
 
     // MARK: Router
     private var router: UserProfileRouter.Routes?
@@ -203,6 +205,8 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
                     }
                 }
             }
+            
+            (cell as? HomeFeedCell)?.delegate = self
             
             return cell
         }
@@ -425,5 +429,30 @@ extension UserProfileViewController {
         collectionView.register(UserProfileGridCell.self, forCellWithReuseIdentifier: UserProfileGridCell.reuseId)
         collectionView.register(HomeFeedCell.nibFromClassName(), forCellWithReuseIdentifier: HomeFeedCell.reuseId)
         collectionView.register(ProfileDefaultCell.self, forCellWithReuseIdentifier: ProfileDefaultCell.reuseId)
+    }
+}
+
+extension UserProfileViewController: FeedCellDelegate {
+    func didTapLikeButton(_ cell: HomeFeedCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        let currentPost = userPosts[indexPath.item]
+        changeLikes?(currentPost.data.id, currentPost.user.id, !currentPost.hasLiked, indexPath.item)
+    }
+    
+    func didTapCommentsButton(_ cell: HomeFeedCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        router?.openCommentsPage(postId: userPosts[indexPath.item].data.id)
+    }
+    
+    func didTapSendMeesageButton(_ cell: HomeFeedCell) {
+        
+    }
+    
+    func didTapBookMarkButton(_ cell: HomeFeedCell) {
+        
+    }
+    
+    func didTapOptionButton(_ cell: HomeFeedCell) {
+        
     }
 }

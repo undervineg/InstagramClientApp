@@ -166,7 +166,7 @@ extension HomeFeedViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension HomeFeedViewController: HomeFeedCellDelegate {
+extension HomeFeedViewController: FeedCellDelegate {
     func didTapLikeButton(_ cell: HomeFeedCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         let currentPost = posts[indexPath.item]

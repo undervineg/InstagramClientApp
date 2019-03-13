@@ -9,9 +9,11 @@
 import UIKit
 
 final class UserProfileRouter: BasicRouter, UserProfileRouter.Routes {
-    typealias Routes = LoginRoute
+    typealias Routes = LoginRoute & CommentsRoute
     
     var loginTransition: Transition = ModalTransition()
+
+    var commentsTransition: Transition = PushTransition()
     
     // LoginRoute
     
@@ -30,6 +32,19 @@ final class UserProfileRouter: BasicRouter, UserProfileRouter.Routes {
         let loginModule = LoginModule()
         loginModule.router.openTransition = loginTransition
         callback(loginModule.withNavigation)
+    }
+    
+    
+    // CommentsRoute
+    
+    func openCommentsPage(postId: String) {
+        openCommentsPage(postId: postId, with: commentsTransition)
+    }
+    
+    func openCommentsPage(postId: String, with transition: Transition) {
+        let module = CommentsModule(postId: postId)
+        
+        self.open(module.viewController, with: transition)
     }
 
 }

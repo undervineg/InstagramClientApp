@@ -11,8 +11,11 @@ import InstagramEngine
 final class HomeFeedRouter: BasicRouter, HomeFeedRouter.Routes {
     typealias Routes = CameraRoute & CommentsRoute
     
-    // MARK: Camera Route
     var cameraTransitionType: Transition = ModalTransition()
+    
+    var commentsTransition: Transition = PushTransition()
+    
+    // MARK: Camera Route
     
     func openCamera() {
         openCamera(with: cameraTransitionType)
@@ -26,7 +29,6 @@ final class HomeFeedRouter: BasicRouter, HomeFeedRouter.Routes {
     }
     
     // MARK: Comment Route
-    var commentsTransition: Transition = PushTransition()
     
     func openCommentsPage(postId: String) {
         openCommentsPage(postId: postId, with: commentsTransition)
