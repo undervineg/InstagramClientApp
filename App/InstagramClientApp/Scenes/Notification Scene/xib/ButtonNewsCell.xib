@@ -37,7 +37,7 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="shg-Qp-DjE">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="shg-Qp-DjE">
                         <rect key="frame" x="12" y="10" width="45" height="45"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="45" id="Hvf-ZN-aBH"/>

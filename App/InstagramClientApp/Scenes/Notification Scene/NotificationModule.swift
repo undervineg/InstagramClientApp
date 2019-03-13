@@ -58,5 +58,6 @@ final class NotificationModule {
         
         self.containerViewController = NotificationContainerController(followingNewsViewController,
                                                                        myNewsViewController)
+        self.containerViewController.readAllNotifications = newsService.readAllNotifications
     }
 }

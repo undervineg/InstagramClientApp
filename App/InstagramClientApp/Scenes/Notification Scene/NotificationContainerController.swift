@@ -11,6 +11,9 @@ import XLPagerTabStrip
 
 final class NotificationContainerController: ButtonBarPagerTabStripViewController {
 
+    // TODO: Fix!
+    var readAllNotifications: ((String?, @escaping (Error?) -> Void) -> Void)?
+    
     private var subViewControllers: [UIViewController] = []
     
     private var isInitialAppeared: Bool = true
@@ -44,6 +47,9 @@ final class NotificationContainerController: ButtonBarPagerTabStripViewControlle
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         isInitialAppeared = false
+        readAllNotifications?(nil) { (error) in
+            print(error ?? "")
+        }
     }
     
     override var currentIndex: Int {

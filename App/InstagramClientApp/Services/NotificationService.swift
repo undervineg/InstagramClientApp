@@ -6,7 +6,7 @@
 //  Copyright © 2019 심승민. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import InstagramEngine
 
 final class NotificationService: NotificationClient {
@@ -52,19 +52,33 @@ final class NotificationService: NotificationClient {
     }
     
     func readAllNotifications(of uid: String?, _ completion: @escaping (Error?) -> Void) {
-        
+        updateUnreadCount(uid, 0) { [weak self] (error) in
+            if let error = error {
+                print(error)
+            }
+            self?.resetBadge()
+        }
     }
     
     func readNotification(of uid: String?, at notificationId: String, _ completion: @escaping (Error?) -> Void) {
         
     }
     
-    func setBadge(to badgeNumber: Int) {
+    private func updateUnreadCount(_ uid: String?, _ count: Int, _ completion: @escaping (Error?) -> Void) {
+        guard let userId = (uid == nil) ? auth.currentUserId : uid else { return }
         
+        let refs: [Reference] = [.directory(Keys.Database.countsDir), .directory(userId)]
+        
+        let key = Keys.Database.Counts.notification
+        database.update([key: count], under: refs, completion: completion)
     }
     
-    func resetBadge() {
-        
+    private func setBadge(to badgeNumber: Int) {
+        UIApplication.shared.applicationIconBadgeNumber = badgeNumber
+    }
+    
+    private func resetBadge() {
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     // MARK: Private Methods
