@@ -12,22 +12,28 @@ final class NotificationDefaultCell: UITableViewCell {
     
     static let reuseId = "NotificationDefaultCell"
     
-    let label: UILabel = {
-        let lb = UILabel()
-        lb.text = "알림이 없습니다."
-        lb.font = UIFont.systemFont(ofSize: 27)
-        lb.textAlignment = .center
-        lb.numberOfLines = 0
-        return lb
+    let activityIndicator: UIActivityIndicatorView = {
+        let i = UIActivityIndicatorView(style: .gray)
+        i.startAnimating()
+        return i
     }()
+    
+//    let label: UILabel = {
+//        let lb = UILabel()
+//        lb.text = "알림이 없습니다."
+//        lb.font = UIFont.systemFont(ofSize: 27)
+//        lb.textAlignment = .center
+//        lb.numberOfLines = 0
+//        return lb
+//    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
     
@@ -40,21 +46,27 @@ final class ProfileDefaultCell: UICollectionViewCell {
     
     static let reuseId = "GridDefaultCell"
     
-    let label: UILabel = {
-        let lb = UILabel()
-        lb.font = UIFont.systemFont(ofSize: 27)
-        lb.textAlignment = .center
-        lb.numberOfLines = 0
-        return lb
+    let activityIndicator: UIActivityIndicatorView = {
+        let i = UIActivityIndicatorView(style: .gray)
+        i.startAnimating()
+        return i
     }()
+    
+//    let label: UILabel = {
+//        let lb = UILabel()
+//        lb.font = UIFont.systemFont(ofSize: 27)
+//        lb.textAlignment = .center
+//        lb.numberOfLines = 0
+//        return lb
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
     
@@ -62,30 +74,36 @@ final class ProfileDefaultCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
-    func configure(with text: String) {
-        label.text = text
-    }
+//    func configure(with text: String) {
+//        label.text = text
+//    }
 }
 
 final class FeedDefaultCell: UICollectionViewCell {
     
     static let reuseId = "FeedDefaultCell"
     
-    let label: UILabel = {
-        let lb = UILabel()
-        lb.font = UIFont.systemFont(ofSize: 27)
-        lb.textAlignment = .center
-        lb.numberOfLines = 0
-        return lb
+    let activityIndicator: UIActivityIndicatorView = {
+        let i = UIActivityIndicatorView(style: .gray)
+        i.startAnimating()
+        return i
     }()
+    
+//    let label: UILabel = {
+//        let lb = UILabel()
+//        lb.font = UIFont.systemFont(ofSize: 27)
+//        lb.textAlignment = .center
+//        lb.numberOfLines = 0
+//        return lb
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
     
@@ -93,29 +111,35 @@ final class FeedDefaultCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
-    func configure(with text: String) {
-        label.text = text
-    }
+//    func configure(with text: String) {
+//        label.text = text
+//    }
 }
 
 final class SearchDefaultCell: UICollectionViewCell {
     static let reuseId = "SearchDefaultCell"
     
-    let label: UILabel = {
-        let lb = UILabel()
-        lb.font = UIFont.systemFont(ofSize: 27)
-        lb.textAlignment = .center
-        lb.numberOfLines = 0
-        return lb
+    let activityIndicator: UIActivityIndicatorView = {
+        let i = UIActivityIndicatorView(style: .gray)
+        i.startAnimating()
+        return i
     }()
+    
+//    let label: UILabel = {
+//        let lb = UILabel()
+//        lb.font = UIFont.systemFont(ofSize: 27)
+//        lb.textAlignment = .center
+//        lb.numberOfLines = 0
+//        return lb
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
     
@@ -123,7 +147,7 @@ final class SearchDefaultCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
-    func configure(with text: String) {
-        label.text = text
-    }
+//    func configure(with text: String) {
+//        label.text = text
+//    }
 }

@@ -144,8 +144,8 @@ final class UserProfileViewController: UICollectionViewController, UICollectionV
         switch state {
         case .noData:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileDefaultCell.reuseId, for: indexPath) as! ProfileDefaultCell
-            let text = isGridView ? "사진 및 동영상 공유" : "사진과 동영상을 공유하면\n프로필에 표시됩니다."
-            cell.configure(with: text)
+//            let text = isGridView ? "사진 및 동영상 공유" : "사진과 동영상을 공유하면\n프로필에 표시됩니다."
+//            cell.configure(with: text)
             return cell
         case .loaded:
             let cellId = isGridView ? UserProfileGridCell.reuseId : HomeFeedCell.reuseId

@@ -88,7 +88,7 @@ class UserSearchViewController: UICollectionViewController, UICollectionViewData
         switch state {
         case .noData:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchDefaultCell.reuseId, for: indexPath) as! SearchDefaultCell
-            cell.configure(with: "검색 가능한 사용자가 없습니다.")
+//            cell.configure(with: "검색 가능한 사용자가 없습니다.")
             return cell
         case .loaded:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserSearchCell.reuseId, for: indexPath) as! UserSearchCell

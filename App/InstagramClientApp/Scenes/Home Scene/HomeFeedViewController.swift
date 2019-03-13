@@ -74,7 +74,7 @@ final class HomeFeedViewController: UICollectionViewController, UICollectionView
         switch state {
         case .noData:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedDefaultCell.reuseId, for: indexPath) as! FeedDefaultCell
-            cell.configure(with: "게시물이 없습니다.")
+//            cell.configure(with: "게시물이 없습니다.")
             return cell
         case .loaded:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeFeedCell.reuseId, for: indexPath) as! HomeFeedCell
